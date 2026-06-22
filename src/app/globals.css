@@ -1,0 +1,172 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── shadcn/ui CSS Variables (Edify V2 theme) ────────────────────── */
+@layer base {
+  :root {
+    --background:   220 30% 6%;
+    --foreground:   210 20% 96%;
+
+    --card:         220 28% 9%;
+    --card-foreground: 210 20% 96%;
+
+    --popover:      220 28% 9%;
+    --popover-foreground: 210 20% 96%;
+
+    /* Primary = Edify teal */
+    --primary:      177 52% 47%;
+    --primary-foreground: 220 30% 6%;
+
+    /* Secondary = dark navy */
+    --secondary:    220 28% 13%;
+    --secondary-foreground: 210 20% 96%;
+
+    --muted:        220 25% 14%;
+    --muted-foreground: 215 16% 55%;
+
+    --accent:       220 25% 17%;
+    --accent-foreground: 210 20% 96%;
+
+    --destructive:  0 62% 50%;
+    --destructive-foreground: 210 20% 96%;
+
+    --border:       220 25% 14%;
+    --input:        220 25% 14%;
+    --ring:         177 52% 47%;
+
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background:   220 30% 6%;
+    --foreground:   210 20% 96%;
+    --card:         220 28% 9%;
+    --card-foreground: 210 20% 96%;
+    --popover:      220 28% 9%;
+    --popover-foreground: 210 20% 96%;
+    --primary:      177 52% 47%;
+    --primary-foreground: 220 30% 6%;
+    --secondary:    220 28% 13%;
+    --secondary-foreground: 210 20% 96%;
+    --muted:        220 25% 14%;
+    --muted-foreground: 215 16% 55%;
+    --accent:       220 25% 17%;
+    --accent-foreground: 210 20% 96%;
+    --destructive:  0 62% 50%;
+    --destructive-foreground: 210 20% 96%;
+    --border:       220 25% 14%;
+    --input:        220 25% 14%;
+    --ring:         177 52% 47%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* ─── CSS Custom Properties ─────────────────────────────────────── */
+:root {
+  --color-primary:     #0A0D14;
+  --color-secondary:   #121620;
+  --color-accent:      #3ABAB4;
+  --color-accent-gold: #E8C97A;
+  --color-dark:        #060810;
+  --color-light:       #F8F9FA;
+  --color-muted:       #6B7280;
+
+  --font-sans:    var(--font-inter-tight), "Inter Tight", system-ui, sans-serif;
+  --font-heading: "Playfair Display", Georgia, serif;
+
+  --transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─── Base Reset ─────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--color-primary);
+  color: var(--color-light);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ─── Typography ─────────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sans);
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-accent);
+  border-radius: 3px;
+}
+
+/* ─── Utility Layer ──────────────────────────────────────────────── */
+@layer utilities {
+  .text-gradient {
+    background: linear-gradient(135deg, #3ABAB4 0%, #5DD9D3 50%, #3ABAB4 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-gold {
+    background: linear-gradient(135deg, #E8C97A 0%, #F5E4A8 50%, #E8C97A 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .glass {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .glass-dark {
+    background: rgba(10, 13, 20, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .section-padding {
+    @apply px-6 py-20 md:px-12 md:py-28 lg:px-24 lg:py-36;
+  }
+
+  .container-custom {
+    @apply mx-auto max-w-[1440px] px-6 md:px-12 lg:px-16;
+  }
+
+  /* Teal glow effect */
+  .teal-glow {
+    box-shadow: 0 0 40px rgba(58, 186, 180, 0.15);
+  }
+}
