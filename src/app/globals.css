@@ -7,57 +7,24 @@
   :root {
     --background:   220 30% 6%;
     --foreground:   210 20% 96%;
-
     --card:         220 28% 9%;
     --card-foreground: 210 20% 96%;
-
     --popover:      220 28% 9%;
     --popover-foreground: 210 20% 96%;
-
-    /* Primary = Edify teal */
     --primary:      177 52% 47%;
     --primary-foreground: 220 30% 6%;
-
-    /* Secondary = dark navy */
     --secondary:    220 28% 13%;
     --secondary-foreground: 210 20% 96%;
-
     --muted:        220 25% 14%;
     --muted-foreground: 215 16% 55%;
-
     --accent:       220 25% 17%;
     --accent-foreground: 210 20% 96%;
-
     --destructive:  0 62% 50%;
     --destructive-foreground: 210 20% 96%;
-
     --border:       220 25% 14%;
     --input:        220 25% 14%;
     --ring:         177 52% 47%;
-
     --radius: 0.75rem;
-  }
-
-  .dark {
-    --background:   220 30% 6%;
-    --foreground:   210 20% 96%;
-    --card:         220 28% 9%;
-    --card-foreground: 210 20% 96%;
-    --popover:      220 28% 9%;
-    --popover-foreground: 210 20% 96%;
-    --primary:      177 52% 47%;
-    --primary-foreground: 220 30% 6%;
-    --secondary:    220 28% 13%;
-    --secondary-foreground: 210 20% 96%;
-    --muted:        220 25% 14%;
-    --muted-foreground: 215 16% 55%;
-    --accent:       220 25% 17%;
-    --accent-foreground: 210 20% 96%;
-    --destructive:  0 62% 50%;
-    --destructive-foreground: 210 20% 96%;
-    --border:       220 25% 14%;
-    --input:        220 25% 14%;
-    --ring:         177 52% 47%;
   }
 
   * {
@@ -69,56 +36,7 @@
   }
 }
 
-/* ─── CSS Custom Properties ─────────────────────────────────────── */
-:root {
-  --color-primary:     #0A0D14;
-  --color-secondary:   #121620;
-  --color-accent:      #3ABAB4;
-  --color-accent-gold: #E8C97A;
-  --color-dark:        #060810;
-  --color-light:       #F8F9FA;
-  --color-muted:       #6B7280;
-
-  --font-sans:    var(--font-inter-tight), "Inter Tight", system-ui, sans-serif;
-  --font-heading: "Playfair Display", Georgia, serif;
-
-  --transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
-  
-  /* Fluid Typography Scale */
-  --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
-  --text-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
-  --text-base: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
-  --text-lg: clamp(1.125rem, 1rem + 0.625vw, 1.25rem);
-  --text-xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
-  --text-2xl: clamp(1.5rem, 1.3rem + 1vw, 1.875rem);
-  --text-3xl: clamp(1.875rem, 1.6rem + 1.375vw, 2.25rem);
-  --text-4xl: clamp(2.25rem, 1.9rem + 1.75vw, 3rem);
-  --text-5xl: clamp(3rem, 2.5rem + 2.5vw, 4rem);
-  --text-6xl: clamp(4rem, 3rem + 5vw, 6rem);
-  --text-7xl: clamp(4.5rem, 3.5rem + 5vw, 7rem);
-  --text-8xl: clamp(6rem, 4rem + 10vw, 8rem);
-  
-  /* Fluid Spacing */
-  --space-xs: clamp(0.25rem, 0.2rem + 0.25vw, 0.5rem);
-  --space-sm: clamp(0.5rem, 0.4rem + 0.5vw, 0.75rem);
-  --space-md: clamp(0.75rem, 0.6rem + 0.75vw, 1rem);
-  --space-lg: clamp(1rem, 0.8rem + 1vw, 1.5rem);
-  --space-xl: clamp(1.5rem, 1.2rem + 1.5vw, 2rem);
-  --space-2xl: clamp(2rem, 1.6rem + 2vw, 3rem);
-  --space-3xl: clamp(3rem, 2.4rem + 3vw, 4rem);
-  --space-4xl: clamp(4rem, 3rem + 5vw, 6rem);
-  --space-5xl: clamp(6rem, 4rem + 10vw, 8rem);
-  
-  /* Container Widths */
-  --container-sm: min(90vw, 640px);
-  --container-md: min(90vw, 768px);
-  --container-lg: min(90vw, 1024px);
-  --container-xl: min(90vw, 1280px);
-  --container-2xl: min(90vw, 1536px);
-  --container-max: min(95vw, 1440px);
-}
-
-/* ─── Base Reset ─────────────────────────────────────────────────── */
+/* Base Reset */
 *,
 *::before,
 *::after {
@@ -131,50 +49,40 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* Prevent horizontal scrolling */
   overflow-x: hidden;
 }
 
 body {
-  background-color: var(--color-primary);
-  color: var(--color-light);
-  font-family: var(--font-sans);
+  background-color: #0A0D14;
+  color: #F8F9FA;
+  font-family: var(--font-inter-tight), "Inter Tight", system-ui, sans-serif;
   line-height: 1.6;
   overflow-x: hidden;
-  /* Ensure proper spacing for fixed navbar */
   min-height: 100vh;
 }
 
-/* ─── Typography ─────────────────────────────────────────────────── */
+/* Typography */
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-sans);
+  font-family: var(--font-inter-tight), "Inter Tight", system-ui, sans-serif;
   line-height: 1.2;
   font-weight: 700;
 }
 
-/* ─── Scrollbar ──────────────────────────────────────────────────── */
+/* Scrollbar */
 ::-webkit-scrollbar {
   width: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-dark);
+  background: #060810;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-accent);
+  background: #3ABAB4;
   border-radius: 3px;
 }
 
-/* ─── Utility Layer ──────────────────────────────────────────────── */
 @layer utilities {
   .text-gradient {
     background: linear-gradient(135deg, #3ABAB4 0%, #5DD9D3 50%, #3ABAB4 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .text-gradient-gold {
-    background: linear-gradient(135deg, #E8C97A 0%, #F5E4A8 50%, #E8C97A 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -187,20 +95,6 @@ h1, h2, h3, h4, h5, h6 {
     border: 1px solid rgba(255, 255, 255, 0.08);
   }
   
-  /* Fluid Typography Utilities */
-  .text-fluid-xs { font-size: var(--text-xs); }
-  .text-fluid-sm { font-size: var(--text-sm); }
-  .text-fluid-base { font-size: var(--text-base); }
-  .text-fluid-lg { font-size: var(--text-lg); }
-  .text-fluid-xl { font-size: var(--text-xl); }
-  .text-fluid-2xl { font-size: var(--text-2xl); }
-  .text-fluid-3xl { font-size: var(--text-3xl); }
-  .text-fluid-4xl { font-size: var(--text-4xl); }
-  .text-fluid-5xl { font-size: var(--text-5xl); }
-  .text-fluid-6xl { font-size: var(--text-6xl); }
-  .text-fluid-7xl { font-size: var(--text-7xl); }
-  .text-fluid-8xl { font-size: var(--text-8xl); }
-  
   /* Container Utilities */
   .container-responsive {
     width: 100%;
@@ -209,64 +103,37 @@ h1, h2, h3, h4, h5, h6 {
     padding-right: clamp(1rem, 4vw, 2rem);
   }
   
-  .container-sm { max-width: var(--container-sm); }
-  .container-md { max-width: var(--container-md); }
-  .container-lg { max-width: var(--container-lg); }
-  .container-xl { max-width: var(--container-xl); }
-  .container-2xl { max-width: var(--container-2xl); }
-  .container-max { max-width: var(--container-max); }
+  .container-sm { max-width: min(90vw, 640px); }
+  .container-md { max-width: min(90vw, 768px); }
+  .container-lg { max-width: min(90vw, 1024px); }
+  .container-xl { max-width: min(90vw, 1280px); }
+  .container-2xl { max-width: min(90vw, 1536px); }
+  .container-max { max-width: min(95vw, 1440px); }
   
-  /* Spacing Utilities */
-  .space-fluid-xs { padding: var(--space-xs); }
-  .space-fluid-sm { padding: var(--space-sm); }
-  .space-fluid-md { padding: var(--space-md); }
-  .space-fluid-lg { padding: var(--space-lg); }
-  .space-fluid-xl { padding: var(--space-xl); }
-  .space-fluid-2xl { padding: var(--space-2xl); }
-  .space-fluid-3xl { padding: var(--space-3xl); }
-  .space-fluid-4xl { padding: var(--space-4xl); }
-  .space-fluid-5xl { padding: var(--space-5xl); }
+  /* Fluid Typography Utilities */
+  .text-fluid-xs { font-size: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem); }
+  .text-fluid-sm { font-size: clamp(0.875rem, 0.8rem + 0.375vw, 1rem); }
+  .text-fluid-base { font-size: clamp(1rem, 0.9rem + 0.5vw, 1.125rem); }
+  .text-fluid-lg { font-size: clamp(1.125rem, 1rem + 0.625vw, 1.25rem); }
+  .text-fluid-xl { font-size: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem); }
+  .text-fluid-2xl { font-size: clamp(1.5rem, 1.3rem + 1vw, 1.875rem); }
+  .text-fluid-3xl { font-size: clamp(1.875rem, 1.6rem + 1.375vw, 2.25rem); }
+  .text-fluid-4xl { font-size: clamp(2.25rem, 1.9rem + 1.75vw, 3rem); }
+  .text-fluid-5xl { font-size: clamp(3rem, 2.5rem + 2.5vw, 4rem); }
   
-  /* Safe Area for Fixed Elements */
   .pt-safe { padding-top: max(env(safe-area-inset-top), 72px); }
   .pb-safe { padding-bottom: max(env(safe-area-inset-bottom), 0px); }
-  
-  /* Responsive Visibility */
-  .show-mobile { display: block; }
-  .hide-mobile { display: none; }
-  
-  @media (min-width: 768px) {
-    .show-mobile { display: none; }
-    .hide-mobile { display: block; }
-  }
 }
 
-/* ─── Responsive Media Queries ─────────────────────────────────────── */
+/* Responsive Media Queries */
 @media (max-width: 479px) {
-  :root {
-    --space-section: clamp(2rem, 8vw, 3rem);
+  .container-responsive {
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 }
 
-@media (min-width: 480px) and (max-width: 767px) {
-  :root {
-    --space-section: clamp(3rem, 10vw, 4rem);
-  }
-}
-
-@media (min-width: 768px) and (max-width: 1023px) {
-  :root {
-    --space-section: clamp(4rem, 12vw, 6rem);
-  }
-}
-
-@media (min-width: 1024px) {
-  :root {
-    --space-section: clamp(6rem, 15vw, 8rem);
-  }
-}
-
-/* ─── Accessibility & Motion Preferences ──────────────────────────── */
+/* Accessibility */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -278,9 +145,8 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-/* ─── Focus Styles ──────────────────────────────────────────────── */
 :focus {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid #3ABAB4;
   outline-offset: 2px;
 }
 
@@ -289,6 +155,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid #3ABAB4;
   outline-offset: 2px;
 }
