@@ -11,7 +11,7 @@ export default function CtaSection() {
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section id="cta" className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section id="cta" className="relative min-h-[100svh] flex items-center justify-center overflow-hidden py-16 sm:py-20 lg:py-24">
       {/* Background image */}
       <div className="absolute inset-0 z-0">
         <Image
@@ -20,30 +20,33 @@ export default function CtaSection() {
           fill
           className="object-cover object-center"
           quality={85}
+          sizes="100vw"
         />
+        {/* Dark overlay for better text readability */}
+        <div className="absolute inset-0 bg-black/40" />
       </div>
 
-      <div className="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-16 relative z-10">
+      <div className="container-responsive container-max relative z-10">
         <div
           ref={ref}
-          className="max-w-4xl mx-auto text-center"
+          className="max-w-5xl mx-auto text-center"
         >
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7 }}
-            className="font-heading text-[2.2rem] sm:text-[3rem] md:text-[3.8rem] lg:text-[2.2rem] font-Semibold text-white leading-[1.1] mb-8"
+            className="font-heading font-semibold text-white leading-[1.1] mb-6 sm:mb-8"
+            style={{ fontSize: 'clamp(1.5rem, 6vw, 3.5rem)' }}
           >
-            Excellence in education starts with institutions
-            <br />
-            built for the future.
+            <span className="block mb-2">Excellence in education starts with institutions</span>
+            <span className="block">built for the future.</span>
           </motion.h2>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-white/80 text-[16px] md:text-[18px] leading-relaxed mb-12 max-w-3xl mx-auto"
+            className="text-white/80 text-fluid-base md:text-fluid-lg leading-relaxed mb-8 sm:mb-10 lg:mb-12 max-w-4xl mx-auto"
           >
             Partner With Edify Management Consultancy Today And Experience The Power Of Professional,
             Results-Driven Services Across Every Domain That Matters.
@@ -53,11 +56,11 @@ export default function CtaSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4"
+            className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
           >
             <Link
               href="/contact"
-              className="group flex items-center gap-2 px-8 py-4 bg-white text-[#0A0D14] text-[14px] font-semibold rounded-full hover:bg-white/90 transition-all duration-300 shadow-xl cursor-pointer"
+              className="group flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-white text-[#0A0D14] text-fluid-sm font-semibold rounded-full hover:bg-white/90 transition-all duration-300 shadow-xl cursor-pointer w-full sm:w-auto justify-center"
             >
               Get a Free Consultation
               <ArrowRight
@@ -67,7 +70,7 @@ export default function CtaSection() {
             </Link>
             <Link
               href="/contact"
-              className="flex items-center gap-2 px-8 py-4 bg-transparent text-white text-[14px] font-semibold rounded-full border border-white/40 hover:bg-white/10 hover:border-white/60 transition-all duration-300 cursor-pointer"
+              className="flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-transparent text-white text-fluid-sm font-semibold rounded-full border border-white/40 hover:bg-white/10 hover:border-white/60 transition-all duration-300 cursor-pointer w-full sm:w-auto justify-center"
             >
               Contact Our Team
             </Link>

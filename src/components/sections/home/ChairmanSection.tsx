@@ -11,7 +11,7 @@ export default function ChairmanSection() {
   return (
     <section
       id="chairman"
-      className="relative py-24 md:py-32 overflow-hidden bg-white"
+      className="relative py-16 sm:py-20 md:py-24 lg:py-32 overflow-hidden bg-white"
     >
       {/* Background Abstract Design */}
       <div className="absolute inset-0 opacity-30">
@@ -19,13 +19,13 @@ export default function ChairmanSection() {
           src="/assets/Vector.png"
           alt=""
           fill
-          className="object-cover"
+          className="object-cover object-center"
           priority={false}
         />
       </div>
 
-      <div className="relative max-w-[1440px] mx-auto px-6 md:px-12 lg:px-16">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center" ref={ref}>
+      <div className="relative container-responsive container-max">
+        <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 xl:gap-20 items-center" ref={ref}>
 
           {/* Left: Photo */}
           <motion.div
@@ -34,21 +34,21 @@ export default function ChairmanSection() {
             transition={{ duration: 0.8 }}
             className="relative order-2 lg:order-1"
           >
-            <div className="relative max-w-[400px] mx-auto lg:mx-0">
+            <div className="relative max-w-[350px] sm:max-w-[400px] mx-auto lg:mx-0">
               {/* Profile Image */}
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl aspect-[4/5]">
                 <Image
                   src="/assets/Subtract.png"
                   alt="Zakir Hussain Kamaluddin - Chairman"
-                  width={400}
-                  height={500}
-                  className="w-full h-auto object-cover"
+                  fill
+                  className="object-cover object-center"
                   priority
+                  sizes="(max-width: 640px) 350px, (max-width: 1024px) 400px, 400px"
                 />
                 
-                {/* Name card overlay - no background */}
-                <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <div className="text-white font-heading font-bold text-xl">
+                {/* Name card overlay */}
+                <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
+                  <div className="text-white font-heading font-bold text-lg sm:text-xl">
                     Zakir Hussain Kamaluddin
                   </div>
                   <div className="text-white/70 text-sm font-medium mt-1">
@@ -60,14 +60,14 @@ export default function ChairmanSection() {
           </motion.div>
 
           {/* Right: Content */}
-          <div className="order-1 lg:order-2 text-center">
+          <div className="order-1 lg:order-2 text-center lg:text-left">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6 }}
-              className="mb-6"
+              className="mb-4 sm:mb-6"
             >
-              <span className="text-black/40 text-sm font-semibold tracking-[0.2em] uppercase">
+              <span className="text-black/40 text-fluid-xs font-semibold tracking-[0.2em] uppercase">
                 Chairman&apos;s Vision
               </span>
             </motion.div>
@@ -76,7 +76,8 @@ export default function ChairmanSection() {
               initial={{ opacity: 0, y: 30 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.1 }}
-              className="font-heading text-3xl sm:text-4xl lg:text-4xl font-Semibold leading-tight mb-8"
+              className="font-heading font-semibold leading-tight mb-6 sm:mb-8"
+              style={{ fontSize: 'clamp(1.75rem, 5vw, 3rem)' }}
             >
               <span className="text-[#2D2D2D]">Building Institutions That Inspire Excellence And </span>
               <span className="text-black"> Lasting Impact</span>
@@ -86,7 +87,7 @@ export default function ChairmanSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-[#8B8B8B] text-lg leading-relaxed mb-3"
+              className="text-[#8B8B8B] text-fluid-lg leading-relaxed max-w-2xl mx-auto lg:mx-0"
             >
               We believe that education is the foundation of progress. By strengthening 
               institutions through innovation, integrity, and collaboration, we help create 
