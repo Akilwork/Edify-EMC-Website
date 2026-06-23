@@ -14,47 +14,58 @@ const NAV_LINKS = [
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
+    let lastScrollY = window.scrollY;
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY > 80) {
+        setScrolled(true);
+        setHidden(currentScrollY > lastScrollY);
+      } else {
+        setScrolled(false);
+        setHidden(false);
+      }
+
+      lastScrollY = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <header
-      className={`fixed top-2 left-2 right-2 sm:top-4 sm:left-4 sm:right-4 z-50 transition-all duration-500 rounded-xl ${
-        scrolled
-          ? "bg-[#0A0D14]/90 backdrop-blur-xl border border-white/10 shadow-2xl"
-          : "bg-[#0A0D14]/70 backdrop-blur-md border border-white/5"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        hidden ? "-translate-y-full" : "translate-y-0"
+      } ${scrolled ? "border-b border-white/10" : ""}`}
     >
-      <div className="container-responsive container-max flex items-center justify-between h-16 sm:h-[72px]">
-
+      <div className="container-responsive container-max flex items-center justify-between pt-[clamp(12px,1.4vw,20px)] pb-[clamp(8px,1vw,14px)]">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 group flex-shrink-0 min-w-0">
+        <Link href="/" className="flex items-center gap-2 group flex-shrink-0">
           <Image
             src="/Logo.png"
             alt="Edify Management Consultancy"
-            width={120}
+            width={82}
             height={36}
-            className="h-7 sm:h-9 w-auto object-contain max-w-[100px] sm:max-w-none"
+            className="h-[35.8px] w-auto object-contain"
             priority
           />
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
+        <nav className="hidden lg:flex items-center gap-6">
           {NAV_LINKS.map(({ label, href }) => (
             <Link
               key={href}
               href={href}
-              className={`text-fluid-xs font-semibold tracking-widest transition-colors duration-200 hover:text-white whitespace-nowrap cursor-pointer ${
-                pathname === href
-                  ? "text-white border-b-2 border-white pb-0.5"
-                  : "text-white/70"
+              className={`text-[14px] font-semibold tracking-[0.96px] uppercase transition-colors duration-200 hover:text-white whitespace-nowrap cursor-pointer ${
+                pathname === href ? "text-white" : "text-white/60"
               }`}
             >
               {label}
@@ -63,21 +74,20 @@ export default function Navbar() {
         </nav>
 
         {/* Desktop CTAs */}
-        <div className="hidden md:flex items-center gap-2 lg:gap-3 flex-shrink-0">
+        <div className="hidden md:flex items-center gap-2 flex-shrink-0">
           <Link
             href="/contact"
-            className="flex items-center gap-1.5 px-3 lg:px-5 py-2 lg:py-2.5 text-fluid-xs font-semibold rounded-full bg-white text-[#0A0D14] hover:bg-white/90 transition-all duration-200 shadow-lg whitespace-nowrap cursor-pointer"
+            className="flex items-center gap-2 px-7 py-[14px] text-[14px] font-normal rounded-[40px] bg-white text-black hover:bg-white/90 transition-all duration-200 whitespace-nowrap cursor-pointer"
           >
-            <span className="hidden xl:inline">Get a Free Consultation</span>
-            <span className="xl:hidden">Consultation</span>
-            <ArrowRight size={14} />
+            Get a Free Consultation
+            <ArrowRight size={18} />
           </Link>
           <Link
             href="tel:+601234567890"
-            className="flex items-center gap-1.5 px-3 lg:px-5 py-2 lg:py-2.5 text-fluid-xs font-semibold rounded-full bg-[#1C2030] text-white border border-white/20 hover:bg-[#252A3D] transition-all duration-200 cursor-pointer"
+            className="flex items-center gap-2 px-7 py-[14px] text-[14px] font-normal rounded-[40px] bg-[#3a3a3a] text-white border border-white/60 hover:bg-[#4a4a4a] transition-all duration-200 cursor-pointer"
           >
+            <Phone size={16} />
             Call Us
-            <Phone size={14} />
           </Link>
         </div>
 
@@ -93,16 +103,19 @@ export default function Navbar() {
         </button>
       </div>
 
+      {/* Horizontal Divider — matching Figma */}
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-white/10" />
+
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="lg:hidden bg-[#0A0D14]/98 backdrop-blur-xl border-t border-white/10 rounded-b-xl mx-2 sm:mx-0">
+        <div className="lg:hidden bg-[#0A0D14]/98 backdrop-blur-xl border-t border-white/10">
           <div className="container-responsive py-4 space-y-3">
             {NAV_LINKS.map(({ label, href }) => (
               <Link
                 key={href}
                 href={href}
                 onClick={() => setMenuOpen(false)}
-                className={`block text-fluid-sm font-medium tracking-widest transition-colors duration-200 hover:text-white py-2 cursor-pointer ${
+                className={`block text-[14px] font-semibold tracking-[0.96px] uppercase transition-colors duration-200 hover:text-white py-2 cursor-pointer ${
                   pathname === href ? "text-white" : "text-white/60"
                 }`}
               >
@@ -113,18 +126,18 @@ export default function Navbar() {
               <Link
                 href="/contact"
                 onClick={() => setMenuOpen(false)}
-                className="flex items-center justify-center gap-2 px-5 py-3 text-fluid-sm font-semibold rounded-full bg-white text-[#0A0D14] cursor-pointer"
+                className="flex items-center justify-center gap-2 px-7 py-[14px] text-[14px] font-normal rounded-[40px] bg-white text-black cursor-pointer"
               >
-                Get a Free Consultation 
-                <ArrowRight size={14} />
+                Get a Free Consultation
+                <ArrowRight size={18} />
               </Link>
               <Link
                 href="tel:+601234567890"
                 onClick={() => setMenuOpen(false)}
-                className="flex items-center justify-center gap-2 px-5 py-3 text-fluid-sm font-semibold rounded-full bg-[#1C2030] text-white border border-white/20 cursor-pointer"
+                className="flex items-center justify-center gap-2 px-7 py-[14px] text-[14px] font-normal rounded-[40px] bg-[#3a3a3a] text-white border border-white/60 cursor-pointer"
               >
+                <Phone size={16} />
                 Call Us
-                <Phone size={14} />
               </Link>
             </div>
           </div>

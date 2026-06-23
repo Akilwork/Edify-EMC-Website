@@ -39,7 +39,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${interTight.variable} ${playfair.variable} dark`}>
+    <html lang="en" className={`${interTight.variable} ${playfair.variable} dark`} suppressHydrationWarning>
       <body>
         <Navbar />
         <main>{children}</main>
