@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "mcp__figma-dev-mode__get_design_context"
+      "mcp__figma-dev-mode__get_design_context",
+      "mcp__figma-dev-mode__get_screenshot",
+      "Read(//c/Users/akilj/.claude/projects/c--Users-akilj-Desktop-Website-Edify-EMC-Website/c9064b9b-36bb-4ef8-9dbe-52fb78590ff5/tool-results/**)"
     ]
   }
 }

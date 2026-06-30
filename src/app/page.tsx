@@ -2,8 +2,7 @@ import HeroSection from "@/components/sections/home/HeroSection";
 import IntroSection from "@/components/sections/home/IntroSection";
 import ServicesOverviewSection from "@/components/sections/home/ServicesOverviewSection";
 import WhyEdifySection from "@/components/sections/home/WhyEdifySection";
-import ChairmanSection from "@/components/sections/home/ChairmanSection";
-import CtaSection from "@/components/sections/home/CtaSection";
+import ChairmanTransitionToCta from "@/components/sections/home/ChairmanTransitionToCta";
 
 export default function HomePage() {
   return (
@@ -12,8 +11,7 @@ export default function HomePage() {
       <IntroSection />
       <ServicesOverviewSection />
       <WhyEdifySection />
-      <ChairmanSection />
-      <CtaSection />
+      <ChairmanTransitionToCta />
     </>
   );
 }

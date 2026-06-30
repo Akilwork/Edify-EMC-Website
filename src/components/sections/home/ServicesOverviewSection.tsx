@@ -1,13 +1,9 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
 import Image from "next/image";
+import { TextReveal } from "@/components/ui/text-reveal";
 
 export default function ServicesOverviewSection() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
-
   return (
     <section id="services-overview" className="relative min-h-[100svh] flex items-center justify-center overflow-hidden py-12 sm:py-16 lg:py-20">
       {/* Background Image */}
@@ -22,34 +18,18 @@ export default function ServicesOverviewSection() {
         />
       </div>
 
-      <div className="relative z-10 w-full container-responsive container-xl text-center" ref={ref}>
-        {/* Main Heading */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.2 }}
+      <div className="relative z-10 w-full container-responsive container-xl text-center">
+        <h1
+          className="font-sans font-medium text-black leading-[1.15] tracking-tight mx-auto"
+          style={{
+            fontSize: 'clamp(1.5rem, 0.97rem + 2.25vw, 3.5rem)',
+            maxWidth: 'min(92%, 1070px)',
+          }}
         >
-          <h1 className="font-sans font-normal text-black leading-[1.1] tracking-tight max-w-5xl mx-auto">
-            <span 
-              className="block mb-2"
-              style={{ fontSize: 'clamp(1.75rem, 7vw, 5rem)' }}
-            >
-              Creating A Structured Path to
-            </span>
-            <span 
-              className="block mb-2"
-              style={{ fontSize: 'clamp(1.75rem, 7vw, 5rem)' }}
-            >
-              Institutional Growth Impact
-            </span>
-            <span 
-              className="block"
-              style={{ fontSize: 'clamp(1.75rem, 7vw, 5rem)' }}
-            >
-              in Education
-            </span>
-          </h1>
-        </motion.div>
+          <TextReveal mode="scroll-blur">
+            Creating A Structured Path to Institutional Growth Impact in Education
+          </TextReveal>
+        </h1>
       </div>
     </section>
   );
