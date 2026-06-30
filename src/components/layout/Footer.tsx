@@ -1,161 +1,222 @@
+"use client";
+
 import Link from "next/link";
 import { Mail, Phone } from "lucide-react";
 
-const FOOTER_DATA = {
-  services: [
-    "HR Services",
-    "Financial Services",
-    "IT Services", 
-    "Educational & Institutional Services",
-    "SEED Behavioural Counselling",
-    "Imprint Solutions"
-  ],
-  subsidiaries: [
-    "EMKL Garage",
-    "E-Commerce Services",
-    "Uni-Dezine",
-    "Civil Engineering Services", 
-    "Tees Academy"
-  ],
-  quickLinks: [
-    "Home",
-    "About Us", 
-    "Services"
-  ]
-};
+const SERVICES_COL1 = [
+  "HR Services",
+  "Financial Services",
+  "IT Services",
+  "Educational & Institutional Services",
+  "SEED Behavioural Counselling",
+  "Imprint Solutions",
+];
+
+const SERVICES_COL2 = [
+  "EMKE Garage",
+  "E-Commerce Services",
+  "Uni-Dezine",
+  "Civil Engineering Services",
+  "Toss Academy",
+];
+
+const QUICK_LINKS = [
+  { label: "Home", href: "/" },
+  { label: "About Us", href: "/about" },
+  { label: "Services", href: "/services" },
+];
 
 export default function Footer() {
   return (
-    <footer className="relative min-h-[60vh] overflow-hidden bg-gradient-to-br from-[#334155] via-[#1e293b] to-[#0f172a] py-12 sm:py-16 lg:py-20">
-      {/* Geometric shapes on the left */}
-      <div className="absolute bottom-0 left-0 w-[300px] sm:w-[400px] h-[400px] sm:h-[500px] opacity-15 pointer-events-none">
-        <div className="absolute bottom-0 left-0 w-[200px] sm:w-[280px] h-[280px] sm:h-[380px] bg-gradient-to-tr from-slate-600/30 to-transparent transform -rotate-12 -translate-x-8 sm:-translate-x-16"></div>
-        <div className="absolute bottom-12 sm:bottom-20 left-4 sm:left-8 w-[140px] sm:w-[200px] h-[200px] sm:h-[280px] bg-gradient-to-tr from-blue-900/20 to-transparent transform -rotate-6"></div>
-        <div className="absolute bottom-8 sm:bottom-12 left-8 sm:left-16 w-[100px] sm:w-[140px] h-[140px] sm:h-[200px] bg-gradient-to-tr from-slate-700/40 to-transparent transform rotate-12"></div>
-      </div>
-      
-      {/* Large "Edify" background text */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
-        <div 
-          className="font-bold text-white/[0.04] select-none leading-none tracking-[-0.04em]"
-          style={{ 
-            fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
-            fontWeight: '900',
-            fontSize: 'clamp(8rem, 25vw, 28rem)'
-          }}
+    <footer
+      className="relative overflow-hidden"
+      style={{
+        background:
+          "radial-gradient(ellipse 80% 60% at 60% 40%, rgba(14,30,70,0.85) 0%, rgba(8,16,40,0.6) 45%, transparent 75%), radial-gradient(ellipse 50% 40% at 70% 55%, rgba(10,25,80,0.5) 0%, transparent 60%), linear-gradient(180deg, #0a0e1a 0%, #080c18 40%, #060810 100%)",
+        isolation: "isolate",
+      }}
+    >
+      {/* Blue radial glow – center-right */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 55% 45% at 65% 45%, rgba(15,50,150,0.28) 0%, rgba(10,30,100,0.12) 40%, transparent 70%)",
+          zIndex: 0,
+        }}
+      />
+
+      {/* Main content wrapper */}
+      <div
+        className="relative z-10 mx-auto w-full"
+        style={{
+          maxWidth: "1440px",
+          paddingTop: "clamp(80px, 13.5vw, 185px)",
+          paddingBottom: "clamp(60px, 8vw, 120px)",
+          paddingLeft: "clamp(24px, 5.5vw, 80px)",
+          paddingRight: "clamp(24px, 5.5vw, 80px)",
+        }}
+      >
+        {/* ── Three-column grid ── */}
+        <div
+          className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-[1.1fr_1.6fr_0.7fr]"
+          style={{ gap: "clamp(32px, 4vw, 80px)" }}
         >
-          Edify
-        </div>
-      </div>
-      
-      {/* Main content grid */}
-      <div className="relative z-10 container-responsive container-max">
-        {/* Desktop: 4 columns, Tablet: 2 columns, Mobile: 1 column */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 xl:gap-16">
-          
-          {/* Column 1: Company Info */}
-          <div className="space-y-4 sm:col-span-2 lg:col-span-1">
-            <div>
-              <h1 className="text-xl sm:text-2xl font-bold text-white mb-3 leading-tight max-w-xs">
-                Edify Management Consultancy
-              </h1>
-              <p className="text-slate-400 text-fluid-sm leading-relaxed">
-                Your Trusted Management Consultancy for HR, Finance, IT, and Beyond
-              </p>
-            </div>
-            
-            {/* Contact Information */}
-            <div className="space-y-2 mt-6">
-              <a 
+          {/* ── LEFT: Company Info ── */}
+          <div className="flex flex-col" style={{ gap: "20px" }}>
+            {/* Company Name */}
+            <h2
+              className="font-sans font-bold text-white leading-tight"
+              style={{
+                fontSize: "clamp(1.25rem, 1.5vw, 1.625rem)",
+                letterSpacing: "-0.01em",
+                maxWidth: "300px",
+              }}
+            >
+              Edify Management Consultancy
+            </h2>
+
+            {/* Description */}
+            <p
+              className="font-sans text-white/50 leading-relaxed"
+              style={{
+                fontSize: "clamp(0.75rem, 0.85vw, 0.875rem)",
+                maxWidth: "260px",
+                lineHeight: "1.6",
+              }}
+            >
+              Your Trusted Management Consultancy for HR, Finance, IT, and Beyond
+            </p>
+
+            {/* Contact Details */}
+            <div className="flex flex-col" style={{ gap: "10px", marginTop: "4px" }}>
+              <a
                 href="mailto:edify@gmail.com"
-                className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors duration-200 text-fluid-sm cursor-pointer"
+                className="group flex items-center text-white/50 transition-colors duration-300 hover:text-white/90"
+                style={{ gap: "10px", fontSize: "clamp(0.75rem, 0.85vw, 0.875rem)" }}
               >
-                <Mail size={14} />
-                edify@gmail.com
+                <Mail
+                  size={15}
+                  className="flex-shrink-0 text-white/40 transition-colors duration-300 group-hover:text-white/80"
+                />
+                <span className="font-sans">edify@gmail.com</span>
               </a>
-              <a 
+              <a
                 href="tel:+971234567789"
-                className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors duration-200 text-fluid-sm cursor-pointer"
+                className="group flex items-center text-white/50 transition-colors duration-300 hover:text-white/90"
+                style={{ gap: "10px", fontSize: "clamp(0.75rem, 0.85vw, 0.875rem)" }}
               >
-                <Phone size={14} />
-                +971 234 567 789
+                <Phone
+                  size={15}
+                  className="flex-shrink-0 text-white/40 transition-colors duration-300 group-hover:text-white/80"
+                />
+                <span className="font-sans">+971 234 567 789</span>
               </a>
             </div>
           </div>
 
-          {/* Column 2: Our Services */}
-          <div className="space-y-4">
-            <h3 className="text-fluid-xs font-bold text-white/80 uppercase tracking-wide">
+          {/* ── CENTER: Our Services ── */}
+          <div className="flex flex-col" style={{ gap: "20px" }}>
+            <h3
+              className="font-sans font-semibold uppercase tracking-widest text-white/70"
+              style={{ fontSize: "clamp(0.6875rem, 0.75vw, 0.8125rem)", letterSpacing: "0.12em" }}
+            >
               OUR SERVICES
             </h3>
-            <ul className="space-y-2.5">
-              {FOOTER_DATA.services.map((service) => (
-                <li key={service}>
-                  <Link 
-                    href="/services" 
-                    className="text-fluid-sm text-slate-400 hover:text-white transition-colors duration-200 block cursor-pointer"
-                  >
-                    {service}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
 
-          {/* Column 3: Subsidiaries */}
-          <div className="space-y-4">
-            <h3 className="text-fluid-xs font-bold text-white/80 uppercase tracking-wide">
-              SUBSIDIARIES
-            </h3>
-            <ul className="space-y-2.5">
-              {FOOTER_DATA.subsidiaries.map((subsidiary) => (
-                <li key={subsidiary}>
-                  <Link 
-                    href="/services" 
-                    className="text-fluid-sm text-slate-400 hover:text-white transition-colors duration-200 block cursor-pointer"
-                  >
-                    {subsidiary}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+            {/* Two sub-columns */}
+            <div
+              className="grid grid-cols-1 sm:grid-cols-2"
+              style={{ gap: "clamp(16px, 2.5vw, 48px)" }}
+            >
+              {/* Sub-col 1 */}
+              <ul className="flex flex-col" style={{ gap: "12px" }}>
+                {SERVICES_COL1.map((service) => (
+                  <li key={service}>
+                    <Link
+                      href="/services"
+                      className="font-sans text-white/50 transition-colors duration-300 hover:text-white/90 block"
+                      style={{ fontSize: "clamp(0.75rem, 0.85vw, 0.875rem)", lineHeight: "1.4" }}
+                    >
+                      {service}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
 
-          {/* Column 4: Quick Links */}
-          <div className="space-y-4">
-            <h3 className="text-fluid-xs font-bold text-white/80 uppercase tracking-wide">
-              QUICK LINKS
-            </h3>
-            <ul className="space-y-2.5">
-              {FOOTER_DATA.quickLinks.map((link) => (
-                <li key={link}>
-                  <Link 
-                    href={link === "Home" ? "/" : link === "About Us" ? "/about" : "/services"} 
-                    className="text-fluid-sm text-slate-400 hover:text-white transition-colors duration-200 block cursor-pointer"
-                  >
-                    {link}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        {/* Bottom Section */}
-        <div className="mt-12 pt-8 border-t border-white/10">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-fluid-sm text-slate-400">
-            <p>© 2024 Edify Management Consultancy. All rights reserved.</p>
-            <div className="flex items-center gap-4">
-              <Link href="/privacy" className="hover:text-white transition-colors duration-200 cursor-pointer">
-                Privacy Policy
-              </Link>
-              <Link href="/terms" className="hover:text-white transition-colors duration-200 cursor-pointer">
-                Terms of Service
-              </Link>
+              {/* Sub-col 2 */}
+              <ul className="flex flex-col" style={{ gap: "12px" }}>
+                {SERVICES_COL2.map((service) => (
+                  <li key={service}>
+                    <Link
+                      href="/services"
+                      className="font-sans text-white/50 transition-colors duration-300 hover:text-white/90 block"
+                      style={{ fontSize: "clamp(0.75rem, 0.85vw, 0.875rem)", lineHeight: "1.4" }}
+                    >
+                      {service}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
+
+          {/* ── RIGHT: Quick Links ── */}
+          <div className="flex flex-col" style={{ gap: "20px" }}>
+            <h3
+              className="font-sans font-semibold uppercase tracking-widest text-white/70"
+              style={{ fontSize: "clamp(0.6875rem, 0.75vw, 0.8125rem)", letterSpacing: "0.12em" }}
+            >
+              QUICK LINKS
+            </h3>
+            <ul className="flex flex-col" style={{ gap: "14px" }}>
+              {QUICK_LINKS.map(({ label, href }) => (
+                <li key={label}>
+                  <Link
+                    href={href}
+                    className="font-sans text-white/50 transition-colors duration-300 hover:text-white/90 block"
+                    style={{ fontSize: "clamp(0.75rem, 0.85vw, 0.875rem)" }}
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* ── Bottom strip (copyright) ── */}
+        <div
+          className="relative flex items-end justify-center md:justify-end"
+          style={{ paddingBottom: "clamp(30px, 4vw, 65px)", marginTop: "clamp(75px, 8.5vw, 115px)" }}
+        >
+          <p
+            className="font-sans italic text-white/35 text-center md:text-right"
+            style={{ fontSize: "clamp(0.6875rem, 0.75vw, 0.8125rem)" }}
+          >
+            © 2026 Edify Management Consultancy. All Rights Reserved.
+          </p>
         </div>
       </div>
+
+      {/* ── WATERMARK: giant "Edify" – bottom-center ── */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none select-none absolute bottom-0 left-1/2 w-[90%] max-w-[1200px]"
+        style={{
+          zIndex: 1,
+          transform: "translateX(-50%) translateY(20%)",
+        }}
+      >
+        <img
+          src="/Footer/image 73.png"
+          alt="Edify Watermark"
+          className="w-full h-auto mx-auto object-contain opacity-[0.45]"
+        />
+      </div>
+
+
     </footer>
   );
 }

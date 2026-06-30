@@ -33,11 +33,14 @@ export default function CtaSection({ animate = true }: { animate?: boolean }) {
             initial={animate ? { opacity: 0, y: 30 } : undefined}
             animate={animate && inView ? { opacity: 1, y: 0 } : undefined}
             transition={{ duration: 0.7 }}
-            className="font-heading font-semibold text-white leading-[1.1] mb-6 sm:mb-8"
-            style={{ fontSize: 'clamp(1.5rem, 6vw, 3.5rem)' }}
+            className="font-sans font-medium text-white leading-[1.15] mb-6 sm:mb-8"
+            style={{ fontSize: 'clamp(1.5rem, 0.97rem + 2.25vw, 3.5rem)' }}
           >
-            <span className="block mb-2">
-              <span className="excellence-cta inline-block text-white">Excellence</span>
+            <span className="block mb-2 sm:whitespace-nowrap">
+              <span className="relative inline-block">
+                <span className="cta-excellence-placeholder invisible select-none">Excellence</span>
+                <span className="excellence-cta absolute left-0 top-0 text-white opacity-0 pointer-events-none">Excellence</span>
+              </span>
               <span className="cta-fade-text"> in education starts with institutions</span>
             </span>
             <span className="block cta-fade-text">built for the future.</span>
@@ -61,7 +64,7 @@ export default function CtaSection({ animate = true }: { animate?: boolean }) {
           >
             <Link
               href="/contact"
-              className="group flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-white text-[#0A0D14] text-fluid-sm font-semibold rounded-full hover:bg-white/90 transition-all duration-300 shadow-xl cursor-pointer w-full sm:w-auto justify-center"
+              className="group flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-white text-gray-900 font-sans text-[clamp(0.8125rem,0.75rem+0.28vw,0.875rem)] font-semibold rounded-full hover:bg-white/90 transition-all duration-300 shadow-xl cursor-pointer w-full sm:w-auto justify-center"
             >
               Get a Free Consultation
               <ArrowRight
@@ -71,7 +74,7 @@ export default function CtaSection({ animate = true }: { animate?: boolean }) {
             </Link>
             <Link
               href="/contact"
-              className="flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-transparent text-white text-fluid-sm font-semibold rounded-full border border-white/40 hover:bg-white/10 hover:border-white/60 transition-all duration-300 cursor-pointer w-full sm:w-auto justify-center"
+              className="flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-white/5 backdrop-blur-md text-white font-sans text-[clamp(0.8125rem,0.75rem+0.28vw,0.875rem)] font-semibold rounded-full border border-white/40 hover:bg-white/15 hover:border-white/60 transition-all duration-300 cursor-pointer w-full sm:w-auto justify-center"
             >
               Contact Our Team
             </Link>
