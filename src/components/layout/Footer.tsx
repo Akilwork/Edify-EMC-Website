@@ -52,7 +52,7 @@ export default function Footer() {
         className="relative z-10 mx-auto w-full"
         style={{
           maxWidth: "1440px",
-          paddingTop: "clamp(80px, 13.5vw, 185px)",
+          paddingTop: "clamp(80px, 13.5vw, 124px)",
           paddingBottom: "clamp(60px, 8vw, 120px)",
           paddingLeft: "clamp(24px, 5.5vw, 80px)",
           paddingRight: "clamp(24px, 5.5vw, 80px)",
@@ -189,7 +189,7 @@ export default function Footer() {
         {/* ── Bottom strip (copyright) ── */}
         <div
           className="relative flex items-end justify-center md:justify-end"
-          style={{ paddingBottom: "clamp(30px, 4vw, 65px)", marginTop: "clamp(75px, 8.5vw, 115px)" }}
+          style={{ paddingBottom: "clamp(24px, 3.45vw, 55px)", marginTop: "clamp(55px, 6.9vw, 92px)" }}
         >
           <p
             className="font-sans italic text-white/35 text-center md:text-right"
