@@ -27,40 +27,40 @@ import CtaSection from "./CtaSection";
  * Reverse: onLeaveBack restores Excellence to Chairman heading.
  */
 export default function ChairmanTransitionToCta() {
-  const wrapperRef  = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const ctaPanelRef = useRef<HTMLDivElement>(null);
-  const portalRef   = useRef<HTMLDivElement>(null);
+  const portalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
 
     gsap.registerPlugin(ScrollTrigger, Flip);
 
-    const wrapper  = wrapperRef.current;
+    const wrapper = wrapperRef.current;
     const ctaPanel = ctaPanelRef.current;
-    const portal   = portalRef.current;
+    const portal = portalRef.current;
     if (!wrapper || !ctaPanel || !portal) return;
 
     // ── Element queries ────────────────────────────────────────────────────────
-    const chairmanSection    = wrapper.querySelector<HTMLElement>("#chairman");
-    const excellenceChairman   = wrapper.querySelector<HTMLElement>(".excellence-chairman");
-    const excellenceCta        = wrapper.querySelector<HTMLElement>(".excellence-cta");
+    const chairmanSection = wrapper.querySelector<HTMLElement>("#chairman");
+    const excellenceChairman = wrapper.querySelector<HTMLElement>(".excellence-chairman");
+    const excellenceCta = wrapper.querySelector<HTMLElement>(".excellence-cta");
     const excellencePlaceholder = wrapper.querySelector<HTMLElement>(".excellence-placeholder");
 
-    const chairmanSubheading  = wrapper.querySelector<HTMLElement>(".chairman-subheading");
-    const chairmanHeading     = wrapper.querySelector<HTMLElement>(".chairman-heading");
-    const chairmanPhoto       = wrapper.querySelector<HTMLElement>(".chairman-photo");
+    const chairmanSubheading = wrapper.querySelector<HTMLElement>(".chairman-subheading");
+    const chairmanHeading = wrapper.querySelector<HTMLElement>(".chairman-heading");
+    const chairmanPhoto = wrapper.querySelector<HTMLElement>(".chairman-photo");
     const chairmanDescription = wrapper.querySelector<HTMLElement>(".chairman-description");
 
     const chairmanFadeTexts = Array.from(wrapper.querySelectorAll<HTMLElement>(".chairman-fade-text"));
-    const ctaFadeTexts      = Array.from(wrapper.querySelectorAll<HTMLElement>(".cta-fade-text"));
-    const ctaFadeEls        = Array.from(wrapper.querySelectorAll<HTMLElement>(".cta-fade-el"));
+    const ctaFadeTexts = Array.from(wrapper.querySelectorAll<HTMLElement>(".cta-fade-text"));
+    const ctaFadeEls = Array.from(wrapper.querySelectorAll<HTMLElement>(".cta-fade-el"));
     const ctaExcellencePlaceholder = wrapper.querySelector<HTMLElement>(".cta-excellence-placeholder");
 
     if (!chairmanSection || !excellenceChairman || !excellenceCta) return;
 
     // ── Stash original DOM anchor for reverse restoration ─────────────────────
-    const originalParent  = excellenceChairman.parentElement!;
+    const originalParent = excellenceChairman.parentElement!;
     const originalSibling = excellenceChairman.nextSibling;
 
     /**
@@ -91,8 +91,8 @@ export default function ChairmanTransitionToCta() {
 
     // ── Portal float coordinates (set on moveToPortal, used in animateFloat) ──
     let portalStartX = 0, portalStartY = 0;
-    let portalEndX   = 0, portalEndY   = 0;
-    let portalW      = 0;
+    let portalEndX = 0, portalEndY = 0;
+    let portalW = 0;
 
     // ── Flip state machine ────────────────────────────────────────────────────
     let currentParent = "original"; // "original" | "portal" | "cta"
@@ -124,16 +124,16 @@ export default function ChairmanTransitionToCta() {
       gsap.set(excellenceChairman, { clearProps: "all" });
 
       // Measure natural position relative to wrapper before reparenting
-      const elRect  = excellenceChairman.getBoundingClientRect();
-      const wRect   = wrapper.getBoundingClientRect();
-      portalW       = elRect.width;
-      portalStartX  = elRect.left - wRect.left;
-      portalStartY  = elRect.top  - wRect.top;
+      const elRect = excellenceChairman.getBoundingClientRect();
+      const wRect = wrapper.getBoundingClientRect();
+      portalW = elRect.width;
+      portalStartX = elRect.left - wRect.left;
+      portalStartY = elRect.top - wRect.top;
 
       // Float target: center of viewport, slightly right — matches design reference
       //   horizontally centred (50% wrapper − half element width)
       //   vertically at 44% viewport height
-      portalEndX = wRect.width  * 0.50 - portalW / 2;
+      portalEndX = wRect.width * 0.50 - portalW / 2;
       portalEndY = wRect.height * 0.44 - elRect.height / 2;
 
       // Reparent to portal
@@ -144,7 +144,7 @@ export default function ChairmanTransitionToCta() {
       gsap.set(excellenceChairman, {
         position: "absolute",
         left: portalStartX,
-        top:  portalStartY,
+        top: portalStartY,
         width: portalW,
         margin: 0,
       });
@@ -159,8 +159,8 @@ export default function ChairmanTransitionToCta() {
       // ease-in-out quad for natural feel
       const e = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
       gsap.set(excellenceChairman, {
-        left:  portalStartX + (portalEndX - portalStartX) * e,
-        top:   portalStartY + (portalEndY - portalStartY) * e,
+        left: portalStartX + (portalEndX - portalStartX) * e,
+        top: portalStartY + (portalEndY - portalStartY) * e,
         // Gently scale up as it floats centre — evokes "breaking free" from text
         scale: 1 + e * 0.35,
         color: `rgba(45,45,45,${1 - e * 0.15})`, // stays dark until CTA flip
