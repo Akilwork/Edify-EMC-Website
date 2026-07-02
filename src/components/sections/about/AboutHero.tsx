@@ -2,22 +2,26 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
+import GridBackground from "@/components/ui/GridBackground";
 
 export default function AboutHero() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const backImageRef = useRef<HTMLDivElement>(null);
+  const gridBgRef = useRef<HTMLDivElement>(null);
   const textContainerRef = useRef<HTMLDivElement>(null);
 
   const scene1Ref = useRef<HTMLDivElement>(null);
   const scene2Ref = useRef<HTMLDivElement>(null);
+  const scene3Ref = useRef<HTMLDivElement>(null);
 
   const cleanupFnRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
     const section = sectionRef.current;
     const backImage = backImageRef.current;
+    const gridBg = gridBgRef.current;
 
-    if (!section || !backImage) return;
+    if (!section || !backImage || !gridBg) return;
 
     const setupAnimation = async () => {
       try {
@@ -32,11 +36,8 @@ export default function AboutHero() {
         gsap.registerPlugin(ScrollTrigger);
 
         // ─── Initial Parallax Animation on Page Load ─────────────────────────────
-        // Cinematic depth effect - barely noticeable movement
         const loadTimeline = gsap.timeline({ defaults: { ease: "power2.out" } });
 
-        // Background layer: hero_back_img_aboutus.png
-        // Scale: 100% → 108%, Y: 0 → -40px, Blur: 0 → 1.5px
         loadTimeline.fromTo(
           backImage,
           {
@@ -48,20 +49,20 @@ export default function AboutHero() {
             scale: 1.08,
             y: -40,
             filter: "blur(1.5px)",
-            duration: 2.5, // Slow, cinematic
+            duration: 2.5,
           },
           0
         );
 
-        // ─── Scroll-Triggered Text Animations ────────────────────────────────────
+        // ─── Scroll-Triggered Animations ────────────────────────────────────────────
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: section,
             start: "top top",
-            end: "+=200vh", // 2 viewport heights for 2 scenes
+            end: "+=300vh", // 3 viewport heights for 3 scenes
             pin: true,
             pinSpacing: true,
-            scrub: true, // Smooth scroll-driven animation
+            scrub: true,
           },
         });
 
@@ -74,36 +75,92 @@ export default function AboutHero() {
           ease: "none",
         });
 
-        // ─── Scene 1 → Scene 2 (Full scroll animation: 30–70% progress) ─────────
-        // Scene 1 fades out
+        // ─── Scene 1 → Scene 2 (25–50% progress) ─────────────────────────────────
         tl.to(
           scene1Ref.current,
           {
             opacity: 0,
-            y: -30,
+            y: -20,
             filter: "blur(8px)",
-            duration: 0.4,
+            duration: 0.25,
             ease: "power2.inOut",
           },
-          0.3
+          0.25
         );
 
-        // Scene 2 fades in (overlapping)
         tl.fromTo(
           scene2Ref.current,
           {
             opacity: 0,
-            y: 30,
+            y: 20,
             filter: "blur(8px)",
           },
           {
             opacity: 1,
             y: 0,
             filter: "blur(0px)",
-            duration: 0.4,
+            duration: 0.25,
             ease: "power2.inOut",
           },
-          0.4 // Start at 40% (10% overlap)
+          0.35
+        );
+
+        // ─── Scene 2 → Scene 3 with Background Transformation (55–85%) ────────────
+        // Fade out scene 2
+        tl.to(
+          scene2Ref.current,
+          {
+            opacity: 0,
+            y: -20,
+            filter: "blur(8px)",
+            duration: 0.3,
+            ease: "power2.inOut",
+          },
+          0.55
+        );
+
+        // Fade in scene 3 heading
+        tl.fromTo(
+          scene3Ref.current,
+          {
+            opacity: 0,
+            y: 20,
+            filter: "blur(8px)",
+          },
+          {
+            opacity: 1,
+            y: 0,
+            filter: "blur(0px)",
+            duration: 0.3,
+            ease: "power2.inOut",
+          },
+          0.65
+        );
+
+        // ─── Building to Grid Background Transformation (55–85%) ───────────────────
+        // Fade out building image
+        tl.to(
+          backImage,
+          {
+            opacity: 0,
+            duration: 0.3,
+            ease: "power2.inOut",
+          },
+          0.55
+        );
+
+        // Fade in grid background
+        tl.fromTo(
+          gridBg,
+          {
+            opacity: 0,
+          },
+          {
+            opacity: 1,
+            duration: 0.3,
+            ease: "power2.inOut",
+          },
+          0.55
         );
 
         cleanupFnRef.current = () => {
@@ -127,7 +184,7 @@ export default function AboutHero() {
       ref={sectionRef}
       className="relative w-full h-screen min-h-[100svh] overflow-hidden bg-[#0A0D14]"
     >
-      {/* ── Background Image ── */}
+      {/* ── Background Building Image ── */}
       <div
         ref={backImageRef}
         className="absolute inset-0 z-[1] will-change-transform"
@@ -143,12 +200,25 @@ export default function AboutHero() {
       </div>
 
       {/* ── Dark Overlay ── */}
-      <div className="absolute inset-0 z-[2] bg-black/50 pointer-events-none" />
+      <div className="absolute inset-0 z-[3] bg-black/30 pointer-events-none" />
+
+      {/* ── Grid Background (fades in) ── */}
+      <div
+        ref={gridBgRef}
+        className="absolute inset-0 z-[4] opacity-0 will-change-opacity"
+      >
+        <GridBackground
+          lineColor="rgba(168, 85, 247, 0.17)"
+          dotColor="rgba(168, 85, 247, 0.3)"
+          gridSize={50}
+          dotSize={1.5}
+        />
+      </div>
 
       {/* ── Text Container (centered, never moves) ── */}
       <div
         ref={textContainerRef}
-        className="absolute inset-0 z-[3] flex items-center justify-center p-8 pointer-events-none"
+        className="absolute inset-0 z-[5] flex items-center justify-center p-8 pointer-events-none"
       >
         {/* Scene 1 - fades out */}
         <div
@@ -161,10 +231,26 @@ export default function AboutHero() {
           </h1>
         </div>
 
-        {/* Scene 2 - fades in (starts hidden) */}
+        {/* Scene 2 - fades in then out */}
         <div
           ref={scene2Ref}
-          className="absolute w-full max-w-[1100px] text-center opacity-0 md:max-w-[1100px]"
+          className="absolute w-full max-w-[1100px] text-center opacity-0"
+        >
+          <h1 className="font-sans font-medium leading-[1.1] text-white text-center m-0 tracking-tight text-[clamp(22px,5vw,28px)] md:text-[clamp(34px,4vw,40px)] lg:text-[clamp(36px,4vw,52px)] 2xl:text-[clamp(46px,3.5vw,56px)]">
+            <span className="block">
+              Empowering educational institutions
+            </span>
+            <span className="block">
+              through integrated expertise, strategic guidance, and sustainable
+              growth solutions
+            </span>
+          </h1>
+        </div>
+
+        {/* Scene 3 - fades in */}
+        <div
+          ref={scene3Ref}
+          className="absolute w-full max-w-[1100px] text-center opacity-0"
         >
           <h1 className="font-sans font-medium leading-[1.1] text-white text-center m-0 tracking-tight text-[clamp(22px,5vw,28px)] md:text-[clamp(34px,4vw,40px)] lg:text-[clamp(36px,4vw,52px)] 2xl:text-[clamp(46px,3.5vw,56px)]">
             <span className="block">
