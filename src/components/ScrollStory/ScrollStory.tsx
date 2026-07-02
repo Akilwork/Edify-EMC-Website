@@ -1,23 +1,19 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import styles from './ScrollStory.module.css';
 
-gsap.registerPlugin(ScrollTrigger);
-
 // ─── Config ───────────────────────────────────────────────────────────────────
-const TOTAL_FRAMES    = 22;
+const TOTAL_FRAMES    = 20; // frame_02.jpg to frame_21.jpg = 20 frames
 const SCROLL_MULTIPLIER = 4; // 4 × 100vh of scroll travel
 
-// Files on disk: "frame_01.jpg" … "frame_22.jpg"
+// Files on disk: "frame_02.jpg" … "frame_21.jpg"
 function getFrameSrc(i: number): string {
-  return `/frames/frame_${String(i + 1).padStart(2, '0')}.jpg`;
+  return `/frames/frame_${String(i + 2).padStart(2, '0')}.jpg`;
 }
 
 /**
- * Maps scroll progress [0→1] to a fractional frame index [0→21].
+ * Maps scroll progress [0→1] to a fractional frame index [0→19].
  * Linear mapping — each frame gets equal scroll distance.
  * Smoothness comes from scrub lag, not easing curves.
  */
@@ -121,39 +117,63 @@ export const ScrollStory = () => {
   useEffect(() => {
     if (loadState !== 'ready') return;
     const section = sectionRef.current;
-    const canvas  = canvasRef.current;
+    const canvas = canvasRef.current;
     if (!section || !canvas) return;
 
-    // Show frame 0 before any scroll
-    drawBlended(canvas, imagesRef.current, 0, dprRef.current);
-    ScrollTrigger.refresh();
+    let cleanupFn: (() => void) | undefined;
 
-    const st = ScrollTrigger.create({
-      trigger: section,
-      start: 'top top',
-      end: `+=${window.innerHeight * SCROLL_MULTIPLIER}`,
-      pin: true,
-      pinSpacing: true,
-      // scrub: number = seconds of lag — keep low so crossfade does the smoothing
-      scrub: 0.6,
-      onUpdate: (self) => {
-        const next = scrollProgressToFractionalFrame(self.progress);
+    // Dynamically import and setup GSAP to avoid SSR issues
+    const setupAnimation = async () => {
+      try {
+        const [gsapModule, scrollTriggerModule] = await Promise.all([
+          import('gsap'),
+          import('gsap/ScrollTrigger')
+        ]);
+        
+        const gsap = gsapModule.default;
+        const ScrollTrigger = scrollTriggerModule.ScrollTrigger;
+        
+        gsap.registerPlugin(ScrollTrigger);
 
-        // Skip redraw only if the rounded frame hasn't changed
-        if (Math.round(next) === Math.round(fractionalFrame.current)) return;
+        // Show frame 0 before any scroll
+        drawBlended(canvas, imagesRef.current, 0, dprRef.current);
+        ScrollTrigger.refresh();
 
-        fractionalFrame.current = next;
+        const st = ScrollTrigger.create({
+          trigger: section,
+          start: 'top top',
+          end: `+=${window.innerHeight * SCROLL_MULTIPLIER}`,
+          pin: true,
+          pinSpacing: true,
+          scrub: 0.6,
+          onUpdate: (self) => {
+            const next = scrollProgressToFractionalFrame(self.progress);
 
-        if (rafId.current) cancelAnimationFrame(rafId.current);
-        rafId.current = requestAnimationFrame(() =>
-          drawBlended(canvas, imagesRef.current, next, dprRef.current)
-        );
-      },
-    });
+            // Skip redraw only if the rounded frame hasn't changed
+            if (Math.round(next) === Math.round(fractionalFrame.current)) return;
+
+            fractionalFrame.current = next;
+
+            if (rafId.current) cancelAnimationFrame(rafId.current);
+            rafId.current = requestAnimationFrame(() =>
+              drawBlended(canvas, imagesRef.current, next, dprRef.current)
+            );
+          },
+        });
+
+        cleanupFn = () => {
+          st.kill(true);
+          if (rafId.current) cancelAnimationFrame(rafId.current);
+        };
+      } catch (error) {
+        console.error('Failed to load GSAP:', error);
+      }
+    };
+
+    setupAnimation();
 
     return () => {
-      st.kill(true);
-      if (rafId.current) cancelAnimationFrame(rafId.current);
+      if (cleanupFn) cleanupFn();
     };
   }, [loadState]);
 
