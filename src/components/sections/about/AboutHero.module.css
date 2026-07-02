@@ -1,0 +1,140 @@
+/* ── Section Container ─────────────────────────────────────────────────────────
+   Pinned scrollytelling section - viewport stays fixed while scroll drives animations
+   ──────────────────────────────────────────────────────────────────────────── */
+.section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  background-color: #0A0D14;
+  overflow: hidden;
+}
+
+/* ── Image Layers ─────────────────────────────────────────────────────────────
+   Two layered images for parallax depth effect
+   ──────────────────────────────────────────────────────────────────────────── */
+.imageLayer {
+  position: absolute;
+  inset: 0;
+  will-change: transform, opacity;
+}
+
+.imageLayer img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+}
+
+.backgroundLayer {
+  z-index: 10;
+}
+
+.foregroundLayer {
+  z-index: 20;
+}
+
+/* ── Dark Overlay ────────────────────────────────────────────────────────────
+   Gradient overlay for text readability
+   ──────────────────────────────────────────────────────────────────────────── */
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(0, 0, 0, 0.6) 100%
+  );
+  pointer-events: none;
+  will-change: opacity;
+}
+
+/* ── Text Container ───────────────────────────────────────────────────────────
+   Centered text with scroll-reveal animations
+   ──────────────────────────────────────────────────────────────────────────── */
+.textContainer {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1rem, 4vw, 4rem);
+  pointer-events: none;
+}
+
+.textStage {
+  position: absolute;
+  text-align: center;
+  color: white;
+  will-change: transform, opacity, filter;
+}
+
+.textStage h1 {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: clamp(2rem, 5vw, 4.5rem);
+  font-weight: 600;
+  line-height: 1.1;
+  margin: 0 0 0.5em 0;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.5);
+}
+
+.textStage p {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  font-weight: 300;
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 0 auto;
+  opacity: 0.9;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Dotted Graphic ───────────────────────────────────────────────────────────
+   Programmatic SVG pattern layer
+   ──────────────────────────────────────────────────────────────────────────── */
+.dottedGraphic {
+  position: absolute;
+  z-index: 40;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+/* ── Loading State ────────────────────────────────────────────────────────────
+   Preloading overlay for images
+   ──────────────────────────────────────────────────────────────────────────── */
+.loader {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #0A0D14;
+}
+
+.loaderText {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+}
+
+/* ── Mobile Responsive ──────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .section {
+    height: 100svh;
+  }
+
+  .textStage h1 {
+    font-size: clamp(1.75rem, 6vw, 3rem);
+  }
+
+  .textStage p {
+    font-size: clamp(0.875rem, 2.5vw, 1.125rem);
+  }
+}

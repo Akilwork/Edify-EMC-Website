@@ -11,7 +11,7 @@ export default function CtaSection({ animate = true }: { animate?: boolean }) {
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section id="cta" className="relative min-h-[100svh] flex items-center justify-center overflow-hidden py-16 sm:py-20 lg:py-24">
+    <section id="cta" className="relative h-[100svh] flex items-center justify-center overflow-hidden py-16 sm:py-20 lg:py-24">
       {/* Background image */}
       <div className="absolute inset-0 z-0 cta-bg-container">
         <Image
@@ -27,13 +27,13 @@ export default function CtaSection({ animate = true }: { animate?: boolean }) {
       <div className="container-responsive container-max relative z-10">
         <div
           ref={ref}
-          className="max-w-5xl mx-auto text-center"
+          className="max-w-7xl mx-auto text-center"
         >
           <motion.h2
             initial={animate ? { opacity: 0, y: 30 } : undefined}
             animate={animate && inView ? { opacity: 1, y: 0 } : undefined}
             transition={{ duration: 0.7 }}
-            className="font-sans font-medium text-white leading-[1.15] mb-6 sm:mb-8"
+            className="font-sans font-medium text-white leading-[1.15] mb-6 sm:mb-8 text-center"
             style={{ fontSize: 'clamp(1.5rem, 0.97rem + 2.25vw, 3.5rem)' }}
           >
             <span className="block mb-2 sm:whitespace-nowrap">
