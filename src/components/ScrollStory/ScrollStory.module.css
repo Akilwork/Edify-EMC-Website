@@ -1,0 +1,72 @@
+/* ── Section ─────────────────────────────────────────────────────────────────
+   Must span the exact screen dimensions — no margins, no max-width.
+   GSAP pins this; pinSpacing adds the scroll spacer.
+   ──────────────────────────────────────────────────────────────────────────── */
+.section {
+  position: relative;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  background-color: #070b14;
+  overflow: hidden;
+}
+
+/* ── Canvas ──────────────────────────────────────────────────────────────────
+   Absolutely positioned so it ignores any flex/block flow from the parent.
+   JS sets the exact pixel dimensions + inline width/height on every resize.
+   ──────────────────────────────────────────────────────────────────────────── */
+.canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  /* JS overrides these inline — these are just safe initial values */
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Loading overlay ──────────────────────────────────────────────────────── */
+.loader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.875rem;
+  background-color: #070b14;
+  z-index: 5;
+}
+
+.loaderBar {
+  width: min(260px, 55vw);
+  height: 2px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.loaderFill {
+  height: 100%;
+  background: linear-gradient(90deg, #6d28d9, #a855f7);
+  border-radius: 999px;
+  transition: width 0.12s linear;
+}
+
+.loaderText {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+/* ── Mobile ───────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .section {
+    height: 100svh;
+  }
+}

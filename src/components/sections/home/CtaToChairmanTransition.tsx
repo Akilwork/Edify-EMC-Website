@@ -1,8 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import CtaSection from "./CtaSection";
 import ChairmanSection from "./ChairmanSection";
 
@@ -13,29 +11,38 @@ export default function CtaToChairmanTransition() {
     // Check if we are running in the browser
     if (typeof window === "undefined") return;
 
-    gsap.registerPlugin(ScrollTrigger);
-
     const container = containerRef.current;
     if (!container) return;
 
-    const ctaWord = container.querySelector(".excellence-cta") as HTMLElement;
-    const chairmanWord = container.querySelector(".excellence-chairman") as HTMLElement;
-    const chairmanSection = container.querySelector("#chairman") as HTMLElement;
-    
+    // Dynamically import GSAP to avoid SSR issues
+    const setupAnimation = async () => {
+      try {
+        const [gsapModule, scrollTriggerModule] = await Promise.all([
+          import('gsap'),
+          import('gsap/ScrollTrigger')
+        ]);
+        
+        const gsap = gsapModule.default;
+        const ScrollTrigger = scrollTriggerModule.ScrollTrigger;
+        
+        gsap.registerPlugin(ScrollTrigger);
 
-    
-    const ctaFadeTexts = container.querySelectorAll(".cta-fade-text");
-    const ctaFadeEls = container.querySelectorAll(".cta-fade-el");
-    
-    const chairmanFadeTexts = container.querySelectorAll(".chairman-fade-text");
-    const chairmanFadeEls = container.querySelectorAll(".chairman-fade-el");
+        const ctaWord = container.querySelector(".excellence-cta") as HTMLElement;
+        const chairmanWord = container.querySelector(".excellence-chairman") as HTMLElement;
+        const chairmanSection = container.querySelector("#chairman") as HTMLElement;
+        
+        const ctaFadeTexts = container.querySelectorAll(".cta-fade-text");
+        const ctaFadeEls = container.querySelectorAll(".cta-fade-el");
+        
+        const chairmanFadeTexts = container.querySelectorAll(".chairman-fade-text");
+        const chairmanFadeEls = container.querySelectorAll(".chairman-fade-el");
 
-    if (!ctaWord || !chairmanWord || !chairmanSection) return;
+        if (!ctaWord || !chairmanWord || !chairmanSection) return;
 
-    // Create the floating overlay element that morphs between the two states
-    const floatWord = document.createElement("span");
-    floatWord.innerText = "Excellence";
-    floatWord.className = "excellence-float fixed pointer-events-none select-none font-heading font-semibold text-white";
+        // Create the floating overlay element that morphs between the two states
+        const floatWord = document.createElement("span");
+        floatWord.innerText = "Excellence";
+        floatWord.className = "excellence-float fixed pointer-events-none select-none font-heading font-semibold text-white";
     
     // Set initial custom styling styles
     floatWord.style.zIndex = "999";
@@ -211,6 +218,12 @@ export default function CtaToChairmanTransition() {
         floatWord.parentNode.removeChild(floatWord);
       }
     };
+      } catch (error) {
+        console.error('Failed to load GSAP:', error);
+      }
+    };
+
+    setupAnimation();
   }, []);
 
   return (

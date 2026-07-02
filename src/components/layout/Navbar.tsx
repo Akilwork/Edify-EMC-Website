@@ -41,9 +41,11 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 backdrop-blur-sm border-b border-white/10 ${
         hidden ? "-translate-y-full" : "translate-y-0"
-      } ${scrolled ? "border-b border-white/10" : ""}`}
+      } ${
+        scrolled ? "bg-black/50" : "bg-transparent"
+      }`}
     >
       <div className="container-responsive container-max flex items-center justify-between pt-[clamp(12px,1.4vw,20px)] pb-[clamp(8px,1vw,14px)]">
         {/* Logo */}
@@ -64,7 +66,7 @@ export default function Navbar() {
             <Link
               key={href}
               href={href}
-              className={`text-[14px] font-semibold tracking-[0.96px] uppercase transition-colors duration-200 hover:text-white whitespace-nowrap cursor-pointer ${
+              className={`text-[14px] font-semibold tracking-[0.96px] uppercase transition-colors duration-200 whitespace-nowrap cursor-pointer hover:text-white ${
                 pathname === href ? "text-white" : "text-white/60"
               }`}
             >
@@ -108,25 +110,25 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="lg:hidden bg-[#0A0D14]/98 backdrop-blur-xl border-t border-white/10">
+        <div className="lg:hidden bg-white border-t border-black/10">
           <div className="container-responsive py-4 space-y-3">
             {NAV_LINKS.map(({ label, href }) => (
               <Link
                 key={href}
                 href={href}
                 onClick={() => setMenuOpen(false)}
-                className={`block text-[14px] font-semibold tracking-[0.96px] uppercase transition-colors duration-200 hover:text-white py-2 cursor-pointer ${
-                  pathname === href ? "text-white" : "text-white/60"
+                className={`block text-[14px] font-semibold tracking-[0.96px] uppercase transition-colors duration-200 hover:text-black py-2 cursor-pointer ${
+                  pathname === href ? "text-black" : "text-black/50"
                 }`}
               >
                 {label}
               </Link>
             ))}
-            <div className="pt-4 border-t border-white/10 space-y-3">
+            <div className="pt-4 border-t border-black/10 space-y-3">
               <Link
                 href="/contact"
                 onClick={() => setMenuOpen(false)}
-                className="flex items-center justify-center gap-2 px-7 py-[14px] text-[14px] font-normal rounded-[40px] bg-white text-black cursor-pointer"
+                className="flex items-center justify-center gap-2 px-7 py-[14px] text-[14px] font-normal rounded-[40px] bg-black text-white cursor-pointer"
               >
                 Get a Free Consultation
                 <ArrowRight size={18} />
@@ -134,7 +136,7 @@ export default function Navbar() {
               <Link
                 href="tel:+601234567890"
                 onClick={() => setMenuOpen(false)}
-                className="flex items-center justify-center gap-2 px-7 py-[14px] text-[14px] font-normal rounded-[40px] bg-[#3a3a3a] text-white border border-white/60 cursor-pointer"
+                className="flex items-center justify-center gap-2 px-7 py-[14px] text-[14px] font-normal rounded-[40px] bg-white text-black border border-black/30 cursor-pointer"
               >
                 <Phone size={16} />
                 Call Us
