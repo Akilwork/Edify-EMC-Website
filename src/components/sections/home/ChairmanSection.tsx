@@ -93,23 +93,20 @@ export default function ChairmanSection({ animate = true }: { animate?: boolean 
               initial={animate ? { opacity: 0, y: 30 } : undefined}
               animate={animate && inView ? { opacity: 1, y: 0 } : undefined}
               transition={{ duration: 0.7, delay: 0.1 }}
-              className="font-sans font-semibold leading-tight mb-4 sm:mb-6 chairman-heading text-left"
+              className="font-sans font-semibold leading-tight mb-4 sm:mb-6 text-left"
               style={{ fontSize: 'clamp(1.75rem, 5vw, 3rem)' }}
             >
-              <span className="text-[#2D2D2D] chairman-fade-text">Building Institutions That Inspire </span>
-              <span className="relative inline-block">
-                <span className="excellence-placeholder invisible select-none hidden">Excellence</span>
-                <span className="excellence-chairman text-black inline-block">Excellence</span>
-              </span>
-              <span className="text-[#2D2D2D] chairman-fade-text"> And</span>
-              <span className="text-black chairman-fade-text"> Lasting Impact</span>
+              <span className="text-[#2D2D2D]">Building Institutions That Inspire </span>
+              <span className="text-black">Excellence</span>
+              <span className="text-[#2D2D2D]"> And</span>
+              <span className="text-black"> Lasting Impact</span>
             </motion.h2>
 
             <motion.p
               initial={animate ? { opacity: 0, y: 20 } : undefined}
               animate={animate && inView ? { opacity: 1, y: 0 } : undefined}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-[#8B8B8B] text-fluid-lg leading-relaxed max-w-2xl lg:max-w-none chairman-description text-left"
+              className="text-[#8B8B8B] text-fluid-lg leading-relaxed max-w-2xl lg:max-w-none text-left"
             >
               We believe that education is the foundation of progress. By strengthening 
               institutions through innovation, integrity, and collaboration, we help create 
