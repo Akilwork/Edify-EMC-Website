@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import AboutHero from "@/components/sections/about/AboutHero";
-import VisionValuesSection from "@/components/sections/about/VisionValuesSection";
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -12,7 +11,6 @@ export default function AboutPage() {
   return (
     <>
       <AboutHero />
-      <VisionValuesSection />
     </>
   );
 }

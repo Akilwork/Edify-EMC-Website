@@ -294,7 +294,111 @@ export default function AboutHero() {
             <span className="block">Excellence And Lasting Impact</span>
           </h1>
         </div>
+
+        {/* Scene 5 - VisionValues content (slides in from right) */}
+        <div
+          ref={scene5Ref}
+          className="absolute inset-0 z-[5] flex items-center justify-center p-8 md:px-16 lg:px-20 opacity-0"
+        >
+          <div className="grid lg:grid-cols-[45%_55%] gap-0 items-center justify-center max-w-[1920px] w-full">
+            {/* Left column - content */}
+            <div className="order-2 lg:order-1">
+              <h2 className="font-sans text-[1.5rem] sm:text-[2rem] md:text-[2.5rem] lg:text-[3rem] xl:text-[3.5rem] font-semibold text-white leading-[1.08] tracking-tight">
+                <span className="block">Shaping The Future Of</span>
+                <span className="block bg-gradient-to-r from-white via-white to-white/70 bg-clip-text text-transparent">
+                  Excellence
+                </span>
+                <span className="block mt-4 text-white/90">
+                  Empowering Institutions
+                </span>
+                <span className="block text-white/80">Through Expertise</span>
+              </h2>
+
+              <p className="text-white/50 text-[15px] md:text-[16px] lg:text-[17px] leading-[1.75] max-w-[520px] font-light mt-8">
+                To help educational institutions overcome operational challenges,
+                unlock growth opportunities, and create environments where students,
+                educators, and communities can thrive.
+              </p>
+
+              <button className="mt-10 group relative px-8 py-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full overflow-hidden transition-all duration-300 hover:bg-white/10 hover:border-white/20">
+                <span className="relative z-10 text-white/90 text-sm font-medium tracking-wide">
+                  Learn More
+                </span>
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-green-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </button>
+            </div>
+
+            {/* Right column - orbital illustration */}
+            <div className="order-1 lg:order-2 flex items-center justify-center">
+              <div className="relative w-full max-w-[320px] aspect-square flex items-center justify-center">
+                {/* Outer ring */}
+                <div className="absolute inset-0 animate-spin-slow">
+                  <div className="absolute inset-0 rounded-full border border-blue-500/20" style={{
+                    boxShadow: "0 0 60px rgba(59, 130, 246, 0.1), inset 0 0 60px rgba(59, 130, 246, 0.05)"
+                  }} />
+                  <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/2 w-4 h-4 bg-blue-500 rounded-full shadow-[0_0_20px_rgba(59,130,246,0.6)]" />
+                  <div className="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-1/2 w-3 h-3 bg-blue-400/80 rounded-full shadow-[0_0_15px_rgba(59,130,246,0.4)]" />
+                </div>
+
+                {/* Middle ring */}
+                <div className="absolute inset-[8%] animate-spin-medium" style={{ animationDirection: "reverse" }}>
+                  <div className="absolute inset-0 rounded-full border border-green-500/15" style={{
+                    boxShadow: "0 0 50px rgba(34, 197, 94, 0.08), inset 0 0 50px rgba(34, 197, 94, 0.04)"
+                  }} />
+                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-3 h-3 bg-green-500 rounded-full shadow-[0_0_18px_rgba(34,197,94,0.5)]" />
+                </div>
+
+                {/* Inner ring */}
+                <div className="absolute inset-[16%] animate-spin-fast">
+                  <div className="absolute inset-0 rounded-full border border-purple-500/10" style={{
+                    boxShadow: "0 0 40px rgba(168, 85, 247, 0.06), inset 0 0 40px rgba(168, 85, 247, 0.03)"
+                  }} />
+                </div>
+
+                {/* Center image */}
+                <div className="relative w-[52%] aspect-square rounded-full overflow-hidden border-4 border-white/5 z-10" style={{
+                  boxShadow: "0 0 80px rgba(59, 130, 246, 0.15), 0 0 40px rgba(34, 197, 94, 0.1), inset 0 0 60px rgba(0, 0, 0, 0.3)"
+                }}>
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-green-500/10 z-10 pointer-events-none" />
+                  <Image
+                    src="/about/hero/circular_img.png"
+                    alt="Vision & Values"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 240px, (max-width: 1024px) 280px, 300px"
+                    priority
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+
+      {/* ── Animation Styles for Orbital Rings ── */}
+      <style jsx>{`
+        @keyframes spin-slow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        @keyframes spin-medium {
+          from { transform: rotate(360deg); }
+          to { transform: rotate(0deg); }
+        }
+        @keyframes spin-fast {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+          animation: spin-slow 45s linear infinite;
+        }
+        .animate-spin-medium {
+          animation: spin-medium 35s linear infinite;
+        }
+        .animate-spin-fast {
+          animation: spin-fast 25s linear infinite;
+        }
+      `}</style>
     </section>
   );
 }
