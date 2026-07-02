@@ -1,12 +1,38 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import HeroSection from "@/components/sections/home/HeroSection";
 import ServicesOverviewSection from "@/components/sections/home/ServicesOverviewSection";
 import WhyEdifySection from "@/components/sections/home/WhyEdifySection";
 import ChairmanTransitionToCta from "@/components/sections/home/ChairmanTransitionToCta";
+import LandingLoader from "@/components/ui/LandingLoader";
 
 export default function HomePage() {
+  const [showLoader, setShowLoader] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const scrollPos = window.scrollY || document.documentElement.scrollTop;
+      // Only play the loader animation if we are at the top of the page (Hero section)
+      if (scrollPos < 100) {
+        setShowLoader(true);
+      } else {
+        setIsLoaded(true);
+      }
+    }
+  }, []);
+
+  const handleLoaderComplete = () => {
+    setShowLoader(false);
+    setIsLoaded(true);
+  };
+
   return (
     <>
-      <HeroSection />
+      {showLoader && <LandingLoader onComplete={handleLoaderComplete} />}
+      {/* Pass isParentReady so HeroSection coordinates its entry animations */}
+      <HeroSection isParentReady={isLoaded} />
       <ServicesOverviewSection />
       <WhyEdifySection />
       <ChairmanTransitionToCta />

@@ -42,7 +42,7 @@ export default function ChairmanSection({ animate = true }: { animate?: boolean 
               {/* The PNG itself is the organic blob mask — render it as the base layer */}
               <div className="relative w-full">
                 <Image
-                  src="/assets/Subtract.png"
+                  src="/Chairman/Subtract.png"
                   alt="Zakir Hussain Kamaluddin - Chairman"
                   width={480}
                   height={600}
@@ -58,9 +58,9 @@ export default function ChairmanSection({ animate = true }: { animate?: boolean 
                     background:
                       "linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.28) 38%, transparent 65%)",
                     /* Clip to the PNG blob so gradient doesn't bleed outside */
-                    WebkitMaskImage: "url('/Chairman/Subtract1.png')",
+                    WebkitMaskImage: "url('/Chairman/Subtract.png')",
                     WebkitMaskSize: "100% 100%",
-                    maskImage: "url('/Chairman/Subtract1.png')",
+                    maskImage: "url('/Chairman/Subtract.png')",
                     maskSize: "100% 100%",
                   }}
                 >
