@@ -10,9 +10,10 @@ export default function AboutHero() {
   const gridBgRef = useRef<HTMLDivElement>(null);
   const textContainerRef = useRef<HTMLDivElement>(null);
 
-  const scene1Ref = useRef<HTMLDivElement>(null);
   const scene2Ref = useRef<HTMLDivElement>(null);
   const scene3Ref = useRef<HTMLDivElement>(null);
+  const scene4Ref = useRef<HTMLDivElement>(null);
+  const scene5Ref = useRef<HTMLDivElement>(null);
 
   const cleanupFnRef = useRef<(() => void) | null>(null);
 
@@ -59,7 +60,7 @@ export default function AboutHero() {
           scrollTrigger: {
             trigger: section,
             start: "top top",
-            end: "+=300vh", // 3 viewport heights for 3 scenes
+            end: "+=400vh", // 4 viewport height for 4 frames (100vh per frame)
             pin: true,
             pinSpacing: true,
             scrub: true,
@@ -75,38 +76,7 @@ export default function AboutHero() {
           ease: "none",
         });
 
-        // ─── Scene 1 → Scene 2 (25–50% progress) ─────────────────────────────────
-        tl.to(
-          scene1Ref.current,
-          {
-            opacity: 0,
-            y: -20,
-            filter: "blur(8px)",
-            duration: 0.25,
-            ease: "power2.inOut",
-          },
-          0.25
-        );
-
-        tl.fromTo(
-          scene2Ref.current,
-          {
-            opacity: 0,
-            y: 20,
-            filter: "blur(8px)",
-          },
-          {
-            opacity: 1,
-            y: 0,
-            filter: "blur(0px)",
-            duration: 0.25,
-            ease: "power2.inOut",
-          },
-          0.35
-        );
-
-        // ─── Scene 2 → Scene 3 with Background Transformation (55–85%) ────────────
-        // Fade out scene 2
+        // ─── Scene 2 initially visible (fades out at 25% progress / 100vh) ─────────────────────────
         tl.to(
           scene2Ref.current,
           {
@@ -116,10 +86,10 @@ export default function AboutHero() {
             duration: 0.3,
             ease: "power2.inOut",
           },
-          0.55
+          0.25
         );
 
-        // Fade in scene 3 heading
+        // ─── Scene 3 fades in (at 25% progress / 100vh) ───────────────────────────────────────────
         tl.fromTo(
           scene3Ref.current,
           {
@@ -134,10 +104,72 @@ export default function AboutHero() {
             duration: 0.3,
             ease: "power2.inOut",
           },
-          0.65
+          0.25
         );
 
-        // ─── Building to Grid Background Transformation (55–85%) ───────────────────
+        // ─── Scene 3 fades out (at 50% progress / 200vh) ───────────────────────────────────────────
+        tl.to(
+          scene3Ref.current,
+          {
+            opacity: 0,
+            y: -20,
+            filter: "blur(8px)",
+            duration: 0.3,
+            ease: "power2.inOut",
+          },
+          0.5
+        );
+
+        // ─── Scene 4 fades in (at 50% progress / 200vh) ───────────────────────────────────────────
+        tl.fromTo(
+          scene4Ref.current,
+          {
+            opacity: 0,
+            filter: "blur(12px)",
+          },
+          {
+            opacity: 1,
+            filter: "blur(0px)",
+            duration: 0.3,
+            ease: "power2.inOut",
+          },
+          0.5
+        );
+
+        // ─── Scene 4 fades out (at 75% progress / 300vh) ───────────────────────────────────────────
+        tl.to(
+          scene4Ref.current,
+          {
+            opacity: 0,
+            y: -20,
+            filter: "blur(8px)",
+            duration: 0.3,
+            ease: "power2.inOut",
+          },
+          0.75
+        );
+
+        // ─── Scene 5 (VisionValues) fades in (at 75% progress / 300vh) ───────────────────────────────
+        tl.fromTo(
+          scene5Ref.current,
+          {
+            opacity: 0,
+            x: 100,
+            filter: "blur(12px)",
+            scale: 0.9,
+          },
+          {
+            opacity: 1,
+            x: 0,
+            filter: "blur(0px)",
+            scale: 1,
+            duration: 0.3,
+            ease: "power2.inOut",
+          },
+          0.75
+        );
+
+        // ─── Building to Grid Background Transformation (at 25% progress / 100vh) ───────────────────
         // Fade out building image
         tl.to(
           backImage,
@@ -146,13 +178,13 @@ export default function AboutHero() {
             duration: 0.3,
             ease: "power2.inOut",
           },
-          0.55
+          0.25
         );
 
         // Fade in grid background
         tl.fromTo(
           gridBg,
-          {
+            {
             opacity: 0,
           },
           {
@@ -160,7 +192,7 @@ export default function AboutHero() {
             duration: 0.3,
             ease: "power2.inOut",
           },
-          0.55
+          0.25
         );
 
         cleanupFnRef.current = () => {
@@ -220,21 +252,10 @@ export default function AboutHero() {
         ref={textContainerRef}
         className="absolute inset-0 z-[5] flex items-center justify-center p-8 pointer-events-none"
       >
-        {/* Scene 1 - fades out */}
-        <div
-          ref={scene1Ref}
-          className="absolute w-full max-w-[1100px] text-center"
-        >
-          <h1 className="font-sans font-medium leading-[1.1] text-white text-center m-0 tracking-tight text-[clamp(28px,6vw,36px)] md:text-[clamp(42px,5vw,48px)] lg:text-[clamp(48px,5vw,64px)] 2xl:text-[clamp(60px,4.5vw,68px)]">
-            <span className="block">Building Institutions That Inspire</span>
-            <span className="block">Excellence And Lasting Impact</span>
-          </h1>
-        </div>
-
-        {/* Scene 2 - fades in then out */}
+        {/* Scene 2 - visible initially, fades out */}
         <div
           ref={scene2Ref}
-          className="absolute w-full max-w-[1100px] text-center opacity-0"
+          className="absolute w-full max-w-[1100px] text-center"
         >
           <h1 className="font-sans font-medium leading-[1.1] text-white text-center m-0 tracking-tight text-[clamp(22px,5vw,28px)] md:text-[clamp(34px,4vw,40px)] lg:text-[clamp(36px,4vw,52px)] 2xl:text-[clamp(46px,3.5vw,56px)]">
             <span className="block">
@@ -260,6 +281,17 @@ export default function AboutHero() {
               through integrated expertise, strategic guidance, and sustainable
               growth solutions
             </span>
+          </h1>
+        </div>
+
+        {/* Scene 4 - fades in with blur */}
+        <div
+          ref={scene4Ref}
+          className="absolute w-full max-w-[1100px] text-center opacity-0"
+        >
+          <h1 className="font-sans font-medium leading-[1.1] text-white text-center m-0 tracking-tight text-[clamp(28px,6vw,36px)] md:text-[clamp(42px,5vw,48px)] lg:text-[clamp(48px,5vw,64px)] 2xl:text-[clamp(60px,4.5vw,68px)]">
+            <span className="block">Building Institutions That Inspire</span>
+            <span className="block">Excellence And Lasting Impact</span>
           </h1>
         </div>
       </div>
