@@ -1,0 +1,171 @@
+/* ── StoryHandoff ────────────────────────────────────────────────────────────
+   Fixed overlay that crossfades in over the canvas's final frame (frame_21),
+   then becomes the live interactive UI. Sits above the canvas (z 40) and below
+   the fixed Header (z 100). pointer-events:none until `.interactive`.
+   ──────────────────────────────────────────────────────────────────────────── */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  /* Opacity is driven by gsap.set on every scroll tick — start invisible. */
+  opacity: 0;
+  /* Keep the live UI from causing layout shifts; it's purely visual + the
+     interactive card anchors. */
+  contain: layout paint;
+}
+
+/* Once fully visible, allow the cards (only) to receive pointer events. */
+.interactive {
+  pointer-events: none; /* still none on the overlay itself, cards opt back in */
+}
+
+/* ── Stage — cover-fit to the viewport, mirroring drawBlended ──────────────────
+   JS sets width/height/left/top so this box is the 3840×2160 frame scaled to
+   cover the viewport and centered — identical transform to the canvas. Card
+   positions are % of this box, so they land on the same pixels as frame_21. */
+.stage {
+  position: absolute;
+  /* JS overrides width/height/left/top inline. */
+}
+
+/* ── Card ───────────────────────────────────────────────────────────────────── */
+.card {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  border-radius: 1.6%;
+  overflow: hidden;
+  color: #ffffff;
+  /* Dark glassy fills sampled from frame_21: left #271743, right #2d214b.
+     Use a subtle gradient so it isn't flat. */
+  background:
+    linear-gradient(155deg, rgba(60, 36, 92, 0.55), rgba(20, 16, 36, 0.92));
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+  pointer-events: none; /* inert until .interactive (set on overlay root) */
+  transform: translateZ(0);
+}
+
+.interactive .card {
+  pointer-events: auto;
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
+              box-shadow 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
+              border-color 0.45s ease;
+}
+
+.interactive .card:hover {
+  transform: translateY(-1.2%);
+  border-color: rgba(168, 85, 247, 0.45);
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.65),
+              0 0 0 1px rgba(168, 85, 247, 0.15);
+}
+
+/* ── Card image ─────────────────────────────────────────────────────────────── */
+.cardImage {
+  position: relative;
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  background: #0c0a14;
+}
+
+.cardImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.interactive .card:hover .cardImage img {
+  transform: scale(1.05);
+}
+
+/* Fallback styled tile shown until the user uploads an image to /cards/. */
+.fallback {
+  background:
+    radial-gradient(120% 90% at 30% 20%, rgba(109, 40, 217, 0.35), transparent 60%),
+    linear-gradient(160deg, #2a1840, #15102a);
+}
+
+/* ── Card body ──────────────────────────────────────────────────────────────── */
+.cardBody {
+  padding: 4.2% 5% 5%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.4%;
+}
+
+.eyebrow {
+  font-size: clamp(0.6rem, 0.9vw, 0.85rem);
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(168, 85, 247, 0.85);
+}
+
+.cardTitle {
+  font-size: clamp(1rem, 1.7vw, 1.7rem);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: #f4f1fb;
+}
+
+.cardDesc {
+  font-size: clamp(0.78rem, 1.05vw, 1.05rem);
+  font-weight: 300;
+  line-height: 1.5;
+  color: rgba(226, 232, 240, 0.78);
+  flex: 1 1 auto;
+}
+
+.cardCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: clamp(0.72rem, 0.95vw, 0.95rem);
+  font-weight: 500;
+  color: #f4f1fb;
+  margin-top: 2.4%;
+  opacity: 0.85;
+  transition: opacity 0.2s ease, gap 0.2s ease;
+}
+
+.interactive .cardCta {
+  cursor: pointer;
+}
+
+.interactive .cardCta:hover {
+  opacity: 1;
+  gap: 0.8rem;
+}
+
+.cardArrow {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.interactive .cardCta:hover .cardArrow {
+  transform: translateX(3px);
+}
+
+/* ── Spacer — scroll room for the live UI dwell (fixed overlay stays on top) ── */
+.spacer {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background-color: #070b14;
+}
+
+/* ── Mobile ─────────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .spacer {
+    height: 100svh;
+  }
+}
