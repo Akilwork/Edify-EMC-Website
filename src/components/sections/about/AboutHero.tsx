@@ -4,7 +4,6 @@ import { useEffect, useRef } from "react";
 import Image from "next/image";
 import GridBackground from "@/components/ui/GridBackground";
 import { DottedGlowBackground } from "@/components/ui/dotted-glow-background";
-import { BackgroundRippleEffect } from "@/components/ui/BackgroundRippleEffect";
 
 export default function AboutHero() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -456,10 +455,12 @@ export default function AboutHero() {
         ref={whiteBgRef}
         className="absolute inset-0 z-[4] opacity-0 will-change-opacity bg-white"
       >
-        <BackgroundRippleEffect
-          rippleColor="rgba(59, 130, 246, 0.15)"
-          rippleCount={4}
-          animationDuration={8}
+        <GridBackground
+          lineColor="rgba(59, 130, 246, 0.08)"
+          dotColor="rgba(59, 130, 246, 0.15)"
+          gridSize={50}
+          dotSize={1.5}
+          showVignette={false}
         />
       </div>
 
