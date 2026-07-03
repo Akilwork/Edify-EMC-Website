@@ -21,7 +21,11 @@ export default function AboutHero() {
   const scene5RightRef = useRef<HTMLDivElement>(null);
   const scene6Ref = useRef<HTMLDivElement>(null);
   const statsCounterRef = useRef<HTMLDivElement>(null);
-  const whiteBgRef = useRef<HTMLDivElement>(null); // Frame 5: white background
+  const whiteBgRef = useRef<HTMLDivElement>(null);
+  const scene7Ref = useRef<HTMLDivElement>(null);
+  const scene7LeftRef = useRef<HTMLDivElement>(null);
+  const scene7RightRef = useRef<HTMLDivElement>(null);
+  const scene7BlackBgRef = useRef<HTMLDivElement>(null);
 
   const cleanupFnRef = useRef<(() => void) | null>(null);
 
@@ -71,168 +75,162 @@ export default function AboutHero() {
           scrollTrigger: {
             trigger: section,
             start: "top top",
-            end: "+=1000vh", // 5 viewport height for 5 frames (200vh per frame)
+            end: "+=5500vh", // Extended for Scene 6 + Scene 7
             pin: true,
             pinSpacing: true,
-            scrub: true,
+            scrub: 1,
           },
         });
 
         // Continue background animation during scroll
         tl.to(backImage, {
-          scale: 2,
-          y: -50,
-          filter: "blur(2px)",
-          duration: 1,
+          scale: 3.5,
+          y: -100,
+          filter: "blur(3px)",
+          duration: 5,
           ease: "none",
         });
 
-        // ─── Scene 2 initially visible (fades out at 25% progress / 100vh) ─────────────────────────
+        // ─── Scene 2 → Scene 3 Cross-fade (starts at 0.2, duration 0.5, ends at 0.7) ───────────────
         tl.to(
           scene2Ref.current,
           {
             opacity: 0,
-            y: -20,
-            filter: "blur(8px)",
-            duration: 0.3,
+            y: -30,
+            filter: "blur(12px)",
+            duration: 0.5,
             ease: "power2.inOut",
           },
-          0.25
+          0.2
         );
 
-        // ─── Scene 3 fades in (at 25% progress / 100vh) ───────────────────────────────────────────
         tl.fromTo(
           scene3Ref.current,
           {
             opacity: 0,
-            y: 20,
-            filter: "blur(8px)",
+            y: 30,
+            filter: "blur(12px)",
           },
           {
             opacity: 1,
             y: 0,
             filter: "blur(0px)",
-            duration: 0.3,
+            duration: 0.5,
             ease: "power2.inOut",
           },
-          0.25
+          0.2
         );
 
-        // ─── Scene 3 fades out (at 50% progress / 200vh) ───────────────────────────────────────────
+        // ─── Scene 3 → Scene 4 Cross-fade (starts at 0.9, duration 0.5, ends at 1.4) ─────────────────
         tl.to(
           scene3Ref.current,
           {
             opacity: 0,
-            y: -20,
-            filter: "blur(8px)",
-            duration: 0.3,
+            y: -30,
+            filter: "blur(12px)",
+            duration: 0.5,
             ease: "power2.inOut",
           },
-          0.5
+          0.9
         );
 
-        // ─── Scene 4 fades in (at 50% progress / 200vh) ───────────────────────────────────────────
         tl.fromTo(
           scene4Ref.current,
           {
             opacity: 0,
-            filter: "blur(12px)",
+            filter: "blur(18px)",
           },
           {
             opacity: 1,
             filter: "blur(0px)",
-            duration: 0.3,
+            duration: 0.5,
             ease: "power2.inOut",
           },
-          0.5
+          0.9
         );
 
-        // ─── Scene 4 fades out (at 75% progress / 300vh) ───────────────────────────────────────────
+        // ─── Scene 4 → Scene 5 Transition (starts at 1.7) ────────────────────────────────────────────────
         tl.to(
           scene4Ref.current,
           {
             opacity: 0,
-            y: -20,
-            filter: "blur(8px)",
-            duration: 0.3,
+            y: -30,
+            filter: "blur(12px)",
+            duration: 0.5,
             ease: "power2.inOut",
           },
-          0.75
+          1.7
         );
 
-        // ─── Scene 5 (VisionValues) fades in (at 75% progress / 600vh) ───────────────────────────────
-        // Fade in the entire Scene 5 container (including gradients)
+        // ─── Scene 5 (VisionValues) fades in (starts at 1.7) ────────────────────────────────────────────
         if (scene5Ref.current) {
           tl.to(
             scene5Ref.current,
             {
               opacity: 1,
-              duration: 0.1,
+              duration: 0.4,
               ease: "power2.out",
             },
-            0.75
+            1.7
           );
         }
 
-        // Left column: slides in from left with fade
         if (scene5LeftRef.current) {
           tl.fromTo(
             scene5LeftRef.current,
             {
               opacity: 0,
-              x: -80,
-              filter: "blur(8px)",
+              x: -100,
+              filter: "blur(12px)",
             },
             {
               opacity: 1,
               x: 0,
               filter: "blur(0px)",
-              duration: 0.4,
-              ease: "power2.out",
+              duration: 0.6,
+              ease: "power3.out",
             },
-            0.75
+            1.75
           );
         }
 
-        // Right column: slides in from right with scale and fade
         if (scene5RightRef.current) {
           tl.fromTo(
             scene5RightRef.current,
             {
               opacity: 0,
-              x: 80,
-              scale: 0.7,
-              filter: "blur(12px)",
+              x: 100,
+              scale: 0.6,
+              filter: "blur(16px)",
             },
             {
               opacity: 1,
               x: 0,
               scale: 1,
               filter: "blur(0px)",
-              duration: 0.5,
-              ease: "back.out(1.2)",
+              duration: 0.8,
+              ease: "back.out(1.7)",
             },
-            0.75
+            1.8
           );
         }
 
-        // ─── Scene 5 fades out (at 100% progress / 800vh) ───────────────────────────────────────────
+        // ─── Scene 5 → Scene 6 Transition (starts at 2.5) ─────────────────────────────────────────────────
         if (scene5Ref.current) {
           tl.to(
             scene5Ref.current,
             {
               opacity: 0,
-              y: -20,
-              filter: "blur(8px)",
-              duration: 0.3,
+              y: -40,
+              filter: "blur(12px)",
+              duration: 0.5,
               ease: "power2.inOut",
             },
-            1.0
+            2.5
           );
         }
 
-        // ─── Scene 6 (Stats) fades in (at 100% progress / 800vh) ─────────────────────────────────────
-        // Fade in white background
+        // ─── Scene 6 (Stats) fades in with white background (starts at 2.5) ─────────────────────────────────────
         if (whiteBg) {
           tl.fromTo(
             whiteBg,
@@ -241,10 +239,10 @@ export default function AboutHero() {
             },
             {
               opacity: 1,
-              duration: 0.3,
+              duration: 0.5,
               ease: "power2.inOut",
             },
-            1.0
+            2.5
           );
         }
 
@@ -253,19 +251,19 @@ export default function AboutHero() {
             scene6Ref.current,
             {
               opacity: 0,
-              filter: "blur(12px)",
+              filter: "blur(18px)",
             },
             {
               opacity: 1,
               filter: "blur(0px)",
-              duration: 0.3,
+              duration: 0.5,
               ease: "power2.inOut",
             },
-            1.0
+            2.5
           );
         }
 
-        // Animate stats numbers
+        // Animate stats numbers with massive spacing for counter animation
         if (statsCounterRef.current) {
           const statElements = statsCounterRef.current.querySelectorAll(".stat-number");
           statElements.forEach((el, index) => {
@@ -275,32 +273,154 @@ export default function AboutHero() {
               counterObj,
               {
                 value: targetValue,
-                duration: 0.5,
-                ease: "power2.out",
+                duration: 1.2,
+                ease: "power3.out",
                 onUpdate: function () {
                   const current = Math.round(this.targets()[0].value);
                   (el as HTMLElement).innerHTML = current.toLocaleString();
                 },
               },
-              1.0 + (index * 0.05) // Stagger each stat slightly
+              3.1 + (index * 0.2)
             );
           });
         }
 
-        // ─── Building to Grid Background Transformation (at 25% progress / 100vh) ───────────────────
-        // Fade out building image
+        // Animate stats numbers with stagger timing
+        if (statsCounterRef.current) {
+          const statElements = statsCounterRef.current.querySelectorAll(".stat-number");
+          statElements.forEach((el, index) => {
+            const targetValue = parseInt(el.getAttribute("data-value") || "0");
+            const counterObj = { value: 0 };
+            tl.to(
+              counterObj,
+              {
+                value: targetValue,
+                duration: 1.0,
+                ease: "power3.out",
+                onUpdate: function () {
+                  const current = Math.round(this.targets()[0].value);
+                  (el as HTMLElement).innerHTML = current.toLocaleString();
+                },
+              },
+              2.8 + (index * 0.15)
+            );
+          });
+        }
+
+        // ─── Scene 6 → Scene 7 Transition (starts at 4.2) with zoom in + blur ─────────────────────
+        if (scene6Ref.current) {
+          tl.to(
+            scene6Ref.current,
+            {
+              opacity: 0,
+              scale: 1.15,
+              filter: "blur(15px)",
+              duration: 0.6,
+              ease: "power2.inOut",
+            },
+            4.2
+          );
+        }
+
+        // Fade out white background
+        if (whiteBg) {
+          tl.to(
+            whiteBg,
+            {
+              opacity: 0,
+              duration: 0.5,
+              ease: "power2.inOut",
+            },
+            4.2
+          );
+        }
+
+        // Fade in black background for Scene 7
+        if (scene7BlackBgRef.current) {
+          tl.fromTo(
+            scene7BlackBgRef.current,
+            {
+              opacity: 0,
+            },
+            {
+              opacity: 1,
+              duration: 0.5,
+              ease: "power2.inOut",
+            },
+            4.2
+          );
+        }
+
+        // Fade in Scene 7 with blur
+        if (scene7Ref.current) {
+          tl.fromTo(
+            scene7Ref.current,
+            {
+              opacity: 0,
+              filter: "blur(12px)",
+            },
+            {
+              opacity: 1,
+              filter: "blur(0px)",
+              duration: 0.6,
+              ease: "power2.inOut",
+            },
+            4.2
+          );
+        }
+
+        // Animate Scene 7 left text (slide in from left)
+        if (scene7LeftRef.current) {
+          tl.fromTo(
+            scene7LeftRef.current,
+            {
+              opacity: 0,
+              x: -50,
+            },
+            {
+              opacity: 1,
+              x: 0,
+              duration: 0.7,
+              ease: "power3.out",
+            },
+            4.3
+          );
+        }
+
+        // Animate Scene 7 right image (slide in from right with scale)
+        if (scene7RightRef.current) {
+          tl.fromTo(
+            scene7RightRef.current,
+            {
+              opacity: 0,
+              x: 50,
+              scale: 0.9,
+            },
+            {
+              opacity: 1,
+              x: 0,
+              scale: 1,
+              duration: 0.8,
+              ease: "back.out(1.7)",
+            },
+            4.4
+          );
+        }
+
+
+        // ─── Building to Grid Background Transformation (at 0.2) ──────────────────────────────────────
         tl.to(
           backImage,
           {
             opacity: 0,
-            duration: 0.3,
+            duration: 0.5,
             ease: "power2.inOut",
           },
-          0.25
+          0.2
         );
 
         // ─── Grid Background Transformation ─────────────────────────────────────────────────────
-        // Frame 2: Fade in grid with 70% vignette (at 25% progress / 200vh)
+        // Fade in grid with 70% vignette (at 0.2)
         tl.fromTo(
           gridBg70,
           {
@@ -308,21 +428,21 @@ export default function AboutHero() {
           },
           {
             opacity: 1,
-            duration: 0.3,
+            duration: 0.5,
             ease: "power2.inOut",
           },
-          0.25
+          0.2
         );
 
-        // Frame 2→3: Cross-fade from 70% vignette to 30% vignette (at 50% progress / 400vh)
+        // Cross-fade from 70% vignette to 30% vignette (at 0.9)
         tl.to(
           gridBg70,
           {
             opacity: 0,
-            duration: 0.3,
+            duration: 0.5,
             ease: "power2.inOut",
           },
-          0.5
+          0.9
         );
 
         tl.fromTo(
@@ -332,21 +452,21 @@ export default function AboutHero() {
           },
           {
             opacity: 1,
-            duration: 0.3,
+            duration: 0.5,
             ease: "power2.inOut",
           },
-          0.5
+          0.9
         );
 
-        // Frame 3→4: Cross-fade from grid to dot background (at 75% progress / 600vh)
+        // Cross-fade from grid to dot background (at 1.7)
         tl.to(
           gridBg30,
           {
             opacity: 0,
-            duration: 0.3,
+            duration: 0.5,
             ease: "power2.inOut",
           },
-          0.75
+          1.7
         );
 
         tl.fromTo(
@@ -356,10 +476,10 @@ export default function AboutHero() {
           },
           {
             opacity: 1,
-            duration: 0.3,
+            duration: 0.5,
             ease: "power2.inOut",
           },
-          0.75
+          1.7
         );
 
         cleanupFnRef.current = () => {
@@ -450,7 +570,7 @@ export default function AboutHero() {
         <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at center, transparent 30%, #000000 40%)" }} />
       </div>
 
-      {/* ── White Background Layer: Frame 5 ── */}
+      {/* ── White Background Layer: Scene 6 ── */}
       <div
         ref={whiteBgRef}
         className="absolute inset-0 z-[4] opacity-0 will-change-opacity bg-white"
@@ -612,6 +732,67 @@ export default function AboutHero() {
           </div>
         </div>
 
+        {/* Scene 7 - One Vision section */}
+        <div
+          ref={scene7Ref}
+          className="absolute inset-0 flex items-center justify-center p-8 md:px-16 lg:px-20 overflow-hidden z-[25] pointer-events-auto"
+        >
+          {/* Black background with grid */}
+          <div
+            ref={scene7BlackBgRef}
+            className="absolute inset-0 z-0 opacity-0 bg-black"
+          >
+            {/* Grid Background - positioned only behind text */}
+            <div className="absolute inset-y-0 left-0 w-full lg:w-1/2 pointer-events-none">
+              <GridBackground
+                lineColor="rgba(113, 196, 255, 0.2)"
+                dotColor="rgba(113, 196, 255, 0.4)"
+                gridSize={50}
+                dotSize={1.5}
+                vignetteIntensity={60}
+              />
+            </div>
+          </div>
+
+          {/* Content container - 50/50 split */}
+          <div className="max-w-[1600px] w-full mx-auto grid lg:grid-cols-2 gap-8 items-center relative z-10 pointer-events-auto">
+            {/* Left - Text content */}
+            <div ref={scene7LeftRef} className="text-left will-change-transform pl-4 md:pl-8 pointer-events-auto">
+              <h2 className="font-sans text-[2rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.5rem] xl:text-[4rem] font-light leading-[1.1] tracking-tight" style={{ color: "#71C4FF" }}>
+                <span className="block">One Vision.</span>
+              </h2>
+              <h3 className="font-sans text-[2rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.5rem] xl:text-[4rem] font-light leading-[1.1] tracking-tight mt-4" style={{ color: "#71C4FF" }}>
+                <span className="block">Multiple Areas Of Expertise.</span>
+              </h3>
+              <p className="text-white text-base md:text-lg lg:text-xl leading-relaxed max-w-xl mt-6 font-light">
+                From human resources and finance to technology, infrastructure, student development, and operational support, Edify delivers connected solutions designed for institutional success.
+              </p>
+
+              {/* Pagination indicator */}
+              <div className="flex items-center gap-2 mt-12">
+                <div className="w-12 h-0.5 bg-white"></div>
+                <div className="w-2 h-0.5 bg-gray-600"></div>
+                <div className="w-2 h-0.5 bg-gray-600"></div>
+                <div className="w-2 h-0.5 bg-gray-600"></div>
+              </div>
+            </div>
+
+            {/* Right - Hexagonal network image */}
+            <div ref={scene7RightRef} className="flex items-center justify-center will-change-transform">
+              <div className="relative w-full max-w-[1000px] aspect-square flex items-center justify-center">
+                <Image
+                  src="/about/hero/img1-vision.png"
+                  alt="One Vision - Multiple Areas of Expertise"
+                  fill
+                  className="object-contain"
+                  sizes="(max-width: 768px) 600px, (max-width: 1024px) 800px, 1000px"
+                  priority
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Scene 6 - Stats/Achievements section */}
         <div
           ref={scene6Ref}
@@ -699,6 +880,7 @@ export default function AboutHero() {
             </div>
           </div>
         </div>
+
       </div>
 
       {/* ── Animation Styles for Orbital Rings ── */}
