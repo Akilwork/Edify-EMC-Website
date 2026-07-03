@@ -43,7 +43,7 @@ export default function ChairmanSection({ animate = true }: { animate?: boolean 
               <div className="relative w-full">
                 <Image
                   src="/Chairman/Subtract.png"
-                  alt="Zakir Hussain Kamaluddin - Chairman"
+                  alt="Robert Fox - Chairman"
                   width={480}
                   height={600}
                   className="w-full h-auto object-contain"
