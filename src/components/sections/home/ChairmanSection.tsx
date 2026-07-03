@@ -65,7 +65,7 @@ export default function ChairmanSection({ animate = true }: { animate?: boolean 
                   }}
                 >
                   <span className="text-white font-sans font-bold text-lg sm:text-xl lg:text-2xl leading-tight drop-shadow-sm">
-                    Zakir Hussain Kamaluddin
+                    Robert Fox
                   </span>
                   <span className="text-white/70 text-sm sm:text-base font-medium mt-1">
                     Chairman
