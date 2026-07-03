@@ -150,7 +150,7 @@ export const ScrollStory = () => {
   }, [loadState]);
 
   return (
-    <>
+    <div>
       <section
         ref={sectionRef}
         className={styles.section}
@@ -172,6 +172,6 @@ export const ScrollStory = () => {
 
         <canvas ref={canvasRef} className={styles.canvas} aria-hidden="true" />
       </section>
-    </>
+    </div>
   );
 };

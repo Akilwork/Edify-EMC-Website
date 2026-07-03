@@ -14,7 +14,6 @@ export default function AboutHero() {
   const textContainerRef = useRef<HTMLDivElement>(null);
 
   const scene2Ref = useRef<HTMLDivElement>(null);
-  const scene3Ref = useRef<HTMLDivElement>(null);
   const scene4Ref = useRef<HTMLDivElement>(null);
   const scene5Ref = useRef<HTMLDivElement>(null);
   const scene5LeftRef = useRef<HTMLDivElement>(null);
@@ -26,6 +25,16 @@ export default function AboutHero() {
   const scene7LeftRef = useRef<HTMLDivElement>(null);
   const scene7RightRef = useRef<HTMLDivElement>(null);
   const scene7BlackBgRef = useRef<HTMLDivElement>(null);
+
+  const scene7Image1Ref = useRef<HTMLDivElement>(null);
+  const scene7Image2Ref = useRef<HTMLDivElement>(null);
+  const scene7Image3Ref = useRef<HTMLDivElement>(null);
+  const scene7Image4Ref = useRef<HTMLDivElement>(null);
+
+  const scene7Dot1Ref = useRef<HTMLDivElement>(null);
+  const scene7Dot2Ref = useRef<HTMLDivElement>(null);
+  const scene7Dot3Ref = useRef<HTMLDivElement>(null);
+  const scene7Dot4Ref = useRef<HTMLDivElement>(null);
 
   const cleanupFnRef = useRef<(() => void) | null>(null);
 
@@ -51,6 +60,44 @@ export default function AboutHero() {
 
         gsap.registerPlugin(ScrollTrigger);
 
+        // Safeguard: if component has unmounted or refs are not ready, abort
+        if (
+          !sectionRef.current ||
+          !backImageRef.current ||
+          !scene2Ref.current ||
+          !scene4Ref.current
+        ) {
+          return;
+        }
+
+        // ─── Initial States ──────────────────────────────────────────────────────
+        gsap.set(scene2Ref.current, { autoAlpha: 1, y: 0, filter: "blur(0px)" });
+        gsap.set(scene4Ref.current, { autoAlpha: 0, y: 0, filter: "blur(18px)" });
+        if (scene5Ref.current) gsap.set(scene5Ref.current, { autoAlpha: 0 });
+        if (scene5LeftRef.current) gsap.set(scene5LeftRef.current, { autoAlpha: 0, x: -100, filter: "blur(12px)" });
+        if (scene5RightRef.current) gsap.set(scene5RightRef.current, { autoAlpha: 0, x: 100, scale: 0.6, filter: "blur(16px)" });
+        if (scene6Ref.current) gsap.set(scene6Ref.current, { autoAlpha: 0, filter: "blur(18px)" });
+        if (scene7Ref.current) gsap.set(scene7Ref.current, { autoAlpha: 0, filter: "blur(12px)" });
+        if (scene7LeftRef.current) gsap.set(scene7LeftRef.current, { autoAlpha: 0, x: -50 });
+        if (scene7RightRef.current) gsap.set(scene7RightRef.current, { autoAlpha: 0, x: 50, scale: 0.9 });
+        if (scene7BlackBgRef.current) gsap.set(scene7BlackBgRef.current, { autoAlpha: 0 });
+        if (whiteBg) gsap.set(whiteBg, { autoAlpha: 0 });
+        gsap.set(gridBg70, { autoAlpha: 0 });
+        gsap.set(gridBg30, { autoAlpha: 0 });
+        gsap.set(dotBg, { autoAlpha: 0 });
+
+        // Scene 7 Images initial states
+        if (scene7Image1Ref.current) gsap.set(scene7Image1Ref.current, { autoAlpha: 1 });
+        if (scene7Image2Ref.current) gsap.set(scene7Image2Ref.current, { autoAlpha: 0 });
+        if (scene7Image3Ref.current) gsap.set(scene7Image3Ref.current, { autoAlpha: 0 });
+        if (scene7Image4Ref.current) gsap.set(scene7Image4Ref.current, { autoAlpha: 0 });
+
+        // Scene 7 Dots initial states
+        if (scene7Dot1Ref.current) gsap.set(scene7Dot1Ref.current, { width: 48, backgroundColor: "#FFFFFF" });
+        if (scene7Dot2Ref.current) gsap.set(scene7Dot2Ref.current, { width: 8, backgroundColor: "#4B5563" });
+        if (scene7Dot3Ref.current) gsap.set(scene7Dot3Ref.current, { width: 8, backgroundColor: "#4B5563" });
+        if (scene7Dot4Ref.current) gsap.set(scene7Dot4Ref.current, { width: 8, backgroundColor: "#4B5563" });
+
         // ─── Initial Parallax Animation on Page Load ─────────────────────────────
         const loadTimeline = gsap.timeline({ defaults: { ease: "power2.out" } });
 
@@ -75,7 +122,7 @@ export default function AboutHero() {
           scrollTrigger: {
             trigger: section,
             start: "top top",
-            end: "+=5500vh", // Extended for Scene 6 + Scene 7
+            end: "+=7500vh", // Extended for Scene 6 + Scene 7 step-by-step
             pin: true,
             pinSpacing: true,
             scrub: 1,
@@ -91,57 +138,23 @@ export default function AboutHero() {
           ease: "none",
         });
 
-        // ─── Scene 2 → Scene 3 Cross-fade (starts at 0.2, duration 0.5, ends at 0.7) ───────────────
+        // ─── Scene 2 → Scene 4 Cross-fade (starts at 0.6, duration 0.3) ───────────────
         tl.to(
           scene2Ref.current,
           {
-            opacity: 0,
+            autoAlpha: 0,
             y: -30,
             filter: "blur(12px)",
-            duration: 0.5,
+            duration: 0.3,
             ease: "power2.inOut",
           },
-          0.2
+          0.6
         );
 
-        tl.fromTo(
-          scene3Ref.current,
-          {
-            opacity: 0,
-            y: 30,
-            filter: "blur(12px)",
-          },
-          {
-            opacity: 1,
-            y: 0,
-            filter: "blur(0px)",
-            duration: 0.5,
-            ease: "power2.inOut",
-          },
-          0.2
-        );
-
-        // ─── Scene 3 → Scene 4 Cross-fade (starts at 0.9, duration 0.5, ends at 1.4) ─────────────────
         tl.to(
-          scene3Ref.current,
-          {
-            opacity: 0,
-            y: -30,
-            filter: "blur(12px)",
-            duration: 0.5,
-            ease: "power2.inOut",
-          },
-          0.9
-        );
-
-        tl.fromTo(
           scene4Ref.current,
           {
-            opacity: 0,
-            filter: "blur(18px)",
-          },
-          {
-            opacity: 1,
+            autoAlpha: 1,
             filter: "blur(0px)",
             duration: 0.5,
             ease: "power2.inOut",
@@ -149,96 +162,82 @@ export default function AboutHero() {
           0.9
         );
 
-        // ─── Scene 4 → Scene 5 Transition (starts at 1.7) ────────────────────────────────────────────────
+        // ─── Scene 4 → Scene 5 Transition (starts at 1.5, duration 0.3) ──────────────────────────────────
         tl.to(
           scene4Ref.current,
           {
-            opacity: 0,
+            autoAlpha: 0,
             y: -30,
             filter: "blur(12px)",
-            duration: 0.5,
+            duration: 0.3,
             ease: "power2.inOut",
           },
-          1.7
+          1.5
         );
 
-        // ─── Scene 5 (VisionValues) fades in (starts at 1.7) ────────────────────────────────────────────
+        // ─── Scene 5 (VisionValues) fades in (starts at 1.8) ────────────────────────────────────────────
         if (scene5Ref.current) {
           tl.to(
             scene5Ref.current,
             {
-              opacity: 1,
+              autoAlpha: 1,
               duration: 0.4,
               ease: "power2.out",
             },
-            1.7
+            1.8
           );
         }
 
         if (scene5LeftRef.current) {
-          tl.fromTo(
+          tl.to(
             scene5LeftRef.current,
             {
-              opacity: 0,
-              x: -100,
-              filter: "blur(12px)",
-            },
-            {
-              opacity: 1,
+              autoAlpha: 1,
               x: 0,
               filter: "blur(0px)",
               duration: 0.6,
               ease: "power3.out",
             },
-            1.75
+            1.85
           );
         }
 
         if (scene5RightRef.current) {
-          tl.fromTo(
+          tl.to(
             scene5RightRef.current,
             {
-              opacity: 0,
-              x: 100,
-              scale: 0.6,
-              filter: "blur(16px)",
-            },
-            {
-              opacity: 1,
+              autoAlpha: 1,
               x: 0,
               scale: 1,
               filter: "blur(0px)",
               duration: 0.8,
               ease: "back.out(1.7)",
             },
-            1.8
+            1.9
           );
         }
 
-        // ─── Scene 5 → Scene 6 Transition (starts at 2.5) ─────────────────────────────────────────────────
+        // ─── Scene 5 → Scene 6 Transition (starts at 2.2) ─────────────────────────────────────────────────
         if (scene5Ref.current) {
           tl.to(
             scene5Ref.current,
             {
-              opacity: 0,
+              autoAlpha: 0,
               y: -40,
               filter: "blur(12px)",
-              duration: 0.5,
+              duration: 0.3,
               ease: "power2.inOut",
             },
-            2.5
+            2.2
           );
         }
 
         // ─── Scene 6 (Stats) fades in with white background (starts at 2.5) ─────────────────────────────────────
         if (whiteBg) {
-          tl.fromTo(
+          tl.to(
             whiteBg,
             {
-              opacity: 0,
-            },
-            {
-              opacity: 1,
+              autoAlpha: 1,
               duration: 0.5,
               ease: "power2.inOut",
             },
@@ -247,42 +246,16 @@ export default function AboutHero() {
         }
 
         if (scene6Ref.current) {
-          tl.fromTo(
+          tl.to(
             scene6Ref.current,
             {
-              opacity: 0,
-              filter: "blur(18px)",
-            },
-            {
-              opacity: 1,
+              autoAlpha: 1,
               filter: "blur(0px)",
               duration: 0.5,
               ease: "power2.inOut",
             },
             2.5
           );
-        }
-
-        // Animate stats numbers with massive spacing for counter animation
-        if (statsCounterRef.current) {
-          const statElements = statsCounterRef.current.querySelectorAll(".stat-number");
-          statElements.forEach((el, index) => {
-            const targetValue = parseInt(el.getAttribute("data-value") || "0");
-            const counterObj = { value: 0 };
-            tl.to(
-              counterObj,
-              {
-                value: targetValue,
-                duration: 1.2,
-                ease: "power3.out",
-                onUpdate: function () {
-                  const current = Math.round(this.targets()[0].value);
-                  (el as HTMLElement).innerHTML = current.toLocaleString();
-                },
-              },
-              3.1 + (index * 0.2)
-            );
-          });
         }
 
         // Animate stats numbers with stagger timing
@@ -307,18 +280,18 @@ export default function AboutHero() {
           });
         }
 
-        // ─── Scene 6 → Scene 7 Transition (starts at 4.2) with zoom in + blur ─────────────────────
+        // ─── Scene 6 → Scene 7 Transition (starts at 3.9) ─────────────────────
         if (scene6Ref.current) {
           tl.to(
             scene6Ref.current,
             {
-              opacity: 0,
+              autoAlpha: 0,
               scale: 1.15,
               filter: "blur(15px)",
-              duration: 0.6,
+              duration: 0.3,
               ease: "power2.inOut",
             },
-            4.2
+            3.9
           );
         }
 
@@ -327,23 +300,20 @@ export default function AboutHero() {
           tl.to(
             whiteBg,
             {
-              opacity: 0,
-              duration: 0.5,
+              autoAlpha: 0,
+              duration: 0.3,
               ease: "power2.inOut",
             },
-            4.2
+            3.9
           );
         }
 
         // Fade in black background for Scene 7
         if (scene7BlackBgRef.current) {
-          tl.fromTo(
+          tl.to(
             scene7BlackBgRef.current,
             {
-              opacity: 0,
-            },
-            {
-              opacity: 1,
+              autoAlpha: 1,
               duration: 0.5,
               ease: "power2.inOut",
             },
@@ -353,14 +323,10 @@ export default function AboutHero() {
 
         // Fade in Scene 7 with blur
         if (scene7Ref.current) {
-          tl.fromTo(
+          tl.to(
             scene7Ref.current,
             {
-              opacity: 0,
-              filter: "blur(12px)",
-            },
-            {
-              opacity: 1,
+              autoAlpha: 1,
               filter: "blur(0px)",
               duration: 0.6,
               ease: "power2.inOut",
@@ -371,14 +337,10 @@ export default function AboutHero() {
 
         // Animate Scene 7 left text (slide in from left)
         if (scene7LeftRef.current) {
-          tl.fromTo(
+          tl.to(
             scene7LeftRef.current,
             {
-              opacity: 0,
-              x: -50,
-            },
-            {
-              opacity: 1,
+              autoAlpha: 1,
               x: 0,
               duration: 0.7,
               ease: "power3.out",
@@ -389,15 +351,10 @@ export default function AboutHero() {
 
         // Animate Scene 7 right image (slide in from right with scale)
         if (scene7RightRef.current) {
-          tl.fromTo(
+          tl.to(
             scene7RightRef.current,
             {
-              opacity: 0,
-              x: 50,
-              scale: 0.9,
-            },
-            {
-              opacity: 1,
+              autoAlpha: 1,
               x: 0,
               scale: 1,
               duration: 0.8,
@@ -407,12 +364,55 @@ export default function AboutHero() {
           );
         }
 
+        // ─── Scene 7 Carousel Transitions (starts at 4.9) ───────────────────
+        // Step 1 -> Step 2 transition at 4.9
+        if (scene7Image1Ref.current) {
+          tl.to(scene7Image1Ref.current, { autoAlpha: 0, duration: 0.3 }, 4.9);
+        }
+        if (scene7Image2Ref.current) {
+          tl.to(scene7Image2Ref.current, { autoAlpha: 1, duration: 0.3 }, 4.9);
+        }
+        if (scene7Dot1Ref.current) {
+          tl.to(scene7Dot1Ref.current, { width: 8, backgroundColor: "#4B5563", duration: 0.3 }, 4.9);
+        }
+        if (scene7Dot2Ref.current) {
+          tl.to(scene7Dot2Ref.current, { width: 48, backgroundColor: "#FFFFFF", duration: 0.3 }, 4.9);
+        }
+
+        // Step 2 -> Step 3 transition at 5.5
+        if (scene7Image2Ref.current) {
+          tl.to(scene7Image2Ref.current, { autoAlpha: 0, duration: 0.3 }, 5.5);
+        }
+        if (scene7Image3Ref.current) {
+          tl.to(scene7Image3Ref.current, { autoAlpha: 1, duration: 0.3 }, 5.5);
+        }
+        if (scene7Dot2Ref.current) {
+          tl.to(scene7Dot2Ref.current, { width: 8, backgroundColor: "#4B5563", duration: 0.3 }, 5.5);
+        }
+        if (scene7Dot3Ref.current) {
+          tl.to(scene7Dot3Ref.current, { width: 48, backgroundColor: "#FFFFFF", duration: 0.3 }, 5.5);
+        }
+
+        // Step 3 -> Step 4 transition at 6.1
+        if (scene7Image3Ref.current) {
+          tl.to(scene7Image3Ref.current, { autoAlpha: 0, duration: 0.3 }, 6.1);
+        }
+        if (scene7Image4Ref.current) {
+          tl.to(scene7Image4Ref.current, { autoAlpha: 1, duration: 0.3 }, 6.1);
+        }
+        if (scene7Dot3Ref.current) {
+          tl.to(scene7Dot3Ref.current, { width: 8, backgroundColor: "#4B5563", duration: 0.3 }, 6.1);
+        }
+        if (scene7Dot4Ref.current) {
+          tl.to(scene7Dot4Ref.current, { width: 48, backgroundColor: "#FFFFFF", duration: 0.3 }, 6.1);
+        }
+
 
         // ─── Building to Grid Background Transformation (at 0.2) ──────────────────────────────────────
         tl.to(
           backImage,
           {
-            opacity: 0,
+            autoAlpha: 0,
             duration: 0.5,
             ease: "power2.inOut",
           },
@@ -421,13 +421,10 @@ export default function AboutHero() {
 
         // ─── Grid Background Transformation ─────────────────────────────────────────────────────
         // Fade in grid with 70% vignette (at 0.2)
-        tl.fromTo(
+        tl.to(
           gridBg70,
           {
-            opacity: 0,
-          },
-          {
-            opacity: 1,
+            autoAlpha: 1,
             duration: 0.5,
             ease: "power2.inOut",
           },
@@ -438,20 +435,17 @@ export default function AboutHero() {
         tl.to(
           gridBg70,
           {
-            opacity: 0,
+            autoAlpha: 0,
             duration: 0.5,
             ease: "power2.inOut",
           },
           0.9
         );
 
-        tl.fromTo(
+        tl.to(
           gridBg30,
           {
-            opacity: 0,
-          },
-          {
-            opacity: 1,
+            autoAlpha: 1,
             duration: 0.5,
             ease: "power2.inOut",
           },
@@ -462,20 +456,17 @@ export default function AboutHero() {
         tl.to(
           gridBg30,
           {
-            opacity: 0,
+            autoAlpha: 0,
             duration: 0.5,
             ease: "power2.inOut",
           },
           1.7
         );
 
-        tl.fromTo(
+        tl.to(
           dotBg,
           {
-            opacity: 0,
-          },
-          {
-            opacity: 1,
+            autoAlpha: 1,
             duration: 0.5,
             ease: "power2.inOut",
           },
@@ -499,138 +490,123 @@ export default function AboutHero() {
   }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative w-full h-screen min-h-[100svh] overflow-hidden bg-[#0A0D14]"
-    >
-      {/* ── Background Building Image ── */}
-      <div
-        ref={backImageRef}
-        className="absolute inset-0 z-[1] will-change-transform"
+    <div>
+      <section
+        ref={sectionRef}
+        className="relative w-full h-screen min-h-[100svh] overflow-hidden bg-[#0A0D14]"
       >
-        <Image
-          src="/about/hero/hero_back_img_aboutus.png"
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-center"
-        />
-      </div>
-
-      {/* ── Dark Overlay ── */}
-      <div className="absolute inset-0 z-[3] bg-black/50 pointer-events-none" />
-
-      {/* ── Grid Background Layer 1: Frame 2 (70% vignette) ── */}
-      <div
-        ref={gridBg70Ref}
-        className="absolute inset-0 z-[4] opacity-0 will-change-opacity"
-      >
-        <GridBackground
-          lineColor="rgba(168, 85, 247, 0.17)"
-          dotColor="rgba(168, 85, 247, 0.3)"
-          gridSize={50}
-          dotSize={1.5}
-          vignetteIntensity={70}
-        />
-      </div>
-
-      {/* ── Grid Background Layer 2: Frame 3+ (50% vignette) ── */}
-      <div
-        ref={gridBg30Ref}
-        className="absolute inset-0 z-[4] opacity-0 will-change-opacity"
-      >
-        <GridBackground
-          lineColor="rgba(168, 85, 247, 0.17)"
-          dotColor="rgba(168, 85, 247, 0.3)"
-          gridSize={50}
-          dotSize={1.5}
-          vignetteIntensity={50}
-        />
-      </div>
-
-      {/* ── Dot Background Layer: Frame 4 ── */}
-      <div
-        ref={dotBgRef}
-        className="absolute inset-0 z-[4] opacity-0 will-change-opacity"
-      >
-        <DottedGlowBackground
-          className="pointer-events-none"
-          opacity={0.2}
-          gap={20}
-          radius={1.5}
-          color="rgba(255, 255, 255, 0.7)"
-          glowColor="rgba(255, 255, 255, 0.9)"
-          backgroundOpacity={0}
-          speedMin={0.15}
-          speedMax={0.5}
-          speedScale={1}
-        />
-        {/* Vignette overlay - 70% intensity */}
-        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at center, transparent 30%, #000000 40%)" }} />
-      </div>
-
-      {/* ── White Background Layer: Scene 6 ── */}
-      <div
-        ref={whiteBgRef}
-        className="absolute inset-0 z-[4] opacity-0 will-change-opacity bg-white"
-      >
-        <GridBackground
-          lineColor="rgba(59, 130, 246, 0.08)"
-          dotColor="rgba(59, 130, 246, 0.15)"
-          gridSize={50}
-          dotSize={1.5}
-          showVignette={false}
-        />
-      </div>
-
-      {/* ── Text Container (centered, never moves) ── */}
-      <div
-        ref={textContainerRef}
-        className="absolute inset-0 z-[5] flex items-center justify-center p-8 pointer-events-none"
-      >
-        {/* Scene 2 - visible initially, fades out */}
+        {/* ── Background Building Image ── */}
         <div
-          ref={scene2Ref}
-          className="absolute w-full max-w-[1100px] text-center"
+          ref={backImageRef}
+          className="absolute inset-0 z-[1] will-change-transform"
         >
-          <h1 className="font-sans font-medium leading-[1.1] text-white text-center m-0 tracking-tight text-[clamp(22px,5vw,28px)] md:text-[clamp(34px,4vw,40px)] lg:text-[clamp(36px,4vw,52px)] 2xl:text-[clamp(46px,3.5vw,56px)]">
-            <span className="block">
-              Empowering educational institutions
-            </span>
-            <span className="block">
-              through integrated expertise, strategic guidance, and sustainable
-              growth solutions
-            </span>
-          </h1>
+          <Image
+            src="/about/hero/hero_back_img_aboutus.png"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center"
+          />
         </div>
-
-        {/* Scene 3 - fades in */}
+  
+        {/* ── Dark Overlay ── */}
+        <div className="absolute inset-0 z-[3] bg-black/50 pointer-events-none" />
+  
+        {/* ── Grid Background Layer 1: Frame 2 (70% vignette) ── */}
         <div
-          ref={scene3Ref}
-          className="absolute w-full max-w-[1100px] text-center opacity-0"
+          ref={gridBg70Ref}
+          className="absolute inset-0 z-[4] opacity-0 will-change-opacity"
         >
-          <h1 className="font-sans font-medium leading-[1.1] text-white text-center m-0 tracking-tight text-[clamp(22px,5vw,28px)] md:text-[clamp(34px,4vw,40px)] lg:text-[clamp(36px,4vw,52px)] 2xl:text-[clamp(46px,3.5vw,56px)]">
-            <span className="block">
-              Empowering educational institutions
-            </span>
-            <span className="block">
-              through integrated expertise, strategic guidance, and sustainable
-              growth solutions
-            </span>
-          </h1>
+          <GridBackground
+            lineColor="rgba(168, 85, 247, 0.17)"
+            dotColor="rgba(168, 85, 247, 0.3)"
+            gridSize={50}
+            dotSize={1.5}
+            vignetteIntensity={70}
+          />
         </div>
-
-        {/* Scene 4 - fades in with blur */}
+  
+        {/* ── Grid Background Layer 2: Frame 3+ (50% vignette) ── */}
         <div
-          ref={scene4Ref}
-          className="absolute w-full max-w-[1100px] text-center opacity-0"
+          ref={gridBg30Ref}
+          className="absolute inset-0 z-[4] opacity-0 will-change-opacity"
         >
-          <h1 className="font-sans font-medium leading-[1.1] text-white text-center m-0 tracking-tight text-[clamp(28px,6vw,36px)] md:text-[clamp(42px,5vw,48px)] lg:text-[clamp(48px,5vw,64px)] 2xl:text-[clamp(60px,4.5vw,68px)]">
-            <span className="block">Building Institutions That Inspire</span>
-            <span className="block">Excellence And Lasting Impact</span>
-          </h1>
+          <GridBackground
+            lineColor="rgba(168, 85, 247, 0.17)"
+            dotColor="rgba(168, 85, 247, 0.3)"
+            gridSize={50}
+            dotSize={1.5}
+            vignetteIntensity={50}
+          />
         </div>
+  
+        {/* ── Dot Background Layer: Frame 4 ── */}
+        <div
+          ref={dotBgRef}
+          className="absolute inset-0 z-[4] opacity-0 will-change-opacity"
+        >
+          <DottedGlowBackground
+            className="pointer-events-none"
+            opacity={0.2}
+            gap={20}
+            radius={1.5}
+            color="rgba(255, 255, 255, 0.7)"
+            glowColor="rgba(255, 255, 255, 0.9)"
+            backgroundOpacity={0}
+            speedMin={0.15}
+            speedMax={0.5}
+            speedScale={1}
+          />
+          {/* Vignette overlay - 70% intensity */}
+          <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at center, transparent 30%, #000000 40%)" }} />
+        </div>
+  
+        {/* ── White Background Layer: Scene 6 ── */}
+        <div
+          ref={whiteBgRef}
+          className="absolute inset-0 z-[4] opacity-0 will-change-opacity bg-white"
+        >
+          <GridBackground
+            lineColor="rgba(59, 130, 246, 0.08)"
+            dotColor="rgba(59, 130, 246, 0.15)"
+            gridSize={50}
+            dotSize={1.5}
+            showVignette={false}
+          />
+        </div>
+  
+        {/* ── Text Container (centered, never moves) ── */}
+        <div
+          ref={textContainerRef}
+          className="absolute inset-0 z-[5] flex items-center justify-center p-8 pointer-events-none"
+        >
+          {/* Scene 2 - visible initially, fades out */}
+          <div
+            ref={scene2Ref}
+            className="absolute w-full max-w-[1100px] text-center"
+          >
+            <h1 className="font-sans font-medium leading-[1.1] text-white text-center m-0 tracking-tight text-[clamp(22px,5vw,28px)] md:text-[clamp(34px,4vw,40px)] lg:text-[clamp(36px,4vw,52px)] 2xl:text-[clamp(46px,3.5vw,56px)]">
+              <span className="block">
+                Empowering educational institutions
+              </span>
+              <span className="block">
+                through integrated expertise, strategic guidance, and sustainable
+                growth solutions
+              </span>
+            </h1>
+          </div>
+  
+          {/* Scene 4 - fades in with blur */}
+          <div
+            ref={scene4Ref}
+            className="absolute w-full max-w-[1100px] text-center opacity-0"
+          >
+            <h1 className="font-sans font-medium leading-[1.1] text-white text-center m-0 tracking-tight text-[clamp(28px,6vw,36px)] md:text-[clamp(42px,5vw,48px)] lg:text-[clamp(48px,5vw,64px)] 2xl:text-[clamp(60px,4.5vw,68px)]">
+              <span className="block">Building Institutions That Inspire</span>
+              <span className="block">Excellence And Lasting Impact</span>
+            </h1>
+          </div>
 
         {/* Scene 5 - VisionValues content (slides in from right) */}
         <div
@@ -732,67 +708,6 @@ export default function AboutHero() {
           </div>
         </div>
 
-        {/* Scene 7 - One Vision section */}
-        <div
-          ref={scene7Ref}
-          className="absolute inset-0 flex items-center justify-center p-8 md:px-16 lg:px-20 overflow-hidden z-[25] pointer-events-auto"
-        >
-          {/* Black background with grid */}
-          <div
-            ref={scene7BlackBgRef}
-            className="absolute inset-0 z-0 opacity-0 bg-black"
-          >
-            {/* Grid Background - positioned only behind text */}
-            <div className="absolute inset-y-0 left-0 w-full lg:w-1/2 pointer-events-none">
-              <GridBackground
-                lineColor="rgba(113, 196, 255, 0.2)"
-                dotColor="rgba(113, 196, 255, 0.4)"
-                gridSize={50}
-                dotSize={1.5}
-                vignetteIntensity={60}
-              />
-            </div>
-          </div>
-
-          {/* Content container - 50/50 split */}
-          <div className="max-w-[1600px] w-full mx-auto grid lg:grid-cols-2 gap-8 items-center relative z-10 pointer-events-auto">
-            {/* Left - Text content */}
-            <div ref={scene7LeftRef} className="text-left will-change-transform pl-4 md:pl-8 pointer-events-auto">
-              <h2 className="font-sans text-[2rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.5rem] xl:text-[4rem] font-light leading-[1.1] tracking-tight" style={{ color: "#71C4FF" }}>
-                <span className="block">One Vision.</span>
-              </h2>
-              <h3 className="font-sans text-[2rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.5rem] xl:text-[4rem] font-light leading-[1.1] tracking-tight mt-4" style={{ color: "#71C4FF" }}>
-                <span className="block">Multiple Areas Of Expertise.</span>
-              </h3>
-              <p className="text-white text-base md:text-lg lg:text-xl leading-relaxed max-w-xl mt-6 font-light">
-                From human resources and finance to technology, infrastructure, student development, and operational support, Edify delivers connected solutions designed for institutional success.
-              </p>
-
-              {/* Pagination indicator */}
-              <div className="flex items-center gap-2 mt-12">
-                <div className="w-12 h-0.5 bg-white"></div>
-                <div className="w-2 h-0.5 bg-gray-600"></div>
-                <div className="w-2 h-0.5 bg-gray-600"></div>
-                <div className="w-2 h-0.5 bg-gray-600"></div>
-              </div>
-            </div>
-
-            {/* Right - Hexagonal network image */}
-            <div ref={scene7RightRef} className="flex items-center justify-center will-change-transform">
-              <div className="relative w-full max-w-[1000px] aspect-square flex items-center justify-center">
-                <Image
-                  src="/about/hero/img1-vision.png"
-                  alt="One Vision - Multiple Areas of Expertise"
-                  fill
-                  className="object-contain"
-                  sizes="(max-width: 768px) 600px, (max-width: 1024px) 800px, 1000px"
-                  priority
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* Scene 6 - Stats/Achievements section */}
         <div
           ref={scene6Ref}
@@ -881,6 +796,96 @@ export default function AboutHero() {
           </div>
         </div>
 
+        {/* Scene 7 - One Vision section */}
+        <div
+          ref={scene7Ref}
+          className="absolute inset-0 flex items-center justify-center p-8 md:px-16 lg:px-20 overflow-hidden z-[25] pointer-events-auto"
+        >
+          {/* Black background with grid */}
+          <div
+            ref={scene7BlackBgRef}
+            className="absolute inset-0 z-0 opacity-0 bg-black"
+          >
+            {/* Grid Background - positioned only behind text */}
+            <div className="absolute inset-y-0 left-0 w-full lg:w-1/2 pointer-events-none">
+              <GridBackground
+                lineColor="rgba(113, 196, 255, 0.2)"
+                dotColor="rgba(113, 196, 255, 0.4)"
+                gridSize={50}
+                dotSize={1.5}
+                vignetteIntensity={60}
+              />
+            </div>
+          </div>
+
+          {/* Content container - 50/50 split */}
+          <div className="max-w-[1600px] w-full mx-auto grid lg:grid-cols-2 gap-8 items-center relative z-10 pointer-events-auto">
+            {/* Left - Text content */}
+            <div ref={scene7LeftRef} className="text-left will-change-transform pl-4 md:pl-8 pointer-events-auto">
+              <h2 className="font-sans text-[2rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.5rem] xl:text-[4rem] font-light leading-[1.1] tracking-tight" style={{ color: "#71C4FF" }}>
+                <span className="block">One Vision.</span>
+              </h2>
+              <h3 className="font-sans text-[2rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.5rem] xl:text-[4rem] font-light leading-[1.1] tracking-tight mt-4" style={{ color: "#71C4FF" }}>
+                <span className="block">Multiple Areas Of Expertise.</span>
+              </h3>
+              <p className="text-white text-base md:text-lg lg:text-xl leading-relaxed max-w-xl mt-6 font-light">
+                From human resources and finance to technology, infrastructure, student development, and operational support, Edify delivers connected solutions designed for institutional success.
+              </p>
+
+              {/* Pagination indicator */}
+              <div className="flex items-center gap-2 mt-12">
+                <div ref={scene7Dot1Ref} className="h-0.5 bg-white transition-all duration-300" style={{ width: "48px" }}></div>
+                <div ref={scene7Dot2Ref} className="h-0.5 bg-gray-600 transition-all duration-300" style={{ width: "8px" }}></div>
+                <div ref={scene7Dot3Ref} className="h-0.5 bg-gray-600 transition-all duration-300" style={{ width: "8px" }}></div>
+                <div ref={scene7Dot4Ref} className="h-0.5 bg-gray-600 transition-all duration-300" style={{ width: "8px" }}></div>
+              </div>
+            </div>
+
+            {/* Right - Hexagonal network image with 4 carousel steps */}
+            <div ref={scene7RightRef} className="flex items-center justify-center will-change-transform w-full">
+              <div className="relative w-full max-w-[1000px] aspect-square flex items-center justify-center">
+                <div ref={scene7Image1Ref} className="absolute inset-0 flex items-center justify-center transition-all duration-300">
+                  <Image
+                    src="/about/hero/img1-vision.png"
+                    alt="One Vision - Area 1"
+                    fill
+                    className="object-contain"
+                    sizes="(max-width: 768px) 600px, (max-width: 1024px) 800px, 1000px"
+                    priority
+                  />
+                </div>
+                <div ref={scene7Image2Ref} className="absolute inset-0 flex items-center justify-center transition-all duration-300 opacity-0">
+                  <Image
+                    src="/about/hero/img2-vision.png"
+                    alt="One Vision - Area 2"
+                    fill
+                    className="object-contain"
+                    sizes="(max-width: 768px) 600px, (max-width: 1024px) 800px, 1000px"
+                  />
+                </div>
+                <div ref={scene7Image3Ref} className="absolute inset-0 flex items-center justify-center transition-all duration-300 opacity-0">
+                  <Image
+                    src="/about/hero/img3-vision.png"
+                    alt="One Vision - Area 3"
+                    fill
+                    className="object-contain"
+                    sizes="(max-width: 768px) 600px, (max-width: 1024px) 800px, 1000px"
+                  />
+                </div>
+                <div ref={scene7Image4Ref} className="absolute inset-0 flex items-center justify-center transition-all duration-300 opacity-0">
+                  <Image
+                    src="/about/hero/img4-vision.png"
+                    alt="One Vision - Area 4"
+                    fill
+                    className="object-contain"
+                    sizes="(max-width: 768px) 600px, (max-width: 1024px) 800px, 1000px"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       {/* ── Animation Styles for Orbital Rings ── */}
@@ -908,5 +913,6 @@ export default function AboutHero() {
         }
       `}</style>
     </section>
+  </div>
   );
 }
