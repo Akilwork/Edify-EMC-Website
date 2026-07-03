@@ -2,10 +2,12 @@
 
 import { useState, useEffect } from "react";
 import HeroSection from "@/components/sections/home/HeroSection";
+import IntroductionSection from "@/components/sections/home/IntroductionSection";
 import ServicesOverviewSection from "@/components/sections/home/ServicesOverviewSection";
 import WhyEdifySection from "@/components/sections/home/WhyEdifySection";
 import ChairmanTransitionToCta from "@/components/sections/home/ChairmanTransitionToCta";
 import LandingLoader from "@/components/ui/LandingLoader";
+import { ScrollStory } from "@/components/ScrollStory";
 
 export default function HomePage() {
   const [showLoader, setShowLoader] = useState(false);
@@ -33,9 +35,12 @@ export default function HomePage() {
       {showLoader && <LandingLoader onComplete={handleLoaderComplete} />}
       {/* Pass isParentReady so HeroSection coordinates its entry animations */}
       <HeroSection isParentReady={isLoaded} />
+      {/* <IntroductionSection /> */}
+      <ScrollStory />
       <ServicesOverviewSection />
       <WhyEdifySection />
       <ChairmanTransitionToCta />
+
     </>
   );
 }

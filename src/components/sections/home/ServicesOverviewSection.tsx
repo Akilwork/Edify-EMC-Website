@@ -31,6 +31,7 @@ export default function ServicesOverviewSection() {
           pin: true,
           scrub: 1.4,
           anticipatePin: 1,
+          refreshPriority: 2,
         },
       });
 

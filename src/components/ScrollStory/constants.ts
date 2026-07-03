@@ -11,7 +11,7 @@
 export const SCROLL_MULTIPLIER = 4;
 
 // ─── Final frame geometry (the frame StoryHandoff overlays) ──────────────────
-/** Source dimensions of the final frame (`frame_21`), drawn object-fit: cover. */
+/** Source dimensions of the final frame (`frame_22`), drawn object-fit: cover. */
 export const FRAME_W = 3840;
 export const FRAME_H = 2160;
 
@@ -22,16 +22,16 @@ export const TOTAL_FRAMES = 22;
  * Resolves a zero-based frame index to its `/frames/frame_XX.jpg` URL.
  * Maps:
  *   i = 0      => /frames/frame_02.jpg
- *   i = 1..19  => /frames/frame_03.jpg .. /frames/frame_21.jpg
- *   i = 20..21 => /frames/frame_21.jpg (retains the final static dwell window)
+ *   i = 1..20  => /frames/frame_03.jpg .. /frames/frame_22.jpg
+ *   i = 21     => /frames/frame_22.jpg (retains the final static dwell window)
  */
 export function getFrameSrc(i: number): string {
-  const fileIndex = Math.max(2, Math.min(21, i + 2));
+  const fileIndex = Math.max(2, Math.min(22, i + 2));
   return `/frames/frame_${String(fileIndex).padStart(2, '0')}.jpg`;
 }
 
 // ─── Handoff window (in ScrollTrigger progress units, 0→1) ───────────────────
-// frame_21 is visible & static from progress ≈ 0.88 (drawn) through 1.0.
+// frame_22 is visible & static from progress ≈ 0.88 (drawn) through 1.0.
 // Crossfade the interactive card overlay over the tail.
 /** Overlay opacity starts rising. */
 export const FADE_START = 0.9;
