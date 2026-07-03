@@ -27,14 +27,19 @@ const childVariants = {
   },
 };
 
-export default function HeroSection() {
+export default function HeroSection({ isParentReady = true }: { isParentReady?: boolean }) {
   return (
     <section
       id="hero"
       className="relative min-h-[100svh] flex items-end justify-center overflow-hidden"
     >
       {/* Background Image */}
-      <div className="absolute inset-0 z-0">
+      <motion.div 
+        className="absolute inset-0 z-0"
+        initial={{ scale: 1.08, opacity: 0 }}
+        animate={isParentReady ? { scale: 1, opacity: 1 } : { scale: 1.08, opacity: 0 }}
+        transition={{ duration: 1.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+      >
         <Image
           src="/assets/hero-bg.png"
           alt=""
@@ -51,14 +56,14 @@ export default function HeroSection() {
               "linear-gradient(rgba(0,0,0,0) 0%, rgba(0,0,0,0.35) 100%), linear-gradient(90deg, rgba(0,0,0,0.20) 0%, rgba(0,0,0,0.20) 100%)",
           }}
         />
-      </div>
+      </motion.div>
 
       {/* Content Container */}
       <motion.div
         className="relative z-10 w-full container-responsive container-max pt-safe pb-[clamp(4rem,12vh,10rem)]"
         variants={containerVariants}
         initial="hidden"
-        animate="visible"
+        animate={isParentReady ? "visible" : "hidden"}
       >
         <div className="text-center">
           {/* Main Heading — reveals first on load */}
