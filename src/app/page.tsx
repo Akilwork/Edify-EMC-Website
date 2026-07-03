@@ -32,15 +32,13 @@ export default function HomePage() {
 
   return (
     <>
-      {showLoader && <LandingLoader onComplete={handleLoaderComplete} />}
-      {/* Pass isParentReady so HeroSection coordinates its entry animations */}
-      <HeroSection isParentReady={isLoaded} />
+      {showLoader && <LandingLoader key="loader" onComplete={handleLoaderComplete} />}
+      <HeroSection key="hero" isParentReady={isLoaded} />
       {/* <IntroductionSection /> */}
-      <ScrollStory />
-      <ServicesOverviewSection />
-      <WhyEdifySection />
-      <ChairmanTransitionToCta />
-
+      <ScrollStory key="scrollstory" />
+      <ServicesOverviewSection key="services" />
+      <WhyEdifySection key="why" />
+      <ChairmanTransitionToCta key="chairman" />
     </>
   );
 }
