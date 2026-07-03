@@ -2,6 +2,10 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function WhyEdifySection() {
   const outerRef = useRef<HTMLDivElement>(null);
@@ -18,26 +22,18 @@ export default function WhyEdifySection() {
   const text3Ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    let ctx: any;
-
-    async function init() {
-      const gsapMod = await import("gsap");
-      const stMod = await import("gsap/ScrollTrigger");
-      const gsap = gsapMod.default ?? (gsapMod as any).gsap ?? gsapMod;
-      const ScrollTrigger = stMod.ScrollTrigger ?? stMod.default;
-      gsap.registerPlugin(ScrollTrigger);
-
-      ctx = gsap.context(() => {
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: outerRef.current,
-            start: "top top",
-            end: "+=300%",
-            scrub: 1.2,
-            pin: stickyRef.current,
-            anticipatePin: 1,
-          },
-        });
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: outerRef.current,
+          start: "top top",
+          end: "+=300%",
+          scrub: 1.2,
+          pin: stickyRef.current,
+          anticipatePin: 1,
+          refreshPriority: 1,
+        },
+      });
 
         /* ── STAGE 1 → STAGE 2 ── */
         tl
@@ -63,11 +59,9 @@ export default function WhyEdifySection() {
           .fromTo(text3Ref.current,
             { opacity: 0, y: 42, filter: "blur(12px)" },
             { opacity: 1, y: 0,  filter: "blur(0px)",  duration: 1 }, 2.9);
-      }, outerRef);
-    }
+    }, outerRef);
 
-    init();
-    return () => ctx?.revert();
+    return () => ctx.revert();
   }, []);
 
   /* ── shared graphic wrapper style ── */

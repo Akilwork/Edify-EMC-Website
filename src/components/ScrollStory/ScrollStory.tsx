@@ -9,7 +9,6 @@ import {
   SCROLL_MULTIPLIER,
   getFrameSrc,
 } from './constants';
-import { StoryHandoff } from './StoryHandoff';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -117,7 +116,6 @@ export const ScrollStory = () => {
 
     // Show frame 0 before any scroll
     drawBlended(canvas, imagesRef.current, 0, dprRef.current);
-    ScrollTrigger.refresh();
 
     const st = ScrollTrigger.create({
       trigger: section,
@@ -126,6 +124,7 @@ export const ScrollStory = () => {
       pin: true,
       pinSpacing: true,
       scrub: 0.6,
+      refreshPriority: 3,
       onUpdate: (self) => {
         const next = scrollProgressToFractionalFrame(self.progress);
 
@@ -139,6 +138,10 @@ export const ScrollStory = () => {
         );
       },
     });
+
+    // Refresh ScrollTrigger to recalculate offset positions of subsequent sections
+    ScrollTrigger.sort();
+    ScrollTrigger.refresh();
 
     return () => {
       st.kill(true);
@@ -169,7 +172,6 @@ export const ScrollStory = () => {
 
         <canvas ref={canvasRef} className={styles.canvas} aria-hidden="true" />
       </section>
-      <StoryHandoff isReady={loadState === 'ready'} />
     </>
   );
 };
