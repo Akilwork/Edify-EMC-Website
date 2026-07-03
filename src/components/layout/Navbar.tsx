@@ -9,7 +9,6 @@ import { Menu, X, Phone, ArrowRight } from "lucide-react";
 const NAV_LINKS = [
   { label: "HOME",     href: "/" },
   { label: "ABOUT US", href: "/about" },
-  { label: "SERVICES", href: "/services" },
 ];
 
 export default function Navbar() {

@@ -8,7 +8,7 @@
 
 // ─── Scroll travel ───────────────────────────────────────────────────────────
 /** Multiplier applied to viewport height: end = `+=innerHeight * SCROLL_MULTIPLIER`. */
-export const SCROLL_MULTIPLIER = 4;
+export const SCROLL_MULTIPLIER = 2.5;
 
 // ─── Final frame geometry (the frame StoryHandoff overlays) ──────────────────
 /** Source dimensions of the final frame (`frame_22`), drawn object-fit: cover. */
