@@ -3,9 +3,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: {},
   visible: {
     transition: {
@@ -15,14 +15,14 @@ const containerVariants = {
   },
 };
 
-const childVariants = {
+const childVariants: Variants = {
   hidden: { opacity: 0, y: 40 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
       duration: 0.9,
-      ease: [0.25, 0.46, 0.45, 0.94] as const,
+      ease: [0.25, 0.46, 0.45, 0.94],
     },
   },
 };
@@ -38,7 +38,7 @@ export default function HeroSection({ isParentReady = true }: { isParentReady?: 
         className="absolute inset-0 z-0"
         initial={{ scale: 1.08, opacity: 0 }}
         animate={isParentReady ? { scale: 1, opacity: 1 } : { scale: 1.08, opacity: 0 }}
-        transition={{ duration: 1.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+        transition={{ duration: 1.6, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] }}
       >
         <Image
           src="/assets/hero-bg.png"
