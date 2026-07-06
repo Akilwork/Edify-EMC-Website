@@ -57,6 +57,8 @@ export default function AboutHero() {
   const scene8CardsContainerRef = useRef<HTMLDivElement>(null);
   const scene8WhiteVignetteRef = useRef<HTMLDivElement>(null);
   const [scene8Visible, setScene8Visible] = useState(false);
+  // Individual card refs for scale/opacity animation
+  const scene8CardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const cleanupFnRef = useRef<(() => void) | null>(null);
 
@@ -601,12 +603,68 @@ export default function AboutHero() {
         }
 
         // Horizontal scroll for cards (from 29.0 to 35.0)
+        // Start: First card centered | End: Last card centered
         if (scene8CardsContainerRef.current) {
+          const cardsContainer = scene8CardsContainerRef.current;
+          const viewportWidth = window.innerWidth;
+
+          // Card dimensions (approximate, will be calculated from first card if available)
+          const cardWidth = viewportWidth >= 768 ? 320 : 280;
+          const gap = viewportWidth >= 768 ? 32 : 24;
+          const padding = viewportWidth >= 768 ? 64 : 32; // px-8 md:px-16
+
+          // Calculate positions of first and last card centers
+          const firstCardCenter = padding + cardWidth / 2;
+          const lastCardCenter = padding + (7 * (cardWidth + gap)) + cardWidth / 2; // 7 gaps between 8 cards
+
+          // Initial scroll: center the first card
+          const initialScroll = viewportWidth / 2 - firstCardCenter;
+          // Final scroll: center the last card
+          const finalScroll = viewportWidth / 2 - lastCardCenter;
+          // Total scroll distance
+          const scrollDistance = finalScroll - initialScroll;
+
+          // Set initial position
+          gsap.set(cardsContainer, { x: initialScroll });
+
           tl.to(
-            scene8CardsContainerRef.current,
-            { x: -2000, duration: 6, ease: "none" },
+            cardsContainer,
+            {
+              x: finalScroll,
+              duration: 6,
+              ease: "none",
+              onUpdate: function() {
+                // Scale + Opacity Focus animation for each card
+                scene8CardRefs.current.forEach((card) => {
+                  if (card) {
+                    const cardRect = card.getBoundingClientRect();
+                    const cardCenter = cardRect.left + cardRect.width / 2;
+                    const viewportCenter = window.innerWidth / 2;
+                    const distanceFromCenter = Math.abs(cardCenter - viewportCenter);
+                    const maxDistance = window.innerWidth / 2;
+
+                    // Calculate scale, opacity and blur based on distance from center
+                    const normalizedDistance = Math.min(distanceFromCenter / (maxDistance * 0.8), 1);
+                    const scale = 1 - (normalizedDistance * 0.15); // 1.0 → 0.85
+                    const opacity = 1 - (normalizedDistance * 0.5); // 1.0 → 0.5
+                    const blur = normalizedDistance * 5; // 0px → 5px (depth-of-field effect)
+
+                    gsap.set(card, { scale, opacity, filter: `blur(${blur}px)` });
+                  }
+                });
+              }
+            },
             29.0
           );
+
+          // Set initial state for all cards (with delay to ensure refs are populated)
+          requestAnimationFrame(() => {
+            scene8CardRefs.current.forEach((card) => {
+              if (card) {
+                gsap.set(card, { scale: 0.85, opacity: 0.5, filter: "blur(5px)" });
+              }
+            });
+          });
         }
 
 
@@ -697,23 +755,23 @@ export default function AboutHero() {
         ref={sectionRef}
         className="relative w-full h-screen min-h-[100svh] overflow-hidden bg-[#0A0D14]"
       >
-        {/* ── Background Building Image ── */}
+        {/* ── Background Building Video ── */}
         <div
           ref={backImageRef}
           className="absolute inset-0 z-[1] will-change-transform"
         >
-          <Image
-            src="/about/hero/hero_back_img_aboutus.png"
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-center"
+          <video
+            src="/about/hero/about-hero-video.mov"
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-full h-full object-cover object-center"
           />
         </div>
 
         {/* ── Dark Overlay ── */}
-        <div className="absolute inset-0 z-[3] bg-black/50 pointer-events-none" />
+        <div className="absolute inset-0 z-[3] bg-black/70 pointer-events-none" />
 
         {/* ── Grid Background Layer 1: Frame 2 (70% vignette) ── */}
         <div
@@ -1266,7 +1324,7 @@ export default function AboutHero() {
             {/* Scene 8B: Top text - "The Expertise Behind Every Solution" */}
             <div
               ref={scene8TextBRef}
-              className="absolute top-0 left-0 right-0 pt-12 md:pt-16 lg:pt-20 z-[10] opacity-0 will-change-transform"
+              className="absolute top-0 left-0 right-0 pt-20 md:pt-28 lg:pt-32 z-[10] opacity-0 will-change-transform"
             >
               <div className="text-center px-8">
                 <h2 className="font-sans text-[clamp(24px,5vw,32px)] md:text-[clamp(32px,4vw,40px)] lg:text-[clamp(36px,4vw,48px)] font-medium leading-[1.1] tracking-tight text-[#1a1a1a]">
@@ -1281,55 +1339,71 @@ export default function AboutHero() {
               className="absolute inset-0 flex items-center z-[20] opacity-0 will-change-transform pointer-events-none"
             >
               <div className="flex gap-6 md:gap-8 px-8 md:px-16 w-max">
-                {/* Person Profile Cards */}
-                <PersonProfileCard
-                  name="Ethan Carter"
-                  title="Founder & Chief Executive Officer"
-                  imageSrc="/about/team/Ethan-Carter.jpg"
-                  className="pointer-events-auto"
-                />
-                <PersonProfileCard
-                  name="Sophia Bennett"
-                  title="Chief Operating Officer"
-                  imageSrc="/about/team/Sophia-Bennett.jpg"
-                  className="pointer-events-auto"
-                />
-                <PersonProfileCard
-                  name="Liam Anderson"
-                  title="Chief Technology Officer"
-                  imageSrc="/about/team/Liam-Anderson.jpg"
-                  className="pointer-events-auto"
-                />
-                <PersonProfileCard
-                  name="Olivia Parker"
-                  title="Head of Product Design"
-                  imageSrc="/about/team/Olivia-Parker.jpg"
-                  className="pointer-events-auto"
-                />
-                <PersonProfileCard
-                  name="Noah Mitchell"
-                  title="Lead Software Engineer"
-                  imageSrc="/about/team/Noah-Mitchell.avif"
-                  className="pointer-events-auto"
-                />
-                <PersonProfileCard
-                  name="Ava Collins"
-                  title="Marketing & Brand Strategist"
-                  imageSrc="/about/team/Ava-Collins.avif"
-                  className="pointer-events-auto"
-                />
-                <PersonProfileCard
-                  name="Mason Brooks"
-                  title="Business Development Manager"
-                  imageSrc="/about/team/Mason-Brooks.jpg"
-                  className="pointer-events-auto"
-                />
-                <PersonProfileCard
-                  name="Isabella Reed"
-                  title="Customer Success Manager"
-                  imageSrc="/about/team/Isabella-Reed.jpg"
-                  className="pointer-events-auto"
-                />
+                {/* Person Profile Cards - wrapped for scale/opacity animation */}
+                <div ref={(el) => { if (el) scene8CardRefs.current[0] = el; }} className="will-change-transform">
+                  <PersonProfileCard
+                    name="Ethan Carter"
+                    title="Founder & Chief Executive Officer"
+                    imageSrc="/about/team/Ethan-Carter.jpg"
+                    className="pointer-events-auto"
+                  />
+                </div>
+                <div ref={(el) => { if (el) scene8CardRefs.current[1] = el; }} className="will-change-transform">
+                  <PersonProfileCard
+                    name="Sophia Bennett"
+                    title="Chief Operating Officer"
+                    imageSrc="/about/team/Sophia-Bennett.jpg"
+                    className="pointer-events-auto"
+                  />
+                </div>
+                <div ref={(el) => { if (el) scene8CardRefs.current[2] = el; }} className="will-change-transform">
+                  <PersonProfileCard
+                    name="Liam Anderson"
+                    title="Chief Technology Officer"
+                    imageSrc="/about/team/Liam-Anderson.jpg"
+                    className="pointer-events-auto"
+                  />
+                </div>
+                <div ref={(el) => { if (el) scene8CardRefs.current[3] = el; }} className="will-change-transform">
+                  <PersonProfileCard
+                    name="Olivia Parker"
+                    title="Head of Product Design"
+                    imageSrc="/about/team/Olivia-Parker.jpg"
+                    className="pointer-events-auto"
+                  />
+                </div>
+                <div ref={(el) => { if (el) scene8CardRefs.current[4] = el; }} className="will-change-transform">
+                  <PersonProfileCard
+                    name="Noah Mitchell"
+                    title="Lead Software Engineer"
+                    imageSrc="/about/team/Noah-Mitchell.avif"
+                    className="pointer-events-auto"
+                  />
+                </div>
+                <div ref={(el) => { if (el) scene8CardRefs.current[5] = el; }} className="will-change-transform">
+                  <PersonProfileCard
+                    name="Ava Collins"
+                    title="Marketing & Brand Strategist"
+                    imageSrc="/about/team/Ava-Collins.avif"
+                    className="pointer-events-auto"
+                  />
+                </div>
+                <div ref={(el) => { if (el) scene8CardRefs.current[6] = el; }} className="will-change-transform">
+                  <PersonProfileCard
+                    name="Mason Brooks"
+                    title="Business Development Manager"
+                    imageSrc="/about/team/Mason-Brooks.jpg"
+                    className="pointer-events-auto"
+                  />
+                </div>
+                <div ref={(el) => { if (el) scene8CardRefs.current[7] = el; }} className="will-change-transform">
+                  <PersonProfileCard
+                    name="Isabella Reed"
+                    title="Customer Success Manager"
+                    imageSrc="/about/team/Isabella-Reed.jpg"
+                    className="pointer-events-auto"
+                  />
+                </div>
               </div>
             </div>
           </div>
