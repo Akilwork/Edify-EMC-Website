@@ -16,9 +16,13 @@ export default function HomePage() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const scrollPos = window.scrollY || document.documentElement.scrollTop;
+      const hasSeenLoader = sessionStorage.getItem("hasSeenLoader");
+
       // Only play the loader animation if we are at the top of the page (Hero section)
-      if (scrollPos < 100) {
+      // and we haven't already seen the loader in this session
+      if (scrollPos < 100 && !hasSeenLoader) {
         setShowLoader(true);
+        sessionStorage.setItem("hasSeenLoader", "true");
       } else {
         setIsLoaded(true);
       }

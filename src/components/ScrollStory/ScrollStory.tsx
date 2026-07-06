@@ -155,6 +155,7 @@ export const ScrollStory = () => {
         ref={sectionRef}
         className={styles.section}
         aria-label="Edify services storytelling animation"
+        onContextMenu={(e) => e.preventDefault()}
       >
         <div
           className={styles.loader}
@@ -170,7 +171,18 @@ export const ScrollStory = () => {
           <span className={styles.loaderText}>Loading {loadProgress}%</span>
         </div>
 
-        <canvas ref={canvasRef} className={styles.canvas} aria-hidden="true" />
+        <canvas 
+          ref={canvasRef} 
+          className={styles.canvas} 
+          aria-hidden="true" 
+          onContextMenu={(e) => e.preventDefault()}
+        />
+
+        <div className={`${styles.textOverlay} ${loadState === 'ready' ? styles.visible : ''}`}>
+          <h2 className={styles.title}>
+            One Trusted Partner for Every Educational<br className={styles.desktopOnlyBr} /> Institution Need
+          </h2>
+        </div>
       </section>
     </div>
   );

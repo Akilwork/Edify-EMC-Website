@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X, Phone, ArrowRight } from "lucide-react";
+import { useConsultation } from "@/components/providers/ConsultationProvider";
 
 const NAV_LINKS = [
   { label: "HOME",     href: "/" },
@@ -16,6 +17,7 @@ export default function Navbar() {
   const [hidden, setHidden] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
+  const { openConsultation } = useConsultation();
 
   useEffect(() => {
     let lastScrollY = window.scrollY;
@@ -76,13 +78,13 @@ export default function Navbar() {
 
         {/* Desktop CTAs */}
         <div className="hidden md:flex items-center gap-2 flex-shrink-0">
-          <Link
-            href="/contact"
-            className="flex items-center gap-2 px-7 py-[14px] text-[14px] font-normal rounded-[40px] bg-white text-black hover:bg-white/90 transition-all duration-200 whitespace-nowrap cursor-pointer"
+          <button
+            onClick={openConsultation}
+            className="flex items-center gap-2 px-7 py-[14px] text-[14px] font-normal rounded-[40px] bg-white text-black hover:bg-white/90 transition-all duration-200 whitespace-nowrap cursor-pointer border-none outline-none"
           >
             Get a Free Consultation
             <ArrowRight size={18} />
-          </Link>
+          </button>
           <Link
             href="tel:+601234567890"
             className="flex items-center gap-2 px-7 py-[14px] text-[14px] font-normal rounded-[40px] bg-[#3a3a3a] text-white border border-white/60 hover:bg-[#4a4a4a] transition-all duration-200 cursor-pointer"
@@ -124,14 +126,16 @@ export default function Navbar() {
               </Link>
             ))}
             <div className="pt-4 border-t border-black/10 space-y-3">
-              <Link
-                href="/contact"
-                onClick={() => setMenuOpen(false)}
-                className="flex items-center justify-center gap-2 px-7 py-[14px] text-[14px] font-normal rounded-[40px] bg-black text-white cursor-pointer"
+              <button
+                onClick={() => {
+                  setMenuOpen(false);
+                  openConsultation();
+                }}
+                className="flex items-center justify-center w-full gap-2 px-7 py-[14px] text-[14px] font-normal rounded-[40px] bg-black text-white cursor-pointer border-none outline-none"
               >
                 Get a Free Consultation
                 <ArrowRight size={18} />
-              </Link>
+              </button>
               <Link
                 href="tel:+601234567890"
                 onClick={() => setMenuOpen(false)}
