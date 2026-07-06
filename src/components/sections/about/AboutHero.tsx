@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import GridBackground from "@/components/ui/GridBackground";
 import { DottedGlowBackground } from "@/components/ui/dotted-glow-background";
+import BlurText from "@/components/ui/BlurText";
+import PersonProfileCard from "@/components/ui/PersonProfileCard";
 
 export default function AboutHero() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -40,16 +42,21 @@ export default function AboutHero() {
   const scene7Image2Ref = useRef<HTMLDivElement>(null);
   const scene7Image3Ref = useRef<HTMLDivElement>(null);
   const scene7Image4Ref = useRef<HTMLDivElement>(null);
-  // Pagination dots (numbered version)
-  const scene7Dot1Ref = useRef<HTMLDivElement>(null);
-  const scene7Dot2Ref = useRef<HTMLDivElement>(null);
-  const scene7Dot3Ref = useRef<HTMLDivElement>(null);
-  const scene7Dot4Ref = useRef<HTMLDivElement>(null);
   // Pagination dots (lettered version)
   const scene7DotARef = useRef<HTMLDivElement>(null);
   const scene7DotBRef = useRef<HTMLDivElement>(null);
   const scene7DotCRef = useRef<HTMLDivElement>(null);
   const scene7DotDRef = useRef<HTMLDivElement>(null);
+  // Scene 8 refs
+  const scene8Ref = useRef<HTMLDivElement>(null);
+  const scene8TextARef = useRef<HTMLDivElement>(null);
+  const scene8TextBRef = useRef<HTMLDivElement>(null);
+  const scene8WhiteBgRef = useRef<HTMLDivElement>(null);
+  const scene8GridCyanRef = useRef<HTMLDivElement>(null);
+  const scene8GridDarkRef = useRef<HTMLDivElement>(null);
+  const scene8CardsContainerRef = useRef<HTMLDivElement>(null);
+  const scene8WhiteVignetteRef = useRef<HTMLDivElement>(null);
+  const [scene8Visible, setScene8Visible] = useState(false);
 
   const cleanupFnRef = useRef<(() => void) | null>(null);
 
@@ -75,7 +82,7 @@ export default function AboutHero() {
 
         gsap.registerPlugin(ScrollTrigger);
 
-        // Safeguard: if component has unmounted or refs are not ready, abort
+        // Safeguard: if component has unmounted or critical refs are not ready, abort
         if (
           !sectionRef.current ||
           !backImageRef.current ||
@@ -83,6 +90,11 @@ export default function AboutHero() {
           !scene4Ref.current
         ) {
           return;
+        }
+
+        // Scene 8 refs check - warn but don't abort if not ready
+        if (!scene8Ref.current || !scene8GridCyanRef.current || !scene8TextARef.current) {
+          console.warn("Scene 8 refs not ready, skipping Scene 8 animations");
         }
 
         // ─── Initial States ──────────────────────────────────────────────────────
@@ -96,6 +108,12 @@ export default function AboutHero() {
         if (scene7LeftRef.current) gsap.set(scene7LeftRef.current, { autoAlpha: 0, x: -50 });
         if (scene7RightRef.current) gsap.set(scene7RightRef.current, { autoAlpha: 0, x: 50, scale: 0.9 });
         if (scene7BlackBgRef.current) gsap.set(scene7BlackBgRef.current, { autoAlpha: 0 });
+        if (scene8Ref.current) gsap.set(scene8Ref.current, { autoAlpha: 0, filter: "blur(12px)" });
+        if (scene8WhiteBgRef.current) gsap.set(scene8WhiteBgRef.current, { autoAlpha: 0 });
+        if (scene8GridDarkRef.current) gsap.set(scene8GridDarkRef.current, { autoAlpha: 0 });
+        if (scene8WhiteVignetteRef.current) gsap.set(scene8WhiteVignetteRef.current, { autoAlpha: 0 });
+        if (scene8TextBRef.current) gsap.set(scene8TextBRef.current, { autoAlpha: 0, y: -20 });
+        if (scene8CardsContainerRef.current) gsap.set(scene8CardsContainerRef.current, { autoAlpha: 0, y: 30 });
         if (whiteBg) gsap.set(whiteBg, { autoAlpha: 0 });
         gsap.set(gridBg70, { autoAlpha: 0 });
         gsap.set(gridBg30, { autoAlpha: 0 });
@@ -108,10 +126,10 @@ export default function AboutHero() {
         if (scene7Image4Ref.current) gsap.set(scene7Image4Ref.current, { autoAlpha: 0 });
 
         // Scene 7 Dots initial states
-        if (scene7Dot1Ref.current) gsap.set(scene7Dot1Ref.current, { width: 48, backgroundColor: "#FFFFFF" });
-        if (scene7Dot2Ref.current) gsap.set(scene7Dot2Ref.current, { width: 8, backgroundColor: "#4B5563" });
-        if (scene7Dot3Ref.current) gsap.set(scene7Dot3Ref.current, { width: 8, backgroundColor: "#4B5563" });
-        if (scene7Dot4Ref.current) gsap.set(scene7Dot4Ref.current, { width: 8, backgroundColor: "#4B5563" });
+        if (scene7DotARef.current) gsap.set(scene7DotARef.current, { width: 48, backgroundColor: "#FFFFFF" });
+        if (scene7DotBRef.current) gsap.set(scene7DotBRef.current, { width: 8, backgroundColor: "#4B5563" });
+        if (scene7DotCRef.current) gsap.set(scene7DotCRef.current, { width: 8, backgroundColor: "#4B5563" });
+        if (scene7DotDRef.current) gsap.set(scene7DotDRef.current, { width: 8, backgroundColor: "#4B5563" });
 
         // ─── Initial Parallax Animation on Page Load ─────────────────────────────
         const loadTimeline = gsap.timeline({ defaults: { ease: "power2.out" } });
@@ -137,10 +155,16 @@ export default function AboutHero() {
           scrollTrigger: {
             trigger: section,
             start: "top top",
-            end: "+=7500vh", // Extended for Scene 6 + Scene 7 (4 sub-scenes)
+            end: "+=30000vh", // Extended for all scenes with Scene 8 and horizontal scroll
             pin: true,
             pinSpacing: true,
             scrub: 1,
+            onUpdate: (self) => {
+              // Trigger Scene 8 BlurText animation when Scene 8 starts fading in (at 26.0 = ~74% progress)
+              if (self.progress >= 0.74 && !scene8Visible) {
+                setScene8Visible(true);
+              }
+            },
           },
         });
 
@@ -153,17 +177,17 @@ export default function AboutHero() {
           ease: "none",
         });
 
-        // ─── Scene 2 → Scene 4 Cross-fade (starts at 0.6, duration 0.3) ───────────────
+        // ─── Scene 2 → Scene 4 Cross-fade (starts at 2.5, duration 0.5) ───────────────
         tl.to(
           scene2Ref.current,
           {
             autoAlpha: 0,
             y: -30,
             filter: "blur(12px)",
-            duration: 0.3,
+            duration: 0.5,
             ease: "power2.inOut",
           },
-          0.6
+          2.5
         );
 
         tl.to(
@@ -171,35 +195,35 @@ export default function AboutHero() {
           {
             autoAlpha: 1,
             filter: "blur(0px)",
-            duration: 0.5,
+            duration: 0.8,
             ease: "power2.inOut",
           },
-          0.9
+          3.0
         );
 
-        // ─── Scene 4 → Scene 5 Transition (starts at 1.5, duration 0.3) ──────────────────────────────────
+        // ─── Scene 4 → Scene 5 Transition (starts at 6.0, duration 0.5) ──────────────────────────────────
         tl.to(
           scene4Ref.current,
           {
             autoAlpha: 0,
             y: -30,
             filter: "blur(12px)",
-            duration: 0.3,
+            duration: 0.5,
             ease: "power2.inOut",
           },
-          1.5
+          6.0
         );
 
-        // ─── Scene 5 (VisionValues) fades in (starts at 1.8) ────────────────────────────────────────────
+        // ─── Scene 5 (VisionValues) fades in (starts at 6.5) ────────────────────────────────────────────
         if (scene5Ref.current) {
           tl.to(
             scene5Ref.current,
             {
               autoAlpha: 1,
-              duration: 0.4,
+              duration: 0.6,
               ease: "power2.out",
             },
-            1.8
+            6.5
           );
         }
 
@@ -210,10 +234,10 @@ export default function AboutHero() {
               autoAlpha: 1,
               x: 0,
               filter: "blur(0px)",
-              duration: 0.6,
+              duration: 0.8,
               ease: "power3.out",
             },
-            1.85
+            6.6
           );
         }
 
@@ -225,14 +249,14 @@ export default function AboutHero() {
               x: 0,
               scale: 1,
               filter: "blur(0px)",
-              duration: 0.8,
+              duration: 1.0,
               ease: "back.out(1.7)",
             },
-            1.9
+            6.7
           );
         }
 
-        // ─── Scene 5 → Scene 6 Transition (starts at 2.2) ─────────────────────────────────────────────────
+        // ─── Scene 5 → Scene 6 Transition (starts at 10.0) ─────────────────────────────────────────────────
         if (scene5Ref.current) {
           tl.to(
             scene5Ref.current,
@@ -240,24 +264,24 @@ export default function AboutHero() {
               autoAlpha: 0,
               y: -40,
               filter: "blur(12px)",
-              duration: 0.3,
+              duration: 0.5,
               ease: "power2.inOut",
             },
-            2.2
+            10.0
           );
         }
 
-        // ─── Scene 6 (Stats) fades in (starts at 2.5) ─────────────────────────────────────
+        // ─── Scene 6 (Stats) fades in (starts at 10.5) ─────────────────────────────────────
         if (scene6Ref.current) {
           tl.to(
             scene6Ref.current,
             {
               autoAlpha: 1,
               filter: "blur(0px)",
-              duration: 0.5,
+              duration: 0.6,
               ease: "power2.inOut",
             },
-            2.5
+            10.5
           );
         }
 
@@ -271,19 +295,19 @@ export default function AboutHero() {
               counterObj,
               {
                 value: targetValue,
-                duration: 1.0,
+                duration: 1.2,
                 ease: "power3.out",
                 onUpdate: function () {
                   const current = Math.round(this.targets()[0].value);
                   (el as HTMLElement).innerHTML = current.toLocaleString();
                 },
               },
-              2.8 + (index * 0.15)
+              11.0 + (index * 0.2)
             );
           });
         }
 
-        // ─── Scene 6 → Scene 7 Transition (starts at 3.9) ─────────────────────
+        // ─── Scene 6 → Scene 7 Transition (starts at 15.0) ─────────────────────
         if (scene6Ref.current) {
           tl.to(
             scene6Ref.current,
@@ -291,10 +315,10 @@ export default function AboutHero() {
               autoAlpha: 0,
               scale: 1.15,
               filter: "blur(15px)",
-              duration: 0.3,
+              duration: 0.4,
               ease: "power2.inOut",
             },
-            3.9
+            15.0
           );
         }
 
@@ -304,10 +328,10 @@ export default function AboutHero() {
             scene7BlackBgRef.current,
             {
               autoAlpha: 1,
-              duration: 0.5,
+              duration: 0.6,
               ease: "power2.inOut",
             },
-            4.2
+            15.4
           );
         }
 
@@ -318,30 +342,30 @@ export default function AboutHero() {
             {
               autoAlpha: 1,
               filter: "blur(0px)",
-              duration: 0.6,
+              duration: 0.7,
               ease: "power2.inOut",
             },
-            4.2
+            15.4
           );
         }
 
         // ─── Scene 7 Sub-Scene Animations ──────────────────────────────────────────────────────────────
 
-        // Scene 7A - Initial fade in (at 4.3)
+        // Scene 7A - Initial fade in (at 15.6)
         if (scene7TextARef.current) {
           tl.fromTo(
             scene7TextARef.current,
             { opacity: 0, x: -30 },
-            { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" },
-            4.3
+            { opacity: 1, x: 0, duration: 0.7, ease: "power3.out" },
+            15.6
           );
         }
         if (scene7ImgARef.current) {
           tl.fromTo(
             scene7ImgARef.current,
             { opacity: 0, x: 30, scale: 0.95 },
-            { opacity: 1, x: 0, scale: 1, duration: 0.7, ease: "back.out(1.5)" },
-            4.35
+            { opacity: 1, x: 0, scale: 1, duration: 0.8, ease: "back.out(1.5)" },
+            15.65
           );
         }
         // Highlight dot A
@@ -349,28 +373,28 @@ export default function AboutHero() {
           tl.fromTo(
             scene7DotARef.current,
             { opacity: 0.4, width: "8px" },
-            { opacity: 1, width: "48px", duration: 0.4, ease: "power2.out" },
-            4.4
+            { opacity: 1, width: "48px", duration: 0.5, ease: "power2.out" },
+            15.7
           );
         }
 
-        // Scene 7A → 7B Transition (at 5.5)
+        // Scene 7A → 7B Transition (at 18.0)
         if (scene7TextARef.current) {
           tl.to(
             scene7TextARef.current,
-            { opacity: 0, x: -20, filter: "blur(8px)", duration: 0.4, ease: "power2.inOut" },
-            5.5
+            { opacity: 0, x: -20, filter: "blur(8px)", duration: 0.5, ease: "power2.inOut" },
+            18.0
           );
         }
         if (scene7ImgARef.current) {
           tl.to(
             scene7ImgARef.current,
-            { opacity: 0, x: 20, filter: "blur(8px)", duration: 0.4, ease: "power2.inOut" },
-            5.5
+            { opacity: 0, x: 20, filter: "blur(8px)", duration: 0.5, ease: "power2.inOut" },
+            18.0
           );
         }
         if (scene7DotARef.current) {
-          tl.to(scene7DotARef.current, { opacity: 0.4, width: "8px", duration: 0.3 }, 5.5);
+          tl.to(scene7DotARef.current, { opacity: 0.4, width: "8px", duration: 0.4 }, 18.0);
         }
 
         // Scene 7B fades in
@@ -378,44 +402,44 @@ export default function AboutHero() {
           tl.fromTo(
             scene7TextBRef.current,
             { opacity: 0, x: 20, filter: "blur(8px)" },
-            { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.5, ease: "power2.out" },
-            5.5
+            { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.6, ease: "power2.out" },
+            18.0
           );
         }
         if (scene7ImgBRef.current) {
           tl.fromTo(
             scene7ImgBRef.current,
             { opacity: 0, x: -20, scale: 0.95, filter: "blur(8px)" },
-            { opacity: 1, x: 0, scale: 1, filter: "blur(0px)", duration: 0.6, ease: "back.out(1.5)" },
-            5.55
+            { opacity: 1, x: 0, scale: 1, filter: "blur(0px)", duration: 0.7, ease: "back.out(1.5)" },
+            18.05
           );
         }
         if (scene7DotBRef.current) {
           tl.fromTo(
             scene7DotBRef.current,
             { opacity: 0.4, width: "8px" },
-            { opacity: 1, width: "48px", duration: 0.4, ease: "power2.out" },
-            5.6
+            { opacity: 1, width: "48px", duration: 0.5, ease: "power2.out" },
+            18.1
           );
         }
 
-        // Scene 7B → 7C Transition (at 6.7)
+        // Scene 7B → 7C Transition (at 20.5)
         if (scene7TextBRef.current) {
           tl.to(
             scene7TextBRef.current,
-            { opacity: 0, x: -20, filter: "blur(8px)", duration: 0.4, ease: "power2.inOut" },
-            6.7
+            { opacity: 0, x: -20, filter: "blur(8px)", duration: 0.5, ease: "power2.inOut" },
+            20.5
           );
         }
         if (scene7ImgBRef.current) {
           tl.to(
             scene7ImgBRef.current,
-            { opacity: 0, x: 20, filter: "blur(8px)", duration: 0.4, ease: "power2.inOut" },
-            6.7
+            { opacity: 0, x: 20, filter: "blur(8px)", duration: 0.5, ease: "power2.inOut" },
+            20.5
           );
         }
         if (scene7DotBRef.current) {
-          tl.to(scene7DotBRef.current, { opacity: 0.4, width: "8px", duration: 0.3 }, 6.7);
+          tl.to(scene7DotBRef.current, { opacity: 0.4, width: "8px", duration: 0.4 }, 20.5);
         }
 
         // Scene 7C fades in
@@ -423,44 +447,44 @@ export default function AboutHero() {
           tl.fromTo(
             scene7TextCRef.current,
             { opacity: 0, x: 20, filter: "blur(8px)" },
-            { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.5, ease: "power2.out" },
-            6.7
+            { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.6, ease: "power2.out" },
+            20.5
           );
         }
         if (scene7ImgCRef.current) {
           tl.fromTo(
             scene7ImgCRef.current,
             { opacity: 0, x: -20, scale: 0.95, filter: "blur(8px)" },
-            { opacity: 1, x: 0, scale: 1, filter: "blur(0px)", duration: 0.6, ease: "back.out(1.5)" },
-            6.75
+            { opacity: 1, x: 0, scale: 1, filter: "blur(0px)", duration: 0.7, ease: "back.out(1.5)" },
+            20.55
           );
         }
         if (scene7DotCRef.current) {
           tl.fromTo(
             scene7DotCRef.current,
             { opacity: 0.4, width: "8px" },
-            { opacity: 1, width: "48px", duration: 0.4, ease: "power2.out" },
-            6.8
+            { opacity: 1, width: "48px", duration: 0.5, ease: "power2.out" },
+            20.6
           );
         }
 
-        // Scene 7C → 7D Transition (at 7.9)
+        // Scene 7C → 7D Transition (at 23.0)
         if (scene7TextCRef.current) {
           tl.to(
             scene7TextCRef.current,
-            { opacity: 0, x: -20, filter: "blur(8px)", duration: 0.4, ease: "power2.inOut" },
-            7.9
+            { opacity: 0, x: -20, filter: "blur(8px)", duration: 0.5, ease: "power2.inOut" },
+            23.0
           );
         }
         if (scene7ImgCRef.current) {
           tl.to(
             scene7ImgCRef.current,
-            { opacity: 0, x: 20, filter: "blur(8px)", duration: 0.4, ease: "power2.inOut" },
-            7.9
+            { opacity: 0, x: 20, filter: "blur(8px)", duration: 0.5, ease: "power2.inOut" },
+            23.0
           );
         }
         if (scene7DotCRef.current) {
-          tl.to(scene7DotCRef.current, { opacity: 0.4, width: "8px", duration: 0.3 }, 7.9);
+          tl.to(scene7DotCRef.current, { opacity: 0.4, width: "8px", duration: 0.4 }, 23.0);
         }
 
         // Scene 7D fades in
@@ -468,24 +492,120 @@ export default function AboutHero() {
           tl.fromTo(
             scene7TextDRef.current,
             { opacity: 0, x: 20, filter: "blur(8px)" },
-            { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.5, ease: "power2.out" },
-            7.9
+            { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.6, ease: "power2.out" },
+            23.0
           );
         }
         if (scene7ImgDRef.current) {
           tl.fromTo(
             scene7ImgDRef.current,
             { opacity: 0, x: -20, scale: 0.95, filter: "blur(8px)" },
-            { opacity: 1, x: 0, scale: 1, filter: "blur(0px)", duration: 0.6, ease: "back.out(1.5)" },
-            7.95
+            { opacity: 1, x: 0, scale: 1, filter: "blur(0px)", duration: 0.7, ease: "back.out(1.5)" },
+            23.05
           );
         }
         if (scene7DotDRef.current) {
           tl.fromTo(
             scene7DotDRef.current,
             { opacity: 0.4, width: "8px" },
-            { opacity: 1, width: "48px", duration: 0.4, ease: "power2.out" },
-            8.0
+            { opacity: 1, width: "48px", duration: 0.5, ease: "power2.out" },
+            23.1
+          );
+        }
+
+        // ─── Scene 7D → Scene 8 Transition (at 25.5) ─────────────────────
+        if (scene7Ref.current) {
+          tl.to(
+            scene7Ref.current,
+            { autoAlpha: 0, filter: "blur(12px)", duration: 0.5, ease: "power2.inOut" },
+            25.5
+          );
+        }
+        if (scene7BlackBgRef.current) {
+          tl.to(
+            scene7BlackBgRef.current,
+            { autoAlpha: 0, duration: 0.5, ease: "power2.inOut" },
+            25.5
+          );
+        }
+
+        // Scene 8 fades in (at 26.0)
+        if (scene8Ref.current) {
+          tl.to(
+            scene8Ref.current,
+            { autoAlpha: 1, filter: "blur(0px)", duration: 0.7, ease: "power2.inOut" },
+            26.0
+          );
+        }
+
+        // ─── Scene 8A → 8B Transition (at 28.0) ─────────────────────
+        // Fade out initial text
+        if (scene8TextARef.current) {
+          tl.to(
+            scene8TextARef.current,
+            { autoAlpha: 0, y: -20, filter: "blur(8px)", duration: 0.5, ease: "power2.inOut" },
+            28.0
+          );
+        }
+
+        // Fade in white background
+        if (scene8WhiteBgRef.current) {
+          tl.to(
+            scene8WhiteBgRef.current,
+            { autoAlpha: 1, duration: 0.6, ease: "power2.inOut" },
+            28.0
+          );
+        }
+
+        // Fade in white vignette (for Scene 8B edge blending)
+        if (scene8WhiteVignetteRef.current) {
+          tl.to(
+            scene8WhiteVignetteRef.current,
+            { autoAlpha: 1, duration: 0.6, ease: "power2.inOut" },
+            28.0
+          );
+        }
+
+        // Cross-fade grids: cyan → dark
+        if (scene8GridCyanRef.current) {
+          tl.to(
+            scene8GridCyanRef.current,
+            { autoAlpha: 0, duration: 0.6, ease: "power2.inOut" },
+            28.0
+          );
+        }
+        if (scene8GridDarkRef.current) {
+          tl.to(
+            scene8GridDarkRef.current,
+            { autoAlpha: 1, duration: 0.6, ease: "power2.inOut" },
+            28.0
+          );
+        }
+
+        // Fade in new text at top
+        if (scene8TextBRef.current) {
+          tl.to(
+            scene8TextBRef.current,
+            { autoAlpha: 1, y: 0, duration: 0.6, ease: "power2.out" },
+            28.3
+          );
+        }
+
+        // Fade in person cards with stagger
+        if (scene8CardsContainerRef.current) {
+          tl.to(
+            scene8CardsContainerRef.current,
+            { autoAlpha: 1, y: 0, duration: 0.8, ease: "power2.out" },
+            28.5
+          );
+        }
+
+        // Horizontal scroll for cards (from 29.0 to 35.0)
+        if (scene8CardsContainerRef.current) {
+          tl.to(
+            scene8CardsContainerRef.current,
+            { x: -2000, duration: 6, ease: "none" },
+            29.0
           );
         }
 
@@ -793,7 +913,7 @@ export default function AboutHero() {
           {/* Scene 7 - One Vision section with 4 sub-scenes */}
           <div
             ref={scene7Ref}
-            className="absolute inset-0 flex items-center justify-center p-8 md:px-16 lg:px-20 overflow-hidden z-[25] pointer-events-auto opacity-0"
+            className="absolute inset-0 flex items-center justify-center p-8 md:px-16 lg:px-20 overflow-hidden z-[5] pointer-events-auto opacity-0"
           >
             {/* Black background with grid */}
             <div
@@ -817,47 +937,50 @@ export default function AboutHero() {
               {/* Left - Static headline + Dynamic text content */}
               <div className="text-left pl-4 md:pl-8 pointer-events-auto relative">
                 {/* Static headline - always visible */}
-                <h2 className="font-sans text-[2rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.5rem] xl:text-[4rem] font-light leading-[1.1] tracking-tight -mt-24" style={{ color: "#71C4FF" }}>
+                <h2 className="font-sans text-[2rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.5rem] xl:text-[4rem] font-light leading-[1.1] tracking-tight" style={{ color: "#71C4FF" }}>
                   <span className="block">One Vision.</span>
                 </h2>
                 <h3 className="font-sans text-[2rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.5rem] xl:text-[4rem] font-light leading-[1.1] tracking-tight mt-4" style={{ color: "#71C4FF" }}>
                   <span className="block">Multiple Areas Of Expertise.</span>
                 </h3>
 
-                {/* Sub-scene 7A - Text */}
-                <p
-                  ref={scene7TextARef}
-                  className="text-white text-base md:text-lg lg:text-xl leading-relaxed max-w-xl font-light absolute top-[70px] sm:top-[90px] md:top-[110px] lg:top-[130px] opacity-0 will-change-transform"
-                >
-                  From human resources and finance to technology, infrastructure, student development, and operational support, Edify delivers connected solutions designed for institutional success.
-                </p>
+                {/* Dynamic text content container - positioned below headline */}
+                <div className="relative mt-8 md:mt-10 lg:mt-12">
+                  {/* Sub-scene 7A - Text */}
+                  <p
+                    ref={scene7TextARef}
+                    className="text-white text-base md:text-lg lg:text-xl leading-relaxed max-w-xl font-light absolute inset-0 opacity-0 will-change-transform"
+                  >
+                    From human resources and finance to technology, infrastructure, student development, and operational support, Edify delivers connected solutions designed for institutional success.
+                  </p>
 
-                {/* Sub-scene 7B - Text */}
-                <p
-                  ref={scene7TextBRef}
-                  className="text-white text-base md:text-lg lg:text-xl leading-relaxed max-w-xl font-light absolute top-[70px] sm:top-[90px] md:top-[110px] lg:top-[130px] opacity-0 will-change-transform"
-                >
-                  We don't simply advise institutions. We work alongside them to plan, implement, support, and sustain meaningful change.
-                </p>
+                  {/* Sub-scene 7B - Text */}
+                  <p
+                    ref={scene7TextBRef}
+                    className="text-white text-base md:text-lg lg:text-xl leading-relaxed max-w-xl font-light absolute inset-0 opacity-0 will-change-transform"
+                  >
+                    We don't simply advise institutions. We work alongside them to plan, implement, support, and sustain meaningful change.
+                  </p>
 
-                {/* Sub-scene 7C - Text */}
-                <p
-                  ref={scene7TextCRef}
-                  className="text-white text-base md:text-lg lg:text-xl leading-relaxed max-w-xl font-light absolute top-[70px] sm:top-[90px] md:top-[110px] lg:top-[130px] opacity-0 will-change-transform"
-                >
-                  Every institution is unique. Our solutions are designed to align with individual goals, operational requirements, and long-term growth ambitions.
-                </p>
+                  {/* Sub-scene 7C - Text */}
+                  <p
+                    ref={scene7TextCRef}
+                    className="text-white text-base md:text-lg lg:text-xl leading-relaxed max-w-xl font-light absolute inset-0 opacity-0 will-change-transform"
+                  >
+                    Every institution is unique. Our solutions are designed to align with individual goals, operational requirements, and long-term growth ambitions.
+                  </p>
 
-                {/* Sub-scene 7D - Text */}
-                <p
-                  ref={scene7TextDRef}
-                  className="text-white text-base md:text-lg lg:text-xl leading-relaxed max-w-xl font-light absolute top-[70px] sm:top-[90px] md:top-[110px] lg:top-[130px] opacity-0 will-change-transform"
-                >
-                  A commitment to educational excellence, institutional growth, and long-term impact drives every decision makes.
-                </p>
+                  {/* Sub-scene 7D - Text */}
+                  <p
+                    ref={scene7TextDRef}
+                    className="text-white text-base md:text-lg lg:text-xl leading-relaxed max-w-xl font-light absolute inset-0 opacity-0 will-change-transform"
+                  >
+                    A commitment to educational excellence, institutional growth, and long-term impact drives every decision makes.
+                  </p>
+                </div>
 
                 {/* Pagination indicator - 4 dots */}
-                <div className="flex items-center gap-2 absolute top-[180px] sm:top-[200px] md:top-[220px] lg:top-[240px]">
+                <div className="flex items-center gap-2 mt-32 md:mt-36 lg:mt-40">
                   <div
                     ref={scene7DotARef}
                     className="h-0.5 bg-white opacity-40 will-change-transform"
@@ -1059,48 +1182,154 @@ export default function AboutHero() {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
 
-              {/* Right - Hexagonal network image with 4 carousel steps */}
-              <div ref={scene7RightRef} className="flex items-center justify-center will-change-transform w-full">
-                <div className="relative w-full max-w-[1000px] aspect-square flex items-center justify-center">
-                  <div ref={scene7Image1Ref} className="absolute inset-0 flex items-center justify-center transition-all duration-300">
-                    <Image
-                      src="/about/hero/img1-vision.png"
-                      alt="One Vision - Area 1"
-                      fill
-                      className="object-contain"
-                      sizes="(max-width: 768px) 600px, (max-width: 1024px) 800px, 1000px"
-                      priority
+          {/* Scene 8 - Leadership Driven → Expertise Behind Every Solution */}
+          <div
+            ref={scene8Ref}
+            className="absolute inset-0 flex items-center justify-center overflow-hidden z-[5] opacity-0"
+          >
+            {/* Scene 8A: Black background */}
+            <div className="absolute inset-0 z-0 bg-black" />
+
+            {/* Scene 8A: Cyan/Blue Grid */}
+            <div
+              ref={scene8GridCyanRef}
+              className="absolute inset-0 z-[1] will-change-opacity"
+            >
+              <GridBackground
+                lineColor="rgba(113, 196, 255, 0.2)"
+                dotColor="rgba(113, 196, 255, 0.4)"
+                gridSize={50}
+                dotSize={1.5}
+                vignetteIntensity={60}
+              />
+            </div>
+
+            {/* Scene 8B: White background overlay */}
+            <div
+              ref={scene8WhiteBgRef}
+              className="absolute inset-0 z-[2] bg-white opacity-0 will-change-opacity"
+            />
+
+            {/* Scene 8B: Dark Grid (for white background) */}
+            <div
+              ref={scene8GridDarkRef}
+              className="absolute inset-0 z-[3] opacity-0 will-change-opacity"
+            >
+              <GridBackground
+                lineColor="rgba(59, 130, 246, 0.15)"
+                dotColor="rgba(59, 130, 246, 0.3)"
+                gridSize={50}
+                dotSize={1.5}
+                showVignette={false}
+              />
+            </div>
+
+            {/* Scene 8B: White vignette overlay for blending edges */}
+            <div
+              ref={scene8WhiteVignetteRef}
+              className="absolute inset-0 z-[4] pointer-events-none opacity-0 will-change-opacity"
+            >
+              <div
+                className="absolute inset-0"
+                style={{
+                  background: "radial-gradient(ellipse at center, transparent 30%, rgba(255, 255, 255, 0.85) 70%, rgba(255, 255, 255, 1) 100%)",
+                }}
+              />
+            </div>
+
+            {/* Scene 8A: Center text content - "Leadership Driven. Expertise Backed." */}
+            <div
+              ref={scene8TextARef}
+              className="absolute inset-0 flex items-center justify-center p-8 md:px-16 lg:px-20 z-[10]"
+            >
+              <div className="text-center max-w-[1600px] w-full mx-auto">
+                <h1 className="font-sans text-[clamp(28px,6vw,36px)] md:text-[clamp(42px,5vw,48px)] lg:text-[clamp(48px,5vw,64px)] 2xl:text-[clamp(60px,4.5vw,68px)] font-medium leading-[1.1] tracking-tight text-white">
+                  {scene8Visible && (
+                    <BlurText
+                      text="Leadership Driven. Expertise Backed."
+                      animateBy="words"
+                      direction="top"
+                      delay={100}
+                      stepDuration={0.4}
+                      className="flex flex-wrap justify-center"
+                      threshold={0.5}
+                      rootMargin="0px"
                     />
-                  </div>
-                  <div ref={scene7Image2Ref} className="absolute inset-0 flex items-center justify-center transition-all duration-300 opacity-0">
-                    <Image
-                      src="/about/hero/img2-vision.png"
-                      alt="One Vision - Area 2"
-                      fill
-                      className="object-contain"
-                      sizes="(max-width: 768px) 600px, (max-width: 1024px) 800px, 1000px"
-                    />
-                  </div>
-                  <div ref={scene7Image3Ref} className="absolute inset-0 flex items-center justify-center transition-all duration-300 opacity-0">
-                    <Image
-                      src="/about/hero/img3-vision.png"
-                      alt="One Vision - Area 3"
-                      fill
-                      className="object-contain"
-                      sizes="(max-width: 768px) 600px, (max-width: 1024px) 800px, 1000px"
-                    />
-                  </div>
-                  <div ref={scene7Image4Ref} className="absolute inset-0 flex items-center justify-center transition-all duration-300 opacity-0">
-                    <Image
-                      src="/about/hero/img4-vision.png"
-                      alt="One Vision - Area 4"
-                      fill
-                      className="object-contain"
-                      sizes="(max-width: 768px) 600px, (max-width: 1024px) 800px, 1000px"
-                    />
-                  </div>
-                </div>
+                  )}
+                </h1>
+              </div>
+            </div>
+
+            {/* Scene 8B: Top text - "The Expertise Behind Every Solution" */}
+            <div
+              ref={scene8TextBRef}
+              className="absolute top-0 left-0 right-0 pt-12 md:pt-16 lg:pt-20 z-[10] opacity-0 will-change-transform"
+            >
+              <div className="text-center px-8">
+                <h2 className="font-sans text-[clamp(24px,5vw,32px)] md:text-[clamp(32px,4vw,40px)] lg:text-[clamp(36px,4vw,48px)] font-medium leading-[1.1] tracking-tight text-[#1a1a1a]">
+                  The Expertise Behind Every Solution
+                </h2>
+              </div>
+            </div>
+
+            {/* Scene 8B: Person Cards - Horizontal Scroll */}
+            <div
+              ref={scene8CardsContainerRef}
+              className="absolute inset-0 flex items-center z-[20] opacity-0 will-change-transform pointer-events-none"
+            >
+              <div className="flex gap-6 md:gap-8 px-8 md:px-16 w-max">
+                {/* Person Profile Cards */}
+                <PersonProfileCard
+                  name="Ethan Carter"
+                  title="Founder & Chief Executive Officer"
+                  imageSrc="/about/team/Ethan-Carter.jpg"
+                  className="pointer-events-auto"
+                />
+                <PersonProfileCard
+                  name="Sophia Bennett"
+                  title="Chief Operating Officer"
+                  imageSrc="/about/team/Sophia-Bennett.jpg"
+                  className="pointer-events-auto"
+                />
+                <PersonProfileCard
+                  name="Liam Anderson"
+                  title="Chief Technology Officer"
+                  imageSrc="/about/team/Liam-Anderson.jpg"
+                  className="pointer-events-auto"
+                />
+                <PersonProfileCard
+                  name="Olivia Parker"
+                  title="Head of Product Design"
+                  imageSrc="/about/team/Olivia-Parker.jpg"
+                  className="pointer-events-auto"
+                />
+                <PersonProfileCard
+                  name="Noah Mitchell"
+                  title="Lead Software Engineer"
+                  imageSrc="/about/team/Noah-Mitchell.avif"
+                  className="pointer-events-auto"
+                />
+                <PersonProfileCard
+                  name="Ava Collins"
+                  title="Marketing & Brand Strategist"
+                  imageSrc="/about/team/Ava-Collins.avif"
+                  className="pointer-events-auto"
+                />
+                <PersonProfileCard
+                  name="Mason Brooks"
+                  title="Business Development Manager"
+                  imageSrc="/about/team/Mason-Brooks.jpg"
+                  className="pointer-events-auto"
+                />
+                <PersonProfileCard
+                  name="Isabella Reed"
+                  title="Customer Success Manager"
+                  imageSrc="/about/team/Isabella-Reed.jpg"
+                  className="pointer-events-auto"
+                />
               </div>
             </div>
           </div>
