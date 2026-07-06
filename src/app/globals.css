@@ -80,6 +80,15 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 3px;
 }
 
+/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
 @layer utilities {
   .text-gradient {
     background: linear-gradient(135deg, #3ABAB4 0%, #5DD9D3 50%, #3ABAB4 100%);

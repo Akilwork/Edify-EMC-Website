@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Toaster } from "@/components/ui/toaster";
+import { ConsultationProvider } from "@/components/providers/ConsultationProvider";
 
 const interTight = Inter_Tight({
   subsets: ["latin"],
@@ -41,11 +42,14 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${interTight.variable} ${playfair.variable} dark`} suppressHydrationWarning>
       <body suppressHydrationWarning>
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
-        <Toaster />
+        <ConsultationProvider>
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+          <Toaster />
+        </ConsultationProvider>
       </body>
     </html>
   );
 }
+

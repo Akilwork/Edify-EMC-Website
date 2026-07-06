@@ -5,10 +5,12 @@ import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { useConsultation } from "@/components/providers/ConsultationProvider";
 
 export default function CtaSection({ animate = true }: { animate?: boolean }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+  const { openConsultation } = useConsultation();
 
   return (
     <section id="cta" className="relative h-[100svh] flex items-center justify-center overflow-hidden py-16 sm:py-20 lg:py-24">
@@ -59,16 +61,16 @@ export default function CtaSection({ animate = true }: { animate?: boolean }) {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
           >
-            <Link
-              href="/contact"
-              className="group flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-white text-gray-900 font-sans text-[clamp(0.8125rem,0.75rem+0.28vw,0.875rem)] font-semibold rounded-full hover:bg-white/90 transition-all duration-300 shadow-xl cursor-pointer w-full sm:w-auto justify-center"
+            <button
+              onClick={openConsultation}
+              className="group flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-white text-gray-900 font-sans text-[clamp(0.8125rem,0.75rem+0.28vw,0.875rem)] font-semibold rounded-full hover:bg-white/90 transition-all duration-300 shadow-xl cursor-pointer w-full sm:w-auto justify-center border-none outline-none"
             >
               Get a Free Consultation
               <ArrowRight
                 size={16}
                 className="transition-transform duration-300 group-hover:translate-x-1"
               />
-            </Link>
+            </button>
             <Link
               href="/contact"
               className="flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-white/5 backdrop-blur-md text-white font-sans text-[clamp(0.8125rem,0.75rem+0.28vw,0.875rem)] font-semibold rounded-full border border-white/40 hover:bg-white/15 hover:border-white/60 transition-all duration-300 cursor-pointer w-full sm:w-auto justify-center"
