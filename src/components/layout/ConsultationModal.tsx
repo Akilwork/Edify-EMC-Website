@@ -172,9 +172,23 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: 12 }}
             transition={{ type: "spring", duration: 0.5, bounce: 0.05 }}
-            className="relative w-full max-w-6xl border border-white/10 rounded-[12px] overflow-hidden shadow-2xl flex flex-col lg:flex-row max-h-[92vh] lg:h-[760px] z-10"
-            style={{ backgroundColor: "#151515" }}
+            className="relative w-full max-w-6xl border border-white/10 rounded-[12px] overflow-hidden shadow-2xl flex flex-col lg:flex-row max-h-[92vh] lg:h-[760px] z-10 bg-transparent"
           >
+            {/* Background Video (Common Single Div Section) */}
+            <div className="absolute inset-0 z-0 bg-black">
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-cover"
+              >
+                <source src="/Consultation/parmardarshil.mp4" type="video/mp4" />
+              </video>
+              {/* Smooth dark overlay over the video */}
+              <div className="absolute inset-0 bg-black/40" />
+            </div>
+
             {/* Close button inside container */}
             <button
               onClick={onClose}
@@ -185,23 +199,8 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
               <X size={18} />
             </button>
 
-            {/* Left Column - Background Video & Text */}
-            <div className="hidden lg:flex lg:w-1/2 p-16 flex-col justify-center relative bg-black overflow-hidden flex-shrink-0 select-none">
-              {/* Background Video */}
-              <div className="absolute inset-0 z-0 bg-black">
-                <video
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="w-full h-full object-cover"
-                >
-                  <source src="/Consultation/parmardarshil.mp4" type="video/mp4" />
-                </video>
-                {/* Smooth black gradient overlay matching Figma */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent" />
-              </div>
-
+            {/* Left Column - Text Content */}
+            <div className="hidden lg:flex lg:w-1/2 p-16 flex-col justify-center relative backdrop-blur-md bg-black/30 border-r border-white/5 overflow-hidden flex-shrink-0 select-none z-10">
               {/* Content - Exact centered alignment and larger spacing */}
               <div className="relative z-10 space-y-8 max-w-md">
                 <h2 className="font-sans font-medium text-white leading-[1.1] text-[44px] lg:text-[50px] xl:text-[54px] tracking-tight">
@@ -217,8 +216,7 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
 
             {/* Right Column - Form */}
             <div
-              className="w-full lg:w-1/2 p-6 sm:p-10 md:p-14 overflow-y-auto no-scrollbar flex flex-col justify-center"
-              style={{ backgroundColor: "#151515" }}
+              className="relative z-10 w-full lg:w-1/2 p-6 sm:p-10 md:p-14 overflow-y-auto no-scrollbar flex flex-col justify-center backdrop-blur-md bg-[#151515]/80"
             >
               {/* Heading only visible on mobile/tablet */}
               <div className="lg:hidden mb-8 mt-4 space-y-2">
@@ -243,8 +241,8 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                       placeholder="Enter Full Name"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full px-4 h-[56px] border border-white/5 rounded-[8px] text-white placeholder-white/30 focus:outline-none focus:border-white/20 transition-all duration-200 text-sm animate-none"
-                      style={{ backgroundColor: "#222225" }}
+                      className="w-full px-4 h-[56px] border border-white/5 rounded-[8px] text-white placeholder-white/30 focus:outline-none focus:border-white/20 transition-all duration-200 text-sm animate-none backdrop-blur-sm"
+                      style={{ backgroundColor: "rgba(34, 34, 37, 0.65)" }}
                       required
                     />
                   </div>
@@ -254,8 +252,8 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                       Contact Number
                     </label>
                     <div
-                      className="flex items-center border border-white/5 rounded-[8px] h-[56px] focus-within:border-white/20 transition-all duration-200"
-                      style={{ backgroundColor: "#222225" }}
+                      className="flex items-center border border-white/5 rounded-[8px] h-[56px] focus-within:border-white/20 transition-all duration-200 backdrop-blur-sm"
+                      style={{ backgroundColor: "rgba(34, 34, 37, 0.65)" }}
                     >
                       {/* Country Code Dropdown */}
                       <div ref={countryDropdownRef} className="relative flex-shrink-0 h-full">
@@ -274,8 +272,8 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                         </button>
                         {showCountryCodes && (
                           <div
-                            className="absolute top-[60px] left-0 z-50 border border-white/10 rounded-lg shadow-xl py-1 max-h-48 overflow-y-auto w-36"
-                            style={{ backgroundColor: "#1F1F22" }}
+                            className="absolute top-[60px] left-0 z-50 border border-white/10 rounded-lg shadow-xl py-1 max-h-48 overflow-y-auto w-36 backdrop-blur-md"
+                            style={{ backgroundColor: "rgba(31, 31, 34, 0.95)" }}
                           >
                             {COUNTRY_CODES.map((item) => (
                               <button
@@ -319,8 +317,8 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                       placeholder="Enter Email Address"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full px-4 h-[56px] border border-white/5 rounded-[8px] text-white placeholder-white/30 focus:outline-none focus:border-white/20 transition-all duration-200 text-sm"
-                      style={{ backgroundColor: "#222225" }}
+                      className="w-full px-4 h-[56px] border border-white/5 rounded-[8px] text-white placeholder-white/30 focus:outline-none focus:border-white/20 transition-all duration-200 text-sm backdrop-blur-sm"
+                      style={{ backgroundColor: "rgba(34, 34, 37, 0.65)" }}
                       required
                     />
                   </div>
@@ -335,8 +333,8 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                       placeholder="Enter Designation"
                       value={formData.designation}
                       onChange={(e) => setFormData({ ...formData, designation: e.target.value })}
-                      className="w-full px-4 h-[56px] border border-white/5 rounded-[8px] text-white placeholder-white/30 focus:outline-none focus:border-white/20 transition-all duration-200 text-sm"
-                      style={{ backgroundColor: "#222225" }}
+                      className="w-full px-4 h-[56px] border border-white/5 rounded-[8px] text-white placeholder-white/30 focus:outline-none focus:border-white/20 transition-all duration-200 text-sm backdrop-blur-sm"
+                      style={{ backgroundColor: "rgba(34, 34, 37, 0.65)" }}
                     />
                   </div>
                 </div>
@@ -351,8 +349,8 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                       <button
                         type="button"
                         onClick={() => setShowInstTypes(!showInstTypes)}
-                        className="w-full flex items-center justify-between px-4 h-[56px] border border-white/5 rounded-[8px] text-sm text-left text-white/80 hover:text-white cursor-pointer focus:outline-none focus:border-white/20 transition-colors duration-200"
-                        style={{ backgroundColor: "#222225" }}
+                        className="w-full flex items-center justify-between px-4 h-[56px] border border-white/5 rounded-[8px] text-sm text-left text-white/80 hover:text-white cursor-pointer focus:outline-none focus:border-white/20 transition-colors duration-200 backdrop-blur-sm"
+                        style={{ backgroundColor: "rgba(34, 34, 37, 0.65)" }}
                       >
                         <span className={formData.institutionType ? "text-white" : "text-white/30"}>
                           {formData.institutionType || "Select Institution Type"}
@@ -366,8 +364,8 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                       </button>
                       {showInstTypes && (
                         <div
-                          className="absolute top-[60px] left-0 right-0 z-50 border border-white/10 rounded-lg shadow-xl py-1 max-h-52 overflow-y-auto"
-                          style={{ backgroundColor: "#1F1F22" }}
+                          className="absolute top-[60px] left-0 right-0 z-50 border border-white/10 rounded-lg shadow-xl py-1 max-h-52 overflow-y-auto backdrop-blur-md"
+                          style={{ backgroundColor: "rgba(31, 31, 34, 0.95)" }}
                         >
                           {INSTITUTION_TYPES.map((type) => (
                             <button
@@ -397,8 +395,8 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                       placeholder="Enter Institution Name"
                       value={formData.institutionName}
                       onChange={(e) => setFormData({ ...formData, institutionName: e.target.value })}
-                      className="w-full px-4 h-[56px] border border-white/5 rounded-[8px] text-white placeholder-white/30 focus:outline-none focus:border-white/20 transition-all duration-200 text-sm"
-                      style={{ backgroundColor: "#222225" }}
+                      className="w-full px-4 h-[56px] border border-white/5 rounded-[8px] text-white placeholder-white/30 focus:outline-none focus:border-white/20 transition-all duration-200 text-sm backdrop-blur-sm"
+                      style={{ backgroundColor: "rgba(34, 34, 37, 0.65)" }}
                     />
                   </div>
                 </div>
@@ -412,8 +410,8 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                     <button
                       type="button"
                       onClick={() => setShowServices(!showServices)}
-                      className="w-full flex items-center justify-between px-4 h-[56px] border border-white/5 rounded-[8px] text-sm text-left text-white/80 hover:text-white cursor-pointer focus:outline-none focus:border-white/20 transition-colors duration-200"
-                      style={{ backgroundColor: "#222225" }}
+                      className="w-full flex items-center justify-between px-4 h-[56px] border border-white/5 rounded-[8px] text-sm text-left text-white/80 hover:text-white cursor-pointer focus:outline-none focus:border-white/20 transition-colors duration-200 backdrop-blur-sm"
+                      style={{ backgroundColor: "rgba(34, 34, 37, 0.65)" }}
                     >
                       <span className={formData.serviceRequired ? "text-white" : "text-white/30"}>
                         {formData.serviceRequired || "Select Service Required"}
@@ -427,8 +425,8 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                     </button>
                     {showServices && (
                       <div
-                        className="absolute top-[60px] left-0 right-0 z-50 border border-white/10 rounded-lg shadow-xl py-1 max-h-52 overflow-y-auto"
-                        style={{ backgroundColor: "#1F1F22" }}
+                        className="absolute top-[60px] left-0 right-0 z-50 border border-white/10 rounded-lg shadow-xl py-1 max-h-52 overflow-y-auto backdrop-blur-md"
+                        style={{ backgroundColor: "rgba(31, 31, 34, 0.95)" }}
                       >
                         {SERVICE_OPTIONS.map((service) => (
                           <button
@@ -459,8 +457,8 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                     placeholder="Enter Text"
                     value={formData.howCanWeHelp}
                     onChange={(e) => setFormData({ ...formData, howCanWeHelp: e.target.value })}
-                    className="w-full px-4 py-3.5 border border-white/5 rounded-[8px] text-white placeholder-white/30 focus:outline-none focus:border-white/20 transition-all duration-200 text-sm resize-none h-[140px]"
-                    style={{ backgroundColor: "#222225" }}
+                    className="w-full px-4 py-3.5 border border-white/5 rounded-[8px] text-white placeholder-white/30 focus:outline-none focus:border-white/20 transition-all duration-200 text-sm resize-none h-[140px] backdrop-blur-sm"
+                    style={{ backgroundColor: "rgba(34, 34, 37, 0.65)" }}
                   />
                 </div>
 
