@@ -8,9 +8,11 @@ import { useToast } from "@/hooks/use-toast";
 interface ConsultationModalProps {
   isOpen: boolean;
   onClose: () => void;
+  isInScene?: boolean; // New prop for Scene 10 integration
 }
 
-const COUNTRY_CODES = [
+// Shared constants
+export const COUNTRY_CODES = [
   { code: "+971", name: "UAE" },
   { code: "+966", name: "KSA" },
   { code: "+965", name: "Kuwait" },
@@ -22,7 +24,7 @@ const COUNTRY_CODES = [
   { code: "+91", name: "India" },
 ];
 
-const INSTITUTION_TYPES = [
+export const INSTITUTION_TYPES = [
   "K-12 School",
   "Higher Education (University/College)",
   "Vocational / Technical Institute",
@@ -32,7 +34,7 @@ const INSTITUTION_TYPES = [
   "Other",
 ];
 
-const SERVICE_OPTIONS = [
+export const SERVICE_OPTIONS = [
   "Strategy & Planning",
   "Organisational Transformation",
   "Leadership Development",

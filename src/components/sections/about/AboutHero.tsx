@@ -6,6 +6,7 @@ import GridBackground from "@/components/ui/GridBackground";
 import { DottedGlowBackground } from "@/components/ui/dotted-glow-background";
 import BlurText from "@/components/ui/BlurText";
 import PersonProfileCard from "@/components/ui/PersonProfileCard";
+import Scene10ConsultationForm from "@/components/layout/Scene10ConsultationForm";
 
 export default function AboutHero() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -64,6 +65,11 @@ export default function AboutHero() {
   const scene9TextRef = useRef<HTMLDivElement>(null);
   const scene9GridCyanRef = useRef<HTMLDivElement>(null);
   const [scene9Visible, setScene9Visible] = useState(false);
+  // Scene 10 refs
+  const scene10Ref = useRef<HTMLDivElement>(null);
+  const scene10GridCyanRef = useRef<HTMLDivElement>(null);
+  const scene10TextRef = useRef<HTMLDivElement>(null);
+  const [scene10Visible, setScene10Visible] = useState(false);
 
   const cleanupFnRef = useRef<(() => void) | null>(null);
 
@@ -109,6 +115,11 @@ export default function AboutHero() {
           console.warn("Scene 9 refs not ready, skipping Scene 9 animations");
         }
 
+        // Scene 10 refs check - warn but don't abort if not ready
+        if (!scene10Ref.current || !scene10GridCyanRef.current || !scene10TextRef.current) {
+          console.warn("Scene 10 refs not ready, skipping Scene 10 animations");
+        }
+
         // ─── Initial States ──────────────────────────────────────────────────────
         gsap.set(scene2Ref.current, { autoAlpha: 1, y: 0, filter: "blur(0px)" });
         gsap.set(scene4Ref.current, { autoAlpha: 0, y: 0, filter: "blur(18px)" });
@@ -127,6 +138,7 @@ export default function AboutHero() {
         if (scene8TextBRef.current) gsap.set(scene8TextBRef.current, { autoAlpha: 0, y: -20 });
         if (scene8CardsContainerRef.current) gsap.set(scene8CardsContainerRef.current, { autoAlpha: 0, y: 30 });
         if (scene9Ref.current) gsap.set(scene9Ref.current, { autoAlpha: 0, filter: "blur(12px)" });
+        if (scene10Ref.current) gsap.set(scene10Ref.current, { autoAlpha: 0, filter: "blur(12px)" });
         if (whiteBg) gsap.set(whiteBg, { autoAlpha: 0 });
         gsap.set(gridBg70, { autoAlpha: 0 });
         gsap.set(gridBg30, { autoAlpha: 0 });
@@ -168,7 +180,7 @@ export default function AboutHero() {
           scrollTrigger: {
             trigger: section,
             start: "top top",
-            end: "+=30000vh", // Extended for all scenes with Scene 8 and horizontal scroll
+            end: "+=36000vh", // Extended for Scene 10 consultation form
             pin: true,
             pinSpacing: true,
             scrub: 1,
@@ -180,6 +192,10 @@ export default function AboutHero() {
               // Trigger Scene 9 BlurText animation when Scene 9 starts fading in (at 36.0 = ~95%+ progress)
               if (self.progress >= 0.95 && !scene9Visible) {
                 setScene9Visible(true);
+              }
+              // Trigger Scene 10 BlurText animation when Scene 10 starts fading in (at 40.0)
+              if (self.progress >= 0.98 && !scene10Visible) {
+                setScene10Visible(true);
               }
             },
           },
@@ -734,6 +750,25 @@ export default function AboutHero() {
             scene9Ref.current,
             { autoAlpha: 1, filter: "blur(0px)", duration: 0.6, ease: "power2.inOut" },
             36.0
+          );
+        }
+
+        // ─── Scene 9 → Scene 10 Transition (at 39.0) ─────────────────────
+        // Fade out Scene 9
+        if (scene9Ref.current) {
+          tl.to(
+            scene9Ref.current,
+            { autoAlpha: 0, filter: "blur(12px)", duration: 0.5, ease: "power2.inOut" },
+            39.0
+          );
+        }
+
+        // Fade in Scene 10 container
+        if (scene10Ref.current) {
+          tl.to(
+            scene10Ref.current,
+            { autoAlpha: 1, filter: "blur(0px)", duration: 0.7, ease: "power2.inOut" },
+            39.5
           );
         }
 
@@ -1519,6 +1554,63 @@ export default function AboutHero() {
                     />
                   )}
                 </h1>
+              </div>
+            </div>
+          </div>
+
+          {/* Scene 10 - Consultation Form */}
+          <div
+            ref={scene10Ref}
+            className="absolute inset-0 flex items-center justify-center overflow-hidden z-[5] opacity-0"
+          >
+            {/* Scene 10: Black background */}
+            <div className="absolute inset-0 z-0 bg-black" />
+
+            {/* Scene 10: Cyan/Blue Grid */}
+            <div
+              ref={scene10GridCyanRef}
+              className="absolute inset-0 z-[1] will-change-opacity"
+            >
+              <GridBackground
+                lineColor="rgba(113, 196, 255, 0.2)"
+                dotColor="rgba(113, 196, 255, 0.4)"
+                gridSize={50}
+                dotSize={1.5}
+                vignetteIntensity={60}
+              />
+            </div>
+
+            {/* Scene 10: Content container with form */}
+            <div
+              ref={scene10TextRef}
+              className="absolute inset-0 flex items-center justify-center p-4 md:p-8 lg:p-16 z-[10]"
+            >
+              <div className="w-full max-w-[640px] mx-auto">
+                {/* Heading */}
+                <div className="text-center mb-8 md:mb-12">
+                  <h2 className="font-sans text-[clamp(24px,5vw,32px)] md:text-[clamp(32px,4vw,40px)] lg:text-[clamp(36px,4vw,48px)] font-medium leading-[1.1] tracking-tight text-white mb-4">
+                    {scene10Visible && (
+                      <BlurText
+                        text="Building Stronger Institutions Starts Here"
+                        animateBy="words"
+                        direction="top"
+                        delay={100}
+                        stepDuration={0.4}
+                        className="flex flex-wrap justify-center"
+                        threshold={0.5}
+                        rootMargin="0px"
+                      />
+                    )}
+                  </h2>
+                  <p className="text-white/60 text-sm md:text-base">
+                    Connect with our consultants to explore tailored solutions for your institution.
+                  </p>
+                </div>
+
+                {/* Consultation Form */}
+                <div className="backdrop-blur-md bg-[#151515]/80 border border-white/10 rounded-xl p-5 md:p-6">
+                  <Scene10ConsultationForm />
+                </div>
               </div>
             </div>
           </div>
