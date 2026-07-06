@@ -59,6 +59,11 @@ export default function AboutHero() {
   const [scene8Visible, setScene8Visible] = useState(false);
   // Individual card refs for scale/opacity animation
   const scene8CardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  // Scene 9 refs
+  const scene9Ref = useRef<HTMLDivElement>(null);
+  const scene9TextRef = useRef<HTMLDivElement>(null);
+  const scene9GridCyanRef = useRef<HTMLDivElement>(null);
+  const [scene9Visible, setScene9Visible] = useState(false);
 
   const cleanupFnRef = useRef<(() => void) | null>(null);
 
@@ -99,6 +104,11 @@ export default function AboutHero() {
           console.warn("Scene 8 refs not ready, skipping Scene 8 animations");
         }
 
+        // Scene 9 refs check - warn but don't abort if not ready
+        if (!scene9Ref.current || !scene9GridCyanRef.current || !scene9TextRef.current) {
+          console.warn("Scene 9 refs not ready, skipping Scene 9 animations");
+        }
+
         // ─── Initial States ──────────────────────────────────────────────────────
         gsap.set(scene2Ref.current, { autoAlpha: 1, y: 0, filter: "blur(0px)" });
         gsap.set(scene4Ref.current, { autoAlpha: 0, y: 0, filter: "blur(18px)" });
@@ -116,6 +126,7 @@ export default function AboutHero() {
         if (scene8WhiteVignetteRef.current) gsap.set(scene8WhiteVignetteRef.current, { autoAlpha: 0 });
         if (scene8TextBRef.current) gsap.set(scene8TextBRef.current, { autoAlpha: 0, y: -20 });
         if (scene8CardsContainerRef.current) gsap.set(scene8CardsContainerRef.current, { autoAlpha: 0, y: 30 });
+        if (scene9Ref.current) gsap.set(scene9Ref.current, { autoAlpha: 0, filter: "blur(12px)" });
         if (whiteBg) gsap.set(whiteBg, { autoAlpha: 0 });
         gsap.set(gridBg70, { autoAlpha: 0 });
         gsap.set(gridBg30, { autoAlpha: 0 });
@@ -165,6 +176,10 @@ export default function AboutHero() {
               // Trigger Scene 8 BlurText animation when Scene 8 starts fading in (at 26.0 = ~74% progress)
               if (self.progress >= 0.74 && !scene8Visible) {
                 setScene8Visible(true);
+              }
+              // Trigger Scene 9 BlurText animation when Scene 9 starts fading in (at 36.0 = ~95%+ progress)
+              if (self.progress >= 0.95 && !scene9Visible) {
+                setScene9Visible(true);
               }
             },
           },
@@ -667,6 +682,60 @@ export default function AboutHero() {
           });
         }
 
+        // ─── Scene 8B → Scene 9 Transition (at 35.5) ─────────────────────
+        // Fade out Scene 8B white background
+        if (scene8WhiteBgRef.current) {
+          tl.to(
+            scene8WhiteBgRef.current,
+            { autoAlpha: 0, duration: 0.6, ease: "power2.inOut" },
+            35.5
+          );
+        }
+
+        // Fade out Scene 8B dark grid
+        if (scene8GridDarkRef.current) {
+          tl.to(
+            scene8GridDarkRef.current,
+            { autoAlpha: 0, duration: 0.6, ease: "power2.inOut" },
+            35.5
+          );
+        }
+
+        // Fade out Scene 8B white vignette
+        if (scene8WhiteVignetteRef.current) {
+          tl.to(
+            scene8WhiteVignetteRef.current,
+            { autoAlpha: 0, duration: 0.6, ease: "power2.inOut" },
+            35.5
+          );
+        }
+
+        // Fade out Scene 8B text
+        if (scene8TextBRef.current) {
+          tl.to(
+            scene8TextBRef.current,
+            { autoAlpha: 0, y: -20, filter: "blur(8px)", duration: 0.5, ease: "power2.inOut" },
+            35.5
+          );
+        }
+
+        // Fade out Scene 8B person cards
+        if (scene8CardsContainerRef.current) {
+          tl.to(
+            scene8CardsContainerRef.current,
+            { autoAlpha: 0, y: -20, duration: 0.5, ease: "power2.inOut" },
+            35.5
+          );
+        }
+
+        // Fade in Scene 9 container
+        if (scene9Ref.current) {
+          tl.to(
+            scene9Ref.current,
+            { autoAlpha: 1, filter: "blur(0px)", duration: 0.6, ease: "power2.inOut" },
+            36.0
+          );
+        }
 
         // ─── Building to Grid Background Transformation (at 0.2) ──────────────────────────────────────
         tl.to(
@@ -844,9 +913,9 @@ export default function AboutHero() {
           {/* Scene 2 - visible initially, fades out */}
           <div
             ref={scene2Ref}
-            className="absolute w-full max-w-[1100px] text-center"
+            className="absolute w-full max-w-[1100px] text-center top-[60%] -translate-y-1/2 left-1/2 -translate-x-1/2"
           >
-            <h1 className="font-sans font-medium leading-[1.1] text-white text-center m-0 tracking-tight text-[clamp(22px,5vw,28px)] md:text-[clamp(34px,4vw,40px)] lg:text-[clamp(36px,4vw,52px)] 2xl:text-[clamp(46px,3.5vw,56px)]">
+            <h1 className="font-sans font-normal leading-[1.1] text-white text-center m-0 tracking-tight text-[clamp(22px,5vw,28px)] md:text-[clamp(34px,4vw,40px)] lg:text-[clamp(36px,4vw,52px)] 2xl:text-[clamp(46px,3.5vw,56px)]">
               <span className="block">
                 Empowering educational institutions
               </span>
@@ -1404,6 +1473,52 @@ export default function AboutHero() {
                     className="pointer-events-auto"
                   />
                 </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Scene 9 - Driven by expertise */}
+          <div
+            ref={scene9Ref}
+            className="absolute inset-0 flex items-center justify-center overflow-hidden z-[5] opacity-0"
+          >
+            {/* Scene 9: Black background */}
+            <div className="absolute inset-0 z-0 bg-black" />
+
+            {/* Scene 9: Cyan/Blue Grid */}
+            <div
+              ref={scene9GridCyanRef}
+              className="absolute inset-0 z-[1] will-change-opacity"
+            >
+              <GridBackground
+                lineColor="rgba(113, 196, 255, 0.2)"
+                dotColor="rgba(113, 196, 255, 0.4)"
+                gridSize={50}
+                dotSize={1.5}
+                vignetteIntensity={60}
+              />
+            </div>
+
+            {/* Scene 9: Center text content */}
+            <div
+              ref={scene9TextRef}
+              className="absolute inset-0 flex items-center justify-center p-8 md:px-16 lg:px-20 z-[10]"
+            >
+              <div className="text-center max-w-[1600px] w-full mx-auto">
+                <h1 className="font-sans text-[clamp(28px,6vw,36px)] md:text-[clamp(42px,5vw,48px)] lg:text-[clamp(48px,5vw,64px)] 2xl:text-[clamp(60px,4.5vw,68px)] font-medium leading-[1.1] tracking-tight text-white">
+                  {scene9Visible && (
+                    <BlurText
+                      text="Driven by expertise. United by a commitment to educational excellence."
+                      animateBy="words"
+                      direction="top"
+                      delay={100}
+                      stepDuration={0.4}
+                      className="flex flex-wrap justify-center"
+                      threshold={0.5}
+                      rootMargin="0px"
+                    />
+                  )}
+                </h1>
               </div>
             </div>
           </div>
