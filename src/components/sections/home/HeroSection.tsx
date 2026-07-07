@@ -3,7 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
+import { useConsultation } from "@/components/providers/ConsultationProvider";
 
 const containerVariants: Variants = {
   hidden: {},
