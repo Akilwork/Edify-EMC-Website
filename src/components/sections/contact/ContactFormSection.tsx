@@ -1,16 +1,79 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function ContactFormSection() {
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: "", email: "", company: "", message: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const submittingRef = useRef(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: wire up form submission
-    console.log("Form submitted:", formData);
+    if (submittingRef.current) return;
+
+    // Basic Validation
+    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill out Name, Email, and Message fields.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    submittingRef.current = true;
+    setIsSubmitting(true);
+    let success = false;
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || "Message submission failed");
+      }
+
+      toast({
+        title: "Message Sent!",
+        description: "Thank you for reaching out. We will get back to you shortly.",
+      });
+
+      setFormData({
+        name: "",
+        email: "",
+        company: "",
+        message: "",
+      });
+      success = true;
+
+      // Allow new submissions after a short delay (2 seconds)
+      setTimeout(() => {
+        submittingRef.current = false;
+        setIsSubmitting(false);
+      }, 2000);
+    } catch (err: any) {
+      toast({
+        title: "Submission Failed",
+        description: err.message || "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      if (!success) {
+        submittingRef.current = false;
+        setIsSubmitting(false);
+      }
+    }
   };
 
   return (
@@ -49,9 +112,10 @@ export default function ContactFormSection() {
           <button
             type="submit"
             id="contact-submit"
-            className="px-8 py-4 bg-[#E8C97A] text-[#0F0F1A] font-bold rounded-full hover:bg-[#F5E4A8] transition-colors duration-200"
+            disabled={isSubmitting}
+            className="px-8 py-4 bg-[#E8C97A] text-[#0F0F1A] font-bold rounded-full hover:bg-[#F5E4A8] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Send Message
+            {isSubmitting ? "Sending..." : "Send Message"}
           </button>
         </form>
       </div>

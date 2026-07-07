@@ -30,58 +30,18 @@ const getUAETimestamp = (): string => {
 export async function POST(request: Request) {
   try {
     const data = await request.json();
-    const {
-      name,
-      countryCode,
-      contactNumber,
-      email,
-      designation,
-      institutionType,
-      institutionName,
-      serviceRequired,
-      howCanWeHelp,
-      requestDetails,
-    } = data;
+    const { name, email, company, message } = data;
 
-    // Get timestamp formatted for Asia/Dubai Local Time (GST)
     const timestamp = getUAETimestamp();
-    const detailsVal = howCanWeHelp || requestDetails || "";
 
-    // Log the submission to console (fail-safe for serverless host logs)
-    console.log("New Consultation Submission:", JSON.stringify({ timestamp, ...data, detailsVal }));
+    console.log("New Contact Submission:", JSON.stringify({ timestamp, ...data }));
 
-    // ────────────────────────────────────────────────────────────────
-    // 1. Write to local CSV spreadsheet file first (Immediate & Safe)
-    // ────────────────────────────────────────────────────────────────
-    const filePath = path.join(process.cwd(), "consultation_submissions.csv");
+    // 1. Write to local CSV spreadsheet file first
+    const filePath = path.join(process.cwd(), "contact_submissions.csv");
     const fileExists = fs.existsSync(filePath);
 
-    const headers = [
-      "Timestamp",
-      "Name",
-      "Country Code",
-      "Contact Number",
-      "Email",
-      "Designation",
-      "Institution Type",
-      "Institution Name",
-      "Service Required",
-      "Request Details",
-    ];
-
-    const rowData = [
-      timestamp,
-      name || "",
-      countryCode || "",
-      contactNumber || "",
-      email || "",
-      designation || "",
-      institutionType || "",
-      institutionName || "",
-      serviceRequired || "",
-      detailsVal || "",
-    ];
-
+    const headers = ["Timestamp", "Name", "Email", "Company", "Message"];
+    const rowData = [timestamp, name || "", email || "", company || "", message || ""];
     const csvRow = rowData.map(escapeCSV).join(",") + "\n";
 
     if (!fileExists) {
@@ -91,11 +51,9 @@ export async function POST(request: Request) {
       fs.appendFileSync(filePath, csvRow, "utf8");
     }
 
-    // ────────────────────────────────────────────────────────────────
     // 2. Perform External API Integrations (Asynchronously in Background)
-    // ────────────────────────────────────────────────────────────────
     const runBackgroundIntegrations = async () => {
-      // A. Google Sheets Webhook (via Google Apps Script Web App)
+      // A. Google Sheets Webhook
       const googleWebhookUrl = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
       if (googleWebhookUrl) {
         try {
@@ -107,29 +65,30 @@ export async function POST(request: Request) {
             body: JSON.stringify({
               timestamp,
               name: name || "",
-              countryCode: countryCode || "",
-              contactNumber: contactNumber || "",
               email: email || "",
-              designation: designation || "",
-              institutionType: institutionType || "",
-              institutionName: institutionName || "",
-              serviceRequired: serviceRequired || "",
-              howCanWeHelp: detailsVal,
-              requestDetails: detailsVal,
+              institutionName: company || "",
+              howCanWeHelp: message || "",
+              requestDetails: message || "",
+              // Include empty strings for other columns if spreadsheet expects them
+              countryCode: "",
+              contactNumber: "",
+              designation: "",
+              institutionType: "",
+              serviceRequired: "",
             }),
           });
 
           if (response.ok) {
-            console.log("Google Sheets Webhook succeeded in background");
+            console.log("Google Sheets Webhook succeeded in background for Contact Form");
           } else {
-            console.warn("Google Sheets Webhook responded with error status:", response.status);
+            console.warn("Google Sheets Webhook responded with error status for Contact Form:", response.status);
           }
         } catch (webhookError) {
-          console.error("Google Sheets Webhook integration error:", webhookError);
+          console.error("Google Sheets Webhook integration error for Contact Form:", webhookError);
         }
       }
 
-      // B. Microsoft Graph API (SharePoint / OneDrive Excel)
+      // B. Microsoft Graph API
       const tenantId = process.env.SHAREPOINT_TENANT_ID;
       const clientId = process.env.SHAREPOINT_CLIENT_ID;
       const clientSecret = process.env.SHAREPOINT_CLIENT_SECRET;
@@ -182,7 +141,7 @@ export async function POST(request: Request) {
             isFirstWrite = true;
           }
 
-          // Write headers
+          // Write headers (if sheet is empty)
           if (isFirstWrite && targetRow === 1) {
             const headerUrl = `https://graph.microsoft.com/v1.0/drives/${driveId}/items/${itemId}/workbook/worksheets('Sheet1')/range(address='A1:J1')`;
             await fetch(headerUrl, {
@@ -211,7 +170,7 @@ export async function POST(request: Request) {
             targetRow = 2;
           }
 
-          // Write data
+          // Write data matching the columns of the sheet
           const writeUrl = `https://graph.microsoft.com/v1.0/drives/${driveId}/items/${itemId}/workbook/worksheets('Sheet1')/range(address='A${targetRow}:J${targetRow}')`;
           const writeResponse = await fetch(writeUrl, {
             method: "PATCH",
@@ -224,27 +183,27 @@ export async function POST(request: Request) {
                 [
                   timestamp,
                   name || "",
-                  countryCode || "",
-                  contactNumber || "",
+                  "", // Country Code
+                  "", // Contact Number
                   email || "",
-                  designation || "",
-                  institutionType || "",
-                  institutionName || "",
-                  serviceRequired || "",
-                  detailsVal || "",
+                  "", // Designation
+                  "", // Institution Type
+                  company || "", // Institution Name / Company
+                  "General Contact Inquiry", // Service Required
+                  message || "", // Request Details
                 ],
               ],
             }),
           });
 
           if (writeResponse.ok) {
-            console.log("SharePoint write succeeded in background");
+            console.log("SharePoint write succeeded in background for Contact Form");
           } else {
             const errBody = await writeResponse.text();
-            console.error("Failed to write to SharePoint Excel in background:", errBody);
+            console.error("Failed to write to SharePoint Excel in background for Contact Form:", errBody);
           }
         } catch (graphError) {
-          console.error("Microsoft Graph integration error:", graphError);
+          console.error("Microsoft Graph integration error for Contact Form:", graphError);
         }
       }
     };

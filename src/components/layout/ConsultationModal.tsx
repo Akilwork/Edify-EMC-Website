@@ -59,6 +59,7 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
   const [showInstTypes, setShowInstTypes] = useState(false);
   const [showServices, setShowServices] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const submittingRef = useRef(false);
 
   const countryDropdownRef = useRef<HTMLDivElement>(null);
   const instDropdownRef = useRef<HTMLDivElement>(null);
@@ -101,11 +102,13 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
       setShowCountryCodes(false);
       setShowInstTypes(false);
       setShowServices(false);
+      submittingRef.current = false;
     }
   }, [isOpen]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (submittingRef.current) return;
 
     // Basic Validation
     if (!formData.name.trim() || !formData.email.trim() || !formData.contactNumber.trim()) {
@@ -117,8 +120,10 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
       return;
     }
 
+    submittingRef.current = true;
     setIsSubmitting(true);
 
+    let success = false;
     try {
       const response = await fetch("/api/consultation", {
         method: "POST",
@@ -141,6 +146,7 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
         title: "Consultation Requested!",
         description: "Thank you for reaching out. A consultant will get in touch with you shortly.",
       });
+      success = true;
       onClose();
     } catch (err: any) {
       toast({
@@ -149,7 +155,10 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
         variant: "destructive",
       });
     } finally {
-      setIsSubmitting(false);
+      if (!success) {
+        submittingRef.current = false;
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -230,7 +239,7 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Row 1: Name & Contact Number */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div className={`grid grid-cols-1 sm:grid-cols-2 gap-6 relative ${showCountryCodes ? "z-30" : "z-10"}`}>
                   <div className="flex flex-col">
                     <label htmlFor="modal-name" className="text-[13px] font-normal text-white mb-2 block">
                       Name
@@ -306,7 +315,7 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                 </div>
 
                 {/* Row 2: Email Address & Designation */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 relative z-10">
                   <div className="flex flex-col">
                     <label htmlFor="modal-email" className="text-[13px] font-normal text-white mb-2 block">
                       Email Address
@@ -340,7 +349,7 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                 </div>
 
                 {/* Row 3: Institution Type & Institution Name */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div className={`grid grid-cols-1 sm:grid-cols-2 gap-6 relative ${showInstTypes ? "z-30" : "z-10"}`}>
                   <div className="flex flex-col" ref={instDropdownRef}>
                     <label className="text-[13px] font-normal text-white mb-2 block">
                       Institution Type
@@ -402,7 +411,7 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                 </div>
 
                 {/* Row 4: Service Required (Full Width) */}
-                <div className="flex flex-col" ref={serviceDropdownRef}>
+                <div className={`flex flex-col relative ${showServices ? "z-30" : "z-10"}`} ref={serviceDropdownRef}>
                   <label className="text-[13px] font-normal text-white mb-2 block">
                     Service Required
                   </label>
