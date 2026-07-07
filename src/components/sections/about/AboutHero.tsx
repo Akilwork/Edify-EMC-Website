@@ -67,7 +67,6 @@ export default function AboutHero() {
   const [scene9Visible, setScene9Visible] = useState(false);
   // Scene 10 refs
   const scene10Ref = useRef<HTMLDivElement>(null);
-  const scene10GridCyanRef = useRef<HTMLDivElement>(null);
   const scene10TextRef = useRef<HTMLDivElement>(null);
   const [scene10Visible, setScene10Visible] = useState(false);
 
@@ -116,7 +115,7 @@ export default function AboutHero() {
         }
 
         // Scene 10 refs check - warn but don't abort if not ready
-        if (!scene10Ref.current || !scene10GridCyanRef.current || !scene10TextRef.current) {
+        if (!scene10Ref.current || !scene10TextRef.current) {
           console.warn("Scene 10 refs not ready, skipping Scene 10 animations");
         }
 
@@ -185,8 +184,8 @@ export default function AboutHero() {
             pinSpacing: true,
             scrub: 1,
             onUpdate: (self) => {
-              // Trigger Scene 8 BlurText animation when Scene 8 starts fading in (at 26.0 = ~74% progress)
-              if (self.progress >= 0.74 && !scene8Visible) {
+              // Trigger Scene 8 BlurText animation when Scene 8 starts fading in (at 26.0 = ~65% progress)
+              if (self.progress >= 0.65 && !scene8Visible) {
                 setScene8Visible(true);
               }
               // Trigger Scene 9 BlurText animation when Scene 9 starts fading in (at 36.0 = ~95%+ progress)
@@ -1563,31 +1562,35 @@ export default function AboutHero() {
             ref={scene10Ref}
             className="absolute inset-0 flex items-center justify-center overflow-hidden z-[5] opacity-0"
           >
-            {/* Scene 10: Black background */}
-            <div className="absolute inset-0 z-0 bg-black" />
-
-            {/* Scene 10: Cyan/Blue Grid */}
-            <div
-              ref={scene10GridCyanRef}
-              className="absolute inset-0 z-[1] will-change-opacity"
-            >
-              <GridBackground
-                lineColor="rgba(113, 196, 255, 0.2)"
-                dotColor="rgba(113, 196, 255, 0.4)"
-                gridSize={50}
-                dotSize={1.5}
-                vignetteIntensity={60}
+            {/* Scene 10: Video Background */}
+            <div className="absolute inset-0 z-0">
+              <video
+                src="/about/Form/form-bg.mp4"
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="w-full h-full object-cover"
               />
+              {/* Vignette: Dark on right, lighter on left */}
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background: "linear-gradient(to left, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.6) 85%, rgba(0, 0, 0, 0.3) 100%)"
+                }}
+              />
+              {/* Dark overlay for better text readability */}
+              <div className="absolute inset-0 bg-black/20" />
             </div>
 
-            {/* Scene 10: Content container with form */}
+            {/* Scene 10: Content container with text on left, form on right */}
             <div
               ref={scene10TextRef}
-              className="absolute inset-0 flex items-center justify-center p-4 md:p-8 lg:p-16 z-[10]"
+              className="absolute inset-0 flex items-center p-4 md:p-8 lg:p-16 z-[10] pointer-events-auto"
             >
-              <div className="w-full max-w-[640px] mx-auto">
-                {/* Heading */}
-                <div className="text-center mb-8 md:mb-12">
+              <div className="w-full max-w-[1600px] mx-auto grid lg:grid-cols-[40%_60%] gap-8 lg:gap-12 items-center">
+                {/* Left Column: Heading */}
+                <div className="order-1 lg:order-1 text-left mb-8 md:mb-0">
                   <h2 className="font-sans text-[clamp(24px,5vw,32px)] md:text-[clamp(32px,4vw,40px)] lg:text-[clamp(36px,4vw,48px)] font-medium leading-[1.1] tracking-tight text-white mb-4">
                     {scene10Visible && (
                       <BlurText
@@ -1596,7 +1599,7 @@ export default function AboutHero() {
                         direction="top"
                         delay={100}
                         stepDuration={0.4}
-                        className="flex flex-wrap justify-center"
+                        className="flex flex-wrap justify-start"
                         threshold={0.5}
                         rootMargin="0px"
                       />
@@ -1607,9 +1610,11 @@ export default function AboutHero() {
                   </p>
                 </div>
 
-                {/* Consultation Form */}
-                <div className="backdrop-blur-md bg-[#151515]/80 border border-white/10 rounded-xl p-5 md:p-6">
-                  <Scene10ConsultationForm />
+                {/* Right Column: Consultation Form */}
+                <div className="order-2 lg:order-2">
+                  <div className="backdrop-blur-md bg-[#151515]/80 border border-white/10 rounded-xl p-5 md:p-6">
+                    <Scene10ConsultationForm />
+                  </div>
                 </div>
               </div>
             </div>
