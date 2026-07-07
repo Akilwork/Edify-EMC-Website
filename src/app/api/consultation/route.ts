@@ -1,4 +1,4 @@
-import { NextResponse, waitUntil } from "next/server";
+import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
 
@@ -249,22 +249,10 @@ export async function POST(request: Request) {
       }
     };
 
-    // Trigger external integrations asynchronously using fixed waitUntil logic
-    let backgroundStarted = false;
-    try {
-      if (typeof waitUntil === "function") {
-        waitUntil(runBackgroundIntegrations());
-        backgroundStarted = true;
-      }
-    } catch (e) {
-      console.warn("waitUntil failed, falling back to direct background call:", e);
-    }
-
-    if (!backgroundStarted) {
-      runBackgroundIntegrations().catch((err) =>
-        console.error("Fallback background integration error:", err)
-      );
-    }
+    // Trigger external integrations asynchronously
+    runBackgroundIntegrations().catch((err) =>
+      console.error("Background integration error:", err)
+    );
 
     return NextResponse.json({ success: true, destination: "local_csv_and_background_initiated" });
   } catch (error: any) {

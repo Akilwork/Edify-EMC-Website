@@ -1,4 +1,4 @@
-import { Message, IntentType, QuickReply, ServiceType, InstitutionType } from './types';
+import { Message, IntentType, QuickReply, ServiceType, InstitutionType, LeadData } from './types';
 import { detectIntent, extractService, extractInstitution, extractEmail, isGratitude, wantsToContinue, wantsToStop } from './intentEngine';
 import { getResponse, getServiceFollowUp, getInstitutionResponse } from './knowledgeBase';
 import { ContextManager, createContextManager } from './contextManager';

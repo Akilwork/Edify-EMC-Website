@@ -10,6 +10,7 @@ import { useConsultation } from "@/components/providers/ConsultationProvider";
 const NAV_LINKS = [
   { label: "HOME",     href: "/" },
   { label: "ABOUT US", href: "/about" },
+  { label: "SERVICES", href: "/services" },
 ];
 
 export default function Navbar() {
