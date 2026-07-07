@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
-import { motion, Variants } from "framer-motion";
+import { motion } from "framer-motion";
 
 const containerVariants: Variants = {
   hidden: {},
@@ -28,6 +28,7 @@ const childVariants: Variants = {
 };
 
 export default function HeroSection({ isParentReady = true }: { isParentReady?: boolean }) {
+  const { openConsultation } = useConsultation();
   return (
     <section
       id="hero"
@@ -99,16 +100,16 @@ export default function HeroSection({ isParentReady = true }: { isParentReady?: 
             variants={childVariants}
           >
             {/* Primary CTA */}
-            <Link
-              href="/contact"
-              className="group inline-flex items-center justify-center gap-2 px-5 xs:px-7 sm:px-8 py-3 sm:py-4 bg-white text-gray-900 font-sans text-[clamp(0.8125rem,0.75rem+0.28vw,0.875rem)] font-semibold rounded-full hover:bg-gray-100 transition-all duration-300 cursor-pointer w-full sm:w-auto"
+            <button
+              onClick={openConsultation}
+              className="group inline-flex items-center justify-center gap-2 px-5 xs:px-7 sm:px-8 py-3 sm:py-4 bg-white text-gray-900 font-sans text-[clamp(0.8125rem,0.75rem+0.28vw,0.875rem)] font-semibold rounded-full hover:bg-gray-100 transition-all duration-300 cursor-pointer w-full sm:w-auto border-none outline-none"
             >
               Get a Consultation
               <ArrowRight
                 size={18}
                 className="transition-transform duration-300 group-hover:translate-x-1"
               />
-            </Link>
+            </button>
 
             {/* Secondary CTA */}
             <Link
