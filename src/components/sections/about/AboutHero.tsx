@@ -179,7 +179,7 @@ export default function AboutHero() {
           scrollTrigger: {
             trigger: section,
             start: "top top",
-            end: "+=36000vh", // Extended for Scene 10 consultation form
+            end: "+=24000vh", // Extended for Scene 10 consultation form
             pin: true,
             pinSpacing: true,
             scrub: 1,
