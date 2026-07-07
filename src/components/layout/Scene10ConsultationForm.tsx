@@ -86,7 +86,7 @@ export default function Scene10ConsultationForm() {
       }
 
       toast({
-        title: "Consultation Requested!",
+        title: "Enquiry Requested!",
         description: "Thank you for reaching out. A consultant will get in touch with you shortly.",
       });
 
@@ -351,7 +351,7 @@ export default function Scene10ConsultationForm() {
           disabled={isSubmitting}
           className="group inline-flex items-center gap-3 px-8 py-3 bg-white text-black font-semibold rounded-full hover:bg-neutral-100 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 disabled:opacity-50 disabled:pointer-events-none cursor-pointer shadow-lg text-[15px]"
         >
-          <span>{isSubmitting ? "Requesting..." : "Request Consultation"}</span>
+          <span>{isSubmitting ? "Requesting..." : "Request Enquiry"}</span>
           <ArrowRight
             size={16}
             className="transition-transform duration-300 group-hover:translate-x-1"
