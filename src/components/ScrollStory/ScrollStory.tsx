@@ -45,13 +45,54 @@ function drawBlended(
   ctx.drawImage(img, ox, oy, sw, sh);
 }
 
+const CARDS_DATA = [
+  {
+    id: 'hr',
+    title: 'Human Resource Services',
+    image: '/Services/human_resource_services_card_image.png',
+    link: '/services#hr',
+  },
+  {
+    id: 'financial',
+    title: 'Financial Consultancy',
+    image: '/Services/financial_consultancy_card_image.png',
+    link: '/services#financial',
+  },
+  {
+    id: 'it',
+    title: 'IT Solutions & Digital Transformation',
+    image: '/Services/it_solutions_&_digital_transformation_card_image.png',
+    link: '/services#it',
+  },
+  {
+    id: 'educational',
+    title: 'Educational & Institutional Consulting',
+    image: '/Services/educational_&_institutional_consulting_card_image.png',
+    link: '/services#educational',
+  },
+  {
+    id: 'behavioural',
+    title: 'Behavioural Counselling & Student Support',
+    image: '/Services/behavioural_counselling_&_student_support_card_image.png',
+    link: '/services#behavioural',
+  },
+  {
+    id: 'printing',
+    title: 'Printing & Branding Solutions',
+    image: '/Services/printing_&_branding_solutions_card_image.png',
+    link: '/services#printing',
+  },
+];
+
 export const ScrollStory = () => {
-  const sectionRef      = useRef<HTMLDivElement>(null);
-  const canvasRef       = useRef<HTMLCanvasElement>(null);
-  const imagesRef       = useRef<HTMLImageElement[]>([]);
-  const fractionalFrame = useRef(0);    // current fractional position
-  const rafId           = useRef<number | null>(null);
-  const dprRef          = useRef(1);
+  const sectionRef        = useRef<HTMLDivElement>(null);
+  const canvasRef         = useRef<HTMLCanvasElement>(null);
+  const cardsOverlayRef   = useRef<HTMLDivElement>(null);
+  const contentWrapperRef = useRef<HTMLDivElement>(null);
+  const imagesRef         = useRef<HTMLImageElement[]>([]);
+  const fractionalFrame   = useRef(0);    // current fractional position
+  const rafId             = useRef<number | null>(null);
+  const dprRef            = useRef(1);
 
   const [loadState,     setLoadState]    = useState<'loading' | 'ready'>('loading');
   const [loadProgress,  setLoadProgress] = useState(0);
@@ -128,14 +169,44 @@ export const ScrollStory = () => {
       onUpdate: (self) => {
         const next = scrollProgressToFractionalFrame(self.progress);
 
-        if (Math.round(next) === Math.round(fractionalFrame.current)) return;
+        if (Math.round(next) !== Math.round(fractionalFrame.current)) {
+          fractionalFrame.current = next;
 
-        fractionalFrame.current = next;
+          if (rafId.current) cancelAnimationFrame(rafId.current);
+          rafId.current = requestAnimationFrame(() =>
+            drawBlended(canvas, imagesRef.current, next, dprRef.current)
+          );
+        }
 
-        if (rafId.current) cancelAnimationFrame(rafId.current);
-        rafId.current = requestAnimationFrame(() =>
-          drawBlended(canvas, imagesRef.current, next, dprRef.current)
-        );
+        // Direct DOM update for crossfade of canvas and cards overlay
+        const cardsOverlay   = cardsOverlayRef.current;
+        const contentWrapper = contentWrapperRef.current;
+        if (cardsOverlay && contentWrapper) {
+          const progress = self.progress;
+          const fadeStart = 0.9;
+          const fadeEnd = 0.98;
+          let opacity = 0;
+          if (progress >= fadeEnd) {
+            opacity = 1;
+          } else if (progress <= fadeStart) {
+            opacity = 0;
+          } else {
+            opacity = (progress - fadeStart) / (fadeEnd - fadeStart);
+          }
+          cardsOverlay.style.opacity = `${opacity}`;
+          cardsOverlay.style.pointerEvents = opacity > 0.9 ? 'auto' : 'none';
+          contentWrapper.style.pointerEvents = opacity > 0.9 ? 'auto' : 'none';
+
+          // Hide canvas completely when the HTML overlay starts fading in
+          // to prevent double-image/ghosting on the final frame
+          if (progress >= fadeStart) {
+            canvas.style.opacity = '0';
+            canvas.style.visibility = 'hidden';
+          } else {
+            canvas.style.opacity = '1';
+            canvas.style.visibility = 'visible';
+          }
+        }
       },
     });
 
@@ -178,10 +249,48 @@ export const ScrollStory = () => {
           onContextMenu={(e) => e.preventDefault()}
         />
 
-        <div className={`${styles.textOverlay} ${loadState === 'ready' ? styles.visible : ''}`}>
-          <h2 className={styles.title}>
-            One Trusted Partner for Every Educational<br className={styles.desktopOnlyBr} /> Institution Need
-          </h2>
+        <div ref={contentWrapperRef} className={styles.contentWrapper}>
+          <div className={`${styles.textOverlay} ${loadState === 'ready' ? styles.visible : ''}`}>
+            <h2 className={styles.title}>
+              One Trusted Partner for Every Educational<br className={styles.desktopOnlyBr} /> Institution Need
+            </h2>
+          </div>
+
+          <div 
+            ref={cardsOverlayRef} 
+            className={styles.cardsOverlay}
+            style={{ opacity: 0, pointerEvents: 'none' }}
+          >
+            <div className={styles.cardsContainer}>
+              {CARDS_DATA.map((card) => (
+                <a
+                  key={card.id}
+                  href={card.link}
+                  className={styles.card}
+                >
+                  <div className={styles.cardImageContainer}>
+                    <img
+                      src={card.image}
+                      alt={card.title}
+                      className={styles.cardImage}
+                      loading="lazy"
+                    />
+                    <div className={styles.cardGradientOverlay} />
+                  </div>
+                  <div className={styles.cardContent}>
+                    <h3 className={styles.cardTitle}>{card.title}</h3>
+                    <span className={styles.viewMore}>
+                      View More
+                      <svg className={styles.arrow} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                      </svg>
+                    </span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
     </div>

@@ -75,17 +75,23 @@
   color: rgba(255, 255, 255, 0.35);
 }
 
+/* ── Content Wrapper ──────────────────────────────────────────────────────── */
+.contentWrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
 /* ── Text Overlay ─────────────────────────────────────────────────────────── */
 .textOverlay {
   position: absolute;
-  /* Use clamp for top spacing so it scales beautifully with both height and width */
-  top: clamp(4.5rem, 3.5rem + 3vh, 8.5rem);
+  top: clamp(5.5rem, 4.5rem + 2.5vh, 8rem);
   left: 50%;
   transform: translate(-50%, 20px);
   width: 95%;
   max-width: 1300px;
   text-align: center;
-  z-index: 2;
   pointer-events: none;
   opacity: 0;
   transition: opacity 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94),
@@ -122,9 +128,6 @@
 
 /* ── Tablet / Medium Screens (max-width: 1024px) ───────────────────────────── */
 @media (max-width: 1024px) {
-  .textOverlay {
-    top: clamp(4rem, 3rem + 3vh, 6.5rem);
-  }
   .title {
     font-size: clamp(1.35rem, 1rem + 2vw, 2.25rem);
     line-height: 1.3;
@@ -133,13 +136,6 @@
 
 /* ── Mobile / Small Screens (max-width: 768px) ────────────────────────────── */
 @media (max-width: 768px) {
-  .section {
-    height: 100svh;
-  }
-  .textOverlay {
-    top: clamp(3.5rem, 2.5rem + 3vh, 5.5rem);
-    width: 90%;
-  }
   .title {
     font-size: clamp(1.25rem, 0.9rem + 2.5vw, 1.85rem);
     line-height: 1.35;
@@ -152,11 +148,224 @@
 
 /* ── Extra Small Screens (max-width: 480px) ───────────────────────────────── */
 @media (max-width: 480px) {
-  .textOverlay {
-    top: clamp(3rem, 2.2rem + 3vh, 4.8rem);
-    width: 92%;
-  }
   .title {
     font-size: clamp(1.15rem, 0.8rem + 3vw, 1.6rem);
+  }
+}
+
+/* ── Cards Overlay ────────────────────────────────────────────────────────── */
+.cardsOverlay {
+  position: absolute;
+  top: clamp(20.5rem, 13.5rem + 3.5vh, 18rem); /* Positioned relative to top, reducing center gap */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 92%;
+  max-width: 1440px;
+  transition: opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  pointer-events: none;
+}
+
+.cardsContainer {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.875rem; /* Reduced gap from 1.25rem */
+  width: 100%;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: #0f0c1b;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  overflow: hidden;
+  text-decoration: none;
+  aspect-ratio: 3 / 4.1; /* Taller, premium portrait ratio */
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
+              box-shadow 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
+              border-color 0.45s ease;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  border-color: rgba(168, 85, 247, 0.5);
+  box-shadow: 0 24px 60px rgba(168, 85, 247, 0.25),
+              0 0 0 1px rgba(168, 85, 247, 0.2);
+}
+
+.cardImageContainer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.cardImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+  transition: transform 0.75s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.card:hover .cardImage {
+  transform: scale(1.08);
+}
+
+/* Linear gradient overlay from transparent to dark background for text readability */
+.cardGradientOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(15, 12, 27, 0) 30%,
+    rgba(15, 12, 27, 0.45) 55%,
+    rgba(7, 5, 15, 0.9) 85%,
+    #07050f 100%
+  );
+  z-index: 2;
+  transition: background 0.45s ease;
+}
+
+.card:hover .cardGradientOverlay {
+  background: linear-gradient(
+    to bottom,
+    rgba(15, 12, 27, 0) 25%,
+    rgba(15, 12, 27, 0.5) 50%,
+    rgba(7, 5, 15, 0.95) 80%,
+    #05030b 100%
+  );
+}
+
+.cardContent {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: clamp(1rem, 0.8rem + 1vw, 1.5rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  z-index: 3;
+  background: transparent;
+}
+
+.cardTitle {
+  font-family: var(--font-heading), "Inter Tight", system-ui, sans-serif;
+  font-size: clamp(0.9rem, 0.8rem + 0.4vw, 1.25rem);
+  font-weight: 500;
+  line-height: 1.25;
+  color: #f4f1fb;
+  margin: 0;
+  transition: color 0.3s ease;
+
+  /* Force wrapping to exactly 2 lines maximum */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 2.5em; /* reserve height for exactly 2 lines */
+}
+
+.card:hover .cardTitle {
+  color: #ffffff;
+}
+
+/* View More styling - hidden by default, slides up on hover */
+.viewMore {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  color: #a855f7;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-top: 0.6rem;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+              transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.arrow {
+  transition: transform 0.3s ease;
+}
+
+.card:hover .viewMore {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card:hover .arrow {
+  transform: translateX(3px);
+}
+
+/* ── Responsive adjustments ────────────────────────────────────────────────── */
+@media (max-width: 1200px) {
+  .cardsOverlay {
+    width: 95%;
+    top: clamp(14.5rem, 12.5rem + 3.5vh, 17rem);
+  }
+  .cardsContainer {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .cardsOverlay {
+    top: clamp(11.5rem, 9.5rem + 2vh, 13.5rem); /* Closer to title on mobile */
+    bottom: clamp(1.5rem, 1rem + 1vh, 2.5rem); /* Anchor to bottom */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding-right: 6px;
+    
+    /* Sleek custom scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(168, 85, 247, 0.4) rgba(255, 255, 255, 0.03);
+  }
+
+  .cardsOverlay::-webkit-scrollbar {
+    width: 6px;
+  }
+  .cardsOverlay::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 999px;
+  }
+  .cardsOverlay::-webkit-scrollbar-thumb {
+    background: rgba(168, 85, 247, 0.4);
+    border-radius: 999px;
+  }
+  
+  .cardsContainer {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.875rem;
+  }
+  
+  .cardTitle {
+    font-size: clamp(0.95rem, 0.85rem + 0.5vw, 1.15rem);
+  }
+
+  .viewMore {
+    opacity: 0.85;
+    transform: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .cardsOverlay {
+    top: clamp(10.5rem, 8.5rem + 2vh, 12.5rem); /* Even closer on very small screens */
+  }
+  .cardsContainer {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 }
