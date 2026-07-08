@@ -1,11 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 // Animation variants
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: {},
   visible: {
     transition: {
@@ -15,7 +15,7 @@ const containerVariants = {
   },
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { 
     opacity: 0, 
     y: 40,
@@ -25,12 +25,12 @@ const itemVariants = {
     y: 0,
     transition: {
       duration: 0.8,
-      ease: [0.25, 0.46, 0.45, 0.94],
+      ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
     },
   },
 };
 
-const imageVariants = {
+const imageVariants: Variants = {
   hidden: { 
     opacity: 0, 
     scale: 0.8,
@@ -42,7 +42,7 @@ const imageVariants = {
     y: 0,
     transition: {
       duration: 1.2,
-      ease: [0.25, 0.46, 0.45, 0.94],
+      ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
     },
   },
 };

@@ -167,3 +167,13 @@ h1, h2, h3, h4, h5, h6 {
   outline: 2px solid #3ABAB4;
   outline-offset: 2px;
 }
+
+/* Zoom-in animation for backgrounds */
+@keyframes zoomIn {
+  from {
+    transform: scale(1.05);
+  }
+  to {
+    transform: scale(1.15);
+  }
+}

@@ -56,7 +56,7 @@ export default function LandingLoader({ onComplete }: LandingLoaderProps) {
             opacity: 0, 
             scale: 1.02,
             filter: "blur(8px)",
-            transition: { duration: 0.6, ease: [0.43, 0.13, 0.23, 0.96] } 
+            transition: { duration: 0.6, ease: [0.43, 0.13, 0.23, 0.96] as [number, number, number, number] } 
           }}
           className="fixed inset-0 z-[9999] flex items-center justify-center bg-black"
         >

@@ -5,6 +5,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Toaster } from "@/components/ui/toaster";
 import { ConsultationProvider } from "@/components/providers/ConsultationProvider";
+import ChatWidget from "@/components/chatbot/ChatWidget";
 
 const interTight = Inter_Tight({
   subsets: ["latin"],
@@ -47,6 +48,7 @@ export default function RootLayout({
           <main>{children}</main>
           <Footer />
           <Toaster />
+          <ChatWidget />
         </ConsultationProvider>
       </body>
     </html>

@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
-import DotBackgroundDemo from "@/components/dot-background-demo";
 
 export default function VisionValuesSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
