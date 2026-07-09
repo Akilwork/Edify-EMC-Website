@@ -291,24 +291,13 @@
     left: 50%;
     transform: translateX(-50%);
     width: 90%;
-    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-y: hidden; /* JS drives scrollTop via page scroll */
     padding-right: 6px;
-    
-    /* Sleek custom scrollbar */
-    scrollbar-width: thin;
-    scrollbar-color: rgba(168, 85, 247, 0.4) rgba(255, 255, 255, 0.03);
+    scrollbar-width: none; /* Hide scrollbar — not needed */
   }
 
   .cardsOverlay::-webkit-scrollbar {
-    width: 6px;
-  }
-  .cardsOverlay::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 999px;
-  }
-  .cardsOverlay::-webkit-scrollbar-thumb {
-    background: rgba(168, 85, 247, 0.4);
-    border-radius: 999px;
+    display: none;
   }
   
   .cardsContainer {
@@ -317,7 +306,8 @@
   }
   
   .cardTitle {
-    font-size: clamp(0.95rem, 0.85rem + 0.5vw, 1.15rem);
+    font-size: clamp(1.05rem, 0.9rem + 1vw, 1.35rem);
+    min-height: 2.6em;
   }
 
   .viewMore {
@@ -333,5 +323,8 @@
   .cardsContainer {
     grid-template-columns: 1fr;
     gap: 1rem;
+  }
+  .cardTitle {
+    font-size: clamp(1rem, 0.85rem + 2vw, 1.25rem);
   }
 }

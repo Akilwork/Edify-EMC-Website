@@ -78,7 +78,7 @@ export default function Navbar() {
         </nav>
 
         {/* Desktop CTAs */}
-        <div className="hidden md:flex items-center gap-2 flex-shrink-0">
+        <div className="hidden lg:flex items-center gap-2 flex-shrink-0">
           <button
             onClick={openConsultation}
             className="flex items-center gap-2 px-7 py-[14px] text-[14px] font-normal rounded-[40px] bg-white text-black hover:bg-white/90 transition-all duration-200 whitespace-nowrap cursor-pointer border-none outline-none"

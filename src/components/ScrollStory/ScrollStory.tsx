@@ -89,6 +89,7 @@ export const ScrollStory = () => {
   const sectionRef        = useRef<HTMLDivElement>(null);
   const canvasRef         = useRef<HTMLCanvasElement>(null);
   const cardsOverlayRef   = useRef<HTMLDivElement>(null);
+  const cardsContainerRef = useRef<HTMLDivElement>(null);
   const contentWrapperRef = useRef<HTMLDivElement>(null);
   const imagesRef         = useRef<HTMLImageElement[]>([]);
   const fractionalFrame   = useRef(0);    // current fractional position
@@ -169,62 +170,84 @@ export const ScrollStory = () => {
     const canvas  = canvasRef.current;
     if (!section || !canvas) return;
 
-    // Show frame 0 before any scroll
     drawBlended(canvas, imagesRef.current, 0, dprRef.current);
+
+    // ── Mobile: extend pin to cover card overflow so page scroll drives it ──
+    const isMobile = window.innerWidth <= 768;
+    const baseDist  = window.innerHeight * SCROLL_MULTIPLIER;
+    let extraScrollPx = 0;
+
+    if (isMobile) {
+      const overlay   = cardsOverlayRef.current;
+      const container = cardsContainerRef.current;
+      if (overlay && container) {
+        extraScrollPx = Math.max(0, container.scrollHeight - overlay.offsetHeight);
+      }
+    }
+
+    const totalDist = baseDist + extraScrollPx;
 
     const st = ScrollTrigger.create({
       trigger: section,
       start: 'top top',
-      end: `+=${window.innerHeight * SCROLL_MULTIPLIER}`,
+      end: `+=${totalDist}`,
       pin: true,
       pinSpacing: true,
       scrub: 0.6,
       refreshPriority: 3,
       onUpdate: (self) => {
-        const next = scrollProgressToFractionalFrame(self.progress);
+        // Canvas animation always plays over the first baseDist of scroll
+        const canvasProgress = Math.min(1, (self.progress * totalDist) / baseDist);
+        const next = scrollProgressToFractionalFrame(canvasProgress);
 
         if (Math.round(next) !== Math.round(fractionalFrame.current)) {
           fractionalFrame.current = next;
-
           if (rafId.current) cancelAnimationFrame(rafId.current);
           rafId.current = requestAnimationFrame(() =>
             drawBlended(canvas, imagesRef.current, next, dprRef.current)
           );
         }
 
-        // Direct DOM update for crossfade of canvas and cards overlay
         const cardsOverlay   = cardsOverlayRef.current;
         const contentWrapper = contentWrapperRef.current;
         if (cardsOverlay && contentWrapper) {
-          const progress = self.progress;
           const fadeStart = 0.9;
-          const fadeEnd = 0.98;
+          const fadeEnd   = 0.98;
           let opacity = 0;
-          if (progress >= fadeEnd) {
+          if (canvasProgress >= fadeEnd) {
             opacity = 1;
-          } else if (progress <= fadeStart) {
+          } else if (canvasProgress <= fadeStart) {
             opacity = 0;
           } else {
-            opacity = (progress - fadeStart) / (fadeEnd - fadeStart);
+            opacity = (canvasProgress - fadeStart) / (fadeEnd - fadeStart);
           }
           cardsOverlay.style.opacity = `${opacity}`;
           cardsOverlay.style.pointerEvents = opacity > 0.9 ? 'auto' : 'none';
           contentWrapper.style.pointerEvents = opacity > 0.9 ? 'auto' : 'none';
 
-          // Hide canvas completely when the HTML overlay starts fading in
-          // to prevent double-image/ghosting on the final frame
-          if (progress >= fadeStart) {
+          if (canvasProgress >= fadeStart) {
             canvas.style.opacity = '0';
             canvas.style.visibility = 'hidden';
           } else {
             canvas.style.opacity = '1';
             canvas.style.visibility = 'visible';
           }
+
+          // ── Drive mobile card list scroll via page scroll ────────────────
+          if (isMobile && extraScrollPx > 0) {
+            const cardsPhaseStart = baseDist / totalDist;
+            if (self.progress > cardsPhaseStart) {
+              const cardsScrollProgress =
+                (self.progress - cardsPhaseStart) / (1 - cardsPhaseStart);
+              cardsOverlay.scrollTop = cardsScrollProgress * extraScrollPx;
+            } else {
+              cardsOverlay.scrollTop = 0;
+            }
+          }
         }
       },
     });
 
-    // Refresh ScrollTrigger to recalculate offset positions of subsequent sections
     ScrollTrigger.sort();
     ScrollTrigger.refresh();
 
@@ -261,7 +284,7 @@ export const ScrollStory = () => {
             className={styles.cardsOverlay}
             style={{ opacity: 0, pointerEvents: 'none' }}
           >
-            <div className={styles.cardsContainer}>
+            <div ref={cardsContainerRef} className={styles.cardsContainer}>
               {CARDS_DATA.map((card) => (
                 <a
                   key={card.id}

@@ -67,11 +67,6 @@ export default function WhyEdifySection() {
   /* ── shared graphic wrapper style ── */
   const graphicBase: React.CSSProperties = {
     position: "absolute",
-    left: 0,
-    top: "50%",
-    transform: "translateY(-50%)",
-    width: "clamp(280px, 48vw, 640px)",
-    height: "clamp(280px, 48vw, 640px)",
     willChange: "transform, opacity, filter",
     pointerEvents: "none",
   };
@@ -79,6 +74,8 @@ export default function WhyEdifySection() {
   /* ── shared text wrapper style ── */
   const textBase: React.CSSProperties = {
     position: "absolute",
+    left: 0,
+    width: "100%",
     willChange: "transform, opacity, filter",
   };
 
@@ -100,64 +97,68 @@ export default function WhyEdifySection() {
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse 65% 60% at 22% 55%, rgba(58,186,180,0.06) 0%, transparent 70%)",
+              "radial-gradient(ellipse 65% 60% at 50% 50%, rgba(58,186,180,0.04) 0%, transparent 70%)",
           }}
         />
 
         {/* ═══════════════════════════
-            GRAPHIC LAYER – left side
+            GRAPHIC LAYER – left side on desktop, bottom-centered on mobile/tablet
         ═══════════════════════════ */}
 
         {/* Stage 1 – Wave */}
-        <div ref={img1Ref} style={graphicBase}>
+        <div
+          ref={img1Ref}
+          style={graphicBase}
+          className="absolute left-6 sm:left-12 lg:left-0 bottom-[4vh] lg:top-1/2 lg:-translate-y-1/2 lg:bottom-auto w-[86vw] h-[86vw] sm:w-[70vw] sm:h-[70vw] lg:w-[48vw] lg:h-[48vw] max-w-[380px] max-h-[380px] sm:max-w-[480px] sm:max-h-[480px] lg:max-w-[640px] lg:max-h-[640px]"
+        >
           <Image
             src="/WhyEdify/1.png"
             alt="Abstract wave graphic"
             fill
             className="object-contain object-left"
-            sizes="(max-width: 768px) 80vw, 48vw"
+            sizes="(max-width: 1024px) 90vw, 48vw"
             priority
           />
         </div>
 
         {/* Stage 2 – Growth Arrow */}
-        <div ref={img2Ref} style={{ ...graphicBase, opacity: 0 }}>
+        <div
+          ref={img2Ref}
+          style={{ ...graphicBase, opacity: 0 }}
+          className="absolute left-6 sm:left-12 lg:left-0 bottom-[4vh] lg:top-1/2 lg:-translate-y-1/2 lg:bottom-auto w-[86vw] h-[86vw] sm:w-[70vw] sm:h-[70vw] lg:w-[48vw] lg:h-[48vw] max-w-[380px] max-h-[380px] sm:max-w-[480px] sm:max-h-[480px] lg:max-w-[640px] lg:max-h-[640px]"
+        >
           <Image
             src="/WhyEdify/2.png"
             alt="Growth arrow graphic"
             fill
             className="object-contain object-left"
-            sizes="(max-width: 768px) 80vw, 48vw"
+            sizes="(max-width: 1024px) 90vw, 48vw"
           />
         </div>
 
         {/* Stage 3 – Connected Ecosystem */}
-        <div ref={img3Ref} style={{ ...graphicBase, opacity: 0 }}>
+        <div
+          ref={img3Ref}
+          style={{ ...graphicBase, opacity: 0 }}
+          className="absolute left-6 sm:left-12 lg:left-0 bottom-[4vh] lg:top-1/2 lg:-translate-y-1/2 lg:bottom-auto w-[86vw] h-[86vw] sm:w-[70vw] sm:h-[70vw] lg:w-[48vw] lg:h-[48vw] max-w-[380px] max-h-[380px] sm:max-w-[480px] sm:max-h-[480px] lg:max-w-[640px] lg:max-h-[640px]"
+        >
           <Image
             src="/WhyEdify/3.png"
             alt="Connected ecosystem graphic"
             fill
             className="object-contain object-left"
-            sizes="(max-width: 768px) 80vw, 48vw"
+            sizes="(max-width: 1024px) 90vw, 48vw"
           />
         </div>
 
         {/* ═══════════════════════════
-            TEXT LAYER – right side
+            TEXT LAYER – right side on desktop, top-centered on mobile/tablet
         ═══════════════════════════ */}
         <div
-          className="absolute inset-0 flex items-center"
-          style={{ paddingLeft: "clamp(1rem, 5vw, 6rem)" }}
+          className="absolute inset-0 flex items-start pt-[10vh] lg:pt-0 lg:items-center px-6 sm:px-12 lg:px-0 lg:pl-[clamp(1rem,5vw,6rem)] justify-center lg:justify-end"
         >
           <div
-            className="relative ml-auto"
-            style={{
-              width: "clamp(360px, 60vw, 860px)",
-              marginRight: "clamp(2rem, 7vw, 10rem)",
-              paddingRight: "clamp(1rem, 4vw, 5rem)",
-              minHeight: "clamp(200px, 40vh, 420px)",
-              textAlign: "right",
-            }}
+            className="relative w-full max-w-[540px] lg:max-w-none lg:ml-auto lg:mr-[clamp(1rem,5vw,10rem)] lg:pr-[clamp(0.5rem,3vw,5rem)] min-h-[220px] sm:min-h-[240px] lg:min-h-[420px] text-center lg:text-right"
           >
             {/* ── Stage 1 ── */}
             <div ref={text1Ref} style={textBase}>
@@ -165,9 +166,8 @@ export default function WhyEdifySection() {
                 className="block text-white font-medium tracking-tight leading-none"
                 style={{
                   fontFamily: "var(--font-inter-tight, 'Inter Tight', sans-serif)",
-                  fontSize: "clamp(2.2rem, 5.5vw, 5.5rem)",
+                  fontSize: "clamp(2.4rem, 7vw, 5.5rem)",
                   fontWeight: 500,
-                  whiteSpace: "nowrap",
                   textShadow: "0 0 80px rgba(58,186,180,0.15)",
                 }}
               >
@@ -181,9 +181,8 @@ export default function WhyEdifySection() {
                 className="block font-medium tracking-tight leading-none mb-3"
                 style={{
                   fontFamily: "var(--font-inter-tight, 'Inter Tight', sans-serif)",
-                  fontSize: "clamp(1.4rem, 3.5vw, 3rem)",
+                  fontSize: "clamp(1.25rem, 4vw, 3rem)",
                   fontWeight: 400,
-                  whiteSpace: "nowrap",
                   color: "rgba(255,255,255,0.28)",
                 }}
               >
@@ -193,9 +192,8 @@ export default function WhyEdifySection() {
                 className="block text-white font-medium tracking-tight leading-tight"
                 style={{
                   fontFamily: "var(--font-inter-tight, 'Inter Tight', sans-serif)",
-                  fontSize: "clamp(2rem, 5.5vw, 4.8rem)",
+                  fontSize: "clamp(2.0rem, 7vw, 4.8rem)",
                   fontWeight: 500,
-                  whiteSpace: "nowrap",
                   textShadow: "0 0 80px rgba(42,126,245,0.2)",
                 }}
               >
@@ -209,9 +207,8 @@ export default function WhyEdifySection() {
                 className="block font-medium tracking-tight leading-none mb-2"
                 style={{
                   fontFamily: "var(--font-inter-tight, 'Inter Tight', sans-serif)",
-                  fontSize: "clamp(1.1rem, 2.5vw, 2.4rem)",
+                  fontSize: "clamp(1.1rem, 3.5vw, 2.4rem)",
                   fontWeight: 400,
-                  whiteSpace: "nowrap",
                   color: "rgba(255,255,255,0.22)",
                 }}
               >
@@ -221,19 +218,18 @@ export default function WhyEdifySection() {
                 className="block font-medium tracking-tight leading-none mb-6"
                 style={{
                   fontFamily: "var(--font-inter-tight, 'Inter Tight', sans-serif)",
-                  fontSize: "clamp(1.2rem, 2.8vw, 2.6rem)",
+                  fontSize: "clamp(1.2rem, 3.8vw, 2.6rem)",
                   fontWeight: 400,
-                  whiteSpace: "nowrap",
                   color: "rgba(255,255,255,0.32)",
                 }}
               >
                 Built For Institutional Growth.
               </span>
               <span
-                className="block font-medium leading-snug text-white"
+                className="block font-medium leading-snug text-white mx-auto lg:ml-auto lg:mr-0"
                 style={{
                   fontFamily: "var(--font-inter-tight, 'Inter Tight', sans-serif)",
-                  fontSize: "clamp(1.3rem, 3vw, 2.6rem)",
+                  fontSize: "clamp(1.5rem, 4.5vw, 2.6rem)",
                   fontWeight: 500,
                   maxWidth: "28ch",
                   textShadow: "0 0 60px rgba(58,186,180,0.2)",
