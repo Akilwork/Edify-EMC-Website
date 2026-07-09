@@ -41,42 +41,6 @@
   -webkit-touch-callout: none;
 }
 
-/* ── Loading overlay ──────────────────────────────────────────────────────── */
-.loader {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.875rem;
-  background-color: #070b14;
-  z-index: 5;
-}
-
-.loaderBar {
-  width: min(260px, 55vw);
-  height: 2px;
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 999px;
-  overflow: hidden;
-}
-
-.loaderFill {
-  height: 100%;
-  background: linear-gradient(90deg, #6d28d9, #a855f7);
-  border-radius: 999px;
-  transition: width 0.12s linear;
-}
-
-.loaderText {
-  font-family: 'Inter Tight', sans-serif;
-  font-size: 0.7rem;
-  font-weight: 300;
-  letter-spacing: 0.12em;
-  color: rgba(255, 255, 255, 0.35);
-}
-
 /* ── Content Wrapper ──────────────────────────────────────────────────────── */
 .contentWrapper {
   position: absolute;

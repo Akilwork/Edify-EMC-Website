@@ -1,0 +1,622 @@
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(6, 4, 12, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.modalContainer {
+  position: relative;
+  width: 100%;
+  max-width: 1237px;
+  height: 810px;
+  max-height: 90vh;
+  background-color: #080512;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 28px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8),
+              0 0 100px rgba(168, 85, 247, 0.05);
+  z-index: 10;
+}
+
+/* Dynamic background image from card */
+.modalBgImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.45;
+  filter: saturate(1.1) brightness(0.9);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.modalBgOverlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 50% 50%, rgba(8, 5, 18, 0.25) 0%, #080512 95%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Orbital decoration background */
+.orbitalWrapper {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 3;
+  opacity: 0.8;
+}
+
+.orbitalBackground {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 130%;
+  height: 130%;
+  min-width: 1000px;
+  min-height: 1000px;
+}
+
+/* Close button style */
+.closeButton {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 50;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.closeButton:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+/* Nav arrows outside boundaries */
+.navButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 30;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  backdrop-filter: blur(4px);
+}
+
+.navButton:hover {
+  background-color: rgba(168, 85, 247, 0.15);
+  border-color: rgba(168, 85, 247, 0.3);
+  color: #ffffff;
+  transform: translateY(-50%) scale(1.08);
+}
+
+.navLeft {
+  left: 24px;
+}
+
+.navRight {
+  right: 24px;
+}
+
+/* Hide navigation arrows on small screens or overlap them cleanly */
+@media (max-width: 1400px) {
+  .navButton {
+    background-color: rgba(8, 5, 18, 0.8);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  .navLeft {
+    left: 8px;
+  }
+  .navRight {
+    right: 8px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .navButton {
+    display: none; /* Hide on mobile/tablet to avoid cluttering */
+  }
+}
+
+/* Introduction elements styling */
+.introCategoryTag {
+  font-family: var(--font-inter-tight), "Inter Tight", system-ui, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #a855f7;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.introMainTitle {
+  font-family: var(--font-inter-tight), "Inter Tight", system-ui, sans-serif;
+  font-size: clamp(1.8rem, 1.5rem + 1.8vw, 2.6rem);
+  font-weight: 500;
+  line-height: 1.25;
+  color: #ffffff;
+  margin: 0 0 24px 0;
+  letter-spacing: -0.015em;
+  max-width: 900px;
+}
+
+.introCtaWrapper {
+  margin-top: 12px;
+}
+
+.ctaButton {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  background-color: #ffffff;
+  color: #07050f;
+  font-family: var(--font-inter-tight), "Inter Tight", system-ui, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  margin-top: 10px;
+}
+
+.ctaButton:hover {
+  background-color: #f4f1fb;
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px rgba(168, 85, 247, 0.2);
+}
+
+.ctaArrow {
+  transition: transform 0.3s ease;
+}
+
+.ctaButton:hover .ctaArrow {
+  transform: translateX(4px);
+}
+
+/* Scrollable Content Area */
+.modalContent {
+  position: relative;
+  flex-grow: 1;
+  overflow-y: auto;
+  z-index: 10;
+  scroll-behavior: smooth;
+  display: block;
+  height: 100%;
+  width: 100%;
+
+  /* Hide scrollbar for all browsers */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.modalContent::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+  width: 0;
+  height: 0;
+}
+
+/* Sticky Viewport containing pinned elements and dynamic content */
+.stickyViewport {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  pointer-events: none; /* Let scroll events pass through to modalContent */
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 80px 80px 48px 80px;
+  z-index: 10;
+}
+
+/* Pinned elements at the top */
+.pinnedTop {
+  pointer-events: auto; /* Enable clicks on CTA button */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+/* Dynamic content area in the middle/bottom */
+.dynamicArea {
+  position: relative;
+  pointer-events: auto; /* Enable clicks on tabs/links */
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center content vertically in the remaining space */
+  margin-top: 24px;
+}
+
+.subServicesMode {
+  justify-content: flex-start;
+}
+
+/* Intro content (State 0) */
+.introContentContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  max-width: 900px;
+}
+
+.introText {
+  font-family: var(--font-inter-tight), "Inter Tight", system-ui, sans-serif;
+  font-size: clamp(1rem, 0.95rem + 0.25vw, 1.15rem);
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 0;
+  max-width: 720px;
+}
+
+.introTagline {
+  font-family: var(--font-inter-tight), "Inter Tight", system-ui, sans-serif;
+  font-size: clamp(1.6rem, 1.3rem + 1.5vw, 2.3rem);
+  font-weight: 500;
+  line-height: 1.3;
+  color: #ffffff;
+  margin-top: 64px;
+  margin-bottom: 0;
+  letter-spacing: -0.015em;
+  max-width: 850px;
+}
+
+/* Sub-services content (State 1..N) */
+.subServicesContentContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+  padding-top: 76px; /* Space for the absolute header: header height + gap */
+}
+
+/* Progress bar under label */
+.subServicesHeader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  z-index: 20;
+}
+
+.subServicesLabel {
+  font-family: var(--font-inter-tight), "Inter Tight", system-ui, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.progressBar {
+  display: flex;
+  width: 320px;
+  max-width: 100%;
+  gap: 8px;
+}
+
+.progressSegment {
+  flex: 1;
+  height: 2px;
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 99px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.progressSegment:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.activeSegment {
+  background-color: #ffffff;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+.subServiceTitle {
+  font-family: var(--font-inter-tight), "Inter Tight", system-ui, sans-serif;
+  font-size: clamp(1.4rem, 1.2rem + 1.2vw, 2.2rem);
+  font-weight: 500;
+  color: #ffffff;
+  margin: 0 0 20px 0;
+  letter-spacing: -0.015em;
+  line-height: 1.3;
+}
+
+.subServiceDesc {
+  font-family: var(--font-inter-tight), "Inter Tight", system-ui, sans-serif;
+  font-size: clamp(0.95rem, 0.9rem + 0.3vw, 1.12rem);
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+  max-width: 720px;
+}
+
+/* Scroll down cue style */
+.scrollDownIndicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  opacity: 0.65;
+  transition: opacity 0.3s ease;
+}
+
+.scrollDownIndicator:hover {
+  opacity: 1;
+}
+
+.scrollDownChevron {
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 2px;
+  transition: transform 0.3s ease;
+}
+
+.scrollDownText {
+  font-family: var(--font-inter-tight), "Inter Tight", system-ui, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 2px;
+}
+
+.mouseIcon {
+  width: 20px;
+  height: 32px;
+  border-radius: 12px;
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.mouseWheel {
+  width: 3px;
+  height: 7px;
+  background-color: #a855f7;
+  border-radius: 99px;
+  margin-top: 6px;
+}
+
+/* Scroll down indicator positioned outside the viewport flow */
+.stickyScrollIndicator {
+  pointer-events: auto;
+  align-self: center;
+  margin-top: auto;
+  z-index: 20;
+}
+
+.rotate180 {
+  transform: rotate(180deg);
+}
+
+/* ── Responsive adjustments ── */
+@media (max-width: 1024px) {
+  .closeButton {
+    top: 16px;
+    right: 16px;
+  }
+  .stickyViewport {
+    padding: 60px 48px 32px 48px;
+  }
+  .pinnedTop {
+    align-items: flex-start;
+  }
+  .dynamicArea {
+    margin-top: 16px;
+  }
+  .introTagline {
+    margin-top: 36px;
+  }
+}
+
+@media (max-width: 768px) {
+  .modalOverlay {
+    padding: 8px;
+  }
+  .modalContainer {
+    border-radius: 20px;
+  }
+  .stickyViewport {
+    padding: 48px 24px 24px 24px;
+  }
+  .progressBar {
+    width: 240px;
+  }
+  .introTagline {
+    margin-top: 24px;
+  }
+}
+
+/* Key Benefits Section (Last Stage) */
+.keyBenefitsContainer {
+  position: absolute;
+  left: -80px;
+  right: -80px;
+  bottom: -48px;
+  top: 0;
+  background-color: #f9fafb;
+  padding: 48px 80px 60px 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
+  box-shadow: inset 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+}
+
+.keyBenefitsLabel {
+  font-family: var(--font-inter-tight), "Inter Tight", system-ui, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: #1f2937;
+  margin: 0 0 32px 0;
+  text-align: center;
+}
+
+.benefitsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  width: 100%;
+}
+
+.benefitCard {
+  position: relative;
+  background-color: #111115;
+  border-radius: 16px;
+  padding: 32px 24px 28px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.benefitCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+}
+
+.cardGlowLine {
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  height: 20px;
+  border-top: 4px solid #9F7DFF;
+  border-left: 4px solid #9F7DFF;
+  border-right: 4px solid #9F7DFF;
+  border-radius: 16px 16px 0 0;
+  pointer-events: none;
+  background: transparent;
+}
+
+.cloverIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cardIconImg {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  transition: transform 0.3s ease, filter 0.3s ease;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.benefitCard:hover .cardIconImg {
+  transform: scale(1.08);
+  filter: drop-shadow(0 0 8px rgba(159, 125, 255, 0.6));
+}
+
+.benefitText {
+  font-family: var(--font-inter-tight), "Inter Tight", system-ui, sans-serif;
+  font-size: clamp(0.85rem, 0.8rem + 0.15vw, 0.95rem);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  text-align: left;
+  font-weight: 500;
+}
+
+@media (max-width: 1024px) {
+  .keyBenefitsContainer {
+    left: -48px;
+    right: -48px;
+    bottom: -32px;
+    padding: 32px 48px 48px 48px;
+  }
+  .benefitsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .keyBenefitsContainer {
+    left: -24px;
+    right: -24px;
+    bottom: -24px;
+    padding: 24px 24px 40px 24px;
+  }
+  .benefitsGrid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 16px;
+    padding: 8px 4px 16px 4px;
+    width: 100%;
+    scrollbar-width: none;
+  }
+  .benefitsGrid::-webkit-scrollbar {
+    display: none;
+  }
+  .benefitCard {
+    flex: 0 0 260px;
+    scroll-snap-align: start;
+    padding: 24px 20px;
+  }
+}

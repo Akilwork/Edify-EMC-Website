@@ -9,6 +9,7 @@ import {
   SCROLL_MULTIPLIER,
   getFrameSrc,
 } from './constants';
+import { ServiceDetailsModal } from './ServiceDetailsModal';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -95,7 +96,21 @@ export const ScrollStory = () => {
   const dprRef            = useRef(1);
 
   const [loadState,     setLoadState]    = useState<'loading' | 'ready'>('loading');
-  const [loadProgress,  setLoadProgress] = useState(0);
+  const [selectedServiceId, setSelectedServiceId] = useState<string | null>(null);
+
+  const handlePrevService = () => {
+    if (!selectedServiceId) return;
+    const idx = CARDS_DATA.findIndex((c) => c.id === selectedServiceId);
+    const prevIdx = (idx - 1 + CARDS_DATA.length) % CARDS_DATA.length;
+    setSelectedServiceId(CARDS_DATA[prevIdx].id);
+  };
+
+  const handleNextService = () => {
+    if (!selectedServiceId) return;
+    const idx = CARDS_DATA.findIndex((c) => c.id === selectedServiceId);
+    const nextIdx = (idx + 1) % CARDS_DATA.length;
+    setSelectedServiceId(CARDS_DATA[nextIdx].id);
+  };
 
   // ── 1. Preload every frame ──────────────────────────────────────────────────
   useEffect(() => {
@@ -104,7 +119,6 @@ export const ScrollStory = () => {
 
     const onSettle = () => {
       settled++;
-      setLoadProgress(Math.round((settled / TOTAL_FRAMES) * 100));
       if (settled === TOTAL_FRAMES) setLoadState('ready');
     };
 
@@ -228,20 +242,6 @@ export const ScrollStory = () => {
         aria-label="Edify services storytelling animation"
         onContextMenu={(e) => e.preventDefault()}
       >
-        <div
-          className={styles.loader}
-          aria-live="polite"
-          style={{
-            display: loadState === 'loading' ? 'flex' : 'none',
-            pointerEvents: loadState === 'loading' ? 'auto' : 'none',
-          }}
-        >
-          <div className={styles.loaderBar}>
-            <div className={styles.loaderFill} style={{ width: `${loadProgress}%` }} />
-          </div>
-          <span className={styles.loaderText}>Loading {loadProgress}%</span>
-        </div>
-
         <canvas 
           ref={canvasRef} 
           className={styles.canvas} 
@@ -267,6 +267,10 @@ export const ScrollStory = () => {
                   key={card.id}
                   href={card.link}
                   className={styles.card}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setSelectedServiceId(card.id);
+                  }}
                 >
                   <div className={styles.cardImageContainer}>
                     <img
@@ -293,6 +297,15 @@ export const ScrollStory = () => {
           </div>
         </div>
       </section>
+
+      {selectedServiceId && (
+        <ServiceDetailsModal
+          serviceId={selectedServiceId}
+          onClose={() => setSelectedServiceId(null)}
+          onPrev={handlePrevService}
+          onNext={handleNextService}
+        />
+      )}
     </div>
   );
 };
