@@ -29,7 +29,7 @@ const QUICK_LINKS = [
 export default function Footer() {
   return (
     <footer
-      className="relative overflow-hidden"
+      className="relative overflow-hidden z-[10]"
       style={{
         background:
           "radial-gradient(ellipse 80% 60% at 60% 40%, rgba(14,30,70,0.85) 0%, rgba(8,16,40,0.6) 45%, transparent 75%), radial-gradient(ellipse 50% 40% at 70% 55%, rgba(10,25,80,0.5) 0%, transparent 60%), linear-gradient(180deg, #0a0e1a 0%, #080c18 40%, #060810 100%)",

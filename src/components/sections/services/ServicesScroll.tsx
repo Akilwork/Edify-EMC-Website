@@ -5,23 +5,73 @@ import { ArrowRight } from "lucide-react";
 import BlurText from "@/components/ui/BlurText";
 import GridBackground from "@/components/ui/GridBackground";
 
+// Service categories data
+const SERVICE_CATEGORIES = [
+  {
+    id: "institutional-management",
+    title: "Institutional Management",
+    description: "Building strong institutions through strategic leadership, efficient operations, and sustainable organizational growth.",
+    image: "/demo-img",
+    services: [
+      { id: "hr-management", title: "Human Resource Management" },
+      { id: "educational-consulting", title: "Educational & Institutional Consulting" },
+      { id: "financial-consultancy", title: "Financial Consultancy" }
+    ]
+  },
+  {
+    id: "technology-innovation",
+    title: "Technology & Innovation",
+    description: "Empowering institutions with smart technologies that enhance efficiency, connectivity, and digital transformation.",
+    image: "/technology-img",
+    services: [
+      { id: "it-solutions", title: "IT Solutions & Digital Transformation" },
+      { id: "ecommerce-services", title: "E-Commerce & Digital Services" },
+      { id: "printing-branding", title: "Printing & Branding Solutions" }
+    ]
+  },
+  {
+    id: "student-development",
+    title: "Student Development",
+    description: "Supporting holistic student growth through wellbeing, guidance, and talent development initiatives.",
+    image: "/student-development",
+    services: [
+      { id: "behavioural-counselling", title: "Behavioural Counselling & Student Support" },
+      { id: "sports-training", title: "Sports Training & Talent Development" }
+    ]
+  },
+  {
+    id: "infrastructure-operations",
+    title: "Infrastructure & Operations",
+    description: "Creating safe, efficient, and future-ready environments that support institutional excellence.",
+    image: "/infrastructure-img",
+    services: [
+      { id: "civil-engineering", title: "Civil Engineering & Infrastructure Development" },
+      { id: "transportation", title: "Transportation & Fleet Support" },
+      { id: "uniform-solutions", title: "Uniform Solutions" }
+    ]
+  }
+];
+
 export default function ServicesScroll() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
   const scene2Ref = useRef<HTMLDivElement>(null);
-  const imageCardRef = useRef<HTMLDivElement>(null);
-  const servicesListRef = useRef<HTMLDivElement>(null);
-
   const [heroVisible, setHeroVisible] = useState(false);
+  const [activeCategoryIndex, setActiveCategoryIndex] = useState(0);
+  const categoryIndexRef = useRef(0);
 
   const cleanupFnRef = useRef<(() => void) | null>(null);
+
+  // Ensure initial state is correct
+  useEffect(() => {
+    categoryIndexRef.current = 0;
+    setActiveCategoryIndex(0);
+  }, []);
 
   useEffect(() => {
     const section = sectionRef.current;
     const hero = heroRef.current;
     const scene2 = scene2Ref.current;
-    const imageCard = imageCardRef.current;
-    const servicesList = servicesListRef.current;
 
     if (!section || !hero || !scene2) return;
 
@@ -39,12 +89,6 @@ export default function ServicesScroll() {
 
         // ─── Initial States ──────────────────────────────────────────────────────
         gsap.set(scene2, { autoAlpha: 0, yPercent: 100, filter: "blur(30px)", visibility: "hidden", pointerEvents: "none" });
-        if (imageCard) gsap.set(imageCard, { autoAlpha: 0, x: -100, scale: 0.9, filter: "blur(10px)" });
-        if (servicesList) gsap.set(servicesList, { autoAlpha: 0, x: 60 });
-        if (servicesList) {
-          const buttons = servicesList.querySelectorAll("button");
-          gsap.set(buttons, { autoAlpha: 0, y: 40, filter: "blur(8px)" });
-        }
 
         // ─── Hero Animation on Page Load ─────────────────────────────────────────
         const loadTimeline = gsap.timeline({ defaults: { ease: "power2.out" } });
@@ -58,14 +102,52 @@ export default function ServicesScroll() {
         setTimeout(() => setHeroVisible(true), 500);
 
         // ─── Scroll-Triggered Animations ────────────────────────────────────────────
+        // Total scroll: 1.0 (transition) + 4.0 (4 category cycles) = 5.0 total duration
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: section,
             start: "top top",
-            end: "+=4000vh",
+            end: "+=12000vh",
             pin: true,
             pinSpacing: true,
             scrub: 1,
+            onInit: () => {
+              categoryIndexRef.current = 0;
+              setActiveCategoryIndex(0);
+            },
+            onEnter: () => {
+              categoryIndexRef.current = 0;
+              setActiveCategoryIndex(0);
+            },
+            onUpdate: (self) => {
+              const progress = self.progress;
+
+              // Equal distribution: Each category gets ~22.5% of scroll
+              // 0.0 - 0.1: Scene 1→Scene 2 transition
+              // 0.1 - 0.325: Category 0 (Institutional Management)
+              // 0.325 - 0.55: Category 1 (Technology & Innovation)
+              // 0.55 - 0.775: Category 2 (Student Development)
+              // 0.775 - 1.0: Category 3 (Infrastructure & Operations)
+
+              let targetCategory = 0;
+
+              if (progress < 0.1) {
+                targetCategory = 0; // Transition phase - show first category
+              } else if (progress >= 0.1 && progress < 0.325) {
+                targetCategory = 0; // First category cycle
+              } else if (progress >= 0.325 && progress < 0.55) {
+                targetCategory = 1; // Second category cycle
+              } else if (progress >= 0.55 && progress < 0.775) {
+                targetCategory = 2; // Third category cycle
+              } else if (progress >= 0.775) {
+                targetCategory = 3; // Fourth category cycle
+              }
+
+              if (categoryIndexRef.current !== targetCategory) {
+                categoryIndexRef.current = targetCategory;
+                setActiveCategoryIndex(targetCategory);
+              }
+            }
           },
           defaults: { ease: "power3.out" }
         });
@@ -82,7 +164,7 @@ export default function ServicesScroll() {
             duration: 1,
             ease: "power2.inOut",
           },
-          1.0
+          0.0
         );
 
         // Scene 2 slides up from bottom with blur
@@ -97,45 +179,8 @@ export default function ServicesScroll() {
             duration: 1.5,
             ease: "power3.out",
           },
-          1.0
+          0.0
         );
-
-        // Animate image card from left
-        if (imageCard) {
-          tl.to(
-            imageCard,
-            {
-              autoAlpha: 1,
-              x: 0,
-              scale: 1,
-              filter: "blur(0px)",
-              duration: 1.2,
-            },
-            1.3
-          );
-        }
-
-        // Animate services list from right
-        if (servicesList) {
-          tl.to(
-            servicesList,
-            { autoAlpha: 1, x: 0, duration: 1 },
-            1.5
-          );
-
-          const buttons = servicesList.querySelectorAll("button");
-          tl.to(
-            buttons,
-            {
-              autoAlpha: 1,
-              y: 0,
-              filter: "blur(0px)",
-              duration: 0.8,
-              stagger: 0.15,
-            },
-            1.7
-          );
-        }
 
         cleanupFnRef.current = () => {
           ScrollTrigger.getAll().forEach((st) => st.kill());
@@ -205,57 +250,88 @@ export default function ServicesScroll() {
           </div>
         </div>
 
-        {/* ─── Scene 2: Services Cards Section ─── */}
+        {/* ─── Scene 2: Services Categories Section ─── */}
         <div
           ref={scene2Ref}
-          className="absolute inset-0 z-[3] will-change-transform overflow-y-auto"
+          className="absolute inset-0 z-[3] will-change-transform bg-white"
         >
-          <div className="w-full h-full bg-white py-20 md:py-32">
-            <div className="w-full max-w-[1920px] mx-auto px-8 md:px-16 lg:px-24">
-              <div className="grid lg:grid-cols-[1.2fr_1fr] gap-8 md:gap-12 items-center min-h-full">
-                {/* Left Column - Image Card */}
-                <div ref={imageCardRef} className="relative h-[500px] md:h-[600px] rounded-[16px] overflow-hidden shadow-lg will-change-transform">
-                  <div
-                    className="absolute inset-0 bg-cover bg-center transition-transform duration-700 hover:scale-105"
-                    style={{ backgroundImage: "url(/Service-page/demo-img.jpg)" }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-                  <div className="absolute bottom-0 left-0 p-6 md:p-8 max-w-md">
-                    <p className="text-white/70 text-sm md:text-base mb-2">Service Category</p>
-                    <h3 className="text-white text-xl md:text-2xl font-semibold mb-3">
-                      Institutional Management
-                    </h3>
-                    <p className="text-white/80 text-sm md:text-base leading-relaxed">
-                      Building strong institutions through strategic leadership, efficient operations, and sustainable organizational growth.
-                    </p>
-                  </div>
-                </div>
+          <div className="w-full h-full bg-white py-24 md:py-32 relative">
+            {/* Grid Overlay */}
+            <div className="absolute inset-0 pointer-events-none z-0">
+              <div
+                className="absolute inset-0"
+                style={{
+                  backgroundImage: `
+                    linear-gradient(to right, #f3f4f6 1px, transparent 1px),
+                    linear-gradient(to bottom, #f3f4f6 1px, transparent 1px)
+                  `,
+                  backgroundSize: '40px 40px',
+                }}
+              />
+              {/* Radial white overlay blends center */}
+              <div
+                className="absolute inset-0"
+                style={{
+                  background: 'radial-gradient(ellipse at center, white 0%, transparent 50%)',
+                }}
+              />
+            </div>
 
-                {/* Right Column - Services List */}
-                <div ref={servicesListRef} className="flex flex-col justify-center py-8 will-change-transform">
-                  {[
-                    { id: "hr-management", title: "Human Resource Management" },
-                    { id: "educational-consulting", title: "Educational & Institutional Consulting" },
-                    { id: "financial-consultancy", title: "Financial Consultancy" }
-                  ].map((service, index) => (
-                    <div key={service.id}>
-                      <button
-                        className="group w-full flex items-center justify-between py-6 text-left transition-all duration-300 hover:bg-gray-50 rounded-lg px-4 -mx-4"
-                      >
-                        <span className="text-lg md:text-xl font-normal text-gray-900 group-hover:text-blue-600 transition-colors">
-                          {service.title}
-                        </span>
-                        <span className="flex items-center gap-2 text-blue-600 opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
-                          <span className="text-sm font-medium">explore</span>
-                          <ArrowRight size={18} />
-                        </span>
-                      </button>
-                      {index < 2 && (
-                        <div className="border-t border-gray-200 ml-4 mr-4" />
-                      )}
+            <div className="w-full max-w-[1920px] mx-auto px-6 md:px-56 lg:px-60 relative z-10 h-full flex items-center">
+              {/* Categories Container - Only show active category */}
+              <div className="w-full relative" style={{ minHeight: '600px' }}>
+                {SERVICE_CATEGORIES.map((category, index) => (
+                  <div
+                    key={category.id}
+                    className={`w-full transition-all duration-500 ${
+                      index === activeCategoryIndex
+                        ? 'opacity-100 translate-y-0 pointer-events-auto relative'
+                        : 'opacity-0 translate-y-8 pointer-events-none absolute top-0 left-0 right-0'
+                    }`}
+                    style={{ zIndex: index === activeCategoryIndex ? 10 : 1 }}
+                  >
+                    <div className="grid lg:grid-cols-[0.8fr_1.4fr] gap-8 md:gap-12 items-center">
+                      {/* Left Column - Image Card */}
+                      <div className="relative h-[400px] md:h-[500px] rounded-[24px] overflow-hidden shadow-lg">
+                        <div
+                          className="absolute inset-0 bg-cover bg-center transition-transform duration-700 hover:scale-105"
+                          style={{ backgroundImage: `url(${category.image})` }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+                        <div className="absolute bottom-0 left-0 p-6 md:p-8 max-w-md">
+                          <h3 className="text-white text-[32px] font-normal mb-3">
+                            {category.title}
+                          </h3>
+                          <p className="text-white/80 text-[14px] font-light leading-relaxed">
+                            {category.description}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Right Column - Services List */}
+                      <div className="flex flex-col justify-center py-8">
+                        {category.services.map((service, serviceIndex) => (
+                          <div key={service.id}>
+                            <button
+                              className="group w-full flex items-center justify-between py-12 text-left transition-colors duration-300 hover:bg-white rounded-lg px-4 -mx-4"
+                            >
+                              <span className="text-lg md:text-[32px] font-normal text-gray-900 group-hover:text-blue-600 group-hover:md:text-[34px] transition-all duration-300 ease-out">
+                                {service.title}
+                              </span>
+                              <span className="flex items-center gap-2 text-blue-600 opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+                                <span className="text-sm font-medium">Explore</span>
+                                <ArrowRight size={18} />
+                              </span>
+                            </button>
+                            {serviceIndex < category.services.length - 1 && (
+                              <div className="border-t border-gray-200 ml-4 mr-4" />
+                            )}
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
