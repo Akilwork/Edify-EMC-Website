@@ -36,7 +36,7 @@ export default function HeroSection({ isParentReady = true }: { isParentReady?: 
       className="relative min-h-[100svh] flex items-end justify-center overflow-hidden"
     >
       {/* Background Image */}
-      <motion.div 
+      <motion.div
         className="absolute inset-0 z-0"
         initial={{ scale: 1.08, opacity: 0 }}
         animate={isParentReady ? { scale: 1, opacity: 1 } : { scale: 1.08, opacity: 0 }}
@@ -67,10 +67,10 @@ export default function HeroSection({ isParentReady = true }: { isParentReady?: 
         initial="hidden"
         animate={isParentReady ? "visible" : "hidden"}
       >
-        <div className="text-center">
+        <div className="text-left sm:text-center">
           {/* Main Heading — reveals first on load */}
           <motion.h1
-            className="font-sans font-medium text-white leading-[1.15] mx-auto mb-4 xs:mb-6 sm:mb-6 lg:mb-8"
+            className="font-sans font-medium text-white leading-[1.15] sm:mx-auto mb-4 xs:mb-6 sm:mb-6 lg:mb-8"
             style={{
               fontSize: "clamp(1.5rem, 0.97rem + 2.25vw, 3.5rem)",
               maxWidth: "min(92%, 1070px)",
@@ -83,7 +83,7 @@ export default function HeroSection({ isParentReady = true }: { isParentReady?: 
 
           {/* Subtitle — reveals second on scroll */}
           <motion.p
-            className="text-white/70 mx-auto mb-6 sm:mb-8 lg:mb-10 leading-[1.4] sm:leading-[1.3]"
+            className="text-white/70 sm:mx-auto mb-6 sm:mb-8 lg:mb-10 leading-[1.4] sm:leading-[1.3]"
             style={{
               fontSize: "clamp(0.8125rem, 0.75rem + 0.28vw, 1rem)",
               maxWidth: "min(88%, 654px)",
@@ -97,7 +97,7 @@ export default function HeroSection({ isParentReady = true }: { isParentReady?: 
 
           {/* CTA Buttons — reveals third on scroll */}
           <motion.div
-            className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full max-w-[440px] sm:max-w-none mx-auto"
+            className="flex flex-col sm:flex-row items-start sm:items-center sm:justify-center gap-3 sm:gap-4 w-full max-w-[440px] sm:max-w-none sm:mx-auto"
             variants={childVariants}
           >
             {/* Primary CTA */}
