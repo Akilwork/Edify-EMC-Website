@@ -5,6 +5,7 @@ import HeroSection from "@/components/sections/home/HeroSection";
 import IntroductionSection from "@/components/sections/home/IntroductionSection";
 import ServicesOverviewSection from "@/components/sections/home/ServicesOverviewSection";
 import WhyEdifySection from "@/components/sections/home/WhyEdifySection";
+import CompaniesSection from "@/components/sections/home/CompaniesSection";
 import ChairmanTransitionToCta from "@/components/sections/home/ChairmanTransitionToCta";
 import LandingLoader from "@/components/ui/LandingLoader";
 import { ScrollStory } from "@/components/ScrollStory";
@@ -42,6 +43,7 @@ export default function HomePage() {
       <ScrollStory key="scrollstory" />
       <ServicesOverviewSection key="services" />
       <WhyEdifySection key="why" />
+      <CompaniesSection key="companies" />
       <ChairmanTransitionToCta key="chairman" />
     </>
   );
