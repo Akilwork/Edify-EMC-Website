@@ -2,84 +2,75 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import Image from "next/image";
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { useConsultation } from "@/components/providers/ConsultationProvider";
+import Scene10ConsultationForm from "@/components/layout/Scene10ConsultationForm";
 
 export default function CtaSection({ animate = true }: { animate?: boolean }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
-  const { openConsultation } = useConsultation();
 
   return (
-    <section id="cta" className="relative h-[100svh] flex items-center justify-center overflow-hidden py-16 sm:py-20 lg:py-24">
-      {/* Background image */}
-      <div className="absolute inset-0 z-0 cta-bg-container">
-        <Image
-          src="/assets/image 2505.png"
-          alt="Educational classroom"
-          fill
-          className="object-cover object-center cta-bg-image"
-          quality={85}
-          sizes="100vw"
+    <section id="cta" className="relative min-h-[100svh] flex items-center justify-center overflow-hidden py-16 sm:py-20 lg:py-24">
+      {/* Background Video */}
+      <div className="absolute inset-0 z-0">
+        <video
+          src="/about/Form/form-bg.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="w-full h-full object-cover"
         />
+        {/* Vignette: Dark on right, lighter on left */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: "linear-gradient(to left, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.6) 85%, rgba(0, 0, 0, 0.3) 100%)"
+          }}
+        />
+        {/* Dark overlay for better text readability */}
+        <div className="absolute inset-0 bg-black/20" />
       </div>
 
-      <div className="container-responsive container-max relative z-10">
+      <div className="container-responsive container-max relative z-10 w-full">
         <div
           ref={ref}
-          className="max-w-7xl mx-auto text-center"
+          className="w-full max-w-[1600px] mx-auto grid lg:grid-cols-[40%_60%] gap-8 lg:gap-12 items-center text-left"
         >
-          <motion.h2
-            initial={animate ? { opacity: 0, y: 30 } : undefined}
-            animate={animate && inView ? { opacity: 1, y: 0 } : undefined}
-            transition={{ duration: 0.7 }}
-            className="font-sans font-medium text-white leading-[1.15] mb-6 sm:mb-8 text-center"
-            style={{ fontSize: 'clamp(1.5rem, 0.97rem + 2.25vw, 3.5rem)' }}
-          >
-            <span className="block mb-2 sm:whitespace-nowrap">
-              <span>Excellence</span>
-              <span> in education starts with institutions</span>
-            </span>
-            <span className="block">built for the future.</span>
-          </motion.h2>
+          {/* Left Column: Heading */}
+          <div className="order-1 lg:order-1 text-left mb-8 md:mb-0">
+            <motion.h2
+              initial={animate ? { opacity: 0, y: 30 } : undefined}
+              animate={animate && inView ? { opacity: 1, y: 0 } : undefined}
+              transition={{ duration: 0.7 }}
+              className="font-sans text-[clamp(24px,5vw,32px)] md:text-[clamp(32px,4vw,40px)] lg:text-[clamp(36px,4vw,48px)] font-medium leading-[1.1] tracking-tight text-white mb-4"
+            >
+              Excellence in education starts with institutions built for the future.
+            </motion.h2>
+            <motion.p
+              initial={animate ? { opacity: 0, y: 20 } : undefined}
+              animate={animate && inView ? { opacity: 1, y: 0 } : undefined}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-white/60 text-sm md:text-base leading-relaxed max-w-xl"
+            >
+              Partner With Edify Management Consultancy Today And Experience The Power Of Professional,
+              Results-Driven Services Across Every Domain That Matters.
+            </motion.p>
+          </div>
 
-          <motion.p
-            initial={animate ? { opacity: 0, y: 20 } : undefined}
-            animate={animate && inView ? { opacity: 1, y: 0 } : undefined}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-white/80 text-fluid-base md:text-fluid-lg leading-relaxed mb-8 sm:mb-10 lg:mb-12 max-w-4xl mx-auto"
-          >
-            Partner With Edify Management Consultancy Today And Experience The Power Of Professional,
-            Results-Driven Services Across Every Domain That Matters.
-          </motion.p>
-
+          {/* Right Column: Consultation Form */}
           <motion.div
             initial={animate ? { opacity: 0, y: 20 } : undefined}
             animate={animate && inView ? { opacity: 1, y: 0 } : undefined}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
+            className="order-2 lg:order-2 w-full"
           >
-            <button
-              onClick={openConsultation}
-              className="group flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-white text-gray-900 font-sans text-[clamp(0.8125rem,0.75rem+0.28vw,0.875rem)] font-semibold rounded-full hover:bg-white/90 transition-all duration-300 shadow-xl cursor-pointer w-full sm:w-auto justify-center border-none outline-none"
-            >
-              Get a Free Consultation
-              <ArrowRight
-                size={16}
-                className="transition-transform duration-300 group-hover:translate-x-1"
-              />
-            </button>
-            <Link
-              href="/contact"
-              className="flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-white/5 backdrop-blur-md text-white font-sans text-[clamp(0.8125rem,0.75rem+0.28vw,0.875rem)] font-semibold rounded-full border border-white/40 hover:bg-white/15 hover:border-white/60 transition-all duration-300 cursor-pointer w-full sm:w-auto justify-center"
-            >
-              Contact Our Team
-            </Link>
+            <div className="backdrop-blur-md bg-[#151515]/80 border border-white/10 rounded-xl p-5 md:p-6">
+              <Scene10ConsultationForm />
+            </div>
           </motion.div>
         </div>
       </div>
     </section>
   );
 }
+

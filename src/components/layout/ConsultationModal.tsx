@@ -8,7 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 interface ConsultationModalProps {
   isOpen: boolean;
   onClose: () => void;
-  isInScene?: boolean; // New prop for Scene 10 integration
+  isInScene?: boolean;
 }
 
 // Shared constants
@@ -80,11 +80,8 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
         setShowServices(false);
       }
     }
-
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   // Reset form when modal closes
@@ -105,6 +102,7 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
       setShowInstTypes(false);
       setShowServices(false);
       submittingRef.current = false;
+      setIsSubmitting(false);
     }
   }, [isOpen]);
 
@@ -112,7 +110,6 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
     e.preventDefault();
     if (submittingRef.current) return;
 
-    // Basic Validation
     if (!formData.name.trim() || !formData.email.trim() || !formData.contactNumber.trim()) {
       toast({
         title: "Validation Error",
@@ -129,20 +126,12 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
     try {
       const response = await fetch("/api/consultation", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...formData,
-          countryCode,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...formData, countryCode }),
       });
 
       const result = await response.json();
-
-      if (!response.ok || !result.success) {
-        throw new Error(result.error || "Form submission failed");
-      }
+      if (!response.ok || !result.success) throw new Error(result.error || "Form submission failed");
 
       toast({
         title: "Consultation Requested!",
@@ -167,228 +156,306 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-10">
-          {/* Backdrop Overlay */}
+        /*
+         * Mobile / Tablet  →  bottom-sheet: slides up from bottom, fills screen, rounded top
+         * Desktop (lg+)    →  centred card: classic left-text / right-form split layout
+         */
+        <div className="fixed inset-0 z-50 flex items-end lg:items-center justify-center lg:p-6 xl:p-10">
+
+          {/* ── Backdrop ──────────────────────────────────────────────────────── */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/85 backdrop-blur-md"
+            className="fixed inset-0 bg-black/80 backdrop-blur-md"
           />
 
-          {/* Modal Container */}
+          {/* ── Modal shell ───────────────────────────────────────────────────── */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.96, y: 12 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.96, y: 12 }}
-            transition={{ type: "spring", duration: 0.5, bounce: 0.05 }}
-            className="relative w-full max-w-6xl border border-white/10 rounded-[12px] overflow-hidden shadow-2xl flex flex-col lg:flex-row max-h-[92vh] lg:h-[760px] z-10 bg-transparent"
+            initial={{ opacity: 0, y: 60 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 60 }}
+            transition={{ type: "spring", duration: 0.45, bounce: 0.08 }}
+            className={[
+              "relative w-full overflow-hidden shadow-2xl z-10",
+              "rounded-t-[24px] lg:rounded-[14px]",
+              "h-[92dvh] lg:max-w-6xl lg:h-[760px]",
+              "flex flex-col lg:flex-row",
+              "border-0 lg:border lg:border-white/10",
+            ].join(" ")}
           >
-            {/* Background Video (Common Single Div Section) */}
+
+            {/* ── Full-modal video background ─────────────────────────────────── */}
             <div className="absolute inset-0 z-0 bg-black">
               <video
-                autoPlay
-                loop
-                muted
-                playsInline
+                autoPlay loop muted playsInline
                 className="w-full h-full object-cover"
               >
                 <source src="/Consultation/parmardarshil.mp4" type="video/mp4" />
               </video>
-              {/* Smooth dark overlay over the video */}
-              <div className="absolute inset-0 bg-black/40" />
+              {/* Uniform dark scrim — same depth on all screen sizes */}
+              <div className="absolute inset-0 bg-black/45" />
             </div>
 
-            {/* Close button inside container */}
+            {/* ── Close button (top-right of modal) ───────────────────────────── */}
             <button
               onClick={onClose}
-              className="absolute top-6 right-6 z-50 flex items-center justify-center w-9 h-9 rounded-full text-white/70 hover:text-white hover:scale-105 transition-all duration-200 cursor-pointer"
+              className="absolute top-5 right-5 sm:top-6 sm:right-6 z-50 flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-full text-white/70 hover:text-white hover:scale-105 transition-all duration-200 cursor-pointer"
               style={{ backgroundColor: "#222225" }}
               aria-label="Close modal"
             >
-              <X size={18} />
+              <X size={15} className="sm:hidden" />
+              <X size={17} className="hidden sm:block lg:hidden" />
+              <X size={18} className="hidden lg:block" />
             </button>
 
-            {/* Left Column - Text Content */}
-            <div className="hidden lg:flex lg:w-1/2 p-16 flex-col justify-center relative backdrop-blur-md bg-black/30 border-r border-white/5 overflow-hidden flex-shrink-0 select-none z-10">
-              {/* Content - Exact centered alignment and larger spacing */}
-              <div className="relative z-10 space-y-8 max-w-md">
-                <h2 className="font-sans font-medium text-white leading-[1.1] text-[44px] lg:text-[50px] xl:text-[54px] tracking-tight">
+            {/* ══════════════════════════════════════════════════════════════════
+                MOBILE / TABLET  —  Hero banner (visible below lg)
+                Shows the video background with heading text overlaid on top.
+            ══════════════════════════════════════════════════════════════════ */}
+            <div className="lg:hidden relative z-10 flex-shrink-0 px-6 pt-11 pb-8 sm:px-8 sm:pt-12 sm:pb-9 md:px-10 md:pt-14 md:pb-10">
+              <div className="space-y-3 sm:space-y-4">
+                <h2 className="font-sans font-semibold text-white leading-[1.15] tracking-tight text-[26px] sm:text-[32px] md:text-[38px]">
                   Building Stronger <br />
-                  Institutions Starts <br />
-                  Here
+                  Institutions Starts Here
                 </h2>
-                <p className="text-white/70 text-[15px] sm:text-[16px] leading-relaxed font-normal">
+                <p className="text-white/65 text-[13px] sm:text-sm md:text-[15px] leading-relaxed max-w-sm md:max-w-md">
                   Connect with our consultants to explore tailored solutions designed for your institution's unique needs and growth objectives.
                 </p>
               </div>
             </div>
 
-            {/* Right Column - Form */}
-            <div
-              className="relative z-10 w-full lg:w-1/2 p-6 sm:p-10 md:p-14 overflow-y-auto no-scrollbar flex flex-col justify-center backdrop-blur-md bg-[#151515]/80"
-            >
-              {/* Heading only visible on mobile/tablet */}
-              <div className="lg:hidden mb-8 mt-4 space-y-2">
-                <h2 className="font-sans font-medium text-white text-2xl">
-                  Building Stronger Institutions Starts Here
+            {/* ══════════════════════════════════════════════════════════════════
+                DESKTOP  —  Left column (visible on lg+)
+            ══════════════════════════════════════════════════════════════════ */}
+            <div className="hidden lg:flex lg:w-1/2 p-12 xl:p-16 flex-col justify-center relative backdrop-blur-md bg-black/30 border-r border-white/5 overflow-hidden flex-shrink-0 select-none z-10">
+              <div className="relative z-10 space-y-8 max-w-md">
+                <h2 className="font-sans font-medium text-white leading-[1.1] text-[40px] xl:text-[50px] 2xl:text-[54px] tracking-tight">
+                  Building Stronger <br />
+                  Institutions Starts <br />
+                  Here
                 </h2>
-                <p className="text-white/60 text-sm">
-                  Connect with our consultants to explore tailored solutions.
+                <p className="text-white/70 text-[15px] xl:text-[16px] leading-relaxed font-normal">
+                  Connect with our consultants to explore tailored solutions designed for your institution's unique needs and growth objectives.
                 </p>
               </div>
+            </div>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Row 1: Name & Contact Number */}
-                <div className={`grid grid-cols-1 sm:grid-cols-2 gap-6 relative ${showCountryCodes ? "z-30" : "z-10"}`}>
-                  <div className="flex flex-col">
-                    <label htmlFor="modal-name" className="text-[13px] font-normal text-white mb-2 block">
-                      Name
-                    </label>
-                    <input
-                      id="modal-name"
-                      type="text"
-                      placeholder="Enter Full Name"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full px-4 h-[56px] border border-white/5 rounded-[8px] text-white placeholder-white/30 focus:outline-none focus:border-white/20 transition-all duration-200 text-sm animate-none backdrop-blur-sm"
-                      style={{ backgroundColor: "rgba(34, 34, 37, 0.65)" }}
-                      required
-                    />
+            {/* ══════════════════════════════════════════════════════════════════
+                FORM PANEL
+                · All breakpoints : backdrop-blur + semi-transparent dark panel
+                  so the full-screen video shows through on mobile & tablet too
+                · Desktop         : same treatment, just half-width
+            ══════════════════════════════════════════════════════════════════ */}
+            <div
+              className={[
+                "relative z-10 w-full lg:w-1/2",
+                "bg-[#0d0d0d]/70 backdrop-blur-md",
+                "flex-1 min-h-0",
+                "flex flex-col justify-start lg:justify-center",
+              ].join(" ")}
+            >
+              <div className="flex-1 min-h-0 overflow-y-auto no-scrollbar pt-5 px-5 pb-24 sm:pt-7 sm:px-7 sm:pb-28 md:pt-9 md:px-9 md:pb-32 lg:p-10 xl:p-14 lg:pb-0">
+                <form id="consultation-form" onSubmit={handleSubmit} className="space-y-4 sm:space-y-5 lg:space-y-6 pb-6 lg:pb-0">
+
+                  {/* ── Row 1: Name & Contact Number ───────────────────────────── */}
+                  <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 lg:gap-6 relative ${showCountryCodes ? "z-30" : "z-10"}`}>
+
+                    <div className="flex flex-col">
+                      <label htmlFor="modal-name" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-1.5 sm:mb-2 block">
+                        Name
+                      </label>
+                      <input
+                        id="modal-name"
+                        type="text"
+                        placeholder="Enter Full Name"
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        className="w-full px-4 h-[48px] sm:h-[52px] lg:h-[56px] border border-white/8 rounded-[8px] text-white text-[13px] sm:text-sm placeholder-white/25 focus:outline-none focus:border-white/20 transition-all duration-200 backdrop-blur-sm"
+                        style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
+                        required
+                      />
+                    </div>
+
+                    <div className="flex flex-col">
+                      <label htmlFor="modal-phone" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-1.5 sm:mb-2 block">
+                        Contact Number
+                      </label>
+                      <div
+                        className="flex items-center border border-white/8 rounded-[8px] h-[48px] sm:h-[52px] lg:h-[56px] focus-within:border-white/20 transition-all duration-200 backdrop-blur-sm"
+                        style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
+                      >
+                        <div ref={countryDropdownRef} className="relative flex-shrink-0 h-full">
+                          <button
+                            type="button"
+                            onClick={() => setShowCountryCodes(!showCountryCodes)}
+                            className="flex items-center gap-1 px-3 sm:px-3.5 text-[13px] sm:text-sm text-white/80 hover:text-white cursor-pointer h-full"
+                          >
+                            <span>{countryCode}</span>
+                            <ChevronDown
+                              size={13}
+                              className={`text-white/50 transition-transform duration-200 ${showCountryCodes ? "rotate-180" : ""}`}
+                            />
+                          </button>
+                          {showCountryCodes && (
+                            <div
+                              className="absolute top-[52px] sm:top-[56px] left-0 z-50 border border-white/10 rounded-lg shadow-xl py-1 max-h-44 overflow-y-auto w-32 sm:w-36 backdrop-blur-md"
+                              style={{ backgroundColor: "rgba(28, 28, 31, 0.98)" }}
+                            >
+                              {COUNTRY_CODES.map((item) => (
+                                <button
+                                  key={item.code}
+                                  type="button"
+                                  onClick={() => { setCountryCode(item.code); setShowCountryCodes(false); }}
+                                  className="w-full text-left px-3 sm:px-4 py-2 text-[13px] text-white/80 hover:bg-white/5 hover:text-white transition-colors"
+                                >
+                                  {item.code} ({item.name})
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                        <div className="w-px h-5 bg-white/10 flex-shrink-0" />
+                        <input
+                          id="modal-phone"
+                          type="tel"
+                          placeholder="Enter Contact Number"
+                          value={formData.contactNumber}
+                          onChange={(e) => setFormData({ ...formData, contactNumber: e.target.value })}
+                          className="w-full h-full bg-transparent px-3 text-[13px] sm:text-sm text-white placeholder-white/25 focus:outline-none"
+                          required
+                        />
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="flex flex-col">
-                    <label htmlFor="modal-phone" className="text-[13px] font-normal text-white mb-2 block">
-                      Contact Number
-                    </label>
-                    <div
-                      className="flex items-center border border-white/5 rounded-[8px] h-[56px] focus-within:border-white/20 transition-all duration-200 backdrop-blur-sm"
-                      style={{ backgroundColor: "rgba(34, 34, 37, 0.65)" }}
-                    >
-                      {/* Country Code Dropdown */}
-                      <div ref={countryDropdownRef} className="relative flex-shrink-0 h-full">
+                  {/* ── Row 2: Email Address & Designation ─────────────────────── */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 lg:gap-6 relative z-10">
+
+                    <div className="flex flex-col">
+                      <label htmlFor="modal-email" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-1.5 sm:mb-2 block">
+                        Email Address
+                      </label>
+                      <input
+                        id="modal-email"
+                        type="email"
+                        placeholder="Enter Email Address"
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        className="w-full px-4 h-[48px] sm:h-[52px] lg:h-[56px] border border-white/8 rounded-[8px] text-white text-[13px] sm:text-sm placeholder-white/25 focus:outline-none focus:border-white/20 transition-all duration-200 backdrop-blur-sm"
+                        style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
+                        required
+                      />
+                    </div>
+
+                    <div className="flex flex-col">
+                      <label htmlFor="modal-designation" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-1.5 sm:mb-2 block">
+                        Designation
+                      </label>
+                      <input
+                        id="modal-designation"
+                        type="text"
+                        placeholder="Enter Designation"
+                        value={formData.designation}
+                        onChange={(e) => setFormData({ ...formData, designation: e.target.value })}
+                        className="w-full px-4 h-[48px] sm:h-[52px] lg:h-[56px] border border-white/8 rounded-[8px] text-white text-[13px] sm:text-sm placeholder-white/25 focus:outline-none focus:border-white/20 transition-all duration-200 backdrop-blur-sm"
+                        style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* ── Row 3: Institution Type & Institution Name ──────────────── */}
+                  <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 lg:gap-6 relative ${showInstTypes ? "z-30" : "z-10"}`}>
+
+                    <div className="flex flex-col" ref={instDropdownRef}>
+                      <label className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-1.5 sm:mb-2 block">
+                        Institution Type
+                      </label>
+                      <div className="relative">
                         <button
                           type="button"
-                          onClick={() => setShowCountryCodes(!showCountryCodes)}
-                          className="flex items-center gap-1 px-3.5 text-sm text-white/80 hover:text-white cursor-pointer h-full"
+                          onClick={() => setShowInstTypes(!showInstTypes)}
+                          className="w-full flex items-center justify-between px-4 h-[48px] sm:h-[52px] lg:h-[56px] border border-white/8 rounded-[8px] text-[13px] sm:text-sm text-left cursor-pointer focus:outline-none focus:border-white/20 transition-colors duration-200 backdrop-blur-sm"
+                          style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
                         >
-                          <span>{countryCode}</span>
+                          <span className={`truncate mr-2 ${formData.institutionType ? "text-white" : "text-white/25"}`}>
+                            {formData.institutionType || "Select Institution Type"}
+                          </span>
                           <ChevronDown
-                            size={14}
-                            className={`text-white/50 transition-transform duration-200 ${
-                              showCountryCodes ? "rotate-180" : ""
-                            }`}
+                            size={15}
+                            className={`flex-shrink-0 text-white/50 transition-transform duration-200 ${showInstTypes ? "rotate-180" : ""}`}
                           />
                         </button>
-                        {showCountryCodes && (
+                        {showInstTypes && (
                           <div
-                            className="absolute top-[60px] left-0 z-50 border border-white/10 rounded-lg shadow-xl py-1 max-h-48 overflow-y-auto w-36 backdrop-blur-md"
-                            style={{ backgroundColor: "rgba(31, 31, 34, 0.95)" }}
+                            className="absolute top-[52px] sm:top-[56px] left-0 right-0 z-50 border border-white/10 rounded-lg shadow-xl py-1 max-h-44 sm:max-h-48 overflow-y-auto backdrop-blur-md"
+                            style={{ backgroundColor: "rgba(28, 28, 31, 0.98)" }}
                           >
-                            {COUNTRY_CODES.map((item) => (
+                            {INSTITUTION_TYPES.map((type) => (
                               <button
-                                key={item.code}
+                                key={type}
                                 type="button"
-                                onClick={() => {
-                                  setCountryCode(item.code);
-                                  setShowCountryCodes(false);
-                                }}
-                                className="w-full text-left px-4 py-2 text-sm text-white/80 hover:bg-white/5 hover:text-white transition-colors"
+                                onClick={() => { setFormData({ ...formData, institutionType: type }); setShowInstTypes(false); }}
+                                className="w-full text-left px-4 py-2.5 text-[13px] text-white/80 hover:bg-white/5 hover:text-white transition-colors"
                               >
-                                {item.code} ({item.name})
+                                {type}
                               </button>
                             ))}
                           </div>
                         )}
                       </div>
-                      <div className="w-px h-6 bg-white/10 flex-shrink-0" />
+                    </div>
+
+                    <div className="flex flex-col">
+                      <label htmlFor="modal-inst-name" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-1.5 sm:mb-2 block">
+                        Institution Name
+                      </label>
                       <input
-                        id="modal-phone"
-                        type="tel"
-                        placeholder="Enter Contact Number"
-                        value={formData.contactNumber}
-                        onChange={(e) => setFormData({ ...formData, contactNumber: e.target.value })}
-                        className="w-full h-full bg-transparent px-4 text-sm text-white placeholder-white/30 focus:outline-none"
-                        required
+                        id="modal-inst-name"
+                        type="text"
+                        placeholder="Enter Institution Name"
+                        value={formData.institutionName}
+                        onChange={(e) => setFormData({ ...formData, institutionName: e.target.value })}
+                        className="w-full px-4 h-[48px] sm:h-[52px] lg:h-[56px] border border-white/8 rounded-[8px] text-white text-[13px] sm:text-sm placeholder-white/25 focus:outline-none focus:border-white/20 transition-all duration-200 backdrop-blur-sm"
+                        style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
                       />
                     </div>
                   </div>
-                </div>
 
-                {/* Row 2: Email Address & Designation */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 relative z-10">
-                  <div className="flex flex-col">
-                    <label htmlFor="modal-email" className="text-[13px] font-normal text-white mb-2 block">
-                      Email Address
-                    </label>
-                    <input
-                      id="modal-email"
-                      type="email"
-                      placeholder="Enter Email Address"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full px-4 h-[56px] border border-white/5 rounded-[8px] text-white placeholder-white/30 focus:outline-none focus:border-white/20 transition-all duration-200 text-sm backdrop-blur-sm"
-                      style={{ backgroundColor: "rgba(34, 34, 37, 0.65)" }}
-                      required
-                    />
-                  </div>
-
-                  <div className="flex flex-col">
-                    <label htmlFor="modal-designation" className="text-[13px] font-normal text-white mb-2 block">
-                      Designation
-                    </label>
-                    <input
-                      id="modal-designation"
-                      type="text"
-                      placeholder="Enter Designation"
-                      value={formData.designation}
-                      onChange={(e) => setFormData({ ...formData, designation: e.target.value })}
-                      className="w-full px-4 h-[56px] border border-white/5 rounded-[8px] text-white placeholder-white/30 focus:outline-none focus:border-white/20 transition-all duration-200 text-sm backdrop-blur-sm"
-                      style={{ backgroundColor: "rgba(34, 34, 37, 0.65)" }}
-                    />
-                  </div>
-                </div>
-
-                {/* Row 3: Institution Type & Institution Name */}
-                <div className={`grid grid-cols-1 sm:grid-cols-2 gap-6 relative ${showInstTypes ? "z-30" : "z-10"}`}>
-                  <div className="flex flex-col" ref={instDropdownRef}>
-                    <label className="text-[13px] font-normal text-white mb-2 block">
-                      Institution Type
+                  {/* ── Row 4: Service Required (full width) ───────────────────── */}
+                  <div className={`flex flex-col relative ${showServices ? "z-30" : "z-10"}`} ref={serviceDropdownRef}>
+                    <label className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-1.5 sm:mb-2 block">
+                      Service Required
                     </label>
                     <div className="relative">
                       <button
                         type="button"
-                        onClick={() => setShowInstTypes(!showInstTypes)}
-                        className="w-full flex items-center justify-between px-4 h-[56px] border border-white/5 rounded-[8px] text-sm text-left text-white/80 hover:text-white cursor-pointer focus:outline-none focus:border-white/20 transition-colors duration-200 backdrop-blur-sm"
-                        style={{ backgroundColor: "rgba(34, 34, 37, 0.65)" }}
+                        onClick={() => setShowServices(!showServices)}
+                        className="w-full flex items-center justify-between px-4 h-[48px] sm:h-[52px] lg:h-[56px] border border-white/8 rounded-[8px] text-[13px] sm:text-sm text-left cursor-pointer focus:outline-none focus:border-white/20 transition-colors duration-200 backdrop-blur-sm"
+                        style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
                       >
-                        <span className={formData.institutionType ? "text-white" : "text-white/30"}>
-                          {formData.institutionType || "Select Institution Type"}
+                        <span className={`truncate mr-2 ${formData.serviceRequired ? "text-white" : "text-white/25"}`}>
+                          {formData.serviceRequired || "Select Service Required"}
                         </span>
                         <ChevronDown
-                          size={16}
-                          className={`text-white/50 transition-transform duration-200 ${
-                            showInstTypes ? "rotate-180" : ""
-                          }`}
+                          size={15}
+                          className={`flex-shrink-0 text-white/50 transition-transform duration-200 ${showServices ? "rotate-180" : ""}`}
                         />
                       </button>
-                      {showInstTypes && (
+                      {showServices && (
                         <div
-                          className="absolute top-[60px] left-0 right-0 z-50 border border-white/10 rounded-lg shadow-xl py-1 max-h-52 overflow-y-auto backdrop-blur-md"
-                          style={{ backgroundColor: "rgba(31, 31, 34, 0.95)" }}
+                          className="absolute top-[52px] sm:top-[56px] left-0 right-0 z-50 border border-white/10 rounded-lg shadow-xl py-1 max-h-44 sm:max-h-48 overflow-y-auto backdrop-blur-md"
+                          style={{ backgroundColor: "rgba(28, 28, 31, 0.98)" }}
                         >
-                          {INSTITUTION_TYPES.map((type) => (
+                          {SERVICE_OPTIONS.map((service) => (
                             <button
-                              key={type}
+                              key={service}
                               type="button"
-                              onClick={() => {
-                                setFormData({ ...formData, institutionType: type });
-                                setShowInstTypes(false);
-                              }}
-                              className="w-full text-left px-4 py-2.5 text-sm text-white/80 hover:bg-white/5 hover:text-white transition-colors"
+                              onClick={() => { setFormData({ ...formData, serviceRequired: service }); setShowServices(false); }}
+                              className="w-full text-left px-4 py-2.5 text-[13px] text-white/80 hover:bg-white/5 hover:text-white transition-colors"
                             >
-                              {type}
+                              {service}
                             </button>
                           ))}
                         </div>
@@ -396,98 +463,39 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                     </div>
                   </div>
 
+                  {/* ── Row 5: How Can We Help? ─────────────────────────────────── */}
                   <div className="flex flex-col">
-                    <label htmlFor="modal-inst-name" className="text-[13px] font-normal text-white mb-2 block">
-                      Institution Name
+                    <label htmlFor="modal-help" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-1.5 sm:mb-2 block">
+                      How Can We Help?
                     </label>
-                    <input
-                      id="modal-inst-name"
-                      type="text"
-                      placeholder="Enter Institution Name"
-                      value={formData.institutionName}
-                      onChange={(e) => setFormData({ ...formData, institutionName: e.target.value })}
-                      className="w-full px-4 h-[56px] border border-white/5 rounded-[8px] text-white placeholder-white/30 focus:outline-none focus:border-white/20 transition-all duration-200 text-sm backdrop-blur-sm"
-                      style={{ backgroundColor: "rgba(34, 34, 37, 0.65)" }}
+                    <textarea
+                      id="modal-help"
+                      placeholder="Enter Text"
+                      value={formData.howCanWeHelp}
+                      onChange={(e) => setFormData({ ...formData, howCanWeHelp: e.target.value })}
+                      className="w-full px-4 py-3 border border-white/8 rounded-[8px] text-white text-[13px] sm:text-sm placeholder-white/25 focus:outline-none focus:border-white/20 transition-all duration-200 resize-none h-[96px] sm:h-[110px] lg:h-[130px] backdrop-blur-sm"
+                      style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
                     />
                   </div>
-                </div>
 
-                {/* Row 4: Service Required (Full Width) */}
-                <div className={`flex flex-col relative ${showServices ? "z-30" : "z-10"}`} ref={serviceDropdownRef}>
-                  <label className="text-[13px] font-normal text-white mb-2 block">
-                    Service Required
-                  </label>
-                  <div className="relative">
-                    <button
-                      type="button"
-                      onClick={() => setShowServices(!showServices)}
-                      className="w-full flex items-center justify-between px-4 h-[56px] border border-white/5 rounded-[8px] text-sm text-left text-white/80 hover:text-white cursor-pointer focus:outline-none focus:border-white/20 transition-colors duration-200 backdrop-blur-sm"
-                      style={{ backgroundColor: "rgba(34, 34, 37, 0.65)" }}
-                    >
-                      <span className={formData.serviceRequired ? "text-white" : "text-white/30"}>
-                        {formData.serviceRequired || "Select Service Required"}
-                      </span>
-                      <ChevronDown
-                        size={16}
-                        className={`text-white/50 transition-transform duration-200 ${
-                          showServices ? "rotate-180" : ""
-                        }`}
-                      />
-                    </button>
-                    {showServices && (
-                      <div
-                        className="absolute top-[60px] left-0 right-0 z-50 border border-white/10 rounded-lg shadow-xl py-1 max-h-52 overflow-y-auto backdrop-blur-md"
-                        style={{ backgroundColor: "rgba(31, 31, 34, 0.95)" }}
-                      >
-                        {SERVICE_OPTIONS.map((service) => (
-                          <button
-                            key={service}
-                            type="button"
-                            onClick={() => {
-                              setFormData({ ...formData, serviceRequired: service });
-                              setShowServices(false);
-                            }}
-                            className="w-full text-left px-4 py-2.5 text-sm text-white/80 hover:bg-white/5 hover:text-white transition-colors"
-                          >
-                            {service}
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
+                </form>
+              </div>
 
-                {/* Row 5: How Can We Help? (Full Width) */}
-                <div className="flex flex-col">
-                  <label htmlFor="modal-help" className="text-[13px] font-normal text-white mb-2 block">
-                    How Can We Help?
-                  </label>
-                  <textarea
-                    id="modal-help"
-                    rows={4}
-                    placeholder="Enter Text"
-                    value={formData.howCanWeHelp}
-                    onChange={(e) => setFormData({ ...formData, howCanWeHelp: e.target.value })}
-                    className="w-full px-4 py-3.5 border border-white/5 rounded-[8px] text-white placeholder-white/30 focus:outline-none focus:border-white/20 transition-all duration-200 text-sm resize-none h-[140px] backdrop-blur-sm"
-                    style={{ backgroundColor: "rgba(34, 34, 37, 0.65)" }}
+              {/* ── Row 6: Submit button (outside scroll view, absolute on mobile, relative on desktop) ── */}
+              <div className="absolute bottom-0 left-0 right-0 z-20 pt-4 pb-5 px-5 bg-[#0d0d0d]/70 backdrop-blur-md border-t border-white/10 sm:px-7 sm:pb-7 md:px-9 md:pb-9 lg:relative lg:bottom-auto lg:left-auto lg:right-auto lg:bg-transparent lg:backdrop-blur-none lg:border-t-0 lg:px-10 lg:pb-10 lg:xl:px-14 lg:xl:pb-14 lg:pt-2">
+                <button
+                  type="submit"
+                  form="consultation-form"
+                  disabled={isSubmitting}
+                  className="group w-full sm:w-auto inline-flex items-center justify-center sm:justify-start gap-3 px-7 sm:px-8 py-3.5 sm:py-4 bg-white text-black font-semibold rounded-full hover:bg-neutral-100 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 disabled:opacity-50 disabled:pointer-events-none cursor-pointer shadow-lg text-[14px] sm:text-[15px]"
+                >
+                  <span>{isSubmitting ? "Requesting..." : "Request Consultation"}</span>
+                  <ArrowRight
+                    size={15}
+                    className="transition-transform duration-300 group-hover:translate-x-1"
                   />
-                </div>
-
-                {/* Row 6: Submit Button */}
-                <div className="pt-2">
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="group inline-flex items-center gap-3 px-8 py-4 bg-white text-black font-semibold rounded-full hover:bg-neutral-100 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 disabled:opacity-50 disabled:pointer-events-none cursor-pointer shadow-lg text-[15px] mt-2"
-                  >
-                    <span>{isSubmitting ? "Requesting..." : "Request Consultation"}</span>
-                    <ArrowRight
-                      size={16}
-                      className="transition-transform duration-300 group-hover:translate-x-1"
-                    />
-                  </button>
-                </div>
-              </form>
+                </button>
+              </div>
             </div>
           </motion.div>
         </div>
