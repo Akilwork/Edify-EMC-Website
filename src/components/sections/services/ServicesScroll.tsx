@@ -67,19 +67,19 @@ export default function ServicesScroll() {
 
   const techServiceCards = [
     {
-      image: "/Service-page/IT-Solutions-&-Digital-Transformation",
+      image: "/Service-page/IT-Solutions-%26-Digital-Transformation.png",
       title: "IT Solutions & Digital Transformation",
       description: "Technology consulting, software solutions, automation, infrastructure, and digital modernization.",
       isWide: false
     },
     {
-      image: "/Service-page/E-Commerce-&-Digital-Services",
+      image: "/Service-page/E-Commerce-%26-Digital-Services.png",
       title: "E-Commerce & Digital Services",
       description: "Digital platforms, online solutions, web services, and technology-driven growth.",
       isWide: false
     },
     {
-      image: "/Service-page/Printing-&-Branding-Solutions",
+      image: "/Service-page/Printing-%26-Branding-Solutions.png",
       title: "Printing & Branding Solutions",
       description: "Professional branding, printing, promotional materials, and visual communication services.",
       isWide: true
