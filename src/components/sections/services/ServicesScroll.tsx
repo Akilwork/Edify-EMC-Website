@@ -65,6 +65,27 @@ export default function ServicesScroll() {
     }
   ];
 
+  const techServiceCards = [
+    {
+      image: "/Service-page/IT-Solutions-&-Digital-Transformation",
+      title: "IT Solutions & Digital Transformation",
+      description: "Technology consulting, software solutions, automation, infrastructure, and digital modernization.",
+      isWide: false
+    },
+    {
+      image: "/Service-page/E-Commerce-&-Digital-Services",
+      title: "E-Commerce & Digital Services",
+      description: "Digital platforms, online solutions, web services, and technology-driven growth.",
+      isWide: false
+    },
+    {
+      image: "/Service-page/Printing-&-Branding-Solutions",
+      title: "Printing & Branding Solutions",
+      description: "Professional branding, printing, promotional materials, and visual communication services.",
+      isWide: true
+    }
+  ];
+
   const bottomHighlights = [
     {
       icon: <Shield className="w-8 h-8" />,
@@ -74,6 +95,13 @@ export default function ServicesScroll() {
       icon: <Workflow className="w-8 h-8" />,
       text: "Driving efficiency with structured institutional frameworks."
     }
+  ];
+
+  const techBottomHighlights = [
+    "Accelerating digital transformation through intelligent technology solutions.",
+    "Enhancing operational efficiency with connected digital ecosystems.",
+    "Empowering institutions with secure, scalable, and future-ready technologies.",
+    "Simplifying complex operations through innovative digital experiences."
   ];
 
   return (
@@ -153,7 +181,7 @@ export default function ServicesScroll() {
             {serviceCards.map((card, index) => (
               <div
                 key={index}
-                className="group relative overflow-hidden rounded-lg lg:rounded-[32px] h-[400px] md:h-[450px] lg:h-[400px] w-full md:w-full lg:w-[320px] border border-black/10 bg-white"
+                className="group relative overflow-hidden rounded-lg lg:rounded-[32px] h-[400px] md:h-[450px] lg:h-[400px] w-full md:w-full lg:w-[320px] border border-black/10 bg-white shadow-sm group-hover:shadow-xl transition-shadow duration-500"
                 onMouseEnter={() => setHoveredCard(index)}
                 onMouseLeave={() => setHoveredCard(null)}
               >
@@ -199,6 +227,74 @@ export default function ServicesScroll() {
                 {/* Text */}
                 <p className="text-black/90 text-xs md:text-sm leading-relaxed">
                   {highlight.text}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Technology & Innovation Section ─── */}
+      <section className="relative w-full bg-white min-h-screen px-2 md:px-4 lg:px-8 xl:px-8 flex flex-col justify-center py-12 md:py-16">
+        <div className="max-w-[1440px] mx-auto">
+          {/* Heading and Subhead */}
+          <div className="text-center mb-12 md:mb-16 lg:mb-20">
+            <h2 className="font-sans text-3xl md:text-4xl lg:text-5xl text-black font-normal mb-4">
+              Technology & Innovation
+            </h2>
+            <p className="text-black/70 text-sm md:text-base lg:text-lg max-w-3xl mx-auto leading-relaxed">
+              Empowering institutions with smart technologies that enhance efficiency, connectivity, and digital transformation.
+            </p>
+          </div>
+
+          {/* Cards Grid */}
+          <div className="flex flex-wrap justify-center gap-2 md:gap-4 lg:gap-6 mb-12 md:mb-16">
+            {techServiceCards.map((card, index) => (
+              <div
+                key={index}
+                className={`group relative overflow-hidden rounded-lg lg:rounded-[32px] h-[400px] md:h-[450px] lg:h-[400px] w-full md:w-full ${
+                  card.isWide ? 'lg:w-[664px]' : 'lg:w-[320px]'
+                } border border-black/10 bg-white shadow-sm group-hover:shadow-xl transition-shadow duration-500`}
+                onMouseEnter={() => setHoveredCard(index)}
+                onMouseLeave={() => setHoveredCard(null)}
+              >
+                {/* Background Image */}
+                <div className="absolute inset-0">
+                  <img
+                    src={card.image}
+                    alt={card.title}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
+                </div>
+
+                {/* Black Overlay */}
+                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                {/* Explore More */}
+                <div className="absolute bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-60 transition-opacity duration-500 flex items-center gap-2 text-white text-xs z-10">
+                  <span className="uppercase">Explore More</span>
+                  <ArrowRight className="w-3 h-3" />
+                </div>
+
+                {/* Content */}
+                <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8 bg-gradient-to-t from-black/80 via-black/40 to-transparent transition-transform duration-500 ease-out group-hover:translate-y-[-40px]">
+                  <h3 className="text-white text-base md:text-lg lg:text-xl font-medium mb-3 transition-all duration-500 ease-out">
+                    {card.title}
+                  </h3>
+                  <p className="text-white/90 text-xs leading-relaxed line-clamp-1 group-hover:line-clamp-none transition-all duration-500 ease-out">
+                    {card.description}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Bottom Highlights */}
+          <div className="flex flex-col md:flex-row md:items-center md:divide-x md:divide-black/20 gap-6 md:gap-0">
+            {techBottomHighlights.map((highlight, index) => (
+              <div key={index} className="md:px-8">
+                <p className="text-black/90 text-xs md:text-sm leading-relaxed">
+                  {highlight}
                 </p>
               </div>
             ))}
