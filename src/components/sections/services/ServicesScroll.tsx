@@ -1,13 +1,15 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Shield, Workflow } from "lucide-react";
+import { ArrowRight, Shield, Workflow } from "lucide-react";
+import ShinyText from "@/components/ui/ShinyText";
 
 export default function ServicesScroll() {
   const heroRef = useRef<HTMLDivElement>(null);
   const [heroVisible, setHeroVisible] = useState(false);
   const [sectionVisible, setSectionVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => setHeroVisible(true), 100);
@@ -133,9 +135,9 @@ export default function ServicesScroll() {
       {/* ─── Service Listing Section ─── */}
       <section
         ref={sectionRef}
-        className="relative w-full bg-white min-h-screen px-6 md:px-12 lg:px-20 xl:px-32 flex flex-col justify-center"
+        className="relative w-full bg-white min-h-screen px-2 md:px-4 lg:px-8 xl:px-8 flex flex-col justify-center"
       >
-        <div className={`max-w-7xl mx-auto transition-all duration-1000 ${sectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+        <div className={`max-w-[1440px] mx-auto transition-all duration-1000 ${sectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           {/* Heading and Subhead */}
           <div className="text-center mb-12 md:mb-16 lg:mb-20">
             <h2 className="font-sans text-3xl md:text-4xl lg:text-5xl text-black font-normal mb-4">
@@ -147,27 +149,38 @@ export default function ServicesScroll() {
           </div>
 
           {/* Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-6 mb-12 md:mb-16">
+          <div className="flex flex-wrap justify-center gap-2 md:gap-4 lg:gap-6 mb-12 md:mb-16">
             {serviceCards.map((card, index) => (
               <div
                 key={index}
-                className="group relative overflow-hidden rounded-lg aspect-[2/3] md:aspect-[3/4] border border-black/10 bg-white"
+                className="group relative overflow-hidden rounded-lg lg:rounded-[32px] h-[400px] md:h-[450px] lg:h-[400px] w-full md:w-full lg:w-[320px] border border-black/10 bg-white"
+                onMouseEnter={() => setHoveredCard(index)}
+                onMouseLeave={() => setHoveredCard(null)}
               >
                 {/* Background Image */}
                 <div className="absolute inset-0">
                   <img
                     src={card.image}
                     alt={card.title}
-                    className="absolute inset-0 w-full h-full object-cover opacity-100 group-hover:opacity-80 transition-opacity duration-500"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   />
                 </div>
 
+                {/* Black Overlay */}
+                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                {/* Explore More */}
+                <div className="absolute bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-60 transition-opacity duration-500 flex items-center gap-2 text-white text-xs z-10">
+                  <span className="uppercase">Explore More</span>
+                  <ArrowRight className="w-3 h-3" />
+                </div>
+
                 {/* Content */}
-                <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
-                  <h3 className="text-white text-base md:text-lg lg:text-xl font-medium mb-3">
+                <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8 bg-gradient-to-t from-black/80 via-black/40 to-transparent transition-transform duration-500 ease-out group-hover:translate-y-[-40px]">
+                  <h3 className="text-white text-base md:text-lg lg:text-xl font-medium mb-3 transition-all duration-500 ease-out">
                     {card.title}
                   </h3>
-                  <p className="text-white/90 text-xs md:text-sm leading-relaxed">
+                  <p className="text-white/90 text-xs leading-relaxed line-clamp-1 group-hover:line-clamp-none transition-all duration-500 ease-out">
                     {card.description}
                   </p>
                 </div>
@@ -178,13 +191,13 @@ export default function ServicesScroll() {
           {/* Bottom Highlights */}
           <div className="flex flex-col md:flex-row md:items-center md:divide-x md:divide-black/20 gap-6 md:gap-0">
             {bottomHighlights.map((highlight, index) => (
-              <div key={index} className="flex items-start md:items-center gap-4 md:px-8">
+              <div key={index} className="flex items-start gap-4 md:px-8 max-w-md">
                 {/* Icon */}
-                <div className="flex-shrink-0 text-black">
+                <div className="flex-shrink-0 text-black/50 mt-1">
                   {highlight.icon}
                 </div>
                 {/* Text */}
-                <p className="text-black/90 text-sm md:text-base lg:text-lg">
+                <p className="text-black/90 text-xs md:text-sm leading-relaxed">
                   {highlight.text}
                 </p>
               </div>
