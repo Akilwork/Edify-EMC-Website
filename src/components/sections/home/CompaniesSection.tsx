@@ -35,17 +35,14 @@ export default function CompaniesSection() {
   // Animation variants
   const lineVariants = {
     hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { duration: 0.6, ease: "easeOut" } }
+    visible: { opacity: 1, transition: { duration: 0.6, ease: "easeOut" as const } }
   };
 
-  const plusVariants = {
-    hidden: { opacity: 0, scale: 0 },
-    visible: { opacity: 1, scale: 1, transition: { type: "spring", stiffness: 180, damping: 12 } }
-  };
+
 
   const textVariants = {
     hidden: { opacity: 0, y: 25 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" as const } }
   };
 
   const logoContainerVariants = {
@@ -61,7 +58,7 @@ export default function CompaniesSection() {
 
   const logoVariants = {
     hidden: { opacity: 0, y: 15 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" as const } }
   };
 
   return (
@@ -214,23 +211,7 @@ export default function CompaniesSection() {
               return segments;
             })}
 
-            {/* Plus symbols at intersections (perfectly centered, transparent background) */}
-            {desktopRows.map((topVal, yIdx) =>
-              desktopCols.map((leftVal, xIdx) => (
-                <motion.div
-                  key={`desk-plus-${yIdx}-${xIdx}`}
-                  variants={plusVariants}
-                  initial="hidden"
-                  animate={inView ? "visible" : "hidden"}
-                  className="absolute -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none flex items-center justify-center"
-                  style={{ top: topVal, left: leftVal }}
-                >
-                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M5 0V10M0 5H10" stroke="#94A3B8" strokeWidth="1.2" strokeLinecap="round"/>
-                  </svg>
-                </motion.div>
-              ))
-            )}
+
           </div>
 
           {/* ========================================================================= */}
@@ -341,23 +322,7 @@ export default function CompaniesSection() {
               return segments;
             })}
 
-            {/* Plus symbols at intersections (perfectly centered, transparent background) */}
-            {mobileRows.map((topVal, yIdx) =>
-              mobileCols.map((leftVal, xIdx) => (
-                <motion.div
-                  key={`mob-plus-${yIdx}-${xIdx}`}
-                  variants={plusVariants}
-                  initial="hidden"
-                  animate={inView ? "visible" : "hidden"}
-                  className="absolute -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none flex items-center justify-center"
-                  style={{ top: topVal, left: leftVal }}
-                >
-                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M5 0V10M0 5H10" stroke="#94A3B8" strokeWidth="1.2" strokeLinecap="round"/>
-                  </svg>
-                </motion.div>
-              ))
-            )}
+
           </div>
 
           {/* ========================================================================= */}

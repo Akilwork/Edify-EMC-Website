@@ -17,7 +17,7 @@ export default function TransformationScene({ isVisible }: TransformationScenePr
     if (!isVisible) return;
 
     const animate = async () => {
-      const gsap = await import("gsap");
+      const { default: gsap } = await import("gsap");
 
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 

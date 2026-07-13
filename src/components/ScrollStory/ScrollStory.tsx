@@ -99,6 +99,29 @@ export const ScrollStory = () => {
   const [loadState,     setLoadState]    = useState<'loading' | 'ready'>('loading');
   const [selectedServiceId, setSelectedServiceId] = useState<string | null>(null);
 
+  const [windowSize, setWindowSize] = useState({
+    width: typeof window !== 'undefined' ? window.innerWidth : 1200,
+    height: typeof window !== 'undefined' ? window.innerHeight : 800,
+  });
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    const handleResize = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        setWindowSize({
+          width: window.innerWidth,
+          height: window.innerHeight,
+        });
+      }, 150);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      clearTimeout(timeoutId);
+    };
+  }, []);
+
   const handlePrevService = () => {
     if (!selectedServiceId) return;
     const idx = CARDS_DATA.findIndex((c) => c.id === selectedServiceId);
@@ -172,12 +195,12 @@ export const ScrollStory = () => {
 
     drawBlended(canvas, imagesRef.current, 0, dprRef.current);
 
-    // ── Mobile: extend pin to cover card overflow so page scroll drives it ──
-    const isMobile = window.innerWidth <= 768;
-    const baseDist  = window.innerHeight * SCROLL_MULTIPLIER;
+    // ── Mobile/Tablet: extend pin to cover card overflow so page scroll drives it ──
+    const isMobileOrTablet = windowSize.width <= 1024;
+    const baseDist  = windowSize.height * SCROLL_MULTIPLIER;
     let extraScrollPx = 0;
 
-    if (isMobile) {
+    if (isMobileOrTablet) {
       const overlay   = cardsOverlayRef.current;
       const container = cardsContainerRef.current;
       if (overlay && container) {
@@ -185,7 +208,9 @@ export const ScrollStory = () => {
       }
     }
 
-    const totalDist = baseDist + extraScrollPx;
+    // Map the page scroll 1:1 to the card list scrolling
+    const lastFrameScrollDistance = isMobileOrTablet ? extraScrollPx * 1.0 : 0;
+    const totalDist = baseDist + lastFrameScrollDistance;
 
     const st = ScrollTrigger.create({
       trigger: section,
@@ -233,8 +258,8 @@ export const ScrollStory = () => {
             canvas.style.visibility = 'visible';
           }
 
-          // ── Drive mobile card list scroll via page scroll ────────────────
-          if (isMobile && extraScrollPx > 0) {
+          // ── Drive mobile/tablet card list scroll via page scroll ────────────────
+          if (isMobileOrTablet && extraScrollPx > 0) {
             const cardsPhaseStart = baseDist / totalDist;
             if (self.progress > cardsPhaseStart) {
               const cardsScrollProgress =
@@ -255,7 +280,7 @@ export const ScrollStory = () => {
       st.kill(true);
       if (rafId.current) cancelAnimationFrame(rafId.current);
     };
-  }, [loadState]);
+  }, [loadState, windowSize.width, windowSize.height]);
 
   return (
     <div>

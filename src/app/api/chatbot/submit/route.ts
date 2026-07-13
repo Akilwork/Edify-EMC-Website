@@ -11,7 +11,8 @@ const escapeCSV = (val: any): string => {
 };
 
 // Helper to get formatted UAE (Dubai) Local Time
-const getUAETimestamp = (): string => {
+const getUAETimestamp = (dateInput?: Date | string): string => {
+  const date = dateInput ? new Date(dateInput) : new Date();
   const formatter = new Intl.DateTimeFormat("en-US", {
     timeZone: "Asia/Dubai",
     year: "numeric",
@@ -22,9 +23,9 @@ const getUAETimestamp = (): string => {
     second: "2-digit",
     hour12: false,
   });
-  const parts = formatter.formatToParts(new Date());
+  const parts = formatter.formatToParts(date);
   const partMap = Object.fromEntries(parts.map((p) => [p.type, p.value]));
-  return `${partMap.year}-${partMap.month}-${partMap.day} ${partMap.hour}:${partMap.minute}:${partMap.second}`;
+  return `${partMap.year}-${partMap.month}-${partMap.day} ${partMap.hour}:${partMap.minute}:${partMap.second} GST`;
 };
 
 export async function POST(request: Request) {
@@ -42,7 +43,7 @@ export async function POST(request: Request) {
     } = leadData;
 
     // Get timestamp formatted for Asia/Dubai Local Time (GST)
-    const formattedTimestamp = timestamp || getUAETimestamp();
+    const formattedTimestamp = getUAETimestamp(timestamp);
 
     // Log the submission to console (fail-safe for serverless host logs)
     console.log("New Chatbot Lead:", JSON.stringify({ timestamp: formattedTimestamp, ...leadData }));
@@ -50,38 +51,42 @@ export async function POST(request: Request) {
     // ────────────────────────────────────────────────────────────────
     // 1. Write to local CSV spreadsheet file first (Immediate & Safe)
     // ────────────────────────────────────────────────────────────────
-    const filePath = path.join(process.cwd(), "chatbot_leads.csv");
-    const fileExists = fs.existsSync(filePath);
+    try {
+      const filePath = path.join(process.cwd(), "chatbot_leads.csv");
+      const fileExists = fs.existsSync(filePath);
 
-    const headers = [
-      "Timestamp",
-      "Service Interest",
-      "Institution Type",
-      "Email",
-      "Conversation Summary",
-      "Message Count",
-      "Qualified",
-      "Conversation ID",
-    ];
+      const headers = [
+        "Timestamp",
+        "Service Interest",
+        "Institution Type",
+        "Email",
+        "Conversation Summary",
+        "Message Count",
+        "Qualified",
+        "Conversation ID",
+      ];
 
-    const rowData = [
-      formattedTimestamp,
-      serviceInterest || "",
-      institutionType || "",
-      email || "",
-      conversationSummary || "",
-      messageCount || 0,
-      qualified ? "Yes" : "No",
-      conversationId || "",
-    ];
+      const rowData = [
+        formattedTimestamp,
+        serviceInterest || "",
+        institutionType || "",
+        email || "",
+        conversationSummary || "",
+        messageCount || 0,
+        qualified ? "Yes" : "No",
+        conversationId || "",
+      ];
 
-    const csvRow = rowData.map(escapeCSV).join(",") + "\n";
+      const csvRow = rowData.map(escapeCSV).join(",") + "\n";
 
-    if (!fileExists) {
-      const csvHeader = headers.map(escapeCSV).join(",") + "\n";
-      fs.writeFileSync(filePath, csvHeader + csvRow, "utf8");
-    } else {
-      fs.appendFileSync(filePath, csvRow, "utf8");
+      if (!fileExists) {
+        const csvHeader = headers.map(escapeCSV).join(",") + "\n";
+        fs.writeFileSync(filePath, csvHeader + csvRow, "utf8");
+      } else {
+        fs.appendFileSync(filePath, csvRow, "utf8");
+      }
+    } catch (csvError) {
+      console.warn("Failed to write chatbot lead to local CSV file:", csvError);
     }
 
     // ────────────────────────────────────────────────────────────────

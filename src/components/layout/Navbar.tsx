@@ -21,7 +21,7 @@ import {
 import { useConsultation } from "@/components/providers/ConsultationProvider";
 
 /* ────────────────────────────────────────────────────────────
-   Service data – icon mapped per service id
+ data – icon mapped per service id
 ──────────────────────────────────────────────────────────── */
 const MEGA_SERVICES = [
   {
