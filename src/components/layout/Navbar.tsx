@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Menu,
   X,
@@ -88,35 +88,41 @@ function ServicesMegaMenu({
   const rightCol = MEGA_SERVICES.slice(3, 6);
 
   return (
-    <div
-      className="absolute top-full left-0 right-0 z-40"
-      style={{ filter: "drop-shadow(0 20px 40px rgba(0,0,0,0.25))" }}
-    >
-      {/* backdrop */}
+    <div className="absolute top-full left-0 right-0 z-40">
+      {/* Full-screen backdrop to close on outside click */}
       <div
         className="fixed inset-0 top-0 z-[-1]"
         onClick={onClose}
         aria-hidden="true"
       />
 
-      <div className="w-full bg-[#F5F5F3]">
+      {/* White panel */}
+      <div
+        className="w-full bg-white border-b border-black/8"
+        style={{
+          boxShadow: "0 8px 32px rgba(0,0,0,0.10)",
+        }}
+      >
         <div className="container-responsive container-max">
-          <div className="grid grid-cols-[300px_1fr] min-h-[340px]">
-            {/* ── Left hero panel ── */}
-            <div className="relative rounded-[16px] overflow-hidden m-4 mr-0 min-h-[310px]">
+          <div className="grid grid-cols-[280px_1fr] min-h-[320px]">
+
+            {/* ── Left hero image panel ── */}
+            <div className="relative rounded-[16px] overflow-hidden m-5 mr-0 min-h-[290px]">
               <Image
                 src="/Rectangle 53.png"
                 alt="Edify services"
                 fill
                 className="object-cover"
               />
-              {/* dark overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+              {/* Stronger dark overlay for glass feel */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/10" />
+              {/* Subtle glass sheen on image */}
+              <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent" />
               <div className="absolute bottom-0 left-0 p-6">
-                <p className="text-white font-semibold text-[18px] leading-[1.3] max-w-[200px]">
+                <p className="text-white font-semibold text-[18px] leading-[1.3] max-w-[200px] drop-shadow-lg">
                   Expert Solutions for Every Need
                 </p>
-                <p className="text-white/70 text-[13px] mt-2 max-w-[200px]">
+                <p className="text-white/60 text-[12.5px] mt-2 max-w-[200px] leading-relaxed">
                   High-quality consulting designed around your goals.
                 </p>
               </div>
@@ -124,41 +130,36 @@ function ServicesMegaMenu({
 
             {/* ── Right content ── */}
             <div className="flex flex-col px-8 py-6">
-              {/* Section heading row */}
-              <div className="grid grid-cols-2 gap-x-8 mb-4">
-                <p className="text-[12px] font-semibold tracking-[1px] uppercase text-black/40">
-                  Our Services
-                </p>
-                <p className="text-[12px] font-semibold tracking-[1px] uppercase text-black/40">
-                  Quick Access
-                </p>
-              </div>
+              {/* Column heading */}
+              <p className="text-[11px] font-semibold tracking-[1.5px] uppercase text-black/40 mb-3">
+                Our Services
+              </p>
 
               {/* Service rows */}
-              <div className="grid grid-cols-2 gap-x-8 gap-y-1 flex-1">
+              <div className="grid grid-cols-2 gap-x-8 gap-y-0.5 flex-1">
                 {/* Left column */}
-                <div className="space-y-1">
+                <div className="space-y-0.5">
                   {leftCol.map(({ id, title, description, icon: Icon, slug }) => (
                     <Link
                       key={id}
                       href={`/services/${slug}`}
                       onClick={onClose}
-                      className="flex items-start gap-3 p-3 rounded-[12px] group hover:bg-white transition-all duration-200 cursor-pointer"
+                      className="flex items-start gap-3 p-3 rounded-[12px] group transition-all duration-200 cursor-pointer hover:bg-black/[0.04]"
                     >
                       {/* Icon box */}
-                      <div className="flex-shrink-0 w-9 h-9 rounded-[10px] bg-black/5 group-hover:bg-black/10 flex items-center justify-center transition-colors duration-200">
+                      <div className="flex-shrink-0 w-9 h-9 rounded-[10px] bg-black/5 group-hover:bg-black/10 flex items-center justify-center transition-all duration-200">
                         <Icon
-                          size={17}
+                          size={16}
                           className="text-black/60 group-hover:text-black transition-colors duration-200"
                           strokeWidth={1.5}
                         />
                       </div>
                       {/* Text */}
                       <div className="min-w-0">
-                        <p className="text-[13.5px] font-semibold text-black/80 group-hover:text-black leading-snug transition-colors duration-200">
+                        <p className="text-[13px] font-semibold text-black/80 group-hover:text-black leading-snug transition-colors duration-200">
                           {title}
                         </p>
-                        <p className="text-[12px] text-black/45 mt-0.5 leading-snug">
+                        <p className="text-[11.5px] text-black/45 mt-0.5 leading-snug transition-colors duration-200">
                           {description}
                         </p>
                       </div>
@@ -167,28 +168,28 @@ function ServicesMegaMenu({
                 </div>
 
                 {/* Right column */}
-                <div className="space-y-1">
+                <div className="space-y-0.5">
                   {rightCol.map(({ id, title, description, icon: Icon, slug }) => (
                     <Link
                       key={id}
                       href={`/services/${slug}`}
                       onClick={onClose}
-                      className="flex items-start gap-3 p-3 rounded-[12px] group hover:bg-white transition-all duration-200 cursor-pointer"
+                      className="flex items-start gap-3 p-3 rounded-[12px] group transition-all duration-200 cursor-pointer hover:bg-black/[0.04]"
                     >
                       {/* Icon box */}
-                      <div className="flex-shrink-0 w-9 h-9 rounded-[10px] bg-black/5 group-hover:bg-black/10 flex items-center justify-center transition-colors duration-200">
+                      <div className="flex-shrink-0 w-9 h-9 rounded-[10px] bg-black/5 group-hover:bg-black/10 flex items-center justify-center transition-all duration-200">
                         <Icon
-                          size={17}
+                          size={16}
                           className="text-black/60 group-hover:text-black transition-colors duration-200"
                           strokeWidth={1.5}
                         />
                       </div>
                       {/* Text */}
                       <div className="min-w-0">
-                        <p className="text-[13.5px] font-semibold text-black/80 group-hover:text-black leading-snug transition-colors duration-200">
+                        <p className="text-[13px] font-semibold text-black/80 group-hover:text-black leading-snug transition-colors duration-200">
                           {title}
                         </p>
-                        <p className="text-[12px] text-black/45 mt-0.5 leading-snug">
+                        <p className="text-[11.5px] text-black/45 mt-0.5 leading-snug transition-colors duration-200">
                           {description}
                         </p>
                       </div>
@@ -201,10 +202,10 @@ function ServicesMegaMenu({
               <div className="mt-4 pt-4 border-t border-black/10 flex items-center justify-between">
                 <div>
                   <p className="text-[13px] font-semibold text-black/80">
-                    Need assist for choosing service?
+                    Need assist for choosing a service?
                   </p>
-                  <p className="text-[12px] text-black/45">
-                    We have amazing experts to help you find your path.
+                  <p className="text-[11.5px] text-black/45 mt-0.5">
+                    Our experts will guide you to the right solution.
                   </p>
                 </div>
                 <button
@@ -212,19 +213,21 @@ function ServicesMegaMenu({
                     onClose();
                     openConsultation();
                   }}
-                  className="flex items-center gap-2 px-5 py-3 text-[13px] font-semibold rounded-[40px] bg-black text-white hover:bg-black/80 transition-all duration-200 whitespace-nowrap cursor-pointer border-none outline-none"
+                  className="flex items-center gap-2 px-5 py-[11px] text-[13px] font-semibold rounded-[40px] bg-black text-white hover:bg-black/80 transition-all duration-200 whitespace-nowrap cursor-pointer border-none outline-none active:scale-95"
                 >
                   Contact us
-                  <ArrowRight size={15} />
+                  <ArrowRight size={14} />
                 </button>
               </div>
             </div>
+
           </div>
         </div>
       </div>
     </div>
   );
 }
+
 
 /* ────────────────────────────────────────────────────────────
    Main Navbar
@@ -236,6 +239,7 @@ export default function Navbar() {
   const [megaOpen, setMegaOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
   const { openConsultation } = useConsultation();
   const megaTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -305,6 +309,10 @@ export default function Navbar() {
                   onMouseLeave={handleServicesLeave}
                 >
                   <button
+                    onClick={() => {
+                      setMegaOpen(false);
+                      router.push(href);
+                    }}
                     className={`flex items-center gap-1 text-[14px] font-semibold tracking-[0.96px] uppercase transition-colors duration-200 whitespace-nowrap cursor-pointer hover:text-white ${pathname.startsWith("/services") ? "text-white" : "text-white/60"
                       }`}
                     aria-haspopup="true"
@@ -371,20 +379,30 @@ export default function Navbar() {
               {NAV_LINKS.map(({ label, href, hasMega }) =>
                 hasMega ? (
                   <div key={href}>
-                    <button
-                      onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
-                      className={`flex items-center justify-between w-full text-[14px] font-semibold tracking-[0.96px] uppercase py-2 cursor-pointer transition-colors duration-200 ${pathname.startsWith("/services")
-                          ? "text-black"
-                          : "text-black/50"
-                        }`}
-                    >
-                      {label}
-                      <ChevronDown
-                        size={14}
-                        className={`transition-transform duration-200 ${mobileServicesOpen ? "rotate-180" : ""
+                    <div className="flex items-center justify-between">
+                      {/* Label navigates to /services */}
+                      <Link
+                        href={href}
+                        onClick={() => setMenuOpen(false)}
+                        className={`flex-1 text-[14px] font-semibold tracking-[0.96px] uppercase py-2 cursor-pointer transition-colors duration-200 ${pathname.startsWith("/services")
+                            ? "text-black"
+                            : "text-black/50"
                           }`}
-                      />
-                    </button>
+                      >
+                        {label}
+                      </Link>
+                      {/* Chevron toggles the sub-list */}
+                      <button
+                        onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+                        className={`p-2 cursor-pointer transition-colors duration-200 ${pathname.startsWith("/services") ? "text-black" : "text-black/50"}`}
+                        aria-label="Expand services menu"
+                      >
+                        <ChevronDown
+                          size={14}
+                          className={`transition-transform duration-200 ${mobileServicesOpen ? "rotate-180" : ""}`}
+                        />
+                      </button>
+                    </div>
 
                     {mobileServicesOpen && (
                       <div className="pl-4 pb-2 space-y-1">
