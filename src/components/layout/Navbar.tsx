@@ -278,9 +278,8 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 backdrop-blur-sm border-b border-white/10 ${
-          hidden ? "-translate-y-full" : "translate-y-0"
-        } ${scrolled ? "bg-black/50" : "bg-transparent"}`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 backdrop-blur-sm border-b border-white/10 ${hidden ? "-translate-y-full" : "translate-y-0"
+          } ${scrolled ? "bg-black/50" : "bg-transparent"}`}
       >
         <div className="container-responsive container-max flex items-center justify-between pt-[clamp(12px,1.4vw,20px)] pb-[clamp(8px,1vw,14px)]">
           {/* Logo */}
@@ -306,18 +305,16 @@ export default function Navbar() {
                   onMouseLeave={handleServicesLeave}
                 >
                   <button
-                    className={`flex items-center gap-1 text-[14px] font-semibold tracking-[0.96px] uppercase transition-colors duration-200 whitespace-nowrap cursor-pointer hover:text-white ${
-                      pathname.startsWith("/services") ? "text-white" : "text-white/60"
-                    }`}
+                    className={`flex items-center gap-1 text-[14px] font-semibold tracking-[0.96px] uppercase transition-colors duration-200 whitespace-nowrap cursor-pointer hover:text-white ${pathname.startsWith("/services") ? "text-white" : "text-white/60"
+                      }`}
                     aria-haspopup="true"
                     aria-expanded={megaOpen}
                   >
                     {label}
                     <ChevronDown
                       size={13}
-                      className={`transition-transform duration-200 ${
-                        megaOpen ? "rotate-180" : ""
-                      }`}
+                      className={`transition-transform duration-200 ${megaOpen ? "rotate-180" : ""
+                        }`}
                     />
                   </button>
                 </div>
@@ -325,9 +322,8 @@ export default function Navbar() {
                 <Link
                   key={href}
                   href={href}
-                  className={`text-[14px] font-semibold tracking-[0.96px] uppercase transition-colors duration-200 whitespace-nowrap cursor-pointer hover:text-white ${
-                    pathname === href ? "text-white" : "text-white/60"
-                  }`}
+                  className={`text-[14px] font-semibold tracking-[0.96px] uppercase transition-colors duration-200 whitespace-nowrap cursor-pointer hover:text-white ${pathname === href ? "text-white" : "text-white/60"
+                    }`}
                 >
                   {label}
                 </Link>
@@ -377,18 +373,16 @@ export default function Navbar() {
                   <div key={href}>
                     <button
                       onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
-                      className={`flex items-center justify-between w-full text-[14px] font-semibold tracking-[0.96px] uppercase py-2 cursor-pointer transition-colors duration-200 ${
-                        pathname.startsWith("/services")
+                      className={`flex items-center justify-between w-full text-[14px] font-semibold tracking-[0.96px] uppercase py-2 cursor-pointer transition-colors duration-200 ${pathname.startsWith("/services")
                           ? "text-black"
                           : "text-black/50"
-                      }`}
+                        }`}
                     >
                       {label}
                       <ChevronDown
                         size={14}
-                        className={`transition-transform duration-200 ${
-                          mobileServicesOpen ? "rotate-180" : ""
-                        }`}
+                        className={`transition-transform duration-200 ${mobileServicesOpen ? "rotate-180" : ""
+                          }`}
                       />
                     </button>
 
@@ -424,9 +418,8 @@ export default function Navbar() {
                     key={href}
                     href={href}
                     onClick={() => setMenuOpen(false)}
-                    className={`block text-[14px] font-semibold tracking-[0.96px] uppercase transition-colors duration-200 hover:text-black py-2 cursor-pointer ${
-                      pathname === href ? "text-black" : "text-black/50"
-                    }`}
+                    className={`block text-[14px] font-semibold tracking-[0.96px] uppercase transition-colors duration-200 hover:text-black py-2 cursor-pointer ${pathname === href ? "text-black" : "text-black/50"
+                      }`}
                   >
                     {label}
                   </Link>
