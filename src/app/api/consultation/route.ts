@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import fs from "fs";
 import path from "path";
 
@@ -11,7 +11,8 @@ const escapeCSV = (val: any): string => {
 };
 
 // Helper to get formatted UAE (Dubai) Local Time
-const getUAETimestamp = (): string => {
+const getUAETimestamp = (dateInput?: Date | string): string => {
+  const date = dateInput ? new Date(dateInput) : new Date();
   const formatter = new Intl.DateTimeFormat("en-US", {
     timeZone: "Asia/Dubai",
     year: "numeric",
@@ -22,9 +23,9 @@ const getUAETimestamp = (): string => {
     second: "2-digit",
     hour12: false,
   });
-  const parts = formatter.formatToParts(new Date());
+  const parts = formatter.formatToParts(date);
   const partMap = Object.fromEntries(parts.map((p) => [p.type, p.value]));
-  return `${partMap.year}-${partMap.month}-${partMap.day} ${partMap.hour}:${partMap.minute}:${partMap.second}`;
+  return `${partMap.year}-${partMap.month}-${partMap.day} ${partMap.hour}:${partMap.minute}:${partMap.second} GST`;
 };
 
 export async function POST(request: Request) {
@@ -53,42 +54,46 @@ export async function POST(request: Request) {
     // ────────────────────────────────────────────────────────────────
     // 1. Write to local CSV spreadsheet file first (Immediate & Safe)
     // ────────────────────────────────────────────────────────────────
-    const filePath = path.join(process.cwd(), "consultation_submissions.csv");
-    const fileExists = fs.existsSync(filePath);
+    try {
+      const filePath = path.join(process.cwd(), "consultation_submissions.csv");
+      const fileExists = fs.existsSync(filePath);
 
-    const headers = [
-      "Timestamp",
-      "Name",
-      "Country Code",
-      "Contact Number",
-      "Email",
-      "Designation",
-      "Institution Type",
-      "Institution Name",
-      "Service Required",
-      "Request Details",
-    ];
+      const headers = [
+        "Timestamp",
+        "Name",
+        "Country Code",
+        "Contact Number",
+        "Email",
+        "Designation",
+        "Institution Type",
+        "Institution Name",
+        "Service Required",
+        "Request Details",
+      ];
 
-    const rowData = [
-      timestamp,
-      name || "",
-      countryCode || "",
-      contactNumber || "",
-      email || "",
-      designation || "",
-      institutionType || "",
-      institutionName || "",
-      serviceRequired || "",
-      detailsVal || "",
-    ];
+      const rowData = [
+        timestamp,
+        name || "",
+        countryCode || "",
+        contactNumber || "",
+        email || "",
+        designation || "",
+        institutionType || "",
+        institutionName || "",
+        serviceRequired || "",
+        detailsVal || "",
+      ];
 
-    const csvRow = rowData.map(escapeCSV).join(",") + "\n";
+      const csvRow = rowData.map(escapeCSV).join(",") + "\n";
 
-    if (!fileExists) {
-      const csvHeader = headers.map(escapeCSV).join(",") + "\n";
-      fs.writeFileSync(filePath, csvHeader + csvRow, "utf8");
-    } else {
-      fs.appendFileSync(filePath, csvRow, "utf8");
+      if (!fileExists) {
+        const csvHeader = headers.map(escapeCSV).join(",") + "\n";
+        fs.writeFileSync(filePath, csvHeader + csvRow, "utf8");
+      } else {
+        fs.appendFileSync(filePath, csvRow, "utf8");
+      }
+    } catch (csvError) {
+      console.warn("Failed to write submission to local CSV file:", csvError);
     }
 
     // ────────────────────────────────────────────────────────────────
@@ -249,10 +254,12 @@ export async function POST(request: Request) {
       }
     };
 
-    // Trigger external integrations asynchronously
-    runBackgroundIntegrations().catch((err) =>
-      console.error("Background integration error:", err)
-    );
+    // Trigger external integrations asynchronously after response is sent
+    after(() => {
+      runBackgroundIntegrations().catch((err) =>
+        console.error("Background integration error:", err)
+      );
+    });
 
     return NextResponse.json({ success: true, destination: "local_csv_and_background_initiated" });
   } catch (error: any) {

@@ -250,7 +250,7 @@ const slideUpItem = {
     y: 0,
     transition: {
       duration: 0.6,
-      ease: [0.215, 0.61, 0.355, 1], // easeOutCubic
+      ease: [0.215, 0.61, 0.355, 1] as any, // easeOutCubic
     },
   },
 };
@@ -265,7 +265,7 @@ const contentVariants = {
     y: 0,
     transition: {
       duration: 0.5,
-      ease: [0.25, 1, 0.5, 1], // easeOutQuart
+      ease: [0.25, 1, 0.5, 1] as any, // easeOutQuart
     },
   },
   exit: (direction: number) => ({
@@ -273,7 +273,7 @@ const contentVariants = {
     y: direction > 0 ? -30 : 30,
     transition: {
       duration: 0.4,
-      ease: [0.25, 1, 0.5, 1],
+      ease: [0.25, 1, 0.5, 1] as any,
     },
   }),
 };

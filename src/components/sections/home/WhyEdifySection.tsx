@@ -35,30 +35,30 @@ export default function WhyEdifySection() {
         },
       });
 
-        /* ── STAGE 1 → STAGE 2 ── */
-        tl
-          // fade wave out
-          .to(img1Ref.current,  { opacity: 0, scale: 0.88, filter: "blur(20px)", duration: 1 }, 0)
-          .to(text1Ref.current, { opacity: 0, y: -28, filter: "blur(10px)", duration: 0.8 }, 0)
-          // fade arrow in
-          .fromTo(img2Ref.current,
-            { opacity: 0, scale: 0.75, filter: "blur(22px)" },
-            { opacity: 1, scale: 1,    filter: "blur(0px)",  duration: 1 }, 0.7)
-          .fromTo(text2Ref.current,
-            { opacity: 0, y: 42, filter: "blur(12px)" },
-            { opacity: 1, y: 0,  filter: "blur(0px)",  duration: 1 }, 0.8)
+      /* ── STAGE 1 → STAGE 2 ── */
+      tl
+        // fade wave out
+        .to(img1Ref.current, { opacity: 0, scale: 0.88, filter: "blur(20px)", duration: 1 }, 0)
+        .to(text1Ref.current, { opacity: 0, y: -28, filter: "blur(10px)", duration: 0.8 }, 0)
+        // fade arrow in
+        .fromTo(img2Ref.current,
+          { opacity: 0, scale: 0.75, filter: "blur(22px)" },
+          { opacity: 1, scale: 1, filter: "blur(0px)", duration: 1 }, 0.7)
+        .fromTo(text2Ref.current,
+          { opacity: 0, y: 42, filter: "blur(12px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 1 }, 0.8)
 
         /* ── STAGE 2 → STAGE 3 ── */
-          // fade arrow out
-          .to(img2Ref.current,  { opacity: 0, scale: 0.88, filter: "blur(20px)", duration: 1 }, 2)
-          .to(text2Ref.current, { opacity: 0, y: -28, filter: "blur(10px)", duration: 0.8 }, 2)
-          // fade ecosystem in
-          .fromTo(img3Ref.current,
-            { opacity: 0, scale: 0.75, filter: "blur(22px)" },
-            { opacity: 1, scale: 1,    filter: "blur(0px)",  duration: 1 }, 2.7)
-          .fromTo(text3Ref.current,
-            { opacity: 0, y: 42, filter: "blur(12px)" },
-            { opacity: 1, y: 0,  filter: "blur(0px)",  duration: 1 }, 2.9);
+        // fade arrow out
+        .to(img2Ref.current, { opacity: 0, scale: 0.88, filter: "blur(20px)", duration: 1 }, 2)
+        .to(text2Ref.current, { opacity: 0, y: -28, filter: "blur(10px)", duration: 0.8 }, 2)
+        // fade ecosystem in
+        .fromTo(img3Ref.current,
+          { opacity: 0, scale: 0.75, filter: "blur(22px)" },
+          { opacity: 1, scale: 1, filter: "blur(0px)", duration: 1 }, 2.7)
+        .fromTo(text3Ref.current,
+          { opacity: 0, y: 42, filter: "blur(12px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 1 }, 2.9);
     }, outerRef);
 
     return () => ctx.revert();

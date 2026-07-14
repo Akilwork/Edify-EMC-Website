@@ -11,7 +11,8 @@ const escapeCSV = (val: any): string => {
 };
 
 // Helper to get formatted UAE (Dubai) Local Time
-const getUAETimestamp = (): string => {
+const getUAETimestamp = (dateInput?: Date | string): string => {
+  const date = dateInput ? new Date(dateInput) : new Date();
   const formatter = new Intl.DateTimeFormat("en-US", {
     timeZone: "Asia/Dubai",
     year: "numeric",
@@ -22,9 +23,9 @@ const getUAETimestamp = (): string => {
     second: "2-digit",
     hour12: false,
   });
-  const parts = formatter.formatToParts(new Date());
+  const parts = formatter.formatToParts(date);
   const partMap = Object.fromEntries(parts.map((p) => [p.type, p.value]));
-  return `${partMap.year}-${partMap.month}-${partMap.day} ${partMap.hour}:${partMap.minute}:${partMap.second}`;
+  return `${partMap.year}-${partMap.month}-${partMap.day} ${partMap.hour}:${partMap.minute}:${partMap.second} GST`;
 };
 
 export async function POST(request: Request) {
@@ -37,18 +38,22 @@ export async function POST(request: Request) {
     console.log("New Contact Submission:", JSON.stringify({ timestamp, ...data }));
 
     // 1. Write to local CSV spreadsheet file first
-    const filePath = path.join(process.cwd(), "contact_submissions.csv");
-    const fileExists = fs.existsSync(filePath);
+    try {
+      const filePath = path.join(process.cwd(), "contact_submissions.csv");
+      const fileExists = fs.existsSync(filePath);
 
-    const headers = ["Timestamp", "Name", "Email", "Company", "Message"];
-    const rowData = [timestamp, name || "", email || "", company || "", message || ""];
-    const csvRow = rowData.map(escapeCSV).join(",") + "\n";
+      const headers = ["Timestamp", "Name", "Email", "Company", "Message"];
+      const rowData = [timestamp, name || "", email || "", company || "", message || ""];
+      const csvRow = rowData.map(escapeCSV).join(",") + "\n";
 
-    if (!fileExists) {
-      const csvHeader = headers.map(escapeCSV).join(",") + "\n";
-      fs.writeFileSync(filePath, csvHeader + csvRow, "utf8");
-    } else {
-      fs.appendFileSync(filePath, csvRow, "utf8");
+      if (!fileExists) {
+        const csvHeader = headers.map(escapeCSV).join(",") + "\n";
+        fs.writeFileSync(filePath, csvHeader + csvRow, "utf8");
+      } else {
+        fs.appendFileSync(filePath, csvRow, "utf8");
+      }
+    } catch (csvError) {
+      console.warn("Failed to write contact submission to local CSV file:", csvError);
     }
 
     // 2. Perform External API Integrations (Asynchronously in Background)

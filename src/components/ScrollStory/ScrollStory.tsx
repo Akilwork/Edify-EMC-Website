@@ -29,7 +29,7 @@ function drawBlended(
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
 
-  const cw = canvas.width  / dpr;
+  const cw = canvas.width / dpr;
   const ch = canvas.height / dpr;
 
   const idx = Math.min(Math.round(fractional), TOTAL_FRAMES - 1);
@@ -37,7 +37,7 @@ function drawBlended(
   if (!img?.complete || !img.naturalWidth) return;
 
   const scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
-  const sw = img.naturalWidth  * scale;
+  const sw = img.naturalWidth * scale;
   const sh = img.naturalHeight * scale;
   const ox = (cw - sw) / 2;
   const oy = (ch - sh) / 2;
@@ -86,18 +86,41 @@ const CARDS_DATA = [
 ];
 
 export const ScrollStory = () => {
-  const sectionRef        = useRef<HTMLDivElement>(null);
-  const canvasRef         = useRef<HTMLCanvasElement>(null);
-  const cardsOverlayRef   = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const cardsOverlayRef = useRef<HTMLDivElement>(null);
   const cardsContainerRef = useRef<HTMLDivElement>(null);
   const contentWrapperRef = useRef<HTMLDivElement>(null);
-  const imagesRef         = useRef<HTMLImageElement[]>([]);
-  const fractionalFrame   = useRef(0);    // current fractional position
-  const rafId             = useRef<number | null>(null);
-  const dprRef            = useRef(1);
+  const imagesRef = useRef<HTMLImageElement[]>([]);
+  const fractionalFrame = useRef(0);    // current fractional position
+  const rafId = useRef<number | null>(null);
+  const dprRef = useRef(1);
 
-  const [loadState,     setLoadState]    = useState<'loading' | 'ready'>('loading');
+  const [loadState, setLoadState] = useState<'loading' | 'ready'>('loading');
   const [selectedServiceId, setSelectedServiceId] = useState<string | null>(null);
+
+  const [windowSize, setWindowSize] = useState({
+    width: typeof window !== 'undefined' ? window.innerWidth : 1200,
+    height: typeof window !== 'undefined' ? window.innerHeight : 800,
+  });
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    const handleResize = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        setWindowSize({
+          width: window.innerWidth,
+          height: window.innerHeight,
+        });
+      }, 150);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      clearTimeout(timeoutId);
+    };
+  }, []);
 
   const handlePrevService = () => {
     if (!selectedServiceId) return;
@@ -125,7 +148,7 @@ export const ScrollStory = () => {
 
     for (let i = 0; i < TOTAL_FRAMES; i++) {
       const img = new Image();
-      img.onload  = onSettle;
+      img.onload = onSettle;
       img.onerror = onSettle;
       img.src = getFrameSrc(i);
       images[i] = img;
@@ -145,12 +168,12 @@ export const ScrollStory = () => {
       const w = window.innerWidth;
       const h = window.innerHeight;
 
-      canvas.width  = Math.round(w * dpr);
+      canvas.width = Math.round(w * dpr);
       canvas.height = Math.round(h * dpr);
-      canvas.style.width  = `${w}px`;
+      canvas.style.width = `${w}px`;
       canvas.style.height = `${h}px`;
-      canvas.style.left   = '0px';
-      canvas.style.top    = '0px';
+      canvas.style.left = '0px';
+      canvas.style.top = '0px';
 
       const ctx = canvas.getContext('2d');
       if (ctx) { ctx.resetTransform(); ctx.scale(dpr, dpr); }
@@ -167,25 +190,27 @@ export const ScrollStory = () => {
   useEffect(() => {
     if (loadState !== 'ready') return;
     const section = sectionRef.current;
-    const canvas  = canvasRef.current;
+    const canvas = canvasRef.current;
     if (!section || !canvas) return;
 
     drawBlended(canvas, imagesRef.current, 0, dprRef.current);
 
-    // ── Mobile: extend pin to cover card overflow so page scroll drives it ──
-    const isMobile = window.innerWidth <= 768;
-    const baseDist  = window.innerHeight * SCROLL_MULTIPLIER;
+    // ── Mobile/Tablet: extend pin to cover card overflow so page scroll drives it ──
+    const isMobileOrTablet = windowSize.width <= 1024;
+    const baseDist = windowSize.height * SCROLL_MULTIPLIER;
     let extraScrollPx = 0;
 
-    if (isMobile) {
-      const overlay   = cardsOverlayRef.current;
+    if (isMobileOrTablet) {
+      const overlay = cardsOverlayRef.current;
       const container = cardsContainerRef.current;
       if (overlay && container) {
         extraScrollPx = Math.max(0, container.scrollHeight - overlay.offsetHeight);
       }
     }
 
-    const totalDist = baseDist + extraScrollPx;
+    // Map the page scroll 1:1 to the card list scrolling
+    const lastFrameScrollDistance = isMobileOrTablet ? extraScrollPx * 1.0 : 0;
+    const totalDist = baseDist + lastFrameScrollDistance;
 
     const st = ScrollTrigger.create({
       trigger: section,
@@ -208,11 +233,11 @@ export const ScrollStory = () => {
           );
         }
 
-        const cardsOverlay   = cardsOverlayRef.current;
+        const cardsOverlay = cardsOverlayRef.current;
         const contentWrapper = contentWrapperRef.current;
         if (cardsOverlay && contentWrapper) {
           const fadeStart = 0.9;
-          const fadeEnd   = 0.98;
+          const fadeEnd = 0.98;
           let opacity = 0;
           if (canvasProgress >= fadeEnd) {
             opacity = 1;
@@ -233,8 +258,8 @@ export const ScrollStory = () => {
             canvas.style.visibility = 'visible';
           }
 
-          // ── Drive mobile card list scroll via page scroll ────────────────
-          if (isMobile && extraScrollPx > 0) {
+          // ── Drive mobile/tablet card list scroll via page scroll ────────────────
+          if (isMobileOrTablet && extraScrollPx > 0) {
             const cardsPhaseStart = baseDist / totalDist;
             if (self.progress > cardsPhaseStart) {
               const cardsScrollProgress =
@@ -255,7 +280,7 @@ export const ScrollStory = () => {
       st.kill(true);
       if (rafId.current) cancelAnimationFrame(rafId.current);
     };
-  }, [loadState]);
+  }, [loadState, windowSize.width, windowSize.height]);
 
   return (
     <div>
@@ -265,10 +290,10 @@ export const ScrollStory = () => {
         aria-label="Edify services storytelling animation"
         onContextMenu={(e) => e.preventDefault()}
       >
-        <canvas 
-          ref={canvasRef} 
-          className={styles.canvas} 
-          aria-hidden="true" 
+        <canvas
+          ref={canvasRef}
+          className={styles.canvas}
+          aria-hidden="true"
           onContextMenu={(e) => e.preventDefault()}
         />
 
@@ -279,8 +304,8 @@ export const ScrollStory = () => {
             </h2>
           </div>
 
-          <div 
-            ref={cardsOverlayRef} 
+          <div
+            ref={cardsOverlayRef}
             className={styles.cardsOverlay}
             style={{ opacity: 0, pointerEvents: 'none' }}
           >

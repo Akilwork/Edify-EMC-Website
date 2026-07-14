@@ -17,7 +17,7 @@ export default function LeadershipScene({ isVisible }: LeadershipSceneProps) {
     if (!isVisible) return;
 
     const animate = async () => {
-      const gsap = await import("gsap");
+      const { default: gsap } = await import("gsap");
 
       // Left column slides in from left
       if (leftColRef.current) {

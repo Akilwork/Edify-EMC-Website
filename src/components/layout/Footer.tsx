@@ -29,10 +29,10 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-16 md:mb-24">
           {/* Brand/Slogan Column - spans 6 columns */}
           <div className="lg:col-span-6 space-y-6 pr-4">
-            <span className="block font-serif text-[10px] sm:text-[11px] font-normal tracking-[0.2em] text-[#8e8e8e] uppercase">
-              © EDIFY CONSULTANCY
+            <span className="block font-sans text-[10px] sm:text-[11px] font-normal tracking-[0.2em] text-[#8e8e8e] uppercase">
+              EDIFY CONSULTANCY
             </span>
-            <h2 className="font-serif text-[28px] sm:text-[34px] md:text-[38px] lg:text-[40px] font-normal leading-[1.3] text-white">
+            <h2 className="font-sans text-[28px] sm:text-[34px] md:text-[38px] lg:text-[40px] font-normal leading-[1.3] text-white">
               Empowering education <br className="hidden md:block" />
               and institutional excellence
             </h2>
@@ -40,7 +40,7 @@ const Footer = () => {
 
           {/* Explore Column - spans 2 columns, starts at col 7 */}
           <div className="lg:col-span-2 lg:col-start-7">
-            <h3 className="font-serif text-[11px] sm:text-[12px] font-normal tracking-[0.2em] text-[#8e8e8e] uppercase mb-6">
+            <h3 className="font-sans text-[11px] sm:text-[12px] font-normal tracking-[0.2em] text-[#8e8e8e] uppercase mb-6">
               EXPLORE
             </h3>
             <ul className="space-y-4">
@@ -48,7 +48,7 @@ const Footer = () => {
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="font-serif text-[13px] sm:text-[14px] text-neutral-400 hover:text-white transition-colors duration-300"
+                    className="font-sans text-[13px] sm:text-[14px] text-neutral-400 hover:text-white transition-colors duration-300"
                   >
                     {link.name}
                   </Link>
@@ -59,7 +59,7 @@ const Footer = () => {
 
           {/* Services Column - spans 2 columns */}
           <div className="lg:col-span-2">
-            <h3 className="font-serif text-[11px] sm:text-[12px] font-normal tracking-[0.2em] text-[#8e8e8e] uppercase mb-6">
+            <h3 className="font-sans text-[11px] sm:text-[12px] font-normal tracking-[0.2em] text-[#8e8e8e] uppercase mb-6">
               SERVICES
             </h3>
             <ul className="space-y-4">
@@ -67,7 +67,7 @@ const Footer = () => {
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="font-serif text-[13px] sm:text-[14px] text-neutral-400 hover:text-white transition-colors duration-300"
+                    className="font-sans text-[13px] sm:text-[14px] text-neutral-400 hover:text-white transition-colors duration-300"
                   >
                     {link.name}
                   </Link>
@@ -78,10 +78,10 @@ const Footer = () => {
 
           {/* Dubai Office Column - spans 2 columns */}
           <div className="lg:col-span-2">
-            <h3 className="font-serif text-[11px] sm:text-[12px] font-normal tracking-[0.2em] text-[#8e8e8e] uppercase mb-6">
+            <h3 className="font-sans text-[11px] sm:text-[12px] font-normal tracking-[0.2em] text-[#8e8e8e] uppercase mb-6">
               DUBAI OFFICE
             </h3>
-            <div className="space-y-5 font-serif text-[13px] sm:text-[14px] text-neutral-400 leading-[1.6]">
+            <div className="space-y-5 font-sans text-[13px] sm:text-[14px] text-neutral-400 leading-[1.6]">
               <p>
                 Business Bay, Dubai,
                 <br />
@@ -113,7 +113,7 @@ const Footer = () => {
           <div className="w-full h-[1px] bg-neutral-900" />
 
           {/* Copyright & Links */}
-          <div className="py-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-[11px] sm:text-[12px] font-serif text-neutral-500">
+          <div className="py-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-[11px] sm:text-[12px] font-sans text-neutral-500">
             <div>
               © 2026 Edify Management Consultancy LLC. All Right Reserved.
             </div>
