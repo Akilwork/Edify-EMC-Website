@@ -30,7 +30,7 @@ const Footer = () => {
           {/* Brand/Slogan Column - spans 6 columns */}
           <div className="lg:col-span-6 space-y-6 pr-4">
             <span className="block font-sans text-[10px] sm:text-[11px] font-normal tracking-[0.2em] text-[#8e8e8e] uppercase">
-              © EDIFY CONSULTANCY
+              EDIFY CONSULTANCY
             </span>
             <h2 className="font-sans text-[28px] sm:text-[34px] md:text-[38px] lg:text-[40px] font-normal leading-[1.3] text-white">
               Empowering education <br className="hidden md:block" />
