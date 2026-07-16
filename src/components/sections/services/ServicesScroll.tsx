@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { ArrowRight, Shield, Workflow } from "lucide-react";
-import ShinyText from "@/components/ui/ShinyText";
 
 export default function ServicesScroll() {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -46,22 +46,26 @@ export default function ServicesScroll() {
     {
       image: "/Service-page/Human-Resource-Services.png",
       title: "Human Resource Management",
-      description: "Recruitment, workforce planning, payroll, compliance, performance management, and employee development."
+      description: "Recruitment, workforce planning, payroll, compliance, performance management, and employee development.",
+      slug: "human-resource-services"
     },
     {
       image: "/Service-page/Educationalal.png",
       title: "Educational & Institutional Consulting",
-      description: "Strategic guidance for institutional planning, governance, accreditation, and operational excellence."
+      description: "Strategic guidance for institutional planning, governance, accreditation, and operational excellence.",
+      slug: "educational-institutional-consulting"
     },
     {
       image: "/Service-page/Financial-Consultancy.png",
       title: "Financial Consultancy",
-      description: "Financial planning, budgeting, compliance, auditing support, and long-term sustainability strategies."
+      description: "Financial planning, budgeting, compliance, auditing support, and long-term sustainability strategies.",
+      slug: "financial-consultancy"
     },
     {
       image: "/Service-page/Behavioural-Counselling-&-Student-Support.png",
       title: "Behavioural Counselling & Student Support",
-      description: "Professional counselling, wellbeing programmes, mentoring, and student support services."
+      description: "Professional counselling, wellbeing programmes, mentoring, and student support services.",
+      slug: "behavioural-counselling-student-support"
     }
   ];
 
@@ -70,19 +74,22 @@ export default function ServicesScroll() {
       image: "/Service-page/IT-Solutions-%26-Digital-Transformation.png",
       title: "IT Solutions & Digital Transformation",
       description: "Technology consulting, software solutions, automation, infrastructure, and digital modernization.",
-      isWide: false
+      isWide: false,
+      slug: "it-solutions-digital-transformation"
     },
     {
       image: "/Service-page/E-Commerce-%26-Digital-Services.png",
       title: "E-Commerce & Digital Services",
       description: "Digital platforms, online solutions, web services, and technology-driven growth.",
-      isWide: false
+      isWide: false,
+      slug: "ecommerce-digital-services"
     },
     {
       image: "/Service-page/Printing-%26-Branding-Solutions.png",
       title: "Printing & Branding Solutions",
       description: "Professional branding, printing, promotional materials, and visual communication services.",
-      isWide: true
+      isWide: true,
+      slug: "printing-branding-solutions"
     }
   ];
 
@@ -179,9 +186,11 @@ export default function ServicesScroll() {
           {/* Cards Grid */}
           <div className="flex flex-wrap justify-center gap-2 md:gap-4 lg:gap-6 mb-12 md:mb-16">
             {serviceCards.map((card, index) => (
-              <div
+              <Link
                 key={index}
-                className="group relative overflow-hidden rounded-lg lg:rounded-[32px] h-[400px] md:h-[450px] lg:h-[400px] w-full md:w-full lg:w-[320px] border border-black/10 bg-white shadow-sm group-hover:shadow-xl transition-shadow duration-500"
+                href={`/services/${card.slug}`}
+                aria-label={card.title}
+                className="group relative overflow-hidden rounded-lg lg:rounded-[32px] h-[400px] md:h-[450px] lg:h-[400px] w-full md:w-full lg:w-[320px] border border-black/10 bg-white shadow-sm group-hover:shadow-xl transition-shadow duration-500 block"
                 onMouseEnter={() => setHoveredCard(index)}
                 onMouseLeave={() => setHoveredCard(null)}
               >
@@ -212,7 +221,7 @@ export default function ServicesScroll() {
                     {card.description}
                   </p>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
 
@@ -250,11 +259,13 @@ export default function ServicesScroll() {
           {/* Cards Grid */}
           <div className="flex flex-wrap justify-center gap-2 md:gap-4 lg:gap-6 mb-12 md:mb-16">
             {techServiceCards.map((card, index) => (
-              <div
+              <Link
                 key={index}
+                href={`/services/${card.slug}`}
+                aria-label={card.title}
                 className={`group relative overflow-hidden rounded-lg lg:rounded-[32px] h-[400px] md:h-[450px] lg:h-[400px] w-full md:w-full ${
                   card.isWide ? 'lg:w-[664px]' : 'lg:w-[320px]'
-                } border border-black/10 bg-white shadow-sm group-hover:shadow-xl transition-shadow duration-500`}
+                } border border-black/10 bg-white shadow-sm group-hover:shadow-xl transition-shadow duration-500 block`}
                 onMouseEnter={() => setHoveredCard(index)}
                 onMouseLeave={() => setHoveredCard(null)}
               >
@@ -285,7 +296,7 @@ export default function ServicesScroll() {
                     {card.description}
                   </p>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
 

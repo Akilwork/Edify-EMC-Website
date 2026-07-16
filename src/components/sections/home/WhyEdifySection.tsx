@@ -22,12 +22,18 @@ export default function WhyEdifySection() {
   const text3Ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
+    // ── Responsive scroll travel ──
+    // mobile  (<768px) : section=230vh, end=+=130%
+    // tablet  (768-1023): section=260vh, end=+=160%
+    // desktop (≥1024px): section=300vh, end=+=200%
+    const mm = gsap.matchMedia();
+
+    const buildTimeline = (endVal: string) => {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: outerRef.current,
           start: "top top",
-          end: "+=300%",
+          end: endVal,
           scrub: 1.2,
           pin: stickyRef.current,
           anticipatePin: 1,
@@ -59,9 +65,24 @@ export default function WhyEdifySection() {
         .fromTo(text3Ref.current,
           { opacity: 0, y: 42, filter: "blur(12px)" },
           { opacity: 1, y: 0, filter: "blur(0px)", duration: 1 }, 2.9);
-    }, outerRef);
+    };
 
-    return () => ctx.revert();
+    // mobile
+    mm.add("(max-width: 767px)", () => {
+      buildTimeline("+=130%");
+    });
+
+    // tablet
+    mm.add("(min-width: 768px) and (max-width: 1023px)", () => {
+      buildTimeline("+=160%");
+    });
+
+    // desktop
+    mm.add("(min-width: 1024px)", () => {
+      buildTimeline("+=200%");
+    });
+
+    return () => mm.revert();
   }, []);
 
   /* ── shared graphic wrapper style ── */
@@ -83,8 +104,9 @@ export default function WhyEdifySection() {
     <section
       id="why-edify"
       ref={outerRef}
-      style={{ height: "400vh" }}
-      className="relative bg-black"
+      /* height = 100vh sticky + scroll travel per breakpoint
+         mobile: 100+130=230vh | tablet: 100+160=260vh | desktop: 100+200=300vh */
+      className="relative bg-black h-[230vh] md:h-[260vh] lg:h-[300vh]"
     >
       {/* ── STICKY VIEWPORT ── */}
       <div

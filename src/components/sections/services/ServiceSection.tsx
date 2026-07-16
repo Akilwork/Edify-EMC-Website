@@ -41,7 +41,7 @@ export default function ServiceSection() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            const index = Number(entry.target.dataset.index);
+            const index = Number((entry.target as HTMLElement).dataset.index);
             setTimeout(() => {
               setVisibleSections((prev) => new Set([...prev, index]));
             }, index * 100);
