@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Shield, Workflow } from "lucide-react";
-import ShinyText from "@/components/ui/ShinyText";
 
 export default function ServicesScroll() {
   const heroRef = useRef<HTMLDivElement>(null);

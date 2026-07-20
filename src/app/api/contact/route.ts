@@ -39,7 +39,7 @@ export async function POST(request: Request) {
 
     // 1. Write to local CSV spreadsheet file first
     try {
-      const filePath = path.join(process.cwd(), "contact_submissions.csv");
+      const filePath = path.join(process.env.DATA_DIR || process.cwd(), "contact_submissions.csv");
       const fileExists = fs.existsSync(filePath);
 
       const headers = ["Timestamp", "Name", "Email", "Company", "Message"];

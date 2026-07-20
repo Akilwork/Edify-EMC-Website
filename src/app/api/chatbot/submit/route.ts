@@ -52,7 +52,7 @@ export async function POST(request: Request) {
     // 1. Write to local CSV spreadsheet file first (Immediate & Safe)
     // ────────────────────────────────────────────────────────────────
     try {
-      const filePath = path.join(process.cwd(), "chatbot_leads.csv");
+      const filePath = path.join(process.env.DATA_DIR || process.cwd(), "chatbot_leads.csv");
       const fileExists = fs.existsSync(filePath);
 
       const headers = [
