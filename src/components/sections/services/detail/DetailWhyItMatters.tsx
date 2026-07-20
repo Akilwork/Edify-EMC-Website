@@ -47,84 +47,84 @@ const IMAGES_BY_SERVICE: Record<string, string[]> = {
     "/Why It Matters/financial-consultancy/img-6.png",
   ],
 
-  // ── Behavioural Counselling — unique contextual images per card
+  // ── Behavioural Counselling — dedicated folder images (img-1 → img-6) ──────
   "behavioural-counselling-student-support": [
-    "/Why It Matters/behavioural-counselling/img-1.png",        // Enhance Student Wellbeing  (real counselling photo)
-    "/Why It Matters/educational-institutional/img-3.png",      // Improve Behaviour & Engagement  (students in classroom)
-    "/Why It Matters/educational-institutional/img-5.png",      // Strengthen Career Readiness  (academic planning)
-    "/Why It Matters/educational-institutional/img-1.png",      // Empower Educators  (teacher-led session)
-    "/Why It Matters/educational-institutional/img-6.png",      // Build Parent Partnerships  (stakeholder meeting)
-    "/Why It Matters/educational-institutional/img-4.png",      // Promote Holistic Growth  (campus / wider environment)
+    "/Why It Matters/behavioural-counselling/img-1.png",
+    "/Why It Matters/behavioural-counselling/img-2.png",
+    "/Why It Matters/behavioural-counselling/img-3.png",
+    "/Why It Matters/behavioural-counselling/img-4.png",
+    "/Why It Matters/behavioural-counselling/img-5.png",
+    "/Why It Matters/behavioural-counselling/img-6.png",
   ],
 
-  // ── IT Solutions — service hero repeated across all 6 cards ─────────────
+  // ── IT Solutions — dedicated folder images (Frame1 → Frame6) ─────────────
   "it-solutions-digital-transformation": [
-    "/Service-page/IT-Solutions-&-Digital-Transformation.png",
-    "/Service-page/IT-Solutions-&-Digital-Transformation.png",
-    "/Service-page/IT-Solutions-&-Digital-Transformation.png",
-    "/Service-page/IT-Solutions-&-Digital-Transformation.png",
-    "/Service-page/IT-Solutions-&-Digital-Transformation.png",
-    "/Service-page/IT-Solutions-&-Digital-Transformation.png",
+    "/Why It Matters/IT/Frame1.png",
+    "/Why It Matters/IT/Frame2.png",
+    "/Why It Matters/IT/Frame3.png",
+    "/Why It Matters/IT/Frame4.png",
+    "/Why It Matters/IT/Frame5.png",
+    "/Why It Matters/IT/Frame6.png",
   ],
 
-  // ── Printing & Branding — service hero repeated across all 6 cards ───────
+  // ── Printing & Branding — dedicated folder images (Frame1 → Frame6) ────────
   "printing-branding-solutions": [
-    "/Service-page/Printing-&-Branding-Solutions.png",
-    "/Service-page/Printing-&-Branding-Solutions.png",
-    "/Service-page/Printing-&-Branding-Solutions.png",
-    "/Service-page/Printing-&-Branding-Solutions.png",
-    "/Service-page/Printing-&-Branding-Solutions.png",
-    "/Service-page/Printing-&-Branding-Solutions.png",
+    "/Why It Matters/Printing/Frame1.png",
+    "/Why It Matters/Printing/Frame2.png",
+    "/Why It Matters/Printing/Frame3.png",
+    "/Why It Matters/Printing/Frame4.png",
+    "/Why It Matters/Printing/Frame5.png",
+    "/Why It Matters/Printing/Frame6.png",
   ],
 
-  // ── E-Commerce & Digital Services — service hero repeated ────────────────
+  // ── E-Commerce & Digital Services — dedicated folder images (Frame1 → Frame6) ─
   "ecommerce-digital-services": [
-    "/Service-page/E-Commerce-&-Digital-Services.png",
-    "/Service-page/E-Commerce-&-Digital-Services.png",
-    "/Service-page/E-Commerce-&-Digital-Services.png",
-    "/Service-page/E-Commerce-&-Digital-Services.png",
-    "/Service-page/E-Commerce-&-Digital-Services.png",
-    "/Service-page/E-Commerce-&-Digital-Services.png",
+    "/Why It Matters/Ecommerce/Frame1.png",
+    "/Why It Matters/Ecommerce/Frame2.png",
+    "/Why It Matters/Ecommerce/Frame3.png",
+    "/Why It Matters/Ecommerce/Frame4.png",
+    "/Why It Matters/Ecommerce/Frame5.png",
+    "/Why It Matters/Ecommerce/Frame6.png",
   ],
 
-  // ── Civil Engineering — service hero repeated ────────────────────────────
+  // ── Civil Engineering — dedicated folder images (img-1 → img-6) ────────────
   "civil-engineering-infrastructure": [
-    "/Service-page/Civil-Engineering-&-Infrastructure-Development.png",
-    "/Service-page/Civil-Engineering-&-Infrastructure-Development.png",
-    "/Service-page/Civil-Engineering-&-Infrastructure-Development.png",
-    "/Service-page/Civil-Engineering-&-Infrastructure-Development.png",
-    "/Service-page/Civil-Engineering-&-Infrastructure-Development.png",
-    "/Service-page/Civil-Engineering-&-Infrastructure-Development.png",
+    "/Why It Matters/Civil/img-1.png",
+    "/Why It Matters/Civil/img-2.png",
+    "/Why It Matters/Civil/img-3.png",
+    "/Why It Matters/Civil/img-4.png",
+    "/Why It Matters/Civil/img-5.png",
+    "/Why It Matters/Civil/img-6.png",
   ],
 
-  // ── Transportation — service hero repeated ───────────────────────────────
+  // ── Transportation — dedicated folder images (Frame1 → Frame6) ───────────
   "transportation-fleet-support": [
-    "/Service-page/Transportation-&-Fleet-Support.png",
-    "/Service-page/Transportation-&-Fleet-Support.png",
-    "/Service-page/Transportation-&-Fleet-Support.png",
-    "/Service-page/Transportation-&-Fleet-Support.png",
-    "/Service-page/Transportation-&-Fleet-Support.png",
-    "/Service-page/Transportation-&-Fleet-Support.png",
+    "/Why It Matters/Transport/Frame1.png",
+    "/Why It Matters/Transport/Frame2.png",
+    "/Why It Matters/Transport/Frame3.png",
+    "/Why It Matters/Transport/Frame4.png",
+    "/Why It Matters/Transport/Frame5.png",
+    "/Why It Matters/Transport/Frame6.png",
   ],
 
-  // ── Uniform Solutions — service hero repeated ────────────────────────────
+  // ── Uniform Solutions — dedicated folder images (Frame1 → Frame6) ──────────
   "uniform-solutions": [
-    "/Service-page/Uniform-&-Clothing-Solutions.png",
-    "/Service-page/Uniform-&-Clothing-Solutions.png",
-    "/Service-page/Uniform-&-Clothing-Solutions.png",
-    "/Service-page/Uniform-&-Clothing-Solutions.png",
-    "/Service-page/Uniform-&-Clothing-Solutions.png",
-    "/Service-page/Uniform-&-Clothing-Solutions.png",
+    "/Why It Matters/Uniform/Frame1.png",
+    "/Why It Matters/Uniform/Frame2.png",
+    "/Why It Matters/Uniform/Frame3.png",
+    "/Why It Matters/Uniform/Frame4.png",
+    "/Why It Matters/Uniform/Frame5.png",
+    "/Why It Matters/Uniform/Frame6.png",
   ],
 
-  // ── Sports Training — service hero repeated ──────────────────────────────
+  // ── Sports Training — dedicated folder images (Frame1 → Frame6) ───────────
   "sports-training-talent-development": [
-    "/Service-page/Sports-Training-&-Talent-Development.png",
-    "/Service-page/Sports-Training-&-Talent-Development.png",
-    "/Service-page/Sports-Training-&-Talent-Development.png",
-    "/Service-page/Sports-Training-&-Talent-Development.png",
-    "/Service-page/Sports-Training-&-Talent-Development.png",
-    "/Service-page/Sports-Training-&-Talent-Development.png",
+    "/Why It Matters/Sports/Frame1.png",
+    "/Why It Matters/Sports/Frame2.png",
+    "/Why It Matters/Sports/Frame3.png",
+    "/Why It Matters/Sports/Frame4.png",
+    "/Why It Matters/Sports/Frame5.png",
+    "/Why It Matters/Sports/Frame6.png",
   ],
 };
 

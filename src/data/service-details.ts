@@ -409,12 +409,12 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
     whyItMatters: {
       heading: "Why Digital Transformation Matters",
       items: [
-        { title: "Seamless Learning Experiences", description: "Integrated platforms connect students and teachers." },
-        { title: "Robust Cybersecurity", description: "Protect institutional and student data." },
-        { title: "Streamlined Operations", description: "Automate admin and free up your teams." },
-        { title: "Better Decision-Making", description: "Data and dashboards drive insight." },
-        { title: "Future-Ready Foundations", description: "Scale without starting over." },
-        { title: "Empowered Educators", description: "Confident, capable technology users." },
+        { title: "Cloud & Enterprise IT", description: "Scalable, secure cloud infrastructure and enterprise architecture designed for institutional growth." },
+        { title: "Software Development", description: "Custom web and mobile application engineering built to solve complex operational challenges." },
+        { title: "Digital Transformation", description: "Comprehensive strategic roadmaps that modernise workflows and elevate campus operations." },
+        { title: "Cybersecurity", description: "Advanced threat protection, data encryption, and compliance frameworks safeguarding your data." },
+        { title: "AI & Automation", description: "Intelligent automation and AI tools that eliminate manual tasks and boost productivity." },
+        { title: "Smart Enterprise Solutions", description: "Integrated IoT and smart campus systems creating connected, future-ready environments." },
       ],
     },
     approach: {
@@ -479,12 +479,12 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
     whyItMatters: {
       heading: "Why Branding Matters",
       items: [
-        { title: "Build Distinct Identity", description: "Stand out in a competitive landscape." },
-        { title: "Drive Admissions", description: "Materials that convert prospective families." },
-        { title: "Strengthen Community Pride", description: "A brand students and staff are proud of." },
-        { title: "Improve Consistency", description: "One clear identity across every touchpoint." },
-        { title: "Enhance Professionalism", description: "Quality that reflects institutional excellence." },
-        { title: "Amplify Presence", description: "Be visible, memorable, and trusted." },
+        { title: "Commercial Printing", description: "High-volume, high-precision print production tailored for all institutional needs." },
+        { title: "Creative Branding Studio", description: "Bespoke design concepts that reflect your institution's unique vision and values." },
+        { title: "Corporate Brand Identity", description: "Cohesive logo and visual identity systems that build recognition and trust." },
+        { title: "Signage & Display Branding", description: "Impactful indoor and outdoor campus signage that guides and inspires." },
+        { title: "Promotional Products", description: "Custom branded merchandise that boosts engagement and community pride." },
+        { title: "Marketing Print Materials", description: "High-conversion prospectuses, brochures, and campaign collateral." },
       ],
     },
     approach: {
@@ -549,12 +549,12 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
     whyItMatters: {
       heading: "Why Digital Services Matter",
       items: [
-        { title: "Reach New Audiences", description: "Expand beyond your physical campus." },
-        { title: "Generate New Revenue", description: "Monetise programmes, products, and services online." },
-        { title: "Improve Engagement", description: "Connect with families anytime, anywhere." },
-        { title: "Simplify Transactions", description: "Frictionless online payments and enrolment." },
-        { title: "Strengthen Your Brand", description: "A polished, professional digital presence." },
-        { title: "Measure What Works", description: "Data to guide smarter decisions." },
+        { title: "Modern E-Commerce Platform", description: "Custom, scalable online storefronts designed for seamless digital commerce." },
+        { title: "Digital Commerce Analytics", description: "Real-time data insights and performance tracking to optimize online sales." },
+        { title: "Software & Web Development", description: "High-performance, responsive websites and web applications built to scale." },
+        { title: "Secure Digital Payments", description: "Frictionless, multi-gateway payment processing with robust data security." },
+        { title: "Order Fulfillment & Logistics", description: "Streamlined order processing and automated supply chain integration." },
+        { title: "Digital Growth Strategy", description: "Targeted digital marketing and strategy to reach new audiences and grow revenue." },
       ],
     },
     approach: {
@@ -761,7 +761,7 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
         { title: "Build Belonging", description: "A unified look fosters pride and community." },
         { title: "Reflect Your Identity", description: "Designs that carry your brand every day." },
         { title: "Ensure Quality & Comfort", description: "Durable, comfortable clothing students enjoy." },
-        { title: "Simplify For Families", description: "Reliable supply and easy access." },
+        { title: "Grament Manufacturing", description: "Reliable supply and easy access." },
         { title: "Promote Equality", description: "A consistent look reduces comparison and pressure." },
         { title: "Elevate Professionalism", description: "A polished appearance across campus." },
       ],
