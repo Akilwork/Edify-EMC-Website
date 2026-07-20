@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import RevealSection from "./RevealSection";
 import CtaButton from "./CtaButton";
 import type { ServiceDetail } from "@/data/service-details";
@@ -17,16 +18,19 @@ export default function DetailHero({
     <section className="relative w-full min-h-[100svh] overflow-hidden bg-black">
       {/* Background image with left-to-right dark gradient */}
       <div className="absolute inset-0 z-0">
-        <img
+        <Image
           src={detail.heroImage}
           alt=""
-          className="absolute inset-0 w-full h-full object-cover"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black via-black to-black/30" />
       </div>
 
       <div className="relative z-10 flex flex-col min-h-[100svh] px-6 py-20 md:px-12 lg:px-20 xl:px-32">
-        <div className="flex-1 flex flex-col justify-center max-w-4xl">
+        <div className="mt-auto pb-16 md:pb-24 lg:pb-32 flex flex-col max-w-4xl">
           {/* Service eyebrow */}
           <RevealSection>
             <p className="text-white/60 text-xs md:text-sm font-medium uppercase tracking-[0.2em] mb-4">
@@ -41,10 +45,7 @@ export default function DetailHero({
             </h1>
           </RevealSection>
 
-          {/* Full-width divider */}
-          <RevealSection delay={0.1}>
-            <div className="w-full h-px bg-white/30 mb-8" />
-          </RevealSection>
+
 
           {/* Supporting copy */}
           <RevealSection delay={0.15}>
@@ -57,7 +58,7 @@ export default function DetailHero({
           <RevealSection delay={0.2}>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               <CtaButton label={primary.label} onClick={onConsultation} variant="solid" theme="dark" />
-              <CtaButton label={secondary.label} onClick={onConsultation} variant="outline" theme="dark" />
+              <CtaButton label={secondary.label} onClick={onConsultation} variant="outline" theme="dark" withArrow={false} />
             </div>
           </RevealSection>
         </div>

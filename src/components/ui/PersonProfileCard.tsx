@@ -17,7 +17,7 @@ export default function PersonProfileCard({
 }: PersonProfileCardProps) {
   return (
     <div
-      className={`relative w-[280px] sm:w-[320px] mx-auto ${className}`}
+      className={`relative w-[220px] xs:w-[260px] sm:w-[320px] mx-auto ${className}`}
       style={{ filter: "drop-shadow(0 16px 32px rgba(0,0,0,0.15))" }}
     >
       {/* The PNG blob shape with image */}
@@ -27,7 +27,7 @@ export default function PersonProfileCard({
           alt={imageAlt || name}
           fill
           className="object-cover object-center"
-          sizes="(max-width: 640px) 280px, 320px"
+          sizes="(max-width: 480px) 220px, (max-width: 640px) 260px, 320px"
           priority
         />
 

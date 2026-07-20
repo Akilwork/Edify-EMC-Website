@@ -10,11 +10,6 @@ const nextConfig: NextConfig = {
   experimental: {
     // Faster refresh and builds
     optimizeCss: false, // Disable CSS optimization in dev
-    after: true,
-  },
-  // Fix for Turbopack lockfile warning
-  turbopack: {
-    root: __dirname,
   },
 };
 

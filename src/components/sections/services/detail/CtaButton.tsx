@@ -6,7 +6,7 @@ type Variant = "solid" | "outline";
 type Theme = "light" | "dark";
 
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-full px-7 py-3 text-sm font-medium transition-colors duration-200 cursor-pointer border outline-none active:scale-[0.98]";
+  "inline-flex items-center justify-center gap-2 rounded-full px-5 sm:px-8 py-3 sm:py-4 text-[clamp(0.8125rem,0.75rem+0.28vw,0.875rem)] font-semibold transition-colors duration-200 cursor-pointer border outline-none active:scale-[0.98]";
 
 const styles: Record<Theme, Record<Variant, string>> = {
   // Buttons rendered on a white/light section.

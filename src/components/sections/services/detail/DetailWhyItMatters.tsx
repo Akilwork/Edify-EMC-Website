@@ -1,3 +1,4 @@
+import Image from "next/image";
 import RevealSection from "./RevealSection";
 import type { ServiceDetail } from "@/data/service-details";
 
@@ -16,42 +17,154 @@ const WHY_IT_MATTERS_SUBTITLES: Record<string, string> = {
 };
 
 const IMAGES_BY_SERVICE: Record<string, string[]> = {
+  // ── Human Resource Management — original Figma frames ──────────────────
   "human-resource-services": [
-    "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=600&auto=format&fit=crop", // Attract Qualified Talent
-    "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=600&auto=format&fit=crop", // Improve Workforce Performance
-    "https://images.unsplash.com/photo-1450133064473-71024230f91b?q=80&w=600&auto=format&fit=crop", // Ensure Regulatory Compliance
-    "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=600&auto=format&fit=crop", // Strengthen Employee Engagement
-    "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=600&auto=format&fit=crop", // Streamline HR Operations
-    "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=600&auto=format&fit=crop", // Build Long-Term Capacity
-  ]
+    "/Why It Matters/Frame 19.png",
+    "/Why It Matters/Frame 20.png",
+    "/Why It Matters/Frame 21.png",
+    "/Why It Matters/Frame 22.png",
+    "/Why It Matters/Frame 23.png",
+    "/Why It Matters/Frame 24.png",
+  ],
+
+  // ── Educational & Institutional Consulting — AI-generated images ─────────
+  "educational-institutional-consulting": [
+    "/Why It Matters/educational-institutional/img-1.png",
+    "/Why It Matters/educational-institutional/img-2.png",
+    "/Why It Matters/educational-institutional/img-3.png",
+    "/Why It Matters/educational-institutional/img-4.png",
+    "/Why It Matters/educational-institutional/img-5.png",
+    "/Why It Matters/educational-institutional/img-6.png",
+  ],
+
+  // ── Financial Consultancy — AI-generated images ─────────────────────────
+  "financial-consultancy": [
+    "/Why It Matters/financial-consultancy/img-1.png",
+    "/Why It Matters/financial-consultancy/img-2.png",
+    "/Why It Matters/financial-consultancy/img-3.png",
+    "/Why It Matters/financial-consultancy/img-4.png",
+    "/Why It Matters/financial-consultancy/img-5.png",
+    "/Why It Matters/financial-consultancy/img-6.png",
+  ],
+
+  // ── Behavioural Counselling — unique contextual images per card
+  "behavioural-counselling-student-support": [
+    "/Why It Matters/behavioural-counselling/img-1.png",        // Enhance Student Wellbeing  (real counselling photo)
+    "/Why It Matters/educational-institutional/img-3.png",      // Improve Behaviour & Engagement  (students in classroom)
+    "/Why It Matters/educational-institutional/img-5.png",      // Strengthen Career Readiness  (academic planning)
+    "/Why It Matters/educational-institutional/img-1.png",      // Empower Educators  (teacher-led session)
+    "/Why It Matters/educational-institutional/img-6.png",      // Build Parent Partnerships  (stakeholder meeting)
+    "/Why It Matters/educational-institutional/img-4.png",      // Promote Holistic Growth  (campus / wider environment)
+  ],
+
+  // ── IT Solutions — service hero repeated across all 6 cards ─────────────
+  "it-solutions-digital-transformation": [
+    "/Service-page/IT-Solutions-&-Digital-Transformation.png",
+    "/Service-page/IT-Solutions-&-Digital-Transformation.png",
+    "/Service-page/IT-Solutions-&-Digital-Transformation.png",
+    "/Service-page/IT-Solutions-&-Digital-Transformation.png",
+    "/Service-page/IT-Solutions-&-Digital-Transformation.png",
+    "/Service-page/IT-Solutions-&-Digital-Transformation.png",
+  ],
+
+  // ── Printing & Branding — service hero repeated across all 6 cards ───────
+  "printing-branding-solutions": [
+    "/Service-page/Printing-&-Branding-Solutions.png",
+    "/Service-page/Printing-&-Branding-Solutions.png",
+    "/Service-page/Printing-&-Branding-Solutions.png",
+    "/Service-page/Printing-&-Branding-Solutions.png",
+    "/Service-page/Printing-&-Branding-Solutions.png",
+    "/Service-page/Printing-&-Branding-Solutions.png",
+  ],
+
+  // ── E-Commerce & Digital Services — service hero repeated ────────────────
+  "ecommerce-digital-services": [
+    "/Service-page/E-Commerce-&-Digital-Services.png",
+    "/Service-page/E-Commerce-&-Digital-Services.png",
+    "/Service-page/E-Commerce-&-Digital-Services.png",
+    "/Service-page/E-Commerce-&-Digital-Services.png",
+    "/Service-page/E-Commerce-&-Digital-Services.png",
+    "/Service-page/E-Commerce-&-Digital-Services.png",
+  ],
+
+  // ── Civil Engineering — service hero repeated ────────────────────────────
+  "civil-engineering-infrastructure": [
+    "/Service-page/Civil-Engineering-&-Infrastructure-Development.png",
+    "/Service-page/Civil-Engineering-&-Infrastructure-Development.png",
+    "/Service-page/Civil-Engineering-&-Infrastructure-Development.png",
+    "/Service-page/Civil-Engineering-&-Infrastructure-Development.png",
+    "/Service-page/Civil-Engineering-&-Infrastructure-Development.png",
+    "/Service-page/Civil-Engineering-&-Infrastructure-Development.png",
+  ],
+
+  // ── Transportation — service hero repeated ───────────────────────────────
+  "transportation-fleet-support": [
+    "/Service-page/Transportation-&-Fleet-Support.png",
+    "/Service-page/Transportation-&-Fleet-Support.png",
+    "/Service-page/Transportation-&-Fleet-Support.png",
+    "/Service-page/Transportation-&-Fleet-Support.png",
+    "/Service-page/Transportation-&-Fleet-Support.png",
+    "/Service-page/Transportation-&-Fleet-Support.png",
+  ],
+
+  // ── Uniform Solutions — service hero repeated ────────────────────────────
+  "uniform-solutions": [
+    "/Service-page/Uniform-&-Clothing-Solutions.png",
+    "/Service-page/Uniform-&-Clothing-Solutions.png",
+    "/Service-page/Uniform-&-Clothing-Solutions.png",
+    "/Service-page/Uniform-&-Clothing-Solutions.png",
+    "/Service-page/Uniform-&-Clothing-Solutions.png",
+    "/Service-page/Uniform-&-Clothing-Solutions.png",
+  ],
+
+  // ── Sports Training — service hero repeated ──────────────────────────────
+  "sports-training-talent-development": [
+    "/Service-page/Sports-Training-&-Talent-Development.png",
+    "/Service-page/Sports-Training-&-Talent-Development.png",
+    "/Service-page/Sports-Training-&-Talent-Development.png",
+    "/Service-page/Sports-Training-&-Talent-Development.png",
+    "/Service-page/Sports-Training-&-Talent-Development.png",
+    "/Service-page/Sports-Training-&-Talent-Development.png",
+  ],
 };
 
+// Local fallback — never reaches out to the internet
 const FALLBACK_IMAGES = [
-  "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?q=80&w=600&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=600&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=600&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=600&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1531538606174-0f90ff5dce83?q=80&w=600&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=600&auto=format&fit=crop",
+  "/Why It Matters/Frame 19.png",
+  "/Why It Matters/Frame 20.png",
+  "/Why It Matters/Frame 21.png",
+  "/Why It Matters/Frame 22.png",
+  "/Why It Matters/Frame 23.png",
+  "/Why It Matters/Frame 24.png",
 ];
 
 export default function DetailWhyItMatters({ detail }: { detail: ServiceDetail }) {
   const subtitle = WHY_IT_MATTERS_SUBTITLES[detail.slug] || "Discover how our strategic focus and execution drive meaningful institutional outcomes.";
   const serviceImages = IMAGES_BY_SERVICE[detail.slug] || FALLBACK_IMAGES;
+  const sectionBgImage = "/Why It Matters/bg.jpg";
 
   return (
-    <section className="relative w-full bg-white py-20 md:py-28 overflow-hidden">
-      <div className="container-responsive container-max">
+    <section className="relative w-full py-20 md:py-28 overflow-hidden bg-white text-black">
+      {/* Background Image for section */}
+      {sectionBgImage && (
+        <div className="absolute inset-0 z-0 select-none pointer-events-none opacity-80">
+          <Image
+            src={sectionBgImage}
+            alt=""
+            fill
+            sizes="100vw"
+            className="w-full h-full object-cover object-center"
+            priority
+          />
+        </div>
+      )}
+
+      <div className="container-responsive container-max relative z-10">
         {/* Heading */}
         <div className="text-center max-w-3xl mx-auto mb-16 md:mb-20">
-          <RevealSection>
-            <p className="text-black/40 text-xs font-semibold uppercase tracking-[0.2em] mb-4">
-              Why It Matters
-            </p>
-          </RevealSection>
           <RevealSection delay={0.05}>
-            <h2 className="font-sans text-3xl md:text-4xl lg:text-5xl text-black font-normal leading-tight tracking-tight mb-4">
-              {detail.whyItMatters.heading}
+            <h2 className="font-sans text-3xl md:text-4xl lg:text-5xl text-black font-semibold leading-tight tracking-tight mb-4">
+              Why It Matters
             </h2>
           </RevealSection>
           <RevealSection delay={0.1}>
@@ -61,7 +174,7 @@ export default function DetailWhyItMatters({ detail }: { detail: ServiceDetail }
           </RevealSection>
         </div>
 
-        {/* 3x2 Image Cards Grid */}
+        {/* 3x2 Image Cards Grid — unified design for all services */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto w-full">
           {detail.whyItMatters.items.map((item, index) => {
             const bgImage = serviceImages[index % serviceImages.length];
@@ -69,31 +182,23 @@ export default function DetailWhyItMatters({ detail }: { detail: ServiceDetail }
             return (
               <div key={item.title} className="w-full">
                 <RevealSection delay={(index % 3) * 0.08} className="h-full">
-                  <div className="group relative overflow-hidden rounded-[18px] h-[260px] md:h-[300px] border border-black/5 shadow-md bg-neutral-900 cursor-pointer flex flex-col justify-end">
-                    {/* Background Image */}
-                    <img
+                  <div className="group relative overflow-hidden rounded-[24px] aspect-[802/608] shadow-md bg-neutral-900 cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
+                    <Image
                       src={bgImage}
                       alt={item.title}
-                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                     />
-                    
-                    {/* Dark Overlays */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 to-black/20" />
-                    <div className="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors duration-500" />
-                    
-                    {/* Slide up content container */}
-                    <div className="relative z-10 p-6 md:p-8 flex flex-col justify-end transform translate-y-3 group-hover:translate-y-0 transition-transform duration-500 ease-out h-full">
-                      {/* Eyebrow index */}
-                      <span className="text-white/40 text-[11px] font-semibold tracking-wider mb-2 uppercase">
-                        Benefit {String(index + 1).padStart(2, "0")}
-                      </span>
-                      
-                      {/* Title */}
-                      <h3 className="text-white text-lg md:text-xl font-semibold mb-2 font-sans tracking-tight leading-snug">
+
+                    {/* Gradient Overlay for Text Readability */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10 pointer-events-none" />
+
+                    {/* Content Overlay */}
+                    <div className="absolute inset-0 z-20 p-6 md:p-8 flex flex-col justify-end">
+                      <h3 className="text-white text-lg md:text-xl font-medium font-sans tracking-tight leading-snug mb-1">
                         {item.title}
                       </h3>
-                      
-                      {/* Description (reveals on hover) */}
                       {item.description && (
                         <p className="text-white/60 text-xs md:text-sm leading-relaxed max-h-0 opacity-0 group-hover:max-h-[100px] group-hover:opacity-100 transition-all duration-500 ease-in-out overflow-hidden font-sans">
                           {item.description}
@@ -110,3 +215,4 @@ export default function DetailWhyItMatters({ detail }: { detail: ServiceDetail }
     </section>
   );
 }
+

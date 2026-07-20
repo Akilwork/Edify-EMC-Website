@@ -29,18 +29,14 @@ const FAQ_ITEMS = [
 ];
 
 export default function DetailWhyChoose({ detail }: { detail: ServiceDetail }) {
-  const [openIndex, setOpenIndex] = useState<number | null>(0); // First item expanded by default
-
-  const toggleFaq = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
+  const [openIndex, setOpenIndex] = useState<number | null>(0); // First item open by default
 
   const subtitle = "Providing reliable consultancy and tailored strategies that drive excellence, efficiency, and long-term growth.";
 
   return (
-    <section className="relative w-full bg-black py-20 md:py-28 overflow-hidden">
+    <section className="relative w-full bg-black py-28 md:py-36 lg:py-44 overflow-hidden">
       <div className="container-responsive container-max">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center">
           {/* Left Column: Heading & Subtitle */}
           <div className="lg:col-span-5 flex flex-col justify-center">
             <RevealSection>
@@ -69,14 +65,13 @@ export default function DetailWhyChoose({ detail }: { detail: ServiceDetail }) {
               return (
                 <RevealSection key={item.q} delay={index * 0.05}>
                   <div
-                    className={`bg-white/[0.03] border rounded-[18px] transition-colors duration-300 overflow-hidden ${
+                    onMouseEnter={() => setOpenIndex(index)}
+                    onClick={() => setOpenIndex(index)}
+                    className={`bg-white/[0.03] border rounded-[18px] transition-all duration-300 overflow-hidden cursor-pointer ${
                       isOpen ? "border-white/20 bg-white/[0.05]" : "border-white/5 hover:border-white/10"
                     }`}
                   >
-                    <button
-                      onClick={() => toggleFaq(index)}
-                      className="w-full flex items-center justify-between text-left p-6 md:p-8 cursor-pointer focus:outline-none"
-                    >
+                    <div className="w-full flex items-center justify-between text-left p-6 md:p-8">
                       <span className="text-white text-base md:text-lg font-medium leading-snug pr-4">
                         {item.q}
                       </span>
@@ -89,7 +84,7 @@ export default function DetailWhyChoose({ detail }: { detail: ServiceDetail }) {
                       >
                         {isOpen ? <Minus size={14} strokeWidth={2.5} /> : <Plus size={14} strokeWidth={2.5} />}
                       </div>
-                    </button>
+                    </div>
 
                     {/* Smooth CSS Grid-Rows Height Transition */}
                     <div

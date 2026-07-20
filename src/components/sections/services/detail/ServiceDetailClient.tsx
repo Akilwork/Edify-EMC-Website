@@ -6,15 +6,16 @@ import DetailHero from "./DetailHero";
 import DetailOverview from "./DetailOverview";
 import DetailCapabilities from "./DetailCapabilities";
 import DetailWhyItMatters from "./DetailWhyItMatters";
-import DetailApproach from "./DetailApproach";
+// import DetailApproach from "./DetailApproach"; // hidden
 import DetailWhyChoose from "./DetailWhyChoose";
 import DetailRelated from "./DetailRelated";
-import DetailCTA from "./DetailCTA";
+import CtaSection from "@/components/sections/home/CtaSection";
 
 /**
  * Single client boundary for the service detail page.
- * Calls useConsultation() once and threads the callback to the two
- * sections that render buttons (Hero + final CTA).
+ * Calls useConsultation() once and threads the callback to the Hero
+ * section, which renders the consult button. The final CTA reuses the
+ * home page's CtaSection (with the current service pre-selected).
  */
 export default function ServiceDetailClient({ detail }: { detail: ServiceDetail }) {
   const { openConsultation } = useConsultation();
@@ -25,10 +26,10 @@ export default function ServiceDetailClient({ detail }: { detail: ServiceDetail 
       <DetailOverview detail={detail} />
       <DetailCapabilities detail={detail} />
       <DetailWhyItMatters detail={detail} />
-      <DetailApproach detail={detail} />
+      {/* <DetailApproach detail={detail} /> */}
       <DetailWhyChoose detail={detail} />
       <DetailRelated detail={detail} currentSlug={detail.slug} />
-      <DetailCTA detail={detail} onConsultation={openConsultation} />
+      <CtaSection defaultService={detail.title} />
     </>
   );
 }

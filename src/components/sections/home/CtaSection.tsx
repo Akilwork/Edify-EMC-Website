@@ -4,7 +4,13 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import Scene10ConsultationForm from "@/components/layout/Scene10ConsultationForm";
 
-export default function CtaSection({ animate = true }: { animate?: boolean }) {
+export default function CtaSection({
+  animate = true,
+  defaultService,
+}: {
+  animate?: boolean;
+  defaultService?: string;
+}) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
@@ -65,7 +71,7 @@ export default function CtaSection({ animate = true }: { animate?: boolean }) {
             className="order-2 lg:order-2 w-full"
           >
             <div className="backdrop-blur-md bg-[#151515]/80 border border-white/10 rounded-xl p-5 md:p-6">
-              <Scene10ConsultationForm />
+              <Scene10ConsultationForm defaultService={defaultService} />
             </div>
           </motion.div>
         </div>

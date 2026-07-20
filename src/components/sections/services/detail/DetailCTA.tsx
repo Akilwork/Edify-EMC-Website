@@ -45,7 +45,19 @@ const SERVICE_OPTIONS = [
   "Other / General Enquiry"
 ];
 
-export default function DetailCTA({ detail, onConsultation }: { detail: ServiceDetail; onConsultation: () => void }) {
+export default function DetailCTA({
+  detail,
+  onConsultation,
+  subtitle = "Get Started",
+  title = "Ready to take your business or personal goals to the next level?",
+  id = "cta",
+}: {
+  detail?: ServiceDetail;
+  onConsultation?: () => void;
+  subtitle?: string;
+  title?: string;
+  id?: string;
+}) {
   const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: "",
@@ -54,7 +66,7 @@ export default function DetailCTA({ detail, onConsultation }: { detail: ServiceD
     designation: "",
     institutionType: "",
     institutionName: "",
-    serviceRequired: detail.title, // Pre-select current service
+    serviceRequired: detail ? detail.title : "", // Pre-select current service
     howCanWeHelp: "",
   });
 
@@ -134,7 +146,7 @@ export default function DetailCTA({ detail, onConsultation }: { detail: ServiceD
         designation: "",
         institutionType: "",
         institutionName: "",
-        serviceRequired: detail.title,
+        serviceRequired: detail ? detail.title : "",
         howCanWeHelp: "",
       });
       setCountryCode("+971");
@@ -150,7 +162,7 @@ export default function DetailCTA({ detail, onConsultation }: { detail: ServiceD
   };
 
   return (
-    <section className="relative w-full bg-black py-20 md:py-28 overflow-hidden border-t border-white/5">
+    <section id={id} className="relative w-full bg-black py-20 md:py-28 overflow-hidden border-t border-white/5">
       {/* Background Graphic overlay */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <img
@@ -167,12 +179,12 @@ export default function DetailCTA({ detail, onConsultation }: { detail: ServiceD
           <div className="mb-12 text-left">
             <RevealSection>
               <p className="text-white/40 text-xs font-semibold uppercase tracking-[0.2em] mb-4">
-                Get Started
+                {subtitle}
               </p>
             </RevealSection>
             <RevealSection delay={0.05}>
               <h2 className="font-sans text-3xl md:text-4xl lg:text-[42px] leading-tight font-normal text-white max-w-2xl">
-                Ready to take your business or personal goals to the next level?
+                {title}
               </h2>
             </RevealSection>
           </div>

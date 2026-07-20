@@ -1,9 +1,6 @@
+import Image from "next/image";
 import RevealSection from "./RevealSection";
 import type { ServiceDetail } from "@/data/service-details";
-import {
-  Users, Shield, DollarSign, ClipboardCheck, Briefcase, BarChart3, GraduationCap,
-  Laptop, Layers, HardHat, Truck, Shirt, Dumbbell, CheckCircle2
-} from "lucide-react";
 
 const CAPABILITIES_SUBTITLES: Record<string, string> = {
   "human-resource-services": "End-to-end HR solutions that empower people, strengthen teams, and accelerate organizational growth.",
@@ -19,22 +16,17 @@ const CAPABILITIES_SUBTITLES: Record<string, string> = {
   "sports-training-talent-development": "Professional coaching and athletic development pathways to foster talent and character.",
 };
 
-function getCapabilityIcon(title: string) {
-  const t = title.toLowerCase();
-  if (t.includes("recruitment") || t.includes("talent")) return Users;
-  if (t.includes("policy") || t.includes("governance") || t.includes("handbook")) return Shield;
-  if (t.includes("payroll") || t.includes("tax") || t.includes("financial")) return DollarSign;
-  if (t.includes("audit") || t.includes("risk") || t.includes("assessment") || t.includes("advisory")) return ClipboardCheck;
-  if (t.includes("outsourcing")) return Briefcase;
-  if (t.includes("performance") || t.includes("appraisal") || t.includes("kpi")) return BarChart3;
-  if (t.includes("training") || t.includes("education") || t.includes("curriculum") || t.includes("development") || t.includes("faculty")) return GraduationCap;
-  if (t.includes("software") || t.includes("it ") || t.includes("digital") || t.includes("cloud") || t.includes("technology") || t.includes("erp") || t.includes("lms")) return Laptop;
-  if (t.includes("branding") || t.includes("identity") || t.includes("logo") || t.includes("printing") || t.includes("signage")) return Layers;
-  if (t.includes("infrastructure") || t.includes("engineering") || t.includes("construction") || t.includes("campus") || t.includes("facilities")) return HardHat;
-  if (t.includes("transport") || t.includes("fleet") || t.includes("route") || t.includes("driver")) return Truck;
-  if (t.includes("uniform") || t.includes("clothing") || t.includes("kit") || t.includes("attire")) return Shirt;
-  if (t.includes("sport") || t.includes("coach") || t.includes("athlete")) return Dumbbell;
-  return CheckCircle2;
+function getCapabilityIconUrl(index: number) {
+  const frames = [
+    "/Service%20details/Frame1.png",
+    "/Service%20details/Frame2.png",
+    "/Service%20details/Frame3.png",
+    "/Service%20details/Frame4.png",
+    "/Service%20details/Frame5.png",
+    "/Service%20details/Frame6.png",
+    "/Service%20details/Frame.png",
+  ];
+  return frames[index % frames.length];
 }
 
 export default function DetailCapabilities({ detail }: { detail: ServiceDetail }) {
@@ -68,17 +60,12 @@ export default function DetailCapabilities({ detail }: { detail: ServiceDetail }
         {/* Heading */}
         <div className="text-center max-w-3xl mx-auto mb-16 md:mb-20">
           <RevealSection>
-            <p className="text-black/40 text-xs font-semibold uppercase tracking-[0.2em] mb-4">
+            <h2 className="font-sans text-3xl md:text-4xl lg:text-5xl text-black font-semibold leading-tight tracking-tight mb-4">
               Service Capabilities
-            </p>
-          </RevealSection>
-          <RevealSection delay={0.05}>
-            <h2 className="font-sans text-3xl md:text-4xl lg:text-5xl text-black font-normal leading-tight tracking-tight mb-4">
-              {detail.capabilities.heading}
             </h2>
           </RevealSection>
-          <RevealSection delay={0.1}>
-            <p className="text-black/60 text-sm md:text-base leading-relaxed">
+          <RevealSection delay={0.05}>
+            <p className="text-black/60 text-sm md:text-base leading-relaxed max-w-2xl mx-auto">
               {subtitle}
             </p>
           </RevealSection>
@@ -87,31 +74,35 @@ export default function DetailCapabilities({ detail }: { detail: ServiceDetail }
         {/* Capability grid */}
         <div className="grid grid-cols-12 gap-6 max-w-6xl mx-auto w-full">
           {items.map((item, index) => {
-            const Icon = getCapabilityIcon(item.title);
+            const iconUrl = getCapabilityIconUrl(index);
             const colSpan = getColSpanClass(index, totalCount);
 
             return (
               <div key={item.title} className={`${colSpan} w-full`}>
                 <RevealSection delay={(index % 3) * 0.08} className="h-full">
-                  <div className="bg-white rounded-[18px] border border-black/5 hover:border-black/10 shadow-[0_8px_30px_rgb(0,0,0,0.015)] hover:shadow-[0_15px_40px_rgb(0,0,0,0.05)] transform hover:-translate-y-1 transition-all duration-300 p-8 flex flex-col h-full">
+                  <div className="relative bg-white rounded-[16px] border border-black/5 hover:border-black/10 shadow-[0_8px_30px_rgb(0,0,0,0.015)] hover:shadow-[0_15px_40px_rgb(0,0,0,0.05)] transform hover:-translate-y-1 transition-all duration-300 p-8 flex flex-col h-full overflow-hidden">
+                    {/* Custom Corner Glow Border */}
+                    <div className="absolute top-[-1px] left-[-1px] right-[-1px] h-[20px] border-t-[4px] border-l-[4px] border-r-[4px] border-[#9F7DFF] rounded-t-[16px] pointer-events-none bg-transparent" />
+                    
                     {/* Icon container */}
-                    <div className="w-12 h-12 rounded-[16px] bg-neutral-50 border border-neutral-100 flex items-center justify-center mb-6 text-black/80">
-                      <Icon size={22} strokeWidth={1.75} />
+                    <div className="mb-6 flex items-start">
+                      <Image
+                        src={iconUrl}
+                        alt={item.title}
+                        width={48}
+                        height={48}
+                        className="h-12 w-auto object-contain"
+                      />
                     </div>
                     
-                    {/* Number eyebrow */}
-                    <span className="text-black/30 text-xs font-medium mb-2">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    
                     {/* Title */}
-                    <h3 className="text-black text-lg md:text-xl font-semibold mb-3 font-sans">
+                    <h3 className="text-black text-lg md:text-xl font-bold mb-3 font-sans tracking-tight">
                       {item.title}
                     </h3>
                     
                     {/* Description */}
                     {item.description && (
-                      <p className="text-black/60 text-sm leading-relaxed font-sans">
+                      <p className="text-black/60 text-sm leading-relaxed font-sans font-normal">
                         {item.description}
                       </p>
                     )}
@@ -125,3 +116,4 @@ export default function DetailCapabilities({ detail }: { detail: ServiceDetail }
     </section>
   );
 }
+

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import RevealSection from "./RevealSection";
 import { SERVICE_INDEX, type ServiceDetail } from "@/data/service-details";
@@ -45,10 +46,12 @@ export default function DetailRelated({
                 className="group relative block overflow-hidden rounded-[18px] h-[300px] md:h-[340px] border border-black/10"
               >
                 {/* Image */}
-                <img
+                <Image
                   src={link.meta.cardImage}
                   alt={link.meta.title}
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                 />
                 {/* Hover overlay */}
                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />

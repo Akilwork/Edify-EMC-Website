@@ -9,7 +9,11 @@ import {
   SERVICE_OPTIONS,
 } from "./ConsultationModal";
 
-export default function Scene10ConsultationForm() {
+export default function Scene10ConsultationForm({
+  defaultService = "",
+}: {
+  defaultService?: string;
+}) {
   const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: "",
@@ -18,7 +22,7 @@ export default function Scene10ConsultationForm() {
     designation: "",
     institutionType: "",
     institutionName: "",
-    serviceRequired: "",
+    serviceRequired: defaultService,
     howCanWeHelp: "",
   });
 
@@ -98,7 +102,7 @@ export default function Scene10ConsultationForm() {
         designation: "",
         institutionType: "",
         institutionName: "",
-        serviceRequired: "",
+        serviceRequired: defaultService,
         howCanWeHelp: "",
       });
       setCountryCode("+971");
