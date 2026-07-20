@@ -65,12 +65,12 @@ export default function CompaniesSection() {
     <section
       id="companies"
       ref={containerRef}
-      className="relative w-full bg-white py-20 md:py-28 overflow-hidden font-sans border-t border-[#F1F5F9]"
+      className="relative w-full bg-white py-10 md:py-16 overflow-hidden font-sans border-t border-[#F1F5F9]"
     >
       <div className="container-responsive container-xl relative z-10">
         
         {/* Header Section */}
-        <div className="text-center max-w-3xl mx-auto mb-16 md:mb-20">
+        <div className="text-center max-w-3xl mx-auto mb-8 md:mb-12">
           <motion.h2
             variants={textVariants}
             initial="hidden"

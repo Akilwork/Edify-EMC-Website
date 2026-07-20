@@ -70,7 +70,7 @@ export default function LandingLoader({ onComplete }: LandingLoaderProps) {
             playsInline
             autoPlay
             onEnded={handleComplete}
-            className="w-full max-w-[850px] h-auto object-contain px-8 relative z-10"
+            className="absolute inset-0 w-full h-full object-cover z-10"
           />
         </motion.div>
       )}

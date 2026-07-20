@@ -11,7 +11,7 @@ export default function ChairmanSection({ animate = true }: { animate?: boolean 
   return (
     <section
       id="chairman"
-      className="relative w-full h-full min-h-[100svh] flex items-center justify-center overflow-hidden bg-white font-sans py-8 sm:py-12 md:py-16"
+      className="relative w-full overflow-hidden bg-white font-sans py-10 sm:py-14 md:py-16"
     >
       {/* Background Abstract Design */}
       <div className="absolute inset-0 opacity-30">

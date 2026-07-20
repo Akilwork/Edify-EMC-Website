@@ -6,7 +6,6 @@ import GridBackground from "@/components/ui/GridBackground";
 import { DottedGlowBackground } from "@/components/ui/dotted-glow-background";
 import BlurText from "@/components/ui/BlurText";
 import PersonProfileCard from "@/components/ui/PersonProfileCard";
-import Scene10ConsultationForm from "@/components/layout/Scene10ConsultationForm";
 
 export default function AboutHero() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -65,10 +64,6 @@ export default function AboutHero() {
   const scene9TextRef = useRef<HTMLDivElement>(null);
   const scene9GridCyanRef = useRef<HTMLDivElement>(null);
   const [scene9Visible, setScene9Visible] = useState(false);
-  // Scene 10 refs
-  const scene10Ref = useRef<HTMLDivElement>(null);
-  const scene10TextRef = useRef<HTMLDivElement>(null);
-  const [scene10Visible, setScene10Visible] = useState(false);
 
   const cleanupFnRef = useRef<(() => void) | null>(null);
 
@@ -114,11 +109,6 @@ export default function AboutHero() {
           console.warn("Scene 9 refs not ready, skipping Scene 9 animations");
         }
 
-        // Scene 10 refs check - warn but don't abort if not ready
-        if (!scene10Ref.current || !scene10TextRef.current) {
-          console.warn("Scene 10 refs not ready, skipping Scene 10 animations");
-        }
-
         // ─── Initial States ──────────────────────────────────────────────────────
         gsap.set(scene2Ref.current, { autoAlpha: 1, y: 0, filter: "blur(0px)" });
         gsap.set(scene4Ref.current, { autoAlpha: 0, y: 0, filter: "blur(18px)" });
@@ -137,7 +127,6 @@ export default function AboutHero() {
         if (scene8TextBRef.current) gsap.set(scene8TextBRef.current, { autoAlpha: 0, y: -20 });
         if (scene8CardsContainerRef.current) gsap.set(scene8CardsContainerRef.current, { autoAlpha: 0, y: 30 });
         if (scene9Ref.current) gsap.set(scene9Ref.current, { autoAlpha: 0, filter: "blur(12px)" });
-        if (scene10Ref.current) gsap.set(scene10Ref.current, { autoAlpha: 0, filter: "blur(12px)" });
         if (whiteBg) gsap.set(whiteBg, { autoAlpha: 0 });
         gsap.set(gridBg70, { autoAlpha: 0 });
         gsap.set(gridBg30, { autoAlpha: 0 });
@@ -179,22 +168,19 @@ export default function AboutHero() {
           scrollTrigger: {
             trigger: section,
             start: "top top",
-            end: "+=24000vh", // Extended for Scene 10 consultation form
+            end: "+=5000vh",
             pin: true,
             pinSpacing: true,
             scrub: 1,
+            invalidateOnRefresh: true,
             onUpdate: (self) => {
               // Trigger Scene 8 BlurText animation when Scene 8 starts fading in (at 26.0 = ~65% progress)
               if (self.progress >= 0.65 && !scene8Visible) {
                 setScene8Visible(true);
               }
-              // Trigger Scene 9 BlurText animation when Scene 9 starts fading in (at 36.0 = ~95%+ progress)
-              if (self.progress >= 0.95 && !scene9Visible) {
+              // Trigger Scene 9 BlurText animation when Scene 9 starts fading in
+              if (self.progress >= 0.92 && !scene9Visible) {
                 setScene9Visible(true);
-              }
-              // Trigger Scene 10 BlurText animation when Scene 10 starts fading in (at 40.0)
-              if (self.progress >= 0.98 && !scene10Visible) {
-                setScene10Visible(true);
               }
             },
           },
@@ -636,31 +622,27 @@ export default function AboutHero() {
         // Start: First card centered | End: Last card centered
         if (scene8CardsContainerRef.current) {
           const cardsContainer = scene8CardsContainerRef.current;
-          const viewportWidth = window.innerWidth;
 
-          // Card dimensions (approximate, will be calculated from first card if available)
-          const cardWidth = viewportWidth >= 768 ? 320 : 280;
-          const gap = viewportWidth >= 768 ? 32 : 24;
-          const padding = viewportWidth >= 768 ? 64 : 32; // px-8 md:px-16
-
-          // Calculate positions of first and last card centers
-          const firstCardCenter = padding + cardWidth / 2;
-          const lastCardCenter = padding + (7 * (cardWidth + gap)) + cardWidth / 2; // 7 gaps between 8 cards
-
-          // Initial scroll: center the first card
-          const initialScroll = viewportWidth / 2 - firstCardCenter;
-          // Final scroll: center the last card
-          const finalScroll = viewportWidth / 2 - lastCardCenter;
-          // Total scroll distance
-          const scrollDistance = finalScroll - initialScroll;
-
-          // Set initial position
-          gsap.set(cardsContainer, { x: initialScroll });
-
-          tl.to(
+          tl.fromTo(
             cardsContainer,
             {
-              x: finalScroll,
+              x: () => {
+                const viewportWidth = window.innerWidth;
+                const cardWidth = viewportWidth >= 640 ? 320 : (viewportWidth >= 480 ? 260 : 220);
+                const padding = viewportWidth >= 768 ? 64 : 32;
+                const firstCardCenter = padding + cardWidth / 2;
+                return viewportWidth / 2 - firstCardCenter;
+              }
+            },
+            {
+              x: () => {
+                const viewportWidth = window.innerWidth;
+                const cardWidth = viewportWidth >= 640 ? 320 : (viewportWidth >= 480 ? 260 : 220);
+                const gap = viewportWidth >= 768 ? 32 : 24;
+                const padding = viewportWidth >= 768 ? 64 : 32;
+                const lastCardCenter = padding + (7 * (cardWidth + gap)) + cardWidth / 2;
+                return viewportWidth / 2 - lastCardCenter;
+              },
               duration: 6,
               ease: "none",
               onUpdate: function() {
@@ -752,25 +734,6 @@ export default function AboutHero() {
           );
         }
 
-        // ─── Scene 9 → Scene 10 Transition (at 39.0) ─────────────────────
-        // Fade out Scene 9
-        if (scene9Ref.current) {
-          tl.to(
-            scene9Ref.current,
-            { autoAlpha: 0, filter: "blur(12px)", duration: 0.5, ease: "power2.inOut" },
-            39.0
-          );
-        }
-
-        // Fade in Scene 10 container
-        if (scene10Ref.current) {
-          tl.to(
-            scene10Ref.current,
-            { autoAlpha: 1, filter: "blur(0px)", duration: 0.7, ease: "power2.inOut" },
-            39.5
-          );
-        }
-
         // ─── Building to Grid Background Transformation (at 0.2) ──────────────────────────────────────
         tl.to(
           backImage,
@@ -853,7 +816,7 @@ export default function AboutHero() {
   }, []);
 
   return (
-    <div>
+    <div className="overflow-hidden">
       <section
         ref={sectionRef}
         className="relative w-full h-screen min-h-[100svh] overflow-hidden bg-[#0A0D14]"
@@ -947,7 +910,7 @@ export default function AboutHero() {
           {/* Scene 2 - visible initially, fades out */}
           <div
             ref={scene2Ref}
-            className="absolute w-full max-w-[1100px] text-center top-[60%] -translate-y-1/2 left-1/2 -translate-x-1/2"
+            className="absolute w-[90%] md:w-full max-w-[1100px] text-center top-[60%] -translate-y-1/2 left-1/2 -translate-x-1/2 px-4 md:px-8"
           >
             <h1 className="font-sans font-normal leading-[1.1] text-white text-center m-0 tracking-tight text-[clamp(22px,5vw,28px)] md:text-[clamp(34px,4vw,40px)] lg:text-[clamp(36px,4vw,52px)] 2xl:text-[clamp(46px,3.5vw,56px)]">
               <span className="block">
@@ -963,7 +926,7 @@ export default function AboutHero() {
           {/* Scene 4 - fades in with blur */}
           <div
             ref={scene4Ref}
-            className="absolute w-full max-w-[1100px] text-center opacity-0"
+            className="absolute w-full max-w-[1100px] text-center opacity-0 px-4 md:px-8"
           >
             <h1 className="font-sans font-medium leading-[1.1] text-white text-center m-0 tracking-tight text-[clamp(28px,6vw,36px)] md:text-[clamp(42px,5vw,48px)] lg:text-[clamp(48px,5vw,64px)] 2xl:text-[clamp(60px,4.5vw,68px)]">
               <span className="block">Building Institutions That Inspire</span>
@@ -974,7 +937,7 @@ export default function AboutHero() {
           {/* Scene 5 - VisionValues content (slides in from right) */}
           <div
             ref={scene5Ref}
-            className="absolute inset-0 flex items-center justify-center p-8 md:px-16 lg:px-20 overflow-hidden opacity-0"
+            className="absolute inset-0 overflow-hidden flex items-center justify-center p-6 md:p-8 md:px-16 lg:px-20 opacity-0"
           >
             {/* Gradient 1 (Blue) - Top-left corner glow */}
             <div
@@ -994,27 +957,27 @@ export default function AboutHero() {
               }}
             />
 
-            <div className="grid lg:grid-cols-[49.5%_50.5%] gap-0 items-center justify-center max-w-[1280px] w-full">
+            <div className="grid lg:grid-cols-[49.5%_50.5%] gap-8 lg:gap-0 items-center justify-center max-w-[1280px] w-full">
               {/* Left column - content */}
               <div ref={scene5LeftRef} className="order-2 lg:order-1 opacity-0 will-change-transform">
-                <h2 className="font-sans text-[1.5rem] sm:text-[2rem] md:text-[2.5rem] lg:text-[3rem] xl:text-[3.5rem] font-semibold text-white leading-[1.08] tracking-tight">
+                <h2 className="font-sans text-[1.8rem] xs:text-[2rem] sm:text-[2.5rem] lg:text-[3rem] xl:text-[3.5rem] font-semibold text-white leading-[1.08] tracking-tight">
                   <span className="block">Shaping The Future Of</span>
                   <span className="block bg-gradient-to-r from-white via-white to-white/70 bg-clip-text text-transparent">
                     Excellence
                   </span>
-                  <span className="block mt-4 text-white/90">
+                  <span className="block mt-2 md:mt-4 text-white/90">
                     Empowering Institutions
                   </span>
                   <span className="block text-white/80">Through Expertise</span>
                 </h2>
 
-                <p className="text-white/50 text-[15px] md:text-[16px] lg:text-[17px] leading-[1.75] max-w-[520px] font-light mt-8">
+                <p className="text-white/50 text-[14px] md:text-[16px] lg:text-[17px] leading-[1.75] max-w-[520px] font-light mt-4 md:mt-8">
                   To help educational institutions overcome operational challenges,
                   unlock growth opportunities, and create environments where students,
                   educators, and communities can thrive.
                 </p>
 
-                <button className="mt-10 group relative px-8 py-4 bg-black backdrop-blur-sm border border-white/10 rounded-full overflow-hidden transition-all duration-300 hover:bg-white/10 hover:border-white/20 pointer-events-auto">
+                <button className="mt-6 md:mt-10 group relative px-8 py-4 bg-black backdrop-blur-sm border border-white/10 rounded-full overflow-hidden transition-all duration-300 hover:bg-white/10 hover:border-white/20 pointer-events-auto">
                   <span className="relative z-10 text-white/90 text-sm font-medium tracking-wide flex items-center gap-3">
                     Learn More
                     <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1027,7 +990,7 @@ export default function AboutHero() {
 
               {/* Right column - orbital illustration */}
               <div ref={scene5RightRef} className="order-1 lg:order-2 flex items-center justify-center opacity-0 will-change-transform">
-                <div className="relative w-full max-w-[450px] aspect-square flex items-center justify-center">
+                <div className="relative w-full max-w-[240px] xs:max-w-[280px] sm:max-w-[320px] lg:max-w-[450px] aspect-square flex items-center justify-center">
                   {/* Outer ring */}
                   <div className="absolute inset-0 animate-spin-slow">
                     <div className="absolute inset-0 rounded-full border border-blue-500/20" style={{
@@ -1074,7 +1037,7 @@ export default function AboutHero() {
           {/* Scene 7 - One Vision section with 4 sub-scenes */}
           <div
             ref={scene7Ref}
-            className="absolute inset-0 flex items-center justify-center p-8 md:px-16 lg:px-20 overflow-hidden z-[5] pointer-events-auto opacity-0"
+            className="absolute inset-0 overflow-y-auto flex items-start lg:items-center justify-center p-6 md:p-8 md:px-16 lg:px-20 z-[5] pointer-events-auto opacity-0"
           >
             {/* Black background with grid */}
             <div
@@ -1094,23 +1057,23 @@ export default function AboutHero() {
             </div>
 
             {/* Content container - 50/50 split */}
-            <div className="max-w-[1600px] w-full mx-auto grid lg:grid-cols-2 gap-8 items-center relative z-10 pointer-events-auto">
+            <div className="max-w-[1600px] w-full mx-auto grid lg:grid-cols-2 gap-8 items-center relative z-10 pointer-events-auto my-auto py-8">
               {/* Left - Static headline + Dynamic text content */}
               <div className="text-left pl-4 md:pl-8 pointer-events-auto relative">
                 {/* Static headline - always visible */}
-                <h2 className="font-sans text-[2rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.5rem] xl:text-[4rem] font-light leading-[1.1] tracking-tight" style={{ color: "#71C4FF" }}>
+                <h2 className="font-sans text-[1.8rem] xs:text-[2rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.5rem] xl:text-[4rem] font-light leading-[1.1] tracking-tight" style={{ color: "#71C4FF" }}>
                   <span className="block">One Vision.</span>
                 </h2>
-                <h3 className="font-sans text-[2rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.5rem] xl:text-[4rem] font-light leading-[1.1] tracking-tight mt-4" style={{ color: "#71C4FF" }}>
+                <h3 className="font-sans text-[1.8rem] xs:text-[2rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.5rem] xl:text-[4rem] font-light leading-[1.1] tracking-tight mt-2 md:mt-4" style={{ color: "#71C4FF" }}>
                   <span className="block">Multiple Areas Of Expertise.</span>
                 </h3>
 
                 {/* Dynamic text content container - positioned below headline */}
-                <div className="relative mt-8 md:mt-10 lg:mt-12">
+                <div className="relative h-[160px] xs:h-[120px] sm:h-[100px] lg:h-[120px] mt-6 md:mt-8 lg:mt-10">
                   {/* Sub-scene 7A - Text */}
                   <p
                     ref={scene7TextARef}
-                    className="text-white text-base md:text-lg lg:text-xl leading-relaxed max-w-xl font-light absolute inset-0 opacity-0 will-change-transform"
+                    className="text-white text-sm xs:text-base lg:text-lg leading-relaxed max-w-xl font-light absolute inset-x-0 top-0 opacity-0 will-change-transform"
                   >
                     From human resources and finance to technology, infrastructure, student development, and operational support, Edify delivers connected solutions designed for institutional success.
                   </p>
@@ -1118,7 +1081,7 @@ export default function AboutHero() {
                   {/* Sub-scene 7B - Text */}
                   <p
                     ref={scene7TextBRef}
-                    className="text-white text-base md:text-lg lg:text-xl leading-relaxed max-w-xl font-light absolute inset-0 opacity-0 will-change-transform"
+                    className="text-white text-sm xs:text-base lg:text-lg leading-relaxed max-w-xl font-light absolute inset-x-0 top-0 opacity-0 will-change-transform"
                   >
                     We don't simply advise institutions. We work alongside them to plan, implement, support, and sustain meaningful change.
                   </p>
@@ -1126,7 +1089,7 @@ export default function AboutHero() {
                   {/* Sub-scene 7C - Text */}
                   <p
                     ref={scene7TextCRef}
-                    className="text-white text-base md:text-lg lg:text-xl leading-relaxed max-w-xl font-light absolute inset-0 opacity-0 will-change-transform"
+                    className="text-white text-sm xs:text-base lg:text-lg leading-relaxed max-w-xl font-light absolute inset-x-0 top-0 opacity-0 will-change-transform"
                   >
                     Every institution is unique. Our solutions are designed to align with individual goals, operational requirements, and long-term growth ambitions.
                   </p>
@@ -1134,14 +1097,14 @@ export default function AboutHero() {
                   {/* Sub-scene 7D - Text */}
                   <p
                     ref={scene7TextDRef}
-                    className="text-white text-base md:text-lg lg:text-xl leading-relaxed max-w-xl font-light absolute inset-0 opacity-0 will-change-transform"
+                    className="text-white text-sm xs:text-base lg:text-lg leading-relaxed max-w-xl font-light absolute inset-x-0 top-0 opacity-0 will-change-transform"
                   >
                     A commitment to educational excellence, institutional growth, and long-term impact drives every decision makes.
                   </p>
                 </div>
 
                 {/* Pagination indicator - 4 dots */}
-                <div className="flex items-center gap-2 mt-32 md:mt-36 lg:mt-40">
+                <div className="flex items-center gap-2 mt-6 md:mt-8">
                   <div
                     ref={scene7DotARef}
                     className="h-0.5 bg-white opacity-40 will-change-transform"
@@ -1166,18 +1129,18 @@ export default function AboutHero() {
               </div>
 
               {/* Right - Dynamic images for each sub-scene */}
-              <div className="flex items-center justify-center relative">
+              <div className="flex items-center justify-center relative w-full aspect-square max-w-[280px] xs:max-w-[340px] sm:max-w-[450px] lg:max-w-none lg:h-[450px] xl:h-[600px] mx-auto mt-8 lg:mt-0">
                 {/* Sub-scene 7A - Image */}
                 <div
                   ref={scene7ImgARef}
-                  className="absolute w-full max-w-[1000px] aspect-square flex items-center justify-center opacity-0 will-change-transform"
+                  className="absolute inset-0 flex items-center justify-center opacity-0 will-change-transform"
                 >
                   <Image
                     src="/about/hero/img1-vision.png"
                     alt="One Vision - Multiple Areas of Expertise"
                     fill
                     className="object-contain"
-                    sizes="(max-width: 768px) 600px, (max-width: 1024px) 800px, 1000px"
+                    sizes="(max-width: 480px) 280px, (max-width: 640px) 340px, (max-width: 1024px) 450px, 600px"
                     priority
                   />
                 </div>
@@ -1185,14 +1148,14 @@ export default function AboutHero() {
                 {/* Sub-scene 7B - Image */}
                 <div
                   ref={scene7ImgBRef}
-                  className="absolute w-full max-w-[1000px] aspect-square flex items-center justify-center opacity-0 will-change-transform"
+                  className="absolute inset-0 flex items-center justify-center opacity-0 will-change-transform"
                 >
                   <Image
                     src="/about/hero/img2-vision.png"
                     alt="Working alongside institutions"
                     fill
                     className="object-contain"
-                    sizes="(max-width: 768px) 600px, (max-width: 1024px) 800px, 1000px"
+                    sizes="(max-width: 480px) 280px, (max-width: 640px) 340px, (max-width: 1024px) 450px, 600px"
                     priority
                   />
                 </div>
@@ -1200,14 +1163,14 @@ export default function AboutHero() {
                 {/* Sub-scene 7C - Image */}
                 <div
                   ref={scene7ImgCRef}
-                  className="absolute w-full max-w-[1000px] aspect-square flex items-center justify-center opacity-0 will-change-transform"
+                  className="absolute inset-0 flex items-center justify-center opacity-0 will-change-transform"
                 >
                   <Image
                     src="/about/hero/img3-vision.png"
                     alt="Unique solutions for unique institutions"
                     fill
                     className="object-contain"
-                    sizes="(max-width: 768px) 600px, (max-width: 1024px) 800px, 1000px"
+                    sizes="(max-width: 480px) 280px, (max-width: 640px) 340px, (max-width: 1024px) 450px, 600px"
                     priority
                   />
                 </div>
@@ -1215,14 +1178,14 @@ export default function AboutHero() {
                 {/* Sub-scene 7D - Image */}
                 <div
                   ref={scene7ImgDRef}
-                  className="absolute w-full max-w-[1000px] aspect-square flex items-center justify-center opacity-0 will-change-transform"
+                  className="absolute inset-0 flex items-center justify-center opacity-0 will-change-transform"
                 >
                   <Image
                     src="/about/hero/img4-vision.png"
                     alt="Commitment to educational excellence"
                     fill
                     className="object-contain"
-                    sizes="(max-width: 768px) 600px, (max-width: 1024px) 800px, 1000px"
+                    sizes="(max-width: 480px) 280px, (max-width: 640px) 340px, (max-width: 1024px) 450px, 600px"
                     priority
                   />
                 </div>
@@ -1233,7 +1196,7 @@ export default function AboutHero() {
           {/* Scene 6 - Stats/Achievements section - Redesigned */}
           <div
             ref={scene6Ref}
-            className="absolute inset-0 flex items-center p-8 md:px-16 lg:px-20 overflow-hidden opacity-0"
+            className="absolute inset-0 overflow-hidden flex items-center p-6 md:p-8 md:px-16 lg:px-20 opacity-0"
           >
             {/* Blurred background image */}
             <div className="absolute inset-0 z-0">
@@ -1250,11 +1213,11 @@ export default function AboutHero() {
               <div className="absolute inset-0 bg-black/50" />
             </div>
 
-            <div className="max-w-[1600px] w-full mx-auto relative z-10 grid lg:grid-cols-[45%_55%] gap-8 lg:gap-16 items-center">
+            <div className="max-w-[1600px] w-full mx-auto relative z-10 grid lg:grid-cols-[45%_55%] gap-8 lg:gap-16 items-center my-auto py-8">
               {/* Left Column: Headline + Subhead */}
               <div className="text-left">
                 {/* Headline */}
-                <h2 className="font-sans text-[2.5rem] sm:text-[3rem] md:text-[3.5rem] lg:text-[4rem] xl:text-[4.5rem] font-medium leading-[1.1] tracking-tight text-white mb-6">
+                <h2 className="font-sans text-[1.8rem] xs:text-[2.2rem] sm:text-[3rem] md:text-[3.5rem] lg:text-[4rem] xl:text-[4.5rem] font-medium leading-[1.1] tracking-tight text-white mb-4 md:mb-6">
                   Proven Results,<br />
                   Better Outcomes
                 </h2>
@@ -1271,7 +1234,7 @@ export default function AboutHero() {
                 className="grid grid-cols-2 gap-4 md:gap-6"
               >
                 {/* Stat Card 1 */}
-                <div className="relative backdrop-blur-md bg-black/30 border border-white/10 rounded-lg p-6 md:p-8 overflow-hidden group hover:bg-black/40 transition-all duration-300">
+                <div className="relative backdrop-blur-md bg-black/30 border border-white/10 rounded-lg p-4 xs:p-6 md:p-8 overflow-hidden group hover:bg-black/40 transition-all duration-300">
                   {/* Corner decoration dots */}
                   <div className="absolute top-3 left-3 w-1.5 h-1.5 bg-white/40 rounded-full" />
                   <div className="absolute top-3 right-3 w-1.5 h-1.5 bg-white/40 rounded-full" />
@@ -1279,7 +1242,7 @@ export default function AboutHero() {
                   <div className="absolute bottom-3 right-3 w-1.5 h-1.5 bg-white/40 rounded-full" />
 
                   <div
-                    className="stat-number font-sans text-[2.5rem] md:text-[3.5rem] lg:text-[4rem] font-medium leading-none text-white mb-2"
+                    className="stat-number font-sans text-[2rem] xs:text-[2.5rem] md:text-[3.5rem] lg:text-[4rem] font-medium leading-none text-white mb-2"
                     data-value="15"
                   >
                     0
@@ -1290,7 +1253,7 @@ export default function AboutHero() {
                 </div>
 
                 {/* Stat Card 2 */}
-                <div className="relative backdrop-blur-md bg-black/30 border border-white/10 rounded-lg p-6 md:p-8 overflow-hidden group hover:bg-black/40 transition-all duration-300">
+                <div className="relative backdrop-blur-md bg-black/30 border border-white/10 rounded-lg p-4 xs:p-6 md:p-8 overflow-hidden group hover:bg-black/40 transition-all duration-300">
                   {/* Corner decoration dots */}
                   <div className="absolute top-3 left-3 w-1.5 h-1.5 bg-white/40 rounded-full" />
                   <div className="absolute top-3 right-3 w-1.5 h-1.5 bg-white/40 rounded-full" />
@@ -1298,7 +1261,7 @@ export default function AboutHero() {
                   <div className="absolute bottom-3 right-3 w-1.5 h-1.5 bg-white/40 rounded-full" />
 
                   <div
-                    className="stat-number font-sans text-[2.5rem] md:text-[3.5rem] lg:text-[4rem] font-medium leading-none text-white mb-2"
+                    className="stat-number font-sans text-[2rem] xs:text-[2.5rem] md:text-[3.5rem] lg:text-[4rem] font-medium leading-none text-white mb-2"
                     data-value="500"
                   >
                     0
@@ -1309,14 +1272,14 @@ export default function AboutHero() {
                 </div>
 
                 {/* Stat Card 3 */}
-                <div className="relative backdrop-blur-md bg-black/30 border border-white/10 rounded-lg p-6 md:p-8 overflow-hidden group hover:bg-black/40 transition-all duration-300">
+                <div className="relative backdrop-blur-md bg-black/30 border border-white/10 rounded-lg p-4 xs:p-6 md:p-8 overflow-hidden group hover:bg-black/40 transition-all duration-300">
                   {/* Corner decoration dots */}
                   <div className="absolute top-3 left-3 w-1.5 h-1.5 bg-white/40 rounded-full" />
                   <div className="absolute top-3 right-3 w-1.5 h-1.5 bg-white/40 rounded-full" />
                   <div className="absolute bottom-3 left-3 w-1.5 h-1.5 bg-white/40 rounded-full" />
                   <div className="absolute bottom-3 right-3 w-1.5 h-1.5 bg-white/40 rounded-full" />
 
-                  <div className="font-sans text-[2.5rem] md:text-[3.5rem] lg:text-[4rem] font-medium leading-none text-white mb-2">
+                  <div className="font-sans text-[2rem] xs:text-[2.5rem] md:text-[3.5rem] lg:text-[4rem] font-medium leading-none text-white mb-2">
                     2M+
                   </div>
                   <div className="text-white/60 text-xs md:text-sm font-medium tracking-wide">
@@ -1325,7 +1288,7 @@ export default function AboutHero() {
                 </div>
 
                 {/* Stat Card 4 */}
-                <div className="relative backdrop-blur-md bg-black/30 border border-white/10 rounded-lg p-6 md:p-8 overflow-hidden group hover:bg-black/40 transition-all duration-300">
+                <div className="relative backdrop-blur-md bg-black/30 border border-white/10 rounded-lg p-4 xs:p-6 md:p-8 overflow-hidden group hover:bg-black/40 transition-all duration-300">
                   {/* Corner decoration dots */}
                   <div className="absolute top-3 left-3 w-1.5 h-1.5 bg-white/40 rounded-full" />
                   <div className="absolute top-3 right-3 w-1.5 h-1.5 bg-white/40 rounded-full" />
@@ -1333,7 +1296,7 @@ export default function AboutHero() {
                   <div className="absolute bottom-3 right-3 w-1.5 h-1.5 bg-white/40 rounded-full" />
 
                   <div
-                    className="stat-number font-sans text-[2.5rem] md:text-[3.5rem] lg:text-[4rem] font-medium leading-none text-white mb-2"
+                    className="stat-number font-sans text-[2rem] xs:text-[2.5rem] md:text-[3.5rem] lg:text-[4rem] font-medium leading-none text-white mb-2"
                     data-value="98"
                   >
                     0
@@ -1553,69 +1516,6 @@ export default function AboutHero() {
                     />
                   )}
                 </h1>
-              </div>
-            </div>
-          </div>
-
-          {/* Scene 10 - Consultation Form */}
-          <div
-            ref={scene10Ref}
-            className="absolute inset-0 flex items-center justify-center overflow-hidden z-[5] opacity-0"
-          >
-            {/* Scene 10: Video Background */}
-            <div className="absolute inset-0 z-0">
-              <video
-                src="/about/Form/form-bg.mp4"
-                autoPlay
-                muted
-                loop
-                playsInline
-                className="w-full h-full object-cover"
-              />
-              {/* Vignette: Dark on right, lighter on left */}
-              <div
-                className="absolute inset-0 pointer-events-none"
-                style={{
-                  background: "linear-gradient(to left, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.6) 85%, rgba(0, 0, 0, 0.3) 100%)"
-                }}
-              />
-              {/* Dark overlay for better text readability */}
-              <div className="absolute inset-0 bg-black/20" />
-            </div>
-
-            {/* Scene 10: Content container with text on left, form on right */}
-            <div
-              ref={scene10TextRef}
-              className="absolute inset-0 flex items-center p-4 md:p-8 lg:p-16 z-[10] pointer-events-auto"
-            >
-              <div className="w-full max-w-[1600px] mx-auto grid lg:grid-cols-[40%_60%] gap-8 lg:gap-12 items-center">
-                {/* Left Column: Heading */}
-                <div className="order-1 lg:order-1 text-left mb-8 md:mb-0">
-                  <h2 className="font-sans text-[clamp(24px,5vw,32px)] md:text-[clamp(32px,4vw,40px)] lg:text-[clamp(36px,4vw,48px)] font-medium leading-[1.1] tracking-tight text-white mb-4">
-                    {scene10Visible && (
-                      <BlurText
-                        text="Building Stronger Institutions Starts Here"
-                        animateBy="words"
-                        direction="top"
-                        delay={100}
-                        stepDuration={0.4}
-                        className="flex flex-wrap justify-start"
-                        threshold={0.5}
-                        rootMargin="0px"
-                      />
-                    )}
-                  </h2>
-                  <p className="text-white/60 text-sm md:text-base">
-                    Connect with our consultants to explore tailored solutions for your institution.
-                  </p>
-                </div>
-
-                {/* Right Column: Consultation Form */}
-                <div className="order-2 lg:order-2">
-                  <div className="backdrop-blur-md bg-[#151515]/80 border border-white/10 rounded-xl p-5 md:p-6">
-                    <Scene10ConsultationForm />
-                  </div>
-                </div>
               </div>
             </div>
           </div>

@@ -19,6 +19,7 @@ import {
   MessageSquare,
 } from "lucide-react";
 import { useConsultation } from "@/components/providers/ConsultationProvider";
+import { SERVICE_SLUGS } from "@/data/service-details";
 
 /* ────────────────────────────────────────────────────────────
  data – icon mapped per service id
@@ -112,6 +113,7 @@ function ServicesMegaMenu({
                 src="/Rectangle 53.png"
                 alt="Edify services"
                 fill
+                sizes="(max-width: 768px) 100vw, 300px"
                 className="object-cover"
               />
               {/* Stronger dark overlay for glass feel */}
@@ -211,11 +213,11 @@ function ServicesMegaMenu({
                 <button
                   onClick={() => {
                     onClose();
-                    openConsultation();
+                    window.location.href = '/services';
                   }}
                   className="flex items-center gap-2 px-5 py-[11px] text-[13px] font-semibold rounded-[40px] bg-black text-white hover:bg-black/80 transition-all duration-200 whitespace-nowrap cursor-pointer border-none outline-none active:scale-95"
                 >
-                  Contact us
+                  View all Services
                   <ArrowRight size={14} />
                 </button>
               </div>
@@ -269,6 +271,18 @@ export default function Navbar() {
     setMegaOpen(false);
     setMenuOpen(false);
   }, [pathname]);
+
+  // Prefetch all service routes on mount to make dynamic transitions instant
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const timer = setTimeout(() => {
+        SERVICE_SLUGS.forEach((slug) => {
+          router.prefetch(`/services/${slug}`);
+        });
+      }, 1000); // Small delay to prioritize initial page render load
+      return () => clearTimeout(timer);
+    }
+  }, [router]);
 
   const handleServicesEnter = () => {
     if (megaTimerRef.current) clearTimeout(megaTimerRef.current);
