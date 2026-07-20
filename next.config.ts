@@ -11,10 +11,6 @@ const nextConfig: NextConfig = {
     // Faster refresh and builds
     optimizeCss: false, // Disable CSS optimization in dev
   },
-  // Fix for Turbopack lockfile warning
-  turbopack: {
-    root: __dirname,
-  },
 };
 
 export default nextConfig;
