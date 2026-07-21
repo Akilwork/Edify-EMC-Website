@@ -10,11 +10,11 @@ const escapeCSV = (val: any): string => {
   return `"${clean}"`;
 };
 
-// Helper to get formatted UAE (Dubai) Local Time
-const getUAETimestamp = (dateInput?: Date | string): string => {
+// Helper to get formatted India (Kolkata) Local Time
+const getISTTimestamp = (dateInput?: Date | string): string => {
   const date = dateInput ? new Date(dateInput) : new Date();
   const formatter = new Intl.DateTimeFormat("en-US", {
-    timeZone: "Asia/Dubai",
+    timeZone: "Asia/Kolkata",
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
@@ -25,17 +25,33 @@ const getUAETimestamp = (dateInput?: Date | string): string => {
   });
   const parts = formatter.formatToParts(date);
   const partMap = Object.fromEntries(parts.map((p) => [p.type, p.value]));
-  return `${partMap.year}-${partMap.month}-${partMap.day} ${partMap.hour}:${partMap.minute}:${partMap.second} GST`;
+  let hour = partMap.hour;
+  if (hour === "24") hour = "00";
+  return `${partMap.year}-${partMap.month}-${partMap.day} ${hour}:${partMap.minute}:${partMap.second} IST`;
 };
 
 export async function POST(request: Request) {
   try {
     const data = await request.json();
-    const { name, email, company, message } = data;
+    const { name, email, company, message, submittedAt } = data;
 
-    const timestamp = getUAETimestamp();
+    // Convert the UTC instant from the client to IST (Asia/Kolkata) once here.
+    // `submittedAt` arrives as UTC ("...Z"); converting only on the backend
+    // avoids any double conversion (UTC → IST → IST again).
+    const timestamp = getISTTimestamp(submittedAt);
+    const dateObj = submittedAt ? new Date(submittedAt) : new Date();
+    // ISO format with India (+05:30) offset
+    const istOffsetMs = 5 * 60 * 60 * 1000 + 30 * 60 * 1000;
+    const istOffsetDate = new Date(dateObj.getTime() + istOffsetMs);
+    const isoISTTime = istOffsetDate.toISOString().replace("Z", "+05:30");
 
-    console.log("New Contact Submission:", JSON.stringify({ timestamp, ...data }));
+    // Excel stores whatever instant it receives and renders its UTC wall-clock,
+    // so an India submission appears 5h30m behind. Send a timezone-naive India
+    // local datetime (no offset, no " IST" suffix) so Excel stores exactly that
+    // wall-clock time with no conversion — the cell then reads as India local.
+    const excelTimestamp = timestamp.replace(" IST", "");
+
+    console.log("New Contact Submission:", JSON.stringify({ timestamp, isoISTTime, ...data }));
 
     // 1. Write to local CSV spreadsheet file first
     try {
@@ -69,6 +85,9 @@ export async function POST(request: Request) {
             },
             body: JSON.stringify({
               timestamp,
+              istTime: timestamp,
+              formattedTimestamp: timestamp,
+              isoISTTime,
               name: name || "",
               email: email || "",
               institutionName: company || "",
@@ -186,7 +205,7 @@ export async function POST(request: Request) {
             body: JSON.stringify({
               values: [
                 [
-                  timestamp,
+                  excelTimestamp,
                   name || "",
                   "", // Country Code
                   "", // Contact Number
