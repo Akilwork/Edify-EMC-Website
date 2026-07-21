@@ -54,11 +54,15 @@ export default function DetailHero({
             </p>
           </RevealSection>
 
-          {/* CTAs — both route to the consultation modal */}
+          {/* CTAs — route to the consultation modal */}
           <RevealSection delay={0.2}>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-              <CtaButton label={primary.label} onClick={onConsultation} variant="solid" theme="dark" />
-              <CtaButton label={secondary.label} onClick={onConsultation} variant="outline" theme="dark" withArrow={false} />
+              {primary && (
+                <CtaButton label={primary.label} onClick={onConsultation} variant="solid" theme="dark" />
+              )}
+              {secondary && (
+                <CtaButton label={secondary.label} onClick={onConsultation} variant="outline" theme="dark" withArrow={false} />
+              )}
             </div>
           </RevealSection>
         </div>
