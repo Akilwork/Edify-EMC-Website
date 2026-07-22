@@ -284,7 +284,7 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                   {/* ── Row 1: Name & Contact Number ───────────────────────────── */}
                   <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 lg:gap-5 xl:gap-6 relative ${showCountryCodes ? "z-30" : "z-10"}`}>
 
-                    <div className="flex flex-col">
+                    <div className="flex flex-col relative z-10">
                       <label htmlFor="modal-name" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-2 block">
                         Name
                       </label>
@@ -300,7 +300,7 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                       />
                     </div>
 
-                    <div className="flex flex-col">
+                    <div className={`flex flex-col relative ${showCountryCodes ? "z-50" : "z-10"}`}>
                       <label htmlFor="modal-phone" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-2 block">
                         Contact Number
                       </label>
@@ -322,8 +322,7 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                           </button>
                           {showCountryCodes && (
                             <div
-                              className="absolute top-[52px] sm:top-[56px] lg:top-[52px] xl:top-[56px] left-0 z-50 border border-white/10 rounded-lg shadow-xl py-1 max-h-44 overflow-y-auto w-32 sm:w-36 backdrop-blur-md"
-                              style={{ backgroundColor: "rgba(28, 28, 31, 0.98)" }}
+                              className="absolute top-[52px] sm:top-[56px] lg:top-[52px] xl:top-[56px] left-0 z-[100] border border-white/10 rounded-lg shadow-2xl py-1 max-h-44 overflow-y-auto w-32 sm:w-36 bg-[#1c1c1f]"
                             >
                               {COUNTRY_CODES.map((item) => (
                                 <button
@@ -355,7 +354,7 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                   {/* ── Row 2: Email Address & Designation ─────────────────────── */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 lg:gap-5 xl:gap-6 relative z-10">
 
-                    <div className="flex flex-col">
+                    <div className="flex flex-col relative z-10">
                       <label htmlFor="modal-email" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-2 block">
                         Email Address
                       </label>
@@ -371,7 +370,7 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                       />
                     </div>
 
-                    <div className="flex flex-col">
+                    <div className="flex flex-col relative z-10">
                       <label htmlFor="modal-designation" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-2 block">
                         Designation
                       </label>
@@ -390,7 +389,7 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                   {/* ── Row 3: Institution Type & Institution Name ──────────────── */}
                   <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 lg:gap-5 xl:gap-6 relative ${showInstTypes ? "z-30" : "z-10"}`}>
 
-                    <div className="flex flex-col" ref={instDropdownRef}>
+                    <div className={`flex flex-col relative ${showInstTypes ? "z-50" : "z-10"}`} ref={instDropdownRef}>
                       <label className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-2 block">
                         Institution Type
                       </label>
@@ -411,8 +410,7 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                         </button>
                         {showInstTypes && (
                           <div
-                            className="absolute top-[52px] sm:top-[56px] lg:top-[52px] xl:top-[56px] left-0 right-0 z-50 border border-white/10 rounded-lg shadow-xl py-1 max-h-44 sm:max-h-48 overflow-y-auto backdrop-blur-md"
-                            style={{ backgroundColor: "rgba(28, 28, 31, 0.98)" }}
+                            className="absolute top-[52px] sm:top-[56px] lg:top-[52px] xl:top-[56px] left-0 right-0 z-[100] border border-white/10 rounded-lg shadow-2xl py-1 max-h-44 sm:max-h-48 overflow-y-auto bg-[#1c1c1f]"
                           >
                             {INSTITUTION_TYPES.map((type) => (
                               <button
@@ -429,7 +427,7 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                       </div>
                     </div>
 
-                    <div className="flex flex-col">
+                    <div className="flex flex-col relative z-10">
                       <label htmlFor="modal-inst-name" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-2 block">
                         Institution Name
                       </label>
@@ -446,7 +444,7 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                   </div>
 
                   {/* ── Row 4: Service Required (full width) ───────────────────── */}
-                  <div className={`flex flex-col relative ${showServices ? "z-30" : "z-10"}`} ref={serviceDropdownRef}>
+                  <div className={`flex flex-col relative ${showServices ? "z-50" : "z-10"}`} ref={serviceDropdownRef}>
                     <label className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-2 block">
                       Service Required
                     </label>
@@ -467,8 +465,7 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                       </button>
                       {showServices && (
                         <div
-                          className="absolute top-[52px] sm:top-[56px] lg:top-[52px] xl:top-[56px] left-0 right-0 z-50 border border-white/10 rounded-lg shadow-xl py-1 max-h-44 sm:max-h-48 overflow-y-auto backdrop-blur-md"
-                          style={{ backgroundColor: "rgba(28, 28, 31, 0.98)" }}
+                          className="absolute top-[52px] sm:top-[56px] lg:top-[52px] xl:top-[56px] left-0 right-0 z-[100] border border-white/10 rounded-lg shadow-2xl py-1 max-h-44 sm:max-h-48 overflow-y-auto bg-[#1c1c1f]"
                         >
                           {SERVICE_OPTIONS.map((service) => (
                             <button

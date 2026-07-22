@@ -143,8 +143,8 @@ export default function Scene10ConsultationForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       {/* Line 1: Name, Contact Number, Email Address */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="flex flex-col">
+      <div className={`grid grid-cols-1 md:grid-cols-3 gap-4 relative ${showCountryCodes ? "z-30" : "z-10"}`}>
+        <div className="flex flex-col relative z-10">
           <label htmlFor="scene10-name" className="text-[13px] font-normal text-white mb-2 block">
             Name
           </label>
@@ -160,7 +160,7 @@ export default function Scene10ConsultationForm({
           />
         </div>
 
-        <div className="flex flex-col">
+        <div className={`flex flex-col relative ${showCountryCodes ? "z-50" : "z-10"}`}>
           <label htmlFor="scene10-phone" className="text-[13px] font-normal text-white mb-2 block">
             Contact Number
           </label>
@@ -184,8 +184,7 @@ export default function Scene10ConsultationForm({
               </button>
               {showCountryCodes && (
                 <div
-                  className="absolute top-[58px] left-0 z-50 border border-white/10 rounded-lg shadow-xl py-1 max-h-48 overflow-y-auto w-36 backdrop-blur-md"
-                  style={{ backgroundColor: "rgba(31, 31, 34, 0.95)" }}
+                  className="absolute top-[58px] left-0 z-[100] border border-white/10 rounded-lg shadow-2xl py-1 max-h-48 overflow-y-auto w-36 bg-[#1f1f22]"
                 >
                   {COUNTRY_CODES.map((item) => (
                     <button
@@ -216,7 +215,7 @@ export default function Scene10ConsultationForm({
           </div>
         </div>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col relative z-10">
           <label htmlFor="scene10-email" className="text-[13px] font-normal text-white mb-2 block">
             Email Address
           </label>
@@ -234,8 +233,8 @@ export default function Scene10ConsultationForm({
       </div>
 
       {/* Line 2: Institution Type, Institution Name, Designation */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="flex flex-col" ref={instDropdownRef}>
+      <div className={`grid grid-cols-1 md:grid-cols-3 gap-4 relative ${showInstTypes ? "z-30" : "z-10"}`}>
+        <div className={`flex flex-col relative ${showInstTypes ? "z-50" : "z-10"}`} ref={instDropdownRef}>
           <label className="text-[13px] font-normal text-white mb-2 block">
             Institution Type
           </label>
@@ -258,8 +257,7 @@ export default function Scene10ConsultationForm({
             </button>
             {showInstTypes && (
               <div
-                className="absolute top-[58px] left-0 right-0 z-50 border border-white/10 rounded-lg shadow-xl py-1 max-h-52 overflow-y-auto backdrop-blur-md"
-                style={{ backgroundColor: "rgba(31, 31, 34, 0.95)" }}
+                className="absolute top-[58px] left-0 right-0 z-[100] border border-white/10 rounded-lg shadow-2xl py-1 max-h-52 overflow-y-auto bg-[#1f1f22]"
               >
                 {INSTITUTION_TYPES.map((type) => (
                   <button
@@ -279,7 +277,7 @@ export default function Scene10ConsultationForm({
           </div>
         </div>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col relative z-10">
           <label htmlFor="scene10-inst-name" className="text-[13px] font-normal text-white mb-2 block">
             Institution Name
           </label>
@@ -294,7 +292,7 @@ export default function Scene10ConsultationForm({
           />
         </div>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col relative z-10">
           <label htmlFor="scene10-designation" className="text-[13px] font-normal text-white mb-2 block">
             Designation
           </label>
@@ -311,7 +309,7 @@ export default function Scene10ConsultationForm({
       </div>
 
       {/* Line 3: Service Required */}
-      <div className="flex flex-col" ref={serviceDropdownRef}>
+      <div className={`flex flex-col relative ${showServices ? "z-50" : "z-10"}`} ref={serviceDropdownRef}>
         <label className="text-[13px] font-normal text-white mb-2 block">
           Service Required
         </label>
@@ -334,8 +332,7 @@ export default function Scene10ConsultationForm({
           </button>
           {showServices && (
             <div
-              className="absolute top-[58px] left-0 right-0 z-50 border border-white/10 rounded-lg shadow-xl py-1 max-h-52 overflow-y-auto backdrop-blur-md"
-              style={{ backgroundColor: "rgba(31, 31, 34, 0.95)" }}
+              className="absolute top-[58px] left-0 right-0 z-[100] border border-white/10 rounded-lg shadow-2xl py-1 max-h-52 overflow-y-auto bg-[#1f1f22]"
             >
               {SERVICE_OPTIONS.map((service) => (
                 <button
@@ -356,7 +353,7 @@ export default function Scene10ConsultationForm({
       </div>
 
       {/* Line 4: How Can We Help? */}
-      <div className="flex flex-col">
+      <div className="flex flex-col relative z-10">
         <label htmlFor="scene10-help" className="text-[13px] font-normal text-white mb-2 block">
           How Can We Help?
         </label>
