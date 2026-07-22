@@ -1,0 +1,28 @@
+
+> edify-emc-website@0.1.0 dev
+> next dev --turbo
+
+ ⚠ Port 3000 is in use, using available port 3007 instead.
+   ▲ Next.js 15.3.3 (Turbopack)
+   - Local:        http://localhost:3007
+   - Network:      http://192.168.1.54:3007
+   - Environments: .env
+
+ ✓ Starting...
+ ✓ Ready in 2.7s
+ ○ Compiling /api/consultation ...
+ ✓ Compiled /api/consultation in 1730ms
+New Consultation Submission: {"timestamp":"2026-07-21 15:13:11 IST","isoISTTime":"2026-07-21T15:13:11.000+05:30","name":"SHEET-FIX-TEST","countryCode":"+91","contactNumber":"555000333","email":"sheet.fix@test.com","designation":"QA","institutionType":"K-12 School","institutionName":"Sheet Fix","serviceRequired":"Strategy & Planning","howCanWeHelp":"Verify webhook sends ISO instant not IST string","submittedAt":"2026-07-21T15:13:11.000+05:30","detailsVal":"Verify webhook sends ISO instant not IST string"}
+ POST /api/consultation 200 in 2122ms
+Google Sheets Webhook succeeded in background
+   Reload env: .env
+   Reload env: .env
+   Reload env: .env
+   Reload env: .env
+   Reload env: .env
+   Reload env: .env
+   Reload env: .env
+   Reload env: .env
+   Reload env: .env
+   Reload env: .env
+   Reload env: .env

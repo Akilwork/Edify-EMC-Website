@@ -5,8 +5,7 @@
  * - 6 slugs are reused verbatim to match Navbar.tsx MEGA_SERVICES + all-services.ts.
  * - 5 slugs are added for the remaining services.
  *
- * All CTAs route to the site-wide consultation modal (openConsultation); no PDF exists.
- * "Download Service Brochure" is therefore also wired to openConsultation.
+ * All CTAs route to the site-wide consultation modal (openConsultation).
  */
 
 export type CtaAction = "consultation";
@@ -42,7 +41,7 @@ export interface ServiceDetail {
   hero: {
     tagline: string; // hero subtitle
     supportingCopy: string;
-    ctas: [Cta, Cta];
+    ctas: Cta[];
   };
 
   // 2. Overview
@@ -85,7 +84,7 @@ export interface ServiceDetail {
   cta: {
     heading: string;
     description: string;
-    ctas: [Cta, Cta];
+    ctas: Cta[];
   };
 }
 
@@ -108,7 +107,7 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
       tagline: "Building High-Performing Teams For Educational Excellence",
       supportingCopy:
         "Strategic HR solutions that help educational institutions attract, develop, and retain exceptional talent.",
-      ctas: [CONSULTATION_CTA, BROCHURE_CTA],
+      ctas: [CONSULTATION_CTA],
     },
     overview: {
       heading: "Building Strong Institutions Through People",
@@ -179,7 +178,7 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
       tagline: "Driving Academic Excellence And Institutional Growth",
       supportingCopy:
         "From accreditation to curriculum design, expert consultants guide institutions through the complexities of academic quality and strategic scaling.",
-      ctas: [CONSULTATION_CTA, BROCHURE_CTA],
+      ctas: [CONSULTATION_CTA],
     },
     overview: {
       heading: "Guiding Institutions Toward Lasting Excellence",
@@ -249,7 +248,7 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
       tagline: "Securing The Financial Future Of Your Institution",
       supportingCopy:
         "Strategic financial advice, rigorous auditing, and structural planning to optimise budgets and build sustainable financial models.",
-      ctas: [CONSULTATION_CTA, BROCHURE_CTA],
+      ctas: [CONSULTATION_CTA],
     },
     overview: {
       heading: "Building Financial Strength And Sustainability",
@@ -319,7 +318,7 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
       tagline: "Nurturing Wellbeing And Holistic Student Growth",
       supportingCopy:
         "Support students' mental health, career readiness, and behavioural development through integrated counselling and wellbeing programmes.",
-      ctas: [CONSULTATION_CTA, BROCHURE_CTA],
+      ctas: [CONSULTATION_CTA],
     },
     overview: {
       heading: "Fostering Confident, Resilient Learners",
@@ -389,7 +388,7 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
       tagline: "Empowering Institutions With Modern Technology",
       supportingCopy:
         "Custom IT solutions, learning platforms, and cloud infrastructure designed to modernise learning environments and streamline operations.",
-      ctas: [CONSULTATION_CTA, BROCHURE_CTA],
+      ctas: [CONSULTATION_CTA],
     },
     overview: {
       heading: "Accelerating Digital Evolution",
@@ -459,7 +458,7 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
       tagline: "Shaping A Powerful Brand Identity",
       supportingCopy:
         "High-quality printed materials and professional branding strategies that elevate your institution's prestige and presence.",
-      ctas: [CONSULTATION_CTA, BROCHURE_CTA],
+      ctas: [CONSULTATION_CTA],
     },
     overview: {
       heading: "Designing Identity With Impact",
@@ -529,7 +528,7 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
       tagline: "Growing Your Institution Through Digital Channels",
       supportingCopy:
         "Digital platforms, online services, and web solutions engineered to extend your institution's reach and revenue online.",
-      ctas: [CONSULTATION_CTA, BROCHURE_CTA],
+      ctas: [CONSULTATION_CTA],
     },
     overview: {
       heading: "Unlocking Digital Growth",
@@ -599,7 +598,7 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
       tagline: "Building Future-Ready Learning Environments",
       supportingCopy:
         "Infrastructure planning, civil engineering, and construction expertise that turn campus vision into safe, lasting reality.",
-      ctas: [CONSULTATION_CTA, BROCHURE_CTA],
+      ctas: [CONSULTATION_CTA],
     },
     overview: {
       heading: "Building The Foundations Of Great Institutions",
@@ -669,7 +668,7 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
       tagline: "Safe, Reliable Transport For Every Student",
       supportingCopy:
         "Fleet management, route optimisation, and compliance solutions that deliver dependable, safe student transportation.",
-      ctas: [CONSULTATION_CTA, BROCHURE_CTA],
+      ctas: [CONSULTATION_CTA],
     },
     overview: {
       heading: "Keeping Your Institution Moving Safely",
@@ -738,7 +737,7 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
       tagline: "Identity, Quality, And Comfort In Every Stitch",
       supportingCopy:
         "Custom-designed uniforms and institutional clothing that reflect your identity and stand up to daily school life.",
-      ctas: [CONSULTATION_CTA, BROCHURE_CTA],
+      ctas: [CONSULTATION_CTA],
     },
     overview: {
       heading: "Dressing Your Institution With Pride",
@@ -807,7 +806,7 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
       tagline: "Developing Talent, Building Character Through Sport",
       supportingCopy:
         "Professional coaching, athletic development, and talent programmes that nurture student athletes and build healthy, active school communities.",
-      ctas: [CONSULTATION_CTA, BROCHURE_CTA],
+      ctas: [CONSULTATION_CTA],
     },
     overview: {
       heading: "Championing Healthy, Active Students",

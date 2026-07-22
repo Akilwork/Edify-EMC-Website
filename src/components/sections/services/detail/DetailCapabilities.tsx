@@ -55,7 +55,7 @@ export default function DetailCapabilities({ detail }: { detail: ServiceDetail }
   };
 
   return (
-    <section className="relative w-full bg-[#F9F9FB] py-20 md:py-28 overflow-hidden">
+    <section className="relative w-full bg-[#F9F9FB] py-16 md:py-24 overflow-hidden">
       <div className="container-responsive container-max">
         {/* Heading */}
         <div className="text-center max-w-3xl mx-auto mb-16 md:mb-20">

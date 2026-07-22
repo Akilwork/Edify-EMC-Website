@@ -43,6 +43,28 @@ export const SERVICE_OPTIONS = [
   "Other / General Consultation",
 ];
 
+// Returns the current moment as an ISO string expressed in Indian Standard Time
+// (Asia/Kolkata, UTC+05:30). The +05:30 offset keeps it a real instant so the
+// backend can parse it, while the wall-clock reads as Indian local time.
+const getISTTimestamp = (): string => {
+  const now = new Date();
+  const formatter = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Asia/Kolkata",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  });
+  const parts = formatter.formatToParts(now);
+  const partMap: Record<string, string> = {};
+  for (const part of parts) partMap[part.type] = part.value;
+  const hour = partMap.hour === "24" ? "00" : partMap.hour;
+  return `${partMap.year}-${partMap.month}-${partMap.day}T${hour}:${partMap.minute}:${partMap.second}.000+05:30`;
+};
+
 export default function ConsultationModal({ isOpen, onClose }: ConsultationModalProps) {
   const { toast } = useToast();
   const [formData, setFormData] = useState({
@@ -127,7 +149,7 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
       const response = await fetch("/api/consultation", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, countryCode }),
+        body: JSON.stringify({ ...formData, countryCode, submittedAt: getISTTimestamp() }),
       });
 
       const result = await response.json();
@@ -246,24 +268,24 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                 FORM PANEL
                 · All breakpoints : backdrop-blur + semi-transparent dark panel
                   so the full-screen video shows through on mobile & tablet too
-                · Desktop         : same treatment, just half-width
+                · Desktop         : same treatment, half-width, fixed fields without scrolling
             ══════════════════════════════════════════════════════════════════ */}
             <div
               className={[
                 "relative z-10 w-full lg:w-1/2",
                 "bg-[#0d0d0d]/70 backdrop-blur-md",
-                "flex-1 min-h-0",
+                "flex-1 min-h-0 lg:h-full",
                 "flex flex-col justify-start lg:justify-center",
               ].join(" ")}
             >
-              <div className="flex-1 min-h-0 overflow-y-auto no-scrollbar pt-5 px-5 pb-24 sm:pt-7 sm:px-7 sm:pb-28 md:pt-9 md:px-9 md:pb-32 lg:p-10 xl:p-14 lg:pb-0">
-                <form id="consultation-form" onSubmit={handleSubmit} className="space-y-4 sm:space-y-5 lg:space-y-6 pb-6 lg:pb-0">
+              <div className="flex-1 min-h-0 overflow-y-auto lg:overflow-visible no-scrollbar pt-5 px-5 pb-24 sm:pt-7 sm:px-7 sm:pb-28 md:pt-9 md:px-9 md:pb-32 lg:p-8 xl:p-12 lg:pb-0 xl:pb-0">
+                <form id="consultation-form" onSubmit={handleSubmit} className="space-y-5 sm:space-y-6 lg:space-y-5 xl:space-y-6 pb-6 lg:pb-0">
 
                   {/* ── Row 1: Name & Contact Number ───────────────────────────── */}
-                  <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 lg:gap-6 relative ${showCountryCodes ? "z-30" : "z-10"}`}>
+                  <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 lg:gap-5 xl:gap-6 relative ${showCountryCodes ? "z-30" : "z-10"}`}>
 
-                    <div className="flex flex-col">
-                      <label htmlFor="modal-name" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-1.5 sm:mb-2 block">
+                    <div className="flex flex-col relative z-10">
+                      <label htmlFor="modal-name" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-2 block">
                         Name
                       </label>
                       <input
@@ -272,18 +294,18 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                         placeholder="Enter Full Name"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full px-4 h-[48px] sm:h-[52px] lg:h-[56px] border border-white/8 rounded-[8px] text-white text-[13px] sm:text-sm placeholder-white/25 focus:outline-none focus:border-white/20 transition-all duration-200 backdrop-blur-sm"
+                        className="w-full px-4 h-[48px] sm:h-[52px] lg:h-[48px] xl:h-[52px] border border-white/8 rounded-[8px] text-white text-[13px] sm:text-sm placeholder-white/25 focus:outline-none focus:border-white/20 transition-all duration-200 backdrop-blur-sm"
                         style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
                         required
                       />
                     </div>
 
-                    <div className="flex flex-col">
-                      <label htmlFor="modal-phone" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-1.5 sm:mb-2 block">
+                    <div className={`flex flex-col relative ${showCountryCodes ? "z-50" : "z-10"}`}>
+                      <label htmlFor="modal-phone" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-2 block">
                         Contact Number
                       </label>
                       <div
-                        className="flex items-center border border-white/8 rounded-[8px] h-[48px] sm:h-[52px] lg:h-[56px] focus-within:border-white/20 transition-all duration-200 backdrop-blur-sm"
+                        className="flex items-center border border-white/8 rounded-[8px] h-[48px] sm:h-[52px] lg:h-[48px] xl:h-[52px] focus-within:border-white/20 transition-all duration-200 backdrop-blur-sm"
                         style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
                       >
                         <div ref={countryDropdownRef} className="relative flex-shrink-0 h-full">
@@ -300,8 +322,7 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                           </button>
                           {showCountryCodes && (
                             <div
-                              className="absolute top-[52px] sm:top-[56px] left-0 z-50 border border-white/10 rounded-lg shadow-xl py-1 max-h-44 overflow-y-auto w-32 sm:w-36 backdrop-blur-md"
-                              style={{ backgroundColor: "rgba(28, 28, 31, 0.98)" }}
+                              className="absolute top-[52px] sm:top-[56px] lg:top-[52px] xl:top-[56px] left-0 z-[100] border border-white/10 rounded-lg shadow-2xl py-1 max-h-44 overflow-y-auto w-32 sm:w-36 bg-[#1c1c1f]"
                             >
                               {COUNTRY_CODES.map((item) => (
                                 <button
@@ -331,10 +352,10 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                   </div>
 
                   {/* ── Row 2: Email Address & Designation ─────────────────────── */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 lg:gap-6 relative z-10">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 lg:gap-5 xl:gap-6 relative z-10">
 
-                    <div className="flex flex-col">
-                      <label htmlFor="modal-email" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-1.5 sm:mb-2 block">
+                    <div className="flex flex-col relative z-10">
+                      <label htmlFor="modal-email" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-2 block">
                         Email Address
                       </label>
                       <input
@@ -343,14 +364,14 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                         placeholder="Enter Email Address"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full px-4 h-[48px] sm:h-[52px] lg:h-[56px] border border-white/8 rounded-[8px] text-white text-[13px] sm:text-sm placeholder-white/25 focus:outline-none focus:border-white/20 transition-all duration-200 backdrop-blur-sm"
+                        className="w-full px-4 h-[48px] sm:h-[52px] lg:h-[48px] xl:h-[52px] border border-white/8 rounded-[8px] text-white text-[13px] sm:text-sm placeholder-white/25 focus:outline-none focus:border-white/20 transition-all duration-200 backdrop-blur-sm"
                         style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
                         required
                       />
                     </div>
 
-                    <div className="flex flex-col">
-                      <label htmlFor="modal-designation" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-1.5 sm:mb-2 block">
+                    <div className="flex flex-col relative z-10">
+                      <label htmlFor="modal-designation" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-2 block">
                         Designation
                       </label>
                       <input
@@ -359,24 +380,24 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                         placeholder="Enter Designation"
                         value={formData.designation}
                         onChange={(e) => setFormData({ ...formData, designation: e.target.value })}
-                        className="w-full px-4 h-[48px] sm:h-[52px] lg:h-[56px] border border-white/8 rounded-[8px] text-white text-[13px] sm:text-sm placeholder-white/25 focus:outline-none focus:border-white/20 transition-all duration-200 backdrop-blur-sm"
+                        className="w-full px-4 h-[48px] sm:h-[52px] lg:h-[48px] xl:h-[52px] border border-white/8 rounded-[8px] text-white text-[13px] sm:text-sm placeholder-white/25 focus:outline-none focus:border-white/20 transition-all duration-200 backdrop-blur-sm"
                         style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
                       />
                     </div>
                   </div>
 
                   {/* ── Row 3: Institution Type & Institution Name ──────────────── */}
-                  <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 lg:gap-6 relative ${showInstTypes ? "z-30" : "z-10"}`}>
+                  <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 lg:gap-5 xl:gap-6 relative ${showInstTypes ? "z-30" : "z-10"}`}>
 
-                    <div className="flex flex-col" ref={instDropdownRef}>
-                      <label className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-1.5 sm:mb-2 block">
+                    <div className={`flex flex-col relative ${showInstTypes ? "z-50" : "z-10"}`} ref={instDropdownRef}>
+                      <label className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-2 block">
                         Institution Type
                       </label>
                       <div className="relative">
                         <button
                           type="button"
                           onClick={() => setShowInstTypes(!showInstTypes)}
-                          className="w-full flex items-center justify-between px-4 h-[48px] sm:h-[52px] lg:h-[56px] border border-white/8 rounded-[8px] text-[13px] sm:text-sm text-left cursor-pointer focus:outline-none focus:border-white/20 transition-colors duration-200 backdrop-blur-sm"
+                          className="w-full flex items-center justify-between px-4 h-[48px] sm:h-[52px] lg:h-[48px] xl:h-[52px] border border-white/8 rounded-[8px] text-[13px] sm:text-sm text-left cursor-pointer focus:outline-none focus:border-white/20 transition-colors duration-200 backdrop-blur-sm"
                           style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
                         >
                           <span className={`truncate mr-2 ${formData.institutionType ? "text-white" : "text-white/25"}`}>
@@ -389,8 +410,7 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                         </button>
                         {showInstTypes && (
                           <div
-                            className="absolute top-[52px] sm:top-[56px] left-0 right-0 z-50 border border-white/10 rounded-lg shadow-xl py-1 max-h-44 sm:max-h-48 overflow-y-auto backdrop-blur-md"
-                            style={{ backgroundColor: "rgba(28, 28, 31, 0.98)" }}
+                            className="absolute top-[52px] sm:top-[56px] lg:top-[52px] xl:top-[56px] left-0 right-0 z-[100] border border-white/10 rounded-lg shadow-2xl py-1 max-h-44 sm:max-h-48 overflow-y-auto bg-[#1c1c1f]"
                           >
                             {INSTITUTION_TYPES.map((type) => (
                               <button
@@ -407,8 +427,8 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                       </div>
                     </div>
 
-                    <div className="flex flex-col">
-                      <label htmlFor="modal-inst-name" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-1.5 sm:mb-2 block">
+                    <div className="flex flex-col relative z-10">
+                      <label htmlFor="modal-inst-name" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-2 block">
                         Institution Name
                       </label>
                       <input
@@ -417,22 +437,22 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                         placeholder="Enter Institution Name"
                         value={formData.institutionName}
                         onChange={(e) => setFormData({ ...formData, institutionName: e.target.value })}
-                        className="w-full px-4 h-[48px] sm:h-[52px] lg:h-[56px] border border-white/8 rounded-[8px] text-white text-[13px] sm:text-sm placeholder-white/25 focus:outline-none focus:border-white/20 transition-all duration-200 backdrop-blur-sm"
+                        className="w-full px-4 h-[48px] sm:h-[52px] lg:h-[48px] xl:h-[52px] border border-white/8 rounded-[8px] text-white text-[13px] sm:text-sm placeholder-white/25 focus:outline-none focus:border-white/20 transition-all duration-200 backdrop-blur-sm"
                         style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
                       />
                     </div>
                   </div>
 
                   {/* ── Row 4: Service Required (full width) ───────────────────── */}
-                  <div className={`flex flex-col relative ${showServices ? "z-30" : "z-10"}`} ref={serviceDropdownRef}>
-                    <label className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-1.5 sm:mb-2 block">
+                  <div className={`flex flex-col relative ${showServices ? "z-50" : "z-10"}`} ref={serviceDropdownRef}>
+                    <label className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-2 block">
                       Service Required
                     </label>
                     <div className="relative">
                       <button
                         type="button"
                         onClick={() => setShowServices(!showServices)}
-                        className="w-full flex items-center justify-between px-4 h-[48px] sm:h-[52px] lg:h-[56px] border border-white/8 rounded-[8px] text-[13px] sm:text-sm text-left cursor-pointer focus:outline-none focus:border-white/20 transition-colors duration-200 backdrop-blur-sm"
+                        className="w-full flex items-center justify-between px-4 h-[48px] sm:h-[52px] lg:h-[48px] xl:h-[52px] border border-white/8 rounded-[8px] text-[13px] sm:text-sm text-left cursor-pointer focus:outline-none focus:border-white/20 transition-colors duration-200 backdrop-blur-sm"
                         style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
                       >
                         <span className={`truncate mr-2 ${formData.serviceRequired ? "text-white" : "text-white/25"}`}>
@@ -445,8 +465,7 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                       </button>
                       {showServices && (
                         <div
-                          className="absolute top-[52px] sm:top-[56px] left-0 right-0 z-50 border border-white/10 rounded-lg shadow-xl py-1 max-h-44 sm:max-h-48 overflow-y-auto backdrop-blur-md"
-                          style={{ backgroundColor: "rgba(28, 28, 31, 0.98)" }}
+                          className="absolute top-[52px] sm:top-[56px] lg:top-[52px] xl:top-[56px] left-0 right-0 z-[100] border border-white/10 rounded-lg shadow-2xl py-1 max-h-44 sm:max-h-48 overflow-y-auto bg-[#1c1c1f]"
                         >
                           {SERVICE_OPTIONS.map((service) => (
                             <button
@@ -465,7 +484,7 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
 
                   {/* ── Row 5: How Can We Help? ─────────────────────────────────── */}
                   <div className="flex flex-col">
-                    <label htmlFor="modal-help" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-1.5 sm:mb-2 block">
+                    <label htmlFor="modal-help" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-2 block">
                       How Can We Help?
                     </label>
                     <textarea
@@ -473,7 +492,7 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                       placeholder="Enter Text"
                       value={formData.howCanWeHelp}
                       onChange={(e) => setFormData({ ...formData, howCanWeHelp: e.target.value })}
-                      className="w-full px-4 py-3 border border-white/8 rounded-[8px] text-white text-[13px] sm:text-sm placeholder-white/25 focus:outline-none focus:border-white/20 transition-all duration-200 resize-none h-[96px] sm:h-[110px] lg:h-[130px] backdrop-blur-sm"
+                      className="w-full px-4 py-3 border border-white/8 rounded-[8px] text-white text-[13px] sm:text-sm placeholder-white/25 focus:outline-none focus:border-white/20 transition-all duration-200 resize-none h-[96px] sm:h-[110px] lg:h-[95px] xl:h-[110px] backdrop-blur-sm"
                       style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
                     />
                   </div>
@@ -482,12 +501,12 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
               </div>
 
               {/* ── Row 6: Submit button (outside scroll view, absolute on mobile, relative on desktop) ── */}
-              <div className="absolute bottom-0 left-0 right-0 z-20 pt-4 pb-5 px-5 bg-[#0d0d0d]/70 backdrop-blur-md border-t border-white/10 sm:px-7 sm:pb-7 md:px-9 md:pb-9 lg:relative lg:bottom-auto lg:left-auto lg:right-auto lg:bg-transparent lg:backdrop-blur-none lg:border-t-0 lg:px-10 lg:pb-10 lg:xl:px-14 lg:xl:pb-14 lg:pt-2">
+              <div className="absolute bottom-0 left-0 right-0 z-20 pt-4 pb-5 px-5 bg-[#0d0d0d]/70 backdrop-blur-md border-t border-white/10 sm:px-7 sm:pb-7 md:px-9 md:pb-9 lg:relative lg:bottom-auto lg:left-auto lg:right-auto lg:bg-transparent lg:backdrop-blur-none lg:border-t-0 lg:px-8 lg:pb-8 xl:px-12 xl:pb-12 lg:pt-4 xl:pt-5">
                 <button
                   type="submit"
                   form="consultation-form"
                   disabled={isSubmitting}
-                  className="group w-full sm:w-auto inline-flex items-center justify-center sm:justify-start gap-3 px-7 sm:px-8 py-3.5 sm:py-4 bg-white text-black font-semibold rounded-full hover:bg-neutral-100 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 disabled:opacity-50 disabled:pointer-events-none cursor-pointer shadow-lg text-[14px] sm:text-[15px]"
+                  className="group w-full sm:w-auto inline-flex items-center justify-center sm:justify-start gap-2 px-7 sm:px-8 py-3.5 sm:py-4 bg-white text-black font-semibold rounded-full hover:bg-neutral-100 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 disabled:opacity-50 disabled:pointer-events-none cursor-pointer shadow-lg text-[14px] sm:text-[15px]"
                 >
                   <span>{isSubmitting ? "Requesting..." : "Request Consultation"}</span>
                   <ArrowRight
