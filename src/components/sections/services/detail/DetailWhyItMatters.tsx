@@ -144,7 +144,7 @@ export default function DetailWhyItMatters({ detail }: { detail: ServiceDetail }
   const sectionBgImage = "/Why It Matters/bg.jpg";
 
   return (
-    <section className="relative w-full py-20 md:py-28 overflow-hidden bg-white text-black">
+    <section className="relative w-full py-16 md:py-24 overflow-hidden bg-[#F9F9FB] text-black">
       {/* Background Image for section */}
       {sectionBgImage && (
         <div className="absolute inset-0 z-0 select-none pointer-events-none opacity-80">

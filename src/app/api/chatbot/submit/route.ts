@@ -10,11 +10,11 @@ const escapeCSV = (val: any): string => {
   return `"${clean}"`;
 };
 
-// Helper to get formatted UAE (Dubai) Local Time
-const getUAETimestamp = (dateInput?: Date | string): string => {
+// Helper to get formatted India (Kolkata) Local Time
+const getISTTimestamp = (dateInput?: Date | string): string => {
   const date = dateInput ? new Date(dateInput) : new Date();
   const formatter = new Intl.DateTimeFormat("en-US", {
-    timeZone: "Asia/Dubai",
+    timeZone: "Asia/Kolkata",
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
@@ -25,7 +25,9 @@ const getUAETimestamp = (dateInput?: Date | string): string => {
   });
   const parts = formatter.formatToParts(date);
   const partMap = Object.fromEntries(parts.map((p) => [p.type, p.value]));
-  return `${partMap.year}-${partMap.month}-${partMap.day} ${partMap.hour}:${partMap.minute}:${partMap.second} GST`;
+  let hour = partMap.hour;
+  if (hour === "24") hour = "00";
+  return `${partMap.year}-${partMap.month}-${partMap.day} ${hour}:${partMap.minute}:${partMap.second} IST`;
 };
 
 export async function POST(request: Request) {
@@ -42,11 +44,18 @@ export async function POST(request: Request) {
       conversationId,
     } = leadData;
 
-    // Get timestamp formatted for Asia/Dubai Local Time (GST)
-    const formattedTimestamp = getUAETimestamp(timestamp);
+    // Convert the UTC instant from the client to IST (Asia/Kolkata) once here.
+    // `timestamp` arrives as UTC ("...Z"); converting only on the backend
+    // avoids any double conversion (UTC → IST → IST again).
+    const formattedTimestamp = getISTTimestamp(timestamp);
+    const dateObj = timestamp ? new Date(timestamp) : new Date();
+    // ISO format with India (+05:30) offset
+    const istOffsetMs = 5 * 60 * 60 * 1000 + 30 * 60 * 1000;
+    const istOffsetDate = new Date(dateObj.getTime() + istOffsetMs);
+    const isoISTTime = istOffsetDate.toISOString().replace("Z", "+05:30");
 
     // Log the submission to console (fail-safe for serverless host logs)
-    console.log("New Chatbot Lead:", JSON.stringify({ timestamp: formattedTimestamp, ...leadData }));
+    console.log("New Chatbot Lead:", JSON.stringify({ timestamp: formattedTimestamp, isoISTTime, ...leadData }));
 
     // ────────────────────────────────────────────────────────────────
     // 1. Write to local CSV spreadsheet file first (Immediate & Safe)
@@ -105,6 +114,9 @@ export async function POST(request: Request) {
             body: JSON.stringify({
               source: "chatbot",
               timestamp: formattedTimestamp,
+              istTime: formattedTimestamp,
+              formattedTimestamp: formattedTimestamp,
+              isoISTTime,
               serviceInterest: serviceInterest || "",
               institutionType: institutionType || "",
               email: email || "",

@@ -10,11 +10,11 @@ const escapeCSV = (val: any): string => {
   return `"${clean}"`;
 };
 
-// Helper to get formatted UAE (Dubai) Local Time
-const getUAETimestamp = (dateInput?: Date | string): string => {
+// Helper to get formatted India (Kolkata) Local Time
+const getISTTimestamp = (dateInput?: Date | string): string => {
   const date = dateInput ? new Date(dateInput) : new Date();
   const formatter = new Intl.DateTimeFormat("en-US", {
-    timeZone: "Asia/Dubai",
+    timeZone: "Asia/Kolkata",
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
@@ -25,7 +25,9 @@ const getUAETimestamp = (dateInput?: Date | string): string => {
   });
   const parts = formatter.formatToParts(date);
   const partMap = Object.fromEntries(parts.map((p) => [p.type, p.value]));
-  return `${partMap.year}-${partMap.month}-${partMap.day} ${partMap.hour}:${partMap.minute}:${partMap.second} GST`;
+  let hour = partMap.hour;
+  if (hour === "24") hour = "00";
+  return `${partMap.year}-${partMap.month}-${partMap.day} ${hour}:${partMap.minute}:${partMap.second} IST`;
 };
 
 export async function POST(request: Request) {
@@ -42,14 +44,31 @@ export async function POST(request: Request) {
       serviceRequired,
       howCanWeHelp,
       requestDetails,
+      submittedAt,
     } = data;
 
-    // Get timestamp formatted for Asia/Dubai Local Time (GST)
-    const timestamp = getUAETimestamp();
+    // Human-readable IST timestamp for the CSV / local log. The client already
+    // captures the submission moment as an IST (UTC+5:30) instant in
+    // `submittedAt`; format it in Asia/Kolkata so the CSV records the exact
+    // Indian wall-clock the form captured.
+    const timestamp = getISTTimestamp(submittedAt);
+    // Use the client's IST value VERBATIM for downstream integrations. We do
+    // NOT round-trip it through new Date().toISOString() — that re-expresses the
+    // same moment in UTC (e.g. 09:04:48Z) and is what made the wall-clock look
+    // like it shifted by 5h30m. The form's value is preserved exactly.
+    const isoISTTime =
+      submittedAt ||
+      timestamp.replace(" IST", "").replace(" ", "T") + ".000+05:30";
+
+    // Excel stores whatever instant it receives and renders its UTC wall-clock,
+    // so an India submission appears 5h30m behind. Send a timezone-naive India
+    // local datetime (no offset, no " IST" suffix) so Excel stores exactly that
+    // wall-clock time with no conversion — the cell then reads as India local.
+    const excelTimestamp = timestamp.replace(" IST", "");
     const detailsVal = howCanWeHelp || requestDetails || "";
 
     // Log the submission to console (fail-safe for serverless host logs)
-    console.log("New Consultation Submission:", JSON.stringify({ timestamp, ...data, detailsVal }));
+    console.log("New Consultation Submission:", JSON.stringify({ timestamp, isoISTTime, ...data, detailsVal }));
 
     // ────────────────────────────────────────────────────────────────
     // 1. Write to local CSV spreadsheet file first (Immediate & Safe)
@@ -110,7 +129,16 @@ export async function POST(request: Request) {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              timestamp,
+              // Primary timestamp is an unambiguous ISO instant (offset +05:30).
+              // Sending "... IST" previously caused `new Date("... IST")` in the
+              // Apps Script to misparse — "IST" is ambiguous (India/Israel/Irish)
+              // and V8 fell back to the script's runtime timezone, shifting the
+              // cell's wall-clock by hours. A real instant parses correctly in
+              // any timezone and the IST-configured sheet renders it as IST.
+              timestamp: timestamp,
+              istTime: excelTimestamp,
+              formattedTimestamp: excelTimestamp,
+              isoISTTime,
               name: name || "",
               countryCode: countryCode || "",
               contactNumber: contactNumber || "",
@@ -227,7 +255,7 @@ export async function POST(request: Request) {
             body: JSON.stringify({
               values: [
                 [
-                  timestamp,
+                  excelTimestamp,
                   name || "",
                   countryCode || "",
                   contactNumber || "",

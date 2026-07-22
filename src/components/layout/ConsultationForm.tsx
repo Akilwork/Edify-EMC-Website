@@ -13,6 +13,29 @@ interface ConsultationFormProps {
   isInScene?: boolean;
 }
 
+// Returns the current moment as an ISO string expressed in Indian Standard Time
+// (Asia/Kolkata, UTC+05:30). We build it in the IST timezone but keep the +05:30
+// offset so the backend can still parse the exact instant — the timestamp reads
+// as Indian local time while remaining unambiguous.
+const getISTTimestamp = (): string => {
+  const now = new Date();
+  const formatter = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Asia/Kolkata",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  });
+  const parts = formatter.formatToParts(now);
+  const partMap: Record<string, string> = {};
+  for (const part of parts) partMap[part.type] = part.value;
+  const hour = partMap.hour === "24" ? "00" : partMap.hour;
+  return `${partMap.year}-${partMap.month}-${partMap.day}T${hour}:${partMap.minute}:${partMap.second}.000+05:30`;
+};
+
 export default function ConsultationForm({ isInScene = false }: ConsultationFormProps) {
   const { toast } = useToast();
   const [formData, setFormData] = useState({
@@ -80,6 +103,7 @@ export default function ConsultationForm({ isInScene = false }: ConsultationForm
         body: JSON.stringify({
           ...formData,
           countryCode,
+          submittedAt: getISTTimestamp(),
         }),
       });
 
