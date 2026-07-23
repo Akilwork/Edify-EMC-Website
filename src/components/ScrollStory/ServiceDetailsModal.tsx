@@ -342,13 +342,15 @@ export const ServiceDetailsModal = ({
 
     const scrollTop = container.scrollTop;
     const clientHeight = container.clientHeight || 810;
+    const scrollHeight = container.scrollHeight;
+
+    const isAtBottom = scrollTop + clientHeight >= scrollHeight - 50;
 
     // Calculate active stage (0 = Intro, 1..N = Sub-services, N+1 = Key Benefits)
     const pageIndex = Math.round(scrollTop / clientHeight);
-    const activeIndex = Math.min(
-      Math.max(pageIndex, 0),
-      detail.subServices.length + 1
-    );
+    const activeIndex = isAtBottom
+      ? detail.subServices.length + 1
+      : Math.min(Math.max(pageIndex, 0), detail.subServices.length + 1);
 
     if (activeIndex !== activeSection) {
       setDirection(activeIndex > activeSection ? 1 : -1);
@@ -535,34 +537,7 @@ export const ServiceDetailsModal = ({
                         </h3>
                       )}
                     </motion.div>
-                  ) : activeSection === detail.subServices.length + 1 ? (
-                    <motion.div
-                      key="keyBenefits"
-                      custom={direction}
-                      variants={contentVariants}
-                      initial="initial"
-                      animate="animate"
-                      exit="exit"
-                      className={styles.keyBenefitsContainer}
-                    >
-                      <h4 className={styles.keyBenefitsLabel}>KEY BENEFITS</h4>
-                      <div className={styles.benefitsGrid}>
-                        {detail.keyBenefits?.map((benefit, idx) => (
-                          <div key={idx} className={styles.benefitCard}>
-                            <div className={styles.cardGlowLine} />
-                            <div className={styles.cloverIcon}>
-                              <img
-                                src="/Services/Frame.png"
-                                alt="Benefit Icon"
-                                className={styles.cardIconImg}
-                              />
-                            </div>
-                            <p className={styles.benefitText}>{benefit}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </motion.div>
-                  ) : (
+                  ) : activeSection <= detail.subServices.length ? (
                     <motion.div
                       key={activeSection}
                       custom={direction}
@@ -579,7 +554,7 @@ export const ServiceDetailsModal = ({
                         {detail.subServices[activeSection - 1].description}
                       </p>
                     </motion.div>
-                  )}
+                  ) : null}
                 </AnimatePresence>
               </div>
 
@@ -614,12 +589,32 @@ export const ServiceDetailsModal = ({
 
             </div>
 
-            {/* Virtual Spacer to trigger native browser scrollbars */}
+            {/* Spacer to push keyBenefitsSection down to the final stage */}
             <div
               style={{
-                height: `${(detail.subServices.length + 2) * 100}%`,
+                height: `${detail.subServices.length * 100}%`,
               }}
             />
+
+            {/* Key Benefits Section - renders in normal scroll flow below sticky area */}
+            <div className={styles.keyBenefitsSection}>
+              <h4 className={styles.keyBenefitsLabel}>KEY BENEFITS</h4>
+              <div className={styles.benefitsGrid}>
+                {detail.keyBenefits?.map((benefit, idx) => (
+                  <div key={idx} className={styles.benefitCard}>
+                    <div className={styles.cardGlowLine} />
+                    <div className={styles.cloverIcon}>
+                      <img
+                        src="/Services/Frame.png"
+                        alt="Benefit Icon"
+                        className={styles.cardIconImg}
+                      />
+                    </div>
+                    <p className={styles.benefitText}>{benefit}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </motion.div>
       </div>
