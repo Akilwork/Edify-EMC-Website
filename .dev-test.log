@@ -36,3 +36,8 @@
  ✓ Compiled in 248ms
  ✓ Compiled in 167ms
  GET /.well-known/appspecific/com.chrome.devtools.json 404 in 2746ms
+ GET / 200 in 1691ms
+ GET / 200 in 427ms
+ GET / 200 in 419ms
+ GET / 200 in 469ms
+ GET / 200 in 452ms
