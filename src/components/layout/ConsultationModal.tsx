@@ -202,7 +202,7 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
             className={[
               "relative w-full overflow-hidden shadow-2xl z-10",
               "rounded-t-[24px] lg:rounded-[14px]",
-              "h-[92dvh] lg:max-w-6xl lg:h-[760px]",
+              "h-[92dvh] lg:max-w-6xl lg:h-[760px] lg:max-h-[90vh]",
               "flex flex-col lg:flex-row",
               "border-0 lg:border lg:border-white/10",
             ].join(" ")}
@@ -236,13 +236,13 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                 MOBILE / TABLET  —  Hero banner (visible below lg)
                 Shows the video background with heading text overlaid on top.
             ══════════════════════════════════════════════════════════════════ */}
-            <div className="lg:hidden relative z-10 flex-shrink-0 px-6 pt-11 pb-8 sm:px-8 sm:pt-12 sm:pb-9 md:px-10 md:pt-14 md:pb-10">
-              <div className="space-y-3 sm:space-y-4">
-                <h2 className="font-sans font-semibold text-white leading-[1.15] tracking-tight text-[26px] sm:text-[32px] md:text-[38px]">
+            <div className="lg:hidden relative z-10 flex-shrink-0 px-6 pt-11 pb-8 sm:px-8 sm:pt-12 sm:pb-9 md:px-10 md:pt-14 md:pb-10 [@media(max-height:680px)]:pt-6 [@media(max-height:680px)]:pb-3">
+              <div className="space-y-3 sm:space-y-4 [@media(max-height:680px)]:space-y-1">
+                <h2 className="font-sans font-semibold text-white leading-[1.15] tracking-tight text-[26px] sm:text-[32px] md:text-[38px] [@media(max-height:680px)]:text-[20px] [@media(max-height:680px)]:leading-snug">
                   Building Stronger <br />
                   Institutions Starts Here
                 </h2>
-                <p className="text-white/65 text-[13px] sm:text-sm md:text-[15px] leading-relaxed max-w-sm md:max-w-md">
+                <p className="text-white/65 text-[13px] sm:text-sm md:text-[15px] leading-relaxed max-w-sm md:max-w-md [@media(max-height:680px)]:hidden">
                   Connect with our consultants to explore tailored solutions designed for your institution's unique needs and growth objectives.
                 </p>
               </div>
@@ -278,7 +278,7 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                 "flex flex-col justify-start lg:justify-center",
               ].join(" ")}
             >
-              <div className="flex-1 min-h-0 overflow-y-auto lg:overflow-visible no-scrollbar pt-5 px-5 pb-24 sm:pt-7 sm:px-7 sm:pb-28 md:pt-9 md:px-9 md:pb-32 lg:p-8 xl:p-12 lg:pb-0 xl:pb-0">
+              <div className="flex-1 min-h-0 overflow-y-auto no-scrollbar pt-5 px-5 pb-24 sm:pt-7 sm:px-7 sm:pb-28 md:pt-9 md:px-9 md:pb-32 lg:pt-14 lg:px-8 lg:pb-6 xl:pt-16 xl:px-12 xl:pb-8">
                 <form id="consultation-form" onSubmit={handleSubmit} className="space-y-5 sm:space-y-6 lg:space-y-5 xl:space-y-6 pb-6 lg:pb-0">
 
                   {/* ── Row 1: Name & Contact Number ───────────────────────────── */}

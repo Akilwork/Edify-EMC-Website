@@ -48,3 +48,7 @@
  ✓ Compiled in 209ms
  ✓ Compiled in 1434ms
  ✓ Compiled in 154ms
+ GET / 200 in 3538ms
+ GET / 200 in 1439ms
+ GET / 200 in 1219ms
+[?25h
