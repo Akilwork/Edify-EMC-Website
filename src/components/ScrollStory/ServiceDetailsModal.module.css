@@ -29,8 +29,17 @@
   display: flex;
   flex-direction: column;
   box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8),
-              0 0 100px rgba(168, 85, 247, 0.05);
+    0 0 100px rgba(168, 85, 247, 0.05);
   z-index: 10;
+
+  /* Viewport and Key Benefits dynamic paddings */
+  --vp-top: 80px;
+  --vp-right: 80px;
+  --vp-bottom: 48px;
+  --vp-left: 80px;
+
+  --kb-padding-top: 36px;
+  --kb-padding-bottom: 44px;
 }
 
 /* Dynamic background image from card */
@@ -146,9 +155,11 @@
     background-color: rgba(8, 5, 18, 0.8);
     border-color: rgba(255, 255, 255, 0.1);
   }
+
   .navLeft {
     left: 8px;
   }
+
   .navRight {
     right: 8px;
   }
@@ -156,7 +167,8 @@
 
 @media (max-width: 1024px) {
   .navButton {
-    display: none; /* Hide on mobile/tablet to avoid cluttering */
+    display: none;
+    /* Hide on mobile/tablet to avoid cluttering */
   }
 }
 
@@ -232,12 +244,15 @@
   width: 100%;
 
   /* Hide scrollbar for all browsers */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
 }
 
 .modalContent::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
+  display: none;
+  /* Chrome, Safari, Opera */
   width: 0;
   height: 0;
 }
@@ -250,17 +265,19 @@
   right: 0;
   height: 100%;
   width: 100%;
-  pointer-events: none; /* Let scroll events pass through to modalContent */
+  pointer-events: none;
+  /* Let scroll events pass through to modalContent */
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  padding: 80px 80px 48px 80px;
+  padding: var(--vp-top) var(--vp-right) var(--vp-bottom) var(--vp-left);
   z-index: 10;
 }
 
 /* Pinned elements at the top */
 .pinnedTop {
-  pointer-events: auto; /* Enable clicks on CTA button */
+  pointer-events: auto;
+  /* Enable clicks on CTA button */
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -270,11 +287,13 @@
 /* Dynamic content area in the middle/bottom */
 .dynamicArea {
   position: relative;
-  pointer-events: auto; /* Enable clicks on tabs/links */
+  pointer-events: auto;
+  /* Enable clicks on tabs/links */
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Center content vertically in the remaining space */
+  justify-content: center;
+  /* Center content vertically in the remaining space */
   margin-top: 24px;
 }
 
@@ -320,7 +339,8 @@
   text-align: center;
   max-width: 800px;
   margin: 0 auto;
-  padding-top: 76px; /* Space for the absolute header: header height + gap */
+  padding-top: 76px;
+  /* Space for the absolute header: header height + gap */
 }
 
 /* Progress bar under label */
@@ -449,21 +469,133 @@
   transform: rotate(180deg);
 }
 
-/* ── Responsive adjustments ── */
+/* ── Height-based responsiveness for laptops & landscape screens ── */
+@media (max-height: 850px) and (min-width: 1025px) {
+  .modalContainer {
+    --vp-top: 48px;
+    --vp-right: 64px;
+    --vp-bottom: 32px;
+    --vp-left: 64px;
+    --kb-padding-top: 22px;
+    --kb-padding-bottom: 30px;
+    max-height: 94vh;
+  }
+
+  .introCategoryTag {
+    margin-bottom: 8px;
+  }
+
+  .introMainTitle {
+    margin-bottom: 16px;
+    font-size: 2.1rem;
+  }
+
+  .introCtaWrapper {
+    margin-top: 4px;
+  }
+
+  .ctaButton {
+    padding: 10px 22px;
+    font-size: 0.85rem;
+  }
+
+  .keyBenefitsLabel {
+    margin-bottom: 16px;
+  }
+
+  .benefitsGrid {
+    gap: 16px;
+  }
+
+  .benefitCard {
+    padding: 20px 16px;
+    gap: 12px;
+    min-height: 140px;
+  }
+
+  .introTagline {
+    margin-top: 24px;
+  }
+}
+
+@media (max-height: 720px) and (min-width: 1025px) {
+  .modalContainer {
+    --vp-top: 32px;
+    --vp-right: 48px;
+    --vp-bottom: 24px;
+    --vp-left: 48px;
+    --kb-padding-top: 14px;
+    --kb-padding-bottom: 20px;
+    max-height: 96vh;
+  }
+
+  .introCategoryTag {
+    margin-bottom: 4px;
+  }
+
+  .introMainTitle {
+    margin-bottom: 8px;
+    font-size: 1.8rem;
+  }
+
+  .ctaButton {
+    padding: 8px 16px;
+    font-size: 0.8rem;
+  }
+
+  .keyBenefitsLabel {
+    margin-bottom: 10px;
+  }
+
+  .benefitsGrid {
+    gap: 12px;
+  }
+
+  .benefitCard {
+    padding: 16px 12px;
+    gap: 8px;
+    min-height: 110px;
+    border-radius: 12px;
+  }
+
+  .cardGlowLine {
+    border-radius: 12px 12px 0 0;
+  }
+
+  .cardIconImg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .introTagline {
+    margin-top: 16px;
+  }
+}
+
+/* ── Width-based responsive adjustments ── */
 @media (max-width: 1024px) {
+  .modalContainer {
+    --vp-top: 60px;
+    --vp-right: 48px;
+    --vp-bottom: 32px;
+    --vp-left: 48px;
+    --kb-padding-top: 26px;
+    --kb-padding-bottom: 36px;
+  }
+
   .closeButton {
     top: 16px;
     right: 16px;
   }
-  .stickyViewport {
-    padding: 60px 48px 32px 48px;
-  }
+
   .pinnedTop {
     align-items: flex-start;
   }
+
   .dynamicArea {
     margin-top: 16px;
   }
+
   .introTagline {
     margin-top: 36px;
   }
@@ -473,35 +605,39 @@
   .modalOverlay {
     padding: 8px;
   }
+
   .modalContainer {
     border-radius: 20px;
+    --vp-top: 48px;
+    --vp-right: 24px;
+    --vp-bottom: 24px;
+    --vp-left: 24px;
+    --kb-padding-top: 18px;
+    --kb-padding-bottom: 26px;
   }
-  .stickyViewport {
-    padding: 48px 24px 24px 24px;
-  }
+
   .progressBar {
     width: 240px;
   }
+
   .introTagline {
     margin-top: 24px;
   }
 }
 
 /* Key Benefits Section (Last Stage) */
-.keyBenefitsContainer {
-  position: absolute;
-  left: -80px;
-  right: -80px;
-  bottom: -48px;
-  top: 0;
+.keyBenefitsSection {
   background-color: #f9fafb;
-  padding: 48px 80px 60px 80px;
+  width: 100%;
+  min-height: auto;
+  padding: var(--kb-padding-top) var(--vp-left) var(--kb-padding-bottom) var(--vp-right);
   display: flex;
   flex-direction: column;
   align-items: center;
   z-index: 10;
   box-shadow: inset 0 20px 25px -5px rgba(0, 0, 0, 0.05);
-  overflow: hidden;
+  position: relative;
+  box-sizing: border-box;
 }
 
 .keyBenefitsLabel {
@@ -510,7 +646,7 @@
   font-weight: 700;
   letter-spacing: 0.2em;
   color: #1f2937;
-  margin: 0 0 32px 0;
+  margin: 0 0 24px 0;
   text-align: center;
 }
 
@@ -526,12 +662,12 @@
   position: relative;
   background-color: #111115;
   border-radius: 16px;
-  padding: 32px 24px 28px 24px;
+  padding: 24px 20px 20px 20px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 20px;
-  min-height: 220px;
+  gap: 14px;
+  min-height: 240px;
   overflow: hidden;
   transition: transform 0.3s ease;
 }
@@ -570,7 +706,6 @@
 
 .benefitCard:hover .cardIconImg {
   transform: scale(1.08);
-  filter: drop-shadow(0 0 8px rgba(159, 125, 255, 0.6));
 }
 
 .benefitText {
@@ -584,86 +719,27 @@
 }
 
 @media (max-width: 1024px) {
-  .keyBenefitsContainer {
-    left: -48px;
-    right: -48px;
-    bottom: -32px;
-    padding: 32px 0 48px 0;
-    overflow: hidden;
-    align-items: stretch;
-  }
-  .keyBenefitsLabel {
-    padding: 0 32px;
-  }
   .benefitsGrid {
-    display: flex;
-    flex-direction: row;
-    overflow-x: auto;
-    overflow-y: visible;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
+    grid-template-columns: repeat(2, 1fr);
     gap: 16px;
-    padding: 8px 32px 20px 0;
-    width: 100%;
-    max-width: 100%;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    box-sizing: border-box;
   }
-  .benefitsGrid::-webkit-scrollbar {
-    display: none;
-  }
+
   .benefitCard {
-    flex: 0 0 260px;
-    min-width: 0;
-    min-height: 200px;
-    scroll-snap-align: start;
-  }
-  .benefitCard:first-child {
-    flex: 0 0 310px;
-    margin-left: 32px;
+    padding: 24px 20px;
+    gap: 16px;
+    min-height: 180px;
   }
 }
 
-@media (max-width: 768px) {
-  .keyBenefitsContainer {
-    left: -24px;
-    right: -24px;
-    bottom: -24px;
-    padding: 24px 0 40px 0;
-    overflow: hidden;
-    align-items: stretch;
-  }
-  .keyBenefitsLabel {
-    padding: 0 20px;
-  }
+@media (max-width: 640px) {
   .benefitsGrid {
-    display: flex;
-    flex-direction: row;
-    overflow-x: auto;
-    overflow-y: visible;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    gap: 14px;
-    padding: 8px 20px 20px 0;
-    width: 100%;
-    max-width: 100%;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    box-sizing: border-box;
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
-  .benefitsGrid::-webkit-scrollbar {
-    display: none;
-  }
+
   .benefitCard {
-    flex: 0 0 220px;
-    min-width: 0;
-    min-height: 180px;
-    scroll-snap-align: start;
-    padding: 24px 18px;
-  }
-  .benefitCard:first-child {
-    flex: 0 0 270px;
-    margin-left: 20px;
+    padding: 20px 16px;
+    gap: 12px;
+    min-height: auto;
   }
 }

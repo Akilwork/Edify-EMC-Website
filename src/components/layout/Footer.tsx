@@ -8,7 +8,6 @@ const Footer = () => {
     { name: 'Our Story', href: '#story' },
     { name: 'Leadership Team', href: '#leadership' },
     { name: 'Group Companies', href: '#companies' },
-    { name: 'UAE Presence', href: '#uae-presence' },
   ];
 
   const serviceLinks = [
