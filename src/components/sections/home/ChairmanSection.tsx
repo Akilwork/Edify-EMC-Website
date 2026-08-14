@@ -42,7 +42,7 @@ export default function ChairmanSection({ animate = true }: { animate?: boolean 
               {/* The PNG itself is the organic blob mask — render it as the base layer */}
               <div className="relative w-full">
                 <Image
-                  src="/Chairman/Subtract.png"
+                  src="/Chairman/Subtract.png"  
                   alt="Robert Fox - Chairman"
                   width={480}
                   height={600}
@@ -65,10 +65,10 @@ export default function ChairmanSection({ animate = true }: { animate?: boolean 
                   }}
                 >
                   <span className="text-white font-sans font-bold text-lg sm:text-xl lg:text-2xl leading-tight drop-shadow-sm">
-                    Robert Fox
+                    Name
                   </span>
                   <span className="text-white/70 text-sm sm:text-base font-medium mt-1">
-                    Chairman
+                    Title
                   </span>
                 </div>
               </div>
