@@ -23,7 +23,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
       },
       {
         id: "educational-consulting",
-        title: "Educational & Institutional Consulting",
+        title: "Academics",
       },
       {
         id: "financial-consultancy",
@@ -39,10 +39,6 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
       {
         id: "it-solutions",
         title: "IT Solutions & Digital Transformation",
-      },
-      {
-        id: "ecommerce-digital",
-        title: "E-Commerce & Digital Services",
       },
     ],
   },
@@ -63,6 +59,10 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
         id: "uniform-solutions",
         title: "Uniform Solutions",
       },
+      {
+        id: "canteen-services",
+        title: "Canteen Service",
+      },
     ],
   },
   {
@@ -72,7 +72,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
     services: [
       {
         id: "behavioural-counselling",
-        title: "Behavioural Counselling & Student Support",
+        title: "Academics",
       },
       {
         id: "sports-training",
@@ -87,7 +87,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
     services: [
       {
         id: "printing-branding",
-        title: "Printing & Branding Solutions",
+        title: "Marketing",
       },
     ],
   },

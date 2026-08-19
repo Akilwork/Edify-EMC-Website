@@ -125,8 +125,8 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
   },
   educational: {
     id: 'educational',
-    title: 'Educational & Institutional Consulting',
-    categoryTag: 'Educational & Institutional Consulting',
+    title: 'Academics',
+    categoryTag: 'Academics',
     mainHeader: 'Driving Academic Excellence and Institutional Growth',
     introBodyText: 'From accreditation preparation to curriculum development, our expert consultants guide institutions through the complexities of academic quality assurance and strategic scaling.',
     tagline: 'Elevate Standards. Expand Your Educational Impact.',
@@ -158,8 +158,8 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
   },
   behavioural: {
     id: 'behavioural',
-    title: 'Behavioural Counselling & Student Support',
-    categoryTag: 'Behavioural Counselling & Student Support',
+    title: 'Academics',
+    categoryTag: 'Academics',
     mainHeader: 'Fostering Student Well-being and Constructive Learning Environments',
     introBodyText: "Support your students' mental health, career readiness, and behavioural development with integrated support systems, individual counselling, and workshops.",
     tagline: 'Nurture Young Minds. Foster Academic & Personal Growth.',
@@ -191,8 +191,8 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
   },
   printing: {
     id: 'printing',
-    title: 'Printing & Branding Solutions',
-    categoryTag: 'Printing & Branding Solutions',
+    title: 'Marketing',
+    categoryTag: 'Marketing',
     mainHeader: 'Shaping a Powerful and Unified Brand Identity for Your Institution',
     introBodyText: "Deliver high-quality printed materials and professional branding strategies that elevate your institution's prestige, community presence, and admissions marketing.",
     tagline: 'Design with Impact. Print with Perfection.',

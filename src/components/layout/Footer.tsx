@@ -22,7 +22,7 @@ const Footer = () => {
   return (
     <footer className="relative bg-black text-[#e5e5e5] overflow-hidden pt-20 md:pt-28 flex flex-col justify-between w-full">
       {/* Content Container */}
-      <div className="max-w-7xl w-full mx-auto px-6 md:px-12 lg:px-16 relative z-10 flex-grow flex flex-col justify-between">
+      <div className="container-responsive container-max relative z-10 flex-grow flex flex-col justify-between">
 
         {/* Main Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-16 md:mb-24">

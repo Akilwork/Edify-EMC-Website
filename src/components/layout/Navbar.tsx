@@ -17,6 +17,9 @@ import {
   Monitor,
   Printer,
   MessageSquare,
+  Bus,
+  Utensils,
+  Shirt,
 } from "lucide-react";
 import { useConsultation } from "@/components/providers/ConsultationProvider";
 import { SERVICE_SLUGS } from "@/data/service-details";
@@ -26,16 +29,9 @@ import { SERVICE_SLUGS } from "@/data/service-details";
 ──────────────────────────────────────────────────────────── */
 const MEGA_SERVICES = [
   {
-    id: "behavioural-counselling",
-    title: "Behavioural Counselling & Student Support",
-    description: "Holistic support for student growth and well-being.",
-    icon: MessageSquare,
-    slug: "behavioural-counselling-student-support",
-  },
-  {
-    id: "educational-consulting",
-    title: "Educational & Institutional Consulting",
-    description: "Strategic guidance for institutions to thrive.",
+    id: "academic-service",
+    title: "Academic Services",
+    description: "Strategic guidance & holistic support for educational excellence.",
     icon: GraduationCap,
     slug: "educational-institutional-consulting",
   },
@@ -56,16 +52,37 @@ const MEGA_SERVICES = [
   {
     id: "it-solutions",
     title: "IT Solutions & Digital Transformation",
-    description: "Modernise your operations with smart technology.",
+    description: "E-Commerce, software & smart technology solutions.",
     icon: Monitor,
     slug: "it-solutions-digital-transformation",
   },
   {
     id: "printing-branding",
-    title: "Printing & Branding Solutions",
+    title: "Marketing",
     description: "Impactful branding that leaves a lasting impression.",
     icon: Printer,
     slug: "printing-branding-solutions",
+  },
+  {
+    id: "transportation-service",
+    title: "Transportation Service",
+    description: "Safe & reliable student transport solutions.",
+    icon: Bus,
+    slug: "transportation-fleet-support",
+  },
+  {
+    id: "canteen-service",
+    title: "Canteen Service",
+    description: "Hygienic, nutritious, and quality catering.",
+    icon: Utensils,
+    slug: "canteen-management-services",
+  },
+  {
+    id: "uniform-solutions",
+    title: "Uniform Solutions",
+    description: "Quality school uniforms & institutional clothing.",
+    icon: Shirt,
+    slug: "uniform-solutions",
   },
 ];
 
@@ -85,14 +102,15 @@ function ServicesMegaMenu({
   onClose: () => void;
   openConsultation: () => void;
 }) {
-  const leftCol = MEGA_SERVICES.slice(0, 3);
-  const rightCol = MEGA_SERVICES.slice(3, 6);
+  const half = Math.ceil(MEGA_SERVICES.length / 2);
+  const leftCol = MEGA_SERVICES.slice(0, half);
+  const rightCol = MEGA_SERVICES.slice(half);
 
   return (
     <div className="absolute top-full left-0 right-0 z-40">
       {/* Full-screen backdrop to close on outside click */}
       <div
-        className="fixed inset-0 top-0 z-[-1]"
+        className="fixed inset-0 top-0 z-[-1] bg-black/20 backdrop-blur-[2px]"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -245,10 +263,27 @@ export default function Navbar() {
   const { openConsultation } = useConsultation();
   const megaTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // Prevent background scrolling when mega menu or mobile menu is open
+  useEffect(() => {
+    if (megaOpen || menuOpen) {
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+    };
+  }, [megaOpen, menuOpen]);
+
   useEffect(() => {
     let lastScrollY = window.scrollY;
 
     const handleScroll = () => {
+      if (megaOpen) return;
+
       const currentScrollY = window.scrollY;
 
       if (currentScrollY > 80) {
@@ -264,7 +299,7 @@ export default function Navbar() {
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [megaOpen]);
 
   // Close mega on route change
   useEffect(() => {
@@ -286,6 +321,7 @@ export default function Navbar() {
 
   const handleServicesEnter = () => {
     if (megaTimerRef.current) clearTimeout(megaTimerRef.current);
+    setHidden(false);
     setMegaOpen(true);
   };
 
@@ -303,7 +339,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group flex-shrink-0">
             <Image
-              src="/Logo.png"
+              src="/Edify logo.png"
               alt="Edify Management Consultancy"
               width={82}
               height={36}

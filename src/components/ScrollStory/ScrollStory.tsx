@@ -19,7 +19,7 @@ function scrollProgressToFractionalFrame(progress: number): number {
   return p * (TOTAL_FRAMES - 1);
 }
 
-// ─── Draw helper – single frame, cover-scaled, no blending ───────────────────
+// ─── Draw helper – single crisp frame, cover-scaled, no ghosting/double-vision ───
 function drawBlended(
   canvas: HTMLCanvasElement,
   images: HTMLImageElement[],
@@ -43,6 +43,7 @@ function drawBlended(
   const oy = (ch - sh) / 2;
 
   ctx.clearRect(0, 0, cw, ch);
+  ctx.globalAlpha = 1;
   ctx.drawImage(img, ox, oy, sw, sh);
 }
 
@@ -67,19 +68,19 @@ const CARDS_DATA = [
   },
   {
     id: 'educational',
-    title: 'Educational & Institutional Consulting',
+    title: 'Academic services.',
     image: '/Services/educational_&_institutional_consulting_card_image.png',
     link: '/services#educational',
   },
   {
     id: 'behavioural',
-    title: 'Behavioural Counselling & Student Support',
+    title: 'Canteen service',
     image: '/Services/behavioural_counselling_&_student_support_card_image.png',
     link: '/services#behavioural',
   },
   {
     id: 'printing',
-    title: 'Printing & Branding Solutions',
+    title: 'Marketing',
     image: '/Services/printing_&_branding_solutions_card_image.png',
     link: '/services#printing',
   },
@@ -148,7 +149,13 @@ export const ScrollStory = () => {
 
     for (let i = 0; i < TOTAL_FRAMES; i++) {
       const img = new Image();
-      img.onload = onSettle;
+      img.onload = () => {
+        if ('decode' in img) {
+          img.decode().catch(() => {}).finally(onSettle);
+        } else {
+          onSettle();
+        }
+      };
       img.onerror = onSettle;
       img.src = getFrameSrc(i);
       images[i] = img;
@@ -163,7 +170,7 @@ export const ScrollStory = () => {
     if (!canvas) return;
 
     const applySize = () => {
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       dprRef.current = dpr;
       const w = window.innerWidth;
       const h = window.innerHeight;
@@ -218,12 +225,12 @@ export const ScrollStory = () => {
       end: `+=${totalDist}`,
       pin: true,
       pinSpacing: true,
-      scrub: 0.6,
+      scrub: 0.3,
       refreshPriority: 3,
       onUpdate: (self) => {
-        // Canvas animation always plays over the first baseDist of scroll
-        const canvasProgress = Math.min(1, (self.progress * totalDist) / baseDist);
-        const next = scrollProgressToFractionalFrame(canvasProgress);
+        // 3D Canvas animation plays over the first 92% of baseDist scroll travel
+        const animProgress = Math.min(1, (self.progress * totalDist) / (baseDist * 0.92));
+        const next = scrollProgressToFractionalFrame(animProgress);
 
         if (Math.round(next) !== Math.round(fractionalFrame.current)) {
           fractionalFrame.current = next;
@@ -236,26 +243,25 @@ export const ScrollStory = () => {
         const cardsOverlay = cardsOverlayRef.current;
         const contentWrapper = contentWrapperRef.current;
         if (cardsOverlay && contentWrapper) {
-          const fadeStart = 0.9;
+          // Cards fade in AFTER 3D animation reaches frame 45 (between 92% and 98%)
+          const fadeStart = 0.92;
           const fadeEnd = 0.98;
+          const currentScrollProgress = (self.progress * totalDist) / baseDist;
           let opacity = 0;
-          if (canvasProgress >= fadeEnd) {
+          if (currentScrollProgress >= fadeEnd) {
             opacity = 1;
-          } else if (canvasProgress <= fadeStart) {
+          } else if (currentScrollProgress <= fadeStart) {
             opacity = 0;
           } else {
-            opacity = (canvasProgress - fadeStart) / (fadeEnd - fadeStart);
+            opacity = (currentScrollProgress - fadeStart) / (fadeEnd - fadeStart);
           }
           cardsOverlay.style.opacity = `${opacity}`;
           cardsOverlay.style.pointerEvents = opacity > 0.9 ? 'auto' : 'none';
           contentWrapper.style.pointerEvents = opacity > 0.9 ? 'auto' : 'none';
 
-          if (canvasProgress >= fadeStart) {
-            canvas.style.opacity = '0';
-            canvas.style.visibility = 'hidden';
-          } else {
-            canvas.style.opacity = '1';
-            canvas.style.visibility = 'visible';
+          if (canvas) {
+            canvas.style.opacity = `${1 - opacity}`;
+            canvas.style.visibility = opacity >= 0.99 ? 'hidden' : 'visible';
           }
 
           // ── Drive mobile/tablet card list scroll via page scroll ────────────────

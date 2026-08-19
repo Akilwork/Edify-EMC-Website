@@ -1390,10 +1390,10 @@ export default function AboutHero() {
             {/* Scene 8B: Top text - "The Expertise Behind Every Solution" */}
             <div
               ref={scene8TextBRef}
-              className="absolute top-0 left-0 right-0 pt-20 md:pt-28 lg:pt-32 z-[10] opacity-0 will-change-transform"
+              className="absolute top-0 left-0 right-0 pt-20 sm:pt-24 md:pt-28 lg:pt-30 z-[10] opacity-0 will-change-transform"
             >
-              <div className="text-center px-8">
-                <h2 className="font-sans text-[clamp(24px,5vw,32px)] md:text-[clamp(32px,4vw,40px)] lg:text-[clamp(36px,4vw,48px)] font-medium leading-[1.1] tracking-tight text-[#1a1a1a]">
+              <div className="text-center px-6 md:px-8">
+                <h2 className="font-sans text-[clamp(22px,4vw,30px)] md:text-[clamp(28px,3.5vw,36px)] lg:text-[clamp(32px,3vw,42px)] font-medium leading-[1.15] tracking-tight text-[#1a1a1a]">
                   The Expertise Behind Every Solution
                 </h2>
               </div>
@@ -1402,7 +1402,7 @@ export default function AboutHero() {
             {/* Scene 8B: Person Cards - Horizontal Scroll */}
             <div
               ref={scene8CardsContainerRef}
-              className="absolute inset-0 flex items-center z-[20] opacity-0 will-change-transform pointer-events-none"
+              className="absolute top-[140px] sm:top-[160px] md:top-[175px] lg:top-[190px] bottom-0 left-0 right-0 flex items-center z-[20] opacity-0 will-change-transform pointer-events-none"
             >
               <div className="flex gap-6 md:gap-8 px-8 md:px-16 w-max">
                 {/* Person Profile Cards - wrapped for scale/opacity animation */}

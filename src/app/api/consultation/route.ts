@@ -1,4 +1,4 @@
-import { NextResponse, after } from "next/server";
+import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
 
@@ -10,9 +10,15 @@ const escapeCSV = (val: any): string => {
   return `"${clean}"`;
 };
 
-// Helper to get formatted India (Kolkata) Local Time
+// Helper to get formatted India (Kolkata) Local Time safely
 const getISTTimestamp = (dateInput?: Date | string): string => {
-  const date = dateInput ? new Date(dateInput) : new Date();
+  let date = new Date();
+  if (dateInput) {
+    const parsed = new Date(dateInput);
+    if (!isNaN(parsed.getTime())) {
+      date = parsed;
+    }
+  }
   const formatter = new Intl.DateTimeFormat("en-US", {
     timeZone: "Asia/Kolkata",
     year: "numeric",
@@ -32,7 +38,16 @@ const getISTTimestamp = (dateInput?: Date | string): string => {
 
 export async function POST(request: Request) {
   try {
-    const data = await request.json();
+    let data: any;
+    try {
+      data = await request.json();
+    } catch {
+      return NextResponse.json(
+        { success: false, error: "Invalid request payload" },
+        { status: 400 }
+      );
+    }
+
     const {
       name,
       countryCode,
@@ -45,34 +60,21 @@ export async function POST(request: Request) {
       howCanWeHelp,
       requestDetails,
       submittedAt,
-    } = data;
+    } = data || {};
 
-    // Human-readable IST timestamp for the CSV / local log. The client already
-    // captures the submission moment as an IST (UTC+5:30) instant in
-    // `submittedAt`; format it in Asia/Kolkata so the CSV records the exact
-    // Indian wall-clock the form captured.
+    // Human-readable IST timestamp for the CSV / local log.
     const timestamp = getISTTimestamp(submittedAt);
-    // Use the client's IST value VERBATIM for downstream integrations. We do
-    // NOT round-trip it through new Date().toISOString() — that re-expresses the
-    // same moment in UTC (e.g. 09:04:48Z) and is what made the wall-clock look
-    // like it shifted by 5h30m. The form's value is preserved exactly.
     const isoISTTime =
       submittedAt ||
       timestamp.replace(" IST", "").replace(" ", "T") + ".000+05:30";
 
-    // Excel stores whatever instant it receives and renders its UTC wall-clock,
-    // so an India submission appears 5h30m behind. Send a timezone-naive India
-    // local datetime (no offset, no " IST" suffix) so Excel stores exactly that
-    // wall-clock time with no conversion — the cell then reads as India local.
     const excelTimestamp = timestamp.replace(" IST", "");
     const detailsVal = howCanWeHelp || requestDetails || "";
 
-    // Log the submission to console (fail-safe for serverless host logs)
+    // Log the submission to console
     console.log("New Consultation Submission:", JSON.stringify({ timestamp, isoISTTime, ...data, detailsVal }));
 
-    // ────────────────────────────────────────────────────────────────
     // 1. Write to local CSV spreadsheet file first (Immediate & Safe)
-    // ────────────────────────────────────────────────────────────────
     try {
       const filePath = path.join(process.cwd(), "consultation_submissions.csv");
       const fileExists = fs.existsSync(filePath);
@@ -115,11 +117,9 @@ export async function POST(request: Request) {
       console.warn("Failed to write submission to local CSV file:", csvError);
     }
 
-    // ────────────────────────────────────────────────────────────────
     // 2. Perform External API Integrations (Asynchronously in Background)
-    // ────────────────────────────────────────────────────────────────
     const runBackgroundIntegrations = async () => {
-      // A. Google Sheets Webhook (via Google Apps Script Web App)
+      // A. Google Sheets Webhook
       const googleWebhookUrl = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
       if (googleWebhookUrl) {
         try {
@@ -129,12 +129,6 @@ export async function POST(request: Request) {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              // Primary timestamp is an unambiguous ISO instant (offset +05:30).
-              // Sending "... IST" previously caused `new Date("... IST")` in the
-              // Apps Script to misparse — "IST" is ambiguous (India/Israel/Irish)
-              // and V8 fell back to the script's runtime timezone, shifting the
-              // cell's wall-clock by hours. A real instant parses correctly in
-              // any timezone and the IST-configured sheet renders it as IST.
               timestamp: timestamp,
               istTime: excelTimestamp,
               formattedTimestamp: excelTimestamp,
@@ -162,7 +156,7 @@ export async function POST(request: Request) {
         }
       }
 
-      // B. Microsoft Graph API (SharePoint / OneDrive Excel)
+      // B. Microsoft Graph API
       const tenantId = process.env.SHAREPOINT_TENANT_ID;
       const clientId = process.env.SHAREPOINT_CLIENT_ID;
       const clientSecret = process.env.SHAREPOINT_CLIENT_SECRET;
@@ -171,7 +165,6 @@ export async function POST(request: Request) {
 
       if (tenantId && clientId && clientSecret && driveId && itemId) {
         try {
-          // Authenticate
           const tokenResponse = await fetch(
             `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/token`,
             {
@@ -193,7 +186,6 @@ export async function POST(request: Request) {
           const tokenData = await tokenResponse.json();
           const accessToken = tokenData.access_token;
 
-          // Get used range
           const usedRangeUrl = `https://graph.microsoft.com/v1.0/drives/${driveId}/items/${itemId}/workbook/worksheets('Sheet1')/usedRange`;
           const rangeResponse = await fetch(usedRangeUrl, {
             headers: {
@@ -215,7 +207,6 @@ export async function POST(request: Request) {
             isFirstWrite = true;
           }
 
-          // Write headers
           if (isFirstWrite && targetRow === 1) {
             const headerUrl = `https://graph.microsoft.com/v1.0/drives/${driveId}/items/${itemId}/workbook/worksheets('Sheet1')/range(address='A1:J1')`;
             await fetch(headerUrl, {
@@ -244,7 +235,6 @@ export async function POST(request: Request) {
             targetRow = 2;
           }
 
-          // Write data
           const writeUrl = `https://graph.microsoft.com/v1.0/drives/${driveId}/items/${itemId}/workbook/worksheets('Sheet1')/range(address='A${targetRow}:J${targetRow}')`;
           const writeResponse = await fetch(writeUrl, {
             method: "PATCH",
@@ -283,11 +273,9 @@ export async function POST(request: Request) {
     };
 
     // Trigger external integrations asynchronously after response is sent
-    after(() => {
-      runBackgroundIntegrations().catch((err) =>
-        console.error("Background integration error:", err)
-      );
-    });
+    runBackgroundIntegrations().catch((err) =>
+      console.error("Background integration error:", err)
+    );
 
     return NextResponse.json({ success: true, destination: "local_csv_and_background_initiated" });
   } catch (error: any) {
