@@ -67,7 +67,7 @@ export default function CompaniesSection() {
       ref={containerRef}
       className="relative w-full bg-white py-10 md:py-16 overflow-hidden font-sans border-t border-[#F1F5F9]"
     >
-      <div className="container-responsive container-xl relative z-10">
+      <div className="container-responsive container-max relative z-10">
         
         {/* Header Section */}
         <div className="text-center max-w-3xl mx-auto mb-8 md:mb-12">

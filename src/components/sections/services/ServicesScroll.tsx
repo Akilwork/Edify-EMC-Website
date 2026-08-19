@@ -55,7 +55,7 @@ export default function ServicesScroll() {
       image: "/Service-page/Educationalal.png",
       title: "Academics",
       description: "Strategic guidance for institutional planning, governance, accreditation, student support, and academic excellence.",
-      isWide: true,
+      isWide: false,
       slug: "educational-institutional-consulting"
     },
     {
@@ -177,7 +177,7 @@ export default function ServicesScroll() {
         </div>
 
         {/* Content */}
-        <div className="relative z-10 flex flex-col min-h-[100svh] px-5 py-16 sm:px-8 md:px-12 lg:px-20 xl:px-32">
+        <div className="relative z-10 flex flex-col min-h-[100svh] container-responsive container-max py-16">
           {/* Main content - centered */}
           <div className={`flex-1 flex flex-col justify-center max-w-4xl transition-opacity duration-1000 ${heroVisible ? 'opacity-100' : 'opacity-0'}`}>
             {/* Headline */}
@@ -213,9 +213,9 @@ export default function ServicesScroll() {
       {/* ─── Service Listing Section ─── */}
       <section
         ref={sectionRef}
-        className="relative w-full bg-white px-5 py-20 sm:px-8 md:py-28 lg:px-12 xl:px-16"
+        className="relative w-full bg-white py-20 md:py-28"
       >
-        <div className={`max-w-[1440px] mx-auto transition-all duration-1000 ${sectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+        <div className={`container-responsive container-max transition-all duration-1000 ${sectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           {/* Heading and Subhead */}
           <div className="text-center mb-10 md:mb-14 lg:mb-20">
             <h2 className="font-sans text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-black font-normal mb-3 md:mb-4">
@@ -227,7 +227,7 @@ export default function ServicesScroll() {
           </div>
 
           {/* Cards Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-5 xl:gap-6 mb-12 md:mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-5 xl:gap-6 mb-12 md:mb-16">
             {serviceCards.map((card, index) => (
               <Link
                 key={index}
@@ -245,7 +245,7 @@ export default function ServicesScroll() {
                     src={card.image}
                     alt={card.title}
                     fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    sizes="(max-width: 768px) 100vw, 33vw"
                     className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   />
                 </div>
@@ -291,8 +291,8 @@ export default function ServicesScroll() {
       </section>
 
       {/* ─── Technology & Innovation Section ─── */}
-      <section className="relative w-full bg-white px-5 py-20 sm:px-8 md:py-28 lg:px-12 xl:px-16">
-        <div className="max-w-[1440px] mx-auto">
+      <section className="relative w-full bg-white py-20 md:py-28">
+        <div className="container-responsive container-max">
           {/* Heading and Subhead */}
           <div className="text-center mb-10 md:mb-14 lg:mb-20">
             <h2 className="font-sans text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-black font-normal mb-3 md:mb-4">
@@ -363,8 +363,8 @@ export default function ServicesScroll() {
       </section>
 
       {/* ─── Campus & Student Services Section ─── */}
-      <section className="relative w-full bg-white px-5 py-20 sm:px-8 md:py-28 lg:px-12 xl:px-16">
-        <div className="max-w-[1440px] mx-auto">
+      <section className="relative w-full bg-white py-20 md:py-28">
+        <div className="container-responsive container-max">
           {/* Heading and Subhead */}
           <div className="text-center mb-10 md:mb-14 lg:mb-20">
             <h2 className="font-sans text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-black font-normal mb-3 md:mb-4">

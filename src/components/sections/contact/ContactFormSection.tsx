@@ -78,7 +78,7 @@ export default function ContactFormSection() {
 
   return (
     <section id="contact-form" className="section-padding bg-[#16213E]">
-      <div className="container-custom max-w-2xl">
+      <div className="container-responsive container-max max-w-2xl">
         <h2 className="font-heading text-4xl font-bold text-white mb-10">Send Us a Message</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">
           {[

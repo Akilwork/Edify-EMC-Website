@@ -29,7 +29,7 @@ export default function DetailHero({
         <div className="absolute inset-0 bg-gradient-to-r from-black via-black to-black/30" />
       </div>
 
-      <div className="relative z-10 flex flex-col min-h-[100svh] px-6 pt-28 pb-10 md:px-12 md:pt-36 md:pb-12 lg:px-20 lg:pt-40 lg:pb-16 xl:px-32 xl:pt-44 xl:pb-20">
+      <div className="relative z-10 flex flex-col min-h-[100svh] container-responsive container-max pt-28 pb-10 md:pt-36 md:pb-12 lg:pt-40 lg:pb-16 xl:pt-44 xl:pb-20">
         <div className="mt-auto flex flex-col max-w-4xl">
           {/* Service eyebrow */}
           <RevealSection>

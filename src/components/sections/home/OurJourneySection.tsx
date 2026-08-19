@@ -15,7 +15,7 @@ export default function OurJourneySection() {
       {/* Subtle teal glow bottom-left */}
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#3ABAB4]/4 rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-16 relative z-10">
+      <div className="container-responsive container-max relative z-10">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
 
           {/* Left: Video/Image */}

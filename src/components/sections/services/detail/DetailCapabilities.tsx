@@ -73,7 +73,7 @@ export default function DetailCapabilities({ detail }: { detail: ServiceDetail }
         </div>
 
         {/* Capability grid */}
-        <div className="grid grid-cols-12 gap-6 max-w-6xl mx-auto w-full">
+        <div className="grid grid-cols-12 gap-6 w-full">
           {items.map((item, index) => {
             const iconUrl = getCapabilityIconUrl(index);
             const colSpan = getColSpanClass(index, totalCount);

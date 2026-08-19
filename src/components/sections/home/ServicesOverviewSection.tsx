@@ -73,7 +73,7 @@ export default function ServicesOverviewSection() {
           />
         </div>
   
-        <div className="relative z-10 w-full container-responsive container-xl text-center">
+        <div className="relative z-10 w-full container-responsive container-max text-center">
           <h1
             className="font-sans font-medium text-black leading-[1.15] tracking-tight mx-auto"
             style={{

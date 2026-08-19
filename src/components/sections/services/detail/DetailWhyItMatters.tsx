@@ -176,7 +176,7 @@ export default function DetailWhyItMatters({ detail }: { detail: ServiceDetail }
         </div>
 
         {/* 3x2 Image Cards Grid — unified design for all services */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
           {detail.whyItMatters.items.map((item, index) => {
             const bgImage = serviceImages[index % serviceImages.length];
 
