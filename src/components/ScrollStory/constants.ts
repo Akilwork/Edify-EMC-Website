@@ -8,7 +8,7 @@
 
 // ─── Scroll travel ───────────────────────────────────────────────────────────
 /** Multiplier applied to viewport height: end = `+=innerHeight * SCROLL_MULTIPLIER`. */
-export const SCROLL_MULTIPLIER = 2.5;
+export const SCROLL_MULTIPLIER = 1.5;
 
 // ─── Final frame geometry (the frame StoryHandoff overlays) ──────────────────
 /** Source dimensions of the final frame, drawn object-fit: cover. */
@@ -20,7 +20,7 @@ export const FRAME_H = 2160;
  * The folder path where the frames are stored (must end with a slash).
  * Update this if you change the directory where your images are located.
  */
-export const FRAME_DIR = '/frames/';
+export const FRAME_DIR = '/Introsection/';
 
 /**
  * The prefix of each frame image file.
@@ -40,23 +40,21 @@ export const FRAME_PADDING = 2;
 
 /**
  * The starting index of the actual image files.
- * (e.g., if files are frame_02.jpg to frame_22.jpg, this is 2.
- *        if files are frame_01.jpg to frame_22.jpg, this is 1.)
+ * (e.g., frame_01.jpg starts at 1)
  */
-export const FRAME_START_FILE_INDEX = 2;
+export const FRAME_START_FILE_INDEX = 1;
 
 /**
  * The ending index of the actual image files.
- * (e.g., if files are frame_02.jpg to frame_22.jpg, this is 22.
- *        if files are frame_01.jpg to frame_50.jpg, this is 50.)
+ * (e.g., frame_45.jpg ends at 45)
  */
-export const FRAME_END_FILE_INDEX = 22;
+export const FRAME_END_FILE_INDEX = 45;
 
 /**
  * Total number of animation frames used in the scroll sequence.
  * This represents the total subdivisions of the scroll trigger timeline.
  */
-export const TOTAL_FRAMES = 22;
+export const TOTAL_FRAMES = 45;
 
 /**
  * Resolves a zero-based frame index to its frame URL.

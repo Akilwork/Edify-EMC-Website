@@ -14,6 +14,7 @@ const CAPABILITIES_SUBTITLES: Record<string, string> = {
   "transportation-fleet-support": "Fleet logistics, route planning, and driver safety standards that keep your students moving securely.",
   "uniform-solutions": "Custom school clothing and sports kits designed for comfort, durability, and institutional pride.",
   "sports-training-talent-development": "Professional coaching and athletic development pathways to foster talent and character.",
+  "canteen-management-services": "Turnkey canteen management, nutritious meal planning, and strict food hygiene standards for student wellbeing.",
 };
 
 function getCapabilityIconUrl(index: number) {

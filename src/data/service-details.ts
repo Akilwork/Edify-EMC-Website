@@ -168,8 +168,8 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
   /* ───────────────────── 2. Educational & Institutional Consulting ───────────────────── */
   "educational-institutional-consulting": {
     slug: "educational-institutional-consulting",
-    title: "Educational & Institutional Consulting",
-    metaTitle: "Educational & Institutional Consulting",
+    title: "Academics",
+    metaTitle: "Academics",
     metaDescription:
       "Strategic guidance for institutional planning, governance, accreditation, and academic excellence — helping schools and colleges thrive and scale sustainably.",
     heroImage: "/Service-page/Educationalal.png",
@@ -308,8 +308,8 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
   /* ──────────────── 4. Behavioural Counselling & Student Support ──────────────── */
   "behavioural-counselling-student-support": {
     slug: "behavioural-counselling-student-support",
-    title: "Behavioural Counselling & Student Support",
-    metaTitle: "Behavioural Counselling & Student Support",
+    title: "Academics",
+    metaTitle: "Academics",
     metaDescription:
       "Professional counselling, wellbeing programmes, mentoring, and student support services that nurture mental health, behaviour, and holistic growth.",
     heroImage: "/Service-page/Behavioural-Counselling-&-Student-Support.png",
@@ -387,17 +387,18 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
     hero: {
       tagline: "Empowering Institutions With Modern Technology",
       supportingCopy:
-        "Custom IT solutions, learning platforms, and cloud infrastructure designed to modernise learning environments and streamline operations.",
+        "Custom IT solutions, E-Commerce platforms, software, and cloud infrastructure designed to modernise learning environments and streamline operations.",
       ctas: [CONSULTATION_CTA],
     },
     overview: {
       heading: "Accelerating Digital Evolution",
-      body: "We help institutions modernise with technology that genuinely fits their needs — from school ERP and learning management systems to secure cloud infrastructure and automation. Our consultants assess your current technology, design a realistic digital roadmap, and deliver solutions that improve teaching, streamline administration, and build a secure, future-ready foundation.",
+      body: "We help institutions modernise with technology that genuinely fits their needs — from school ERP, E-Commerce platforms, and web solutions to secure cloud infrastructure and automation. Our consultants assess your current technology, design a realistic digital roadmap, and deliver solutions that improve teaching, streamline administration, and build a secure, future-ready foundation.",
     },
     capabilities: {
       heading: "End-to-End Technology Capabilities",
       items: [
         { title: "School ERP & LMS Integration", description: "Campus management and learning platforms that connect." },
+        { title: "E-Commerce & Digital Storefronts", description: "Custom e-commerce platforms, online stores, and payment integration." },
         { title: "Cloud Infrastructure & Cybersecurity", description: "Secure, scalable cloud environments and protection." },
         { title: "IT Audits & Digital Roadmaps", description: "Assess systems and design a transformation plan." },
         { title: "Process Automation", description: "Remove manual work with smart, connected workflows." },
@@ -410,7 +411,7 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
       items: [
         { title: "Cloud & Enterprise IT", description: "Scalable, secure cloud infrastructure and enterprise architecture designed for institutional growth." },
         { title: "Software Development", description: "Custom web and mobile application engineering built to solve complex operational challenges." },
-        { title: "Digital Transformation", description: "Comprehensive strategic roadmaps that modernise workflows and elevate campus operations." },
+        { title: "E-Commerce Solutions", description: "Custom online storefronts, digital payment gateways, and scalable commerce platforms." },
         { title: "Cybersecurity", description: "Advanced threat protection, data encryption, and compliance frameworks safeguarding your data." },
         { title: "AI & Automation", description: "Intelligent automation and AI tools that eliminate manual tasks and boost productivity." },
         { title: "Smart Enterprise Solutions", description: "Integrated IoT and smart campus systems creating connected, future-ready environments." },
@@ -445,11 +446,11 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
     },
   },
 
-  /* ───────────────────── 6. Printing & Branding Solutions ───────────────────── */
+  /* ───────────────────── 6. Marketing ───────────────────── */
   "printing-branding-solutions": {
     slug: "printing-branding-solutions",
-    title: "Printing & Branding Solutions",
-    metaTitle: "Printing & Branding Solutions",
+    title: "Marketing",
+    metaTitle: "Marketing",
     metaDescription:
       "Professional branding, printing, promotional materials, and visual communication that shape a powerful, unified brand identity for your institution.",
     heroImage: "/Service-page/Printing-&-Branding-Solutions.png",
@@ -859,6 +860,75 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
     cta: {
       heading: "Let's Develop Your Student Athletes",
       description: "Build sports programmes that grow talent, health, and character.",
+      ctas: [CONSULTATION_CTA, CONTACT_CTA],
+    },
+  },
+
+  /* ───────────────────── 12. Canteen Service ───────────────────── */
+  "canteen-management-services": {
+    slug: "canteen-management-services",
+    title: "Canteen Service",
+    metaTitle: "Canteen & Catering Services",
+    metaDescription:
+      "Hygienic, nutritious, and high-quality canteen management and catering services tailored for educational institutions and organizations.",
+    heroImage: "/Service-page/student-development.jpg",
+    cardImage: "/Service-page/student-development.jpg",
+    hero: {
+      tagline: "Nutritious, Hygienic & Quality Catering Solutions",
+      supportingCopy:
+        "End-to-end canteen management, meal planning, and catering solutions designed to nourish students and staff with health and safety at the forefront.",
+      ctas: [CONSULTATION_CTA],
+    },
+    overview: {
+      heading: "Nourishing Campus Communities",
+      body: "We help educational institutions and corporate organizations operate clean, efficient, and health-focused dining facilities. From menu design and dietary balance to food safety standards and vendor management, our canteen services ensure students and staff enjoy fresh, nutritious meals every day while keeping operations seamless and cost-effective.",
+    },
+    capabilities: {
+      heading: "Canteen & Catering Capabilities",
+      items: [
+        { title: "Canteen Management & Operations", description: "Turnkey management of daily cafeteria and dining hall facilities." },
+        { title: "Nutritious Meal Planning", description: "Balanced, healthy menus designed by nutrition experts for growing students." },
+        { title: "Food Safety & Hygiene Compliance", description: "Strict adherence to health standards, kitchen audits, and sanitation protocols." },
+        { title: "Event & Institutional Catering", description: "Custom catering solutions for school events, sports days, and conferences." },
+        { title: "Cashless & Smart Dining Systems", description: "Modern POS and digital card systems for easy, trackable transactions." },
+        { title: "Supply Chain & Quality Control", description: "Sourcing fresh, premium ingredients with strict vendor quality audits." },
+      ],
+    },
+    whyItMatters: {
+      heading: "Why Quality Catering Matters",
+      items: [
+        { title: "Promote Student Health", description: "Balanced nutrition supports focus, energy, and academic performance." },
+        { title: "Ensure Food Safety", description: "Rigorous hygiene standards protect campus health and prevent risks." },
+        { title: "Enhance Campus Life", description: "Welcoming dining spaces foster community, socializing, and satisfaction." },
+        { title: "Streamline Operations", description: "Professional management eliminates administrative and operational burdens." },
+        { title: "Offer Variety & Dietary Support", description: "Diverse meal options catering to different dietary needs and preferences." },
+        { title: "Modernize Dining Systems", description: "Cashless systems ensure fast service, short queues, and clear reporting." },
+      ],
+    },
+    approach: {
+      heading: "A Health-First Operational Framework",
+      steps: [
+        { number: "01", title: "Assess", description: "Audit facility requirements, kitchen equipment, and dietary needs." },
+        { number: "02", title: "Design", description: "Craft customized menus, hygiene protocols, and operational workflows." },
+        { number: "03", title: "Operate", description: "Deliver daily high-quality meal services with continuous quality checks." },
+      ],
+    },
+    whyChoose: {
+      heading: "Expertise You Can Trust",
+      items: [
+        "Health & Hygiene Certified",
+        "Nutritionist-Approved Menus",
+        "Transparent Supply Chain",
+        "Scalable Institutional Operations",
+      ],
+    },
+    related: {
+      heading: "Explore Connected Solutions",
+      slugs: ["transportation-fleet-support", "uniform-solutions", "human-resource-services"],
+    },
+    cta: {
+      heading: "Let's Elevate Your Campus Dining Experience",
+      description: "Partner with catering experts to provide healthy, hygienic, and delicious meals.",
       ctas: [CONSULTATION_CTA, CONTACT_CTA],
     },
   },

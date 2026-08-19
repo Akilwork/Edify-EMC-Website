@@ -32,11 +32,10 @@ const INSTITUTION_TYPES = [
 
 const SERVICE_OPTIONS = [
   "Human Resource Management",
-  "Educational & Institutional Consulting",
+  "Academics",
   "Financial Consultancy",
-  "Behavioural Counselling & Student Support",
   "IT Solutions & Digital Transformation",
-  "Printing & Branding Solutions",
+  "Marketing",
   "E-Commerce & Digital Services",
   "Civil Engineering & Infrastructure Development",
   "Transportation & Fleet Support",

@@ -10,9 +10,15 @@ const escapeCSV = (val: any): string => {
   return `"${clean}"`;
 };
 
-// Helper to get formatted India (Kolkata) Local Time
+// Helper to get formatted India (Kolkata) Local Time safely
 const getISTTimestamp = (dateInput?: Date | string): string => {
-  const date = dateInput ? new Date(dateInput) : new Date();
+  let date = new Date();
+  if (dateInput) {
+    const parsed = new Date(dateInput);
+    if (!isNaN(parsed.getTime())) {
+      date = parsed;
+    }
+  }
   const formatter = new Intl.DateTimeFormat("en-US", {
     timeZone: "Asia/Kolkata",
     year: "numeric",
@@ -32,15 +38,24 @@ const getISTTimestamp = (dateInput?: Date | string): string => {
 
 export async function POST(request: Request) {
   try {
-    const data = await request.json();
-    const { name, email, company, message, submittedAt } = data;
+    let data: any;
+    try {
+      data = await request.json();
+    } catch {
+      return NextResponse.json(
+        { success: false, error: "Invalid request payload" },
+        { status: 400 }
+      );
+    }
 
-    // Convert the UTC instant from the client to IST (Asia/Kolkata) once here.
-    // `submittedAt` arrives as UTC ("...Z"); converting only on the backend
-    // avoids any double conversion (UTC → IST → IST again).
+    const { name, email, company, message, submittedAt } = data || {};
+
     const timestamp = getISTTimestamp(submittedAt);
-    const dateObj = submittedAt ? new Date(submittedAt) : new Date();
-    // ISO format with India (+05:30) offset
+    let dateObj = new Date();
+    if (submittedAt) {
+      const parsed = new Date(submittedAt);
+      if (!isNaN(parsed.getTime())) dateObj = parsed;
+    }
     const istOffsetMs = 5 * 60 * 60 * 1000 + 30 * 60 * 1000;
     const istOffsetDate = new Date(dateObj.getTime() + istOffsetMs);
     const isoISTTime = istOffsetDate.toISOString().replace("Z", "+05:30");

@@ -7,14 +7,8 @@ export interface AllService {
 
 export const ALL_SERVICES: AllService[] = [
   {
-    id: "behavioural-counselling",
-    title: "Behavioural Counselling & Student Support",
-    image: "/Services/behavioural_counselling_&_student_support_card_image.png",
-    slug: "behavioural-counselling-student-support",
-  },
-  {
-    id: "educational-consulting",
-    title: "Educational & Institutional Consulting",
+    id: "academic-service",
+    title: "Academic Services",
     image: "/Services/educational_&_institutional_consulting_card_image.png",
     slug: "educational-institutional-consulting",
   },
@@ -38,8 +32,20 @@ export const ALL_SERVICES: AllService[] = [
   },
   {
     id: "printing-branding",
-    title: "Printing & Branding Solutions",
+    title: "Marketing",
     image: "/Services/printing_&_branding_solutions_card_image.png",
     slug: "printing-branding-solutions",
+  },
+  {
+    id: "uniform-solutions",
+    title: "Uniform Solutions",
+    image: "/Service-page/Uniform-&-Clothing-Solutions.png",
+    slug: "uniform-solutions",
+  },
+  {
+    id: "canteen-services",
+    title: "Canteen Service",
+    image: "/Service-page/student-development.jpg",
+    slug: "canteen-management-services",
   },
 ];
