@@ -14,7 +14,7 @@ export const ALL_SERVICES: AllService[] = [
   },
   {
     id: "financial-consultancy",
-    title: "Financial Consultancy",
+    title: "Financial Services",
     image: "/Services/financial_consultancy_card_image.png",
     slug: "financial-consultancy",
   },
@@ -47,5 +47,11 @@ export const ALL_SERVICES: AllService[] = [
     title: "Canteen Service",
     image: "/Service-page/student-development.jpg",
     slug: "canteen-management-services",
+  },
+  {
+    id: "project-management-development",
+    title: "Project Management & Development",
+    image: "/Service-page/Civil-Engineering-&-Infrastructure-Development.png",
+    slug: "project-management-development",
   },
 ];

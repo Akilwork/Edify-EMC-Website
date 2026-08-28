@@ -99,6 +99,7 @@ export async function POST(request: Request) {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
+              requestType: "service",
               timestamp,
               istTime: timestamp,
               formattedTimestamp: timestamp,
@@ -108,12 +109,11 @@ export async function POST(request: Request) {
               institutionName: company || "",
               howCanWeHelp: message || "",
               requestDetails: message || "",
-              // Include empty strings for other columns if spreadsheet expects them
               countryCode: "",
               contactNumber: "",
               designation: "",
               institutionType: "",
-              serviceRequired: "",
+              serviceRequired: "General Contact Inquiry",
             }),
           });
 

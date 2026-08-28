@@ -15,9 +15,18 @@ const WHY_IT_MATTERS_SUBTITLES: Record<string, string> = {
   "uniform-solutions": "Promoting absolute campus equality, student belonging, and a polished, professional brand image.",
   "sports-training-talent-development": "Developing active health habits, personal discipline, and inter-school competition success.",
   "canteen-management-services": "Fostering student health, food safety compliance, and enjoyable, hygienic dining experiences.",
+  "project-management-development": "Ensuring projects are efficient, functional, compliant, and aligned with business objectives.",
 };
 
 const IMAGES_BY_SERVICE: Record<string, string[]> = {
+  "project-management-development": [
+    "/Why It Matters/Civil/img-1.png",
+    "/Why It Matters/Civil/img-2.png",
+    "/Why It Matters/Civil/img-3.png",
+    "/Why It Matters/Civil/img-4.png",
+    "/Why It Matters/Civil/img-5.png",
+    "/Why It Matters/Civil/img-6.png",
+  ],
   // ── Human Resource Management — original Figma frames ──────────────────
   "human-resource-services": [
     "/Why It Matters/Frame 19.png",
@@ -38,7 +47,7 @@ const IMAGES_BY_SERVICE: Record<string, string[]> = {
     "/Why It Matters/educational-institutional/img-6.png",
   ],
 
-  // ── Financial Consultancy — AI-generated images ─────────────────────────
+  // ── Financial Services — AI-generated images ─────────────────────────
   "financial-consultancy": [
     "/Why It Matters/financial-consultancy/img-1.png",
     "/Why It Matters/financial-consultancy/img-2.png",

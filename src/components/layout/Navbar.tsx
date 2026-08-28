@@ -20,6 +20,7 @@ import {
   Bus,
   Utensils,
   Shirt,
+  Workflow,
 } from "lucide-react";
 import { useConsultation } from "@/components/providers/ConsultationProvider";
 import { SERVICE_SLUGS } from "@/data/service-details";
@@ -37,7 +38,7 @@ const MEGA_SERVICES = [
   },
   {
     id: "financial-consultancy",
-    title: "Financial Consultancy",
+    title: "Financial Services",
     description: "Expert financial planning and advisory services.",
     icon: BadgeDollarSign,
     slug: "financial-consultancy",
@@ -65,7 +66,7 @@ const MEGA_SERVICES = [
   },
   {
     id: "transportation-service",
-    title: "Transportation Service",
+    title: "Institutional Transport",
     description: "Safe & reliable student transport solutions.",
     icon: Bus,
     slug: "transportation-fleet-support",
@@ -84,13 +85,22 @@ const MEGA_SERVICES = [
     icon: Shirt,
     slug: "uniform-solutions",
   },
+  {
+    id: "project-management-development",
+    title: "Project Management & Development",
+    description: "End-to-end project management & consulting for facilities.",
+    icon: Workflow,
+    slug: "project-management-development",
+  },
 ];
 
 const NAV_LINKS = [
-  { label: "HOME", href: "/" },
-  { label: "ABOUT US", href: "/about" },
-  { label: "SERVICES", href: "/services", hasMega: true },
+  { label: "Home", href: "/" },
+  { label: "About Us", href: "/about" },
+  { label: "Services", href: "/services", hasMega: true },
+  { label: "Careers", href: "/careers" },
 ];
+
 
 /* ────────────────────────────────────────────────────────────
    Mega Menu Component
@@ -117,7 +127,7 @@ function ServicesMegaMenu({
 
       {/* White panel */}
       <div
-        className="w-full bg-white border-b border-black/8"
+        className="w-full bg-white"
         style={{
           boxShadow: "0 8px 32px rgba(0,0,0,0.10)",
         }}
@@ -363,7 +373,7 @@ export default function Navbar() {
                       setMegaOpen(false);
                       router.push(href);
                     }}
-                    className={`flex items-center gap-1 text-[14px] font-semibold tracking-[0.96px] uppercase transition-colors duration-200 whitespace-nowrap cursor-pointer hover:text-white ${pathname.startsWith("/services") ? "text-white" : "text-white/60"
+                    className={`flex items-center gap-1 text-[14px] font-semibold tracking-[0.96px] transition-colors duration-200 whitespace-nowrap cursor-pointer hover:text-white ${pathname.startsWith("/services") ? "text-white" : "text-white/60"
                       }`}
                     aria-haspopup="true"
                     aria-expanded={megaOpen}
@@ -380,7 +390,7 @@ export default function Navbar() {
                 <Link
                   key={href}
                   href={href}
-                  className={`text-[14px] font-semibold tracking-[0.96px] uppercase transition-colors duration-200 whitespace-nowrap cursor-pointer hover:text-white ${pathname === href ? "text-white" : "text-white/60"
+                  className={`text-[14px] font-semibold tracking-[0.96px] transition-colors duration-200 whitespace-nowrap cursor-pointer hover:text-white ${pathname === href ? "text-white" : "text-white/60"
                     }`}
                 >
                   {label}
@@ -434,7 +444,7 @@ export default function Navbar() {
                       <Link
                         href={href}
                         onClick={() => setMenuOpen(false)}
-                        className={`flex-1 text-[14px] font-semibold tracking-[0.96px] uppercase py-2 cursor-pointer transition-colors duration-200 ${pathname.startsWith("/services")
+                        className={`flex-1 text-[14px] font-semibold tracking-[0.96px] py-2 cursor-pointer transition-colors duration-200 ${pathname.startsWith("/services")
                             ? "text-black"
                             : "text-black/50"
                           }`}
@@ -486,7 +496,7 @@ export default function Navbar() {
                     key={href}
                     href={href}
                     onClick={() => setMenuOpen(false)}
-                    className={`block text-[14px] font-semibold tracking-[0.96px] uppercase transition-colors duration-200 hover:text-black py-2 cursor-pointer ${pathname === href ? "text-black" : "text-black/50"
+                    className={`block text-[14px] font-semibold tracking-[0.96px] transition-colors duration-200 hover:text-black py-2 cursor-pointer ${pathname === href ? "text-black" : "text-black/50"
                       }`}
                   >
                     {label}

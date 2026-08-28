@@ -101,7 +101,7 @@ export default function CompaniesSection() {
         </div>
 
         {/* Retro Grid Container */}
-        <div className="relative w-full max-w-[1100px] mx-auto px-4 md:px-0">
+        <div className="relative w-full mx-auto">
           
           {/* ========================================================================= */}
           {/* DESKTOP RETRO GRID (5 cols x 2 rows) - Visible md and up                 */}

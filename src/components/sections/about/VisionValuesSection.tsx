@@ -249,7 +249,7 @@ export default function VisionValuesSection() {
       {/* ─── MAIN CONTENT CONTAINER ─── */}
       <div
         ref={contentRef}
-        className="relative z-10 w-full max-w-[1920px] mx-auto px-8 md:px-16 lg:px-20 xl:px-32"
+        className="relative z-10 container-responsive container-max"
       >
         <div className="grid lg:grid-cols-[45%_55%] gap-0 items-center justify-center">
           {/* ─── LEFT COLUMN: CONTENT ─── */}

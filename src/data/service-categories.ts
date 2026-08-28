@@ -27,7 +27,11 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
       },
       {
         id: "financial-consultancy",
-        title: "Financial Consultancy",
+        title: "Financial Services",
+      },
+      {
+        id: "project-management-development",
+        title: "Project Management & Development",
       },
     ],
   },
@@ -53,7 +57,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
       },
       {
         id: "transportation-fleet",
-        title: "Transportation & Fleet Support",
+        title: "Institutional Transport",
       },
       {
         id: "uniform-solutions",
