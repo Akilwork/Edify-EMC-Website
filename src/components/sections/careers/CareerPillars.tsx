@@ -77,8 +77,8 @@ export default function CareerPillars() {
             backgroundPosition: "center",
           }}
         />
-        {/* Center ambient glow matching the teal theme */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(58,186,180,0.03),transparent_70%)]" />
+        {/* Center ambient glow matching the purple theme */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(168,85,247,0.03),transparent_70%)]" />
       </div>
 
       {/* Grid Content Container */}
@@ -99,34 +99,34 @@ export default function CareerPillars() {
               className={`group relative flex flex-col justify-start gap-6 p-8 sm:p-10 lg:p-12 hover:bg-white/[0.015] transition-all duration-500 ease-out ${getBorderClasses(idx)}`}
             >
               {/* Circle Badge Icon */}
-              <div className="w-14 h-14 rounded-full flex items-center justify-center relative overflow-hidden bg-gradient-to-b from-white/10 to-white/[0.02] border border-white/15 shadow-[inset_0_2px_4px_rgba(255,255,255,0.1),0_4px_12px_rgba(0,0,0,0.5)] group-hover:border-[#3ABAB4]/30 group-hover:shadow-[0_0_15px_rgba(58,186,180,0.15)] transition-all duration-300">
+              <div className="w-14 h-14 rounded-full flex items-center justify-center relative overflow-hidden bg-gradient-to-b from-white/10 to-white/[0.02] border border-white/15 shadow-[inset_0_2px_4px_rgba(255,255,255,0.1),0_4px_12px_rgba(0,0,0,0.5)] group-hover:border-[#a855f7]/30 group-hover:shadow-[0_0_15px_rgba(168,85,247,0.15)] transition-all duration-300">
                 {/* Shine effect */}
                 <div className="absolute top-0.5 inset-x-2 h-[20%] rounded-full bg-gradient-to-b from-white/20 to-transparent pointer-events-none" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(58,186,180,0.25),transparent_60%)]" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(168,85,247,0.25),transparent_60%)]" />
                 
                 {/* Center molecular sphere */}
-                <svg viewBox="0 0 100 100" className="w-6 h-6 text-[#3ABAB4] relative z-10 transition-transform duration-500 group-hover:scale-110" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="50" cy="50" r="16" fill={`url(#sphereGlow-${idx})`} stroke="#3ABAB4" strokeWidth="1.5" />
-                  <circle cx="50" cy="50" r="32" stroke="rgba(58,186,180,0.25)" strokeDasharray="4 4" />
-                  <circle cx="50" cy="50" r="24" stroke="rgba(58,186,180,0.4)" />
+                <svg viewBox="0 0 100 100" className="w-6 h-6 text-[#a855f7] relative z-10 transition-transform duration-500 group-hover:scale-110" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="50" cy="50" r="16" fill={`url(#sphereGlow-${idx})`} stroke="#a855f7" strokeWidth="1.5" />
+                  <circle cx="50" cy="50" r="32" stroke="rgba(168,85,247,0.25)" strokeDasharray="4 4" />
+                  <circle cx="50" cy="50" r="24" stroke="rgba(168,85,247,0.4)" />
                   
-                  <line x1="50" y1="50" x2="30" y2="30" stroke="#3ABAB4" strokeWidth="1" opacity="0.6" />
-                  <line x1="50" y1="50" x2="70" y2="30" stroke="#3ABAB4" strokeWidth="1" opacity="0.6" />
-                  <line x1="50" y1="50" x2="50" y2="74" stroke="#3ABAB4" strokeWidth="1" opacity="0.6" />
-                  <line x1="50" y1="50" x2="26" y2="50" stroke="#3ABAB4" strokeWidth="1" opacity="0.6" />
-                  <line x1="50" y1="50" x2="74" y2="50" stroke="#3ABAB4" strokeWidth="1" opacity="0.6" />
+                  <line x1="50" y1="50" x2="30" y2="30" stroke="#a855f7" strokeWidth="1" opacity="0.6" />
+                  <line x1="50" y1="50" x2="70" y2="30" stroke="#a855f7" strokeWidth="1" opacity="0.6" />
+                  <line x1="50" y1="50" x2="50" y2="74" stroke="#a855f7" strokeWidth="1" opacity="0.6" />
+                  <line x1="50" y1="50" x2="26" y2="50" stroke="#a855f7" strokeWidth="1" opacity="0.6" />
+                  <line x1="50" y1="50" x2="74" y2="50" stroke="#a855f7" strokeWidth="1" opacity="0.6" />
                   
-                  <circle cx="30" cy="30" r="2.5" fill="#3ABAB4" />
-                  <circle cx="70" cy="30" r="2.5" fill="#3ABAB4" />
-                  <circle cx="50" cy="74" r="2.5" fill="#3ABAB4" />
-                  <circle cx="26" cy="50" r="2.5" fill="#3ABAB4" />
-                  <circle cx="74" cy="50" r="2.5" fill="#3ABAB4" />
+                  <circle cx="30" cy="30" r="2.5" fill="#a855f7" />
+                  <circle cx="70" cy="30" r="2.5" fill="#a855f7" />
+                  <circle cx="50" cy="74" r="2.5" fill="#a855f7" />
+                  <circle cx="26" cy="50" r="2.5" fill="#a855f7" />
+                  <circle cx="74" cy="50" r="2.5" fill="#a855f7" />
                   <circle cx="50" cy="50" r="4" fill="#fff" />
                   
                   <defs>
                     <radialGradient id={`sphereGlow-${idx}`} cx="50%" cy="50%" r="50%">
-                      <stop offset="0%" stopColor="#3ABAB4" stopOpacity="0.8" />
-                      <stop offset="100%" stopColor="#1e5c59" stopOpacity="0.1" />
+                      <stop offset="0%" stopColor="#a855f7" stopOpacity="0.8" />
+                      <stop offset="100%" stopColor="#581c87" stopOpacity="0.1" />
                     </radialGradient>
                   </defs>
                 </svg>

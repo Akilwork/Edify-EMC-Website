@@ -295,30 +295,30 @@ export default function   () {
             >
               {[
                 {
-                  icon: <Users className="w-4 h-4 sm:w-5 h-5 text-white group-hover:text-[#A855F7] transition-colors duration-300" />,
+                  icon: <Users className="w-4 h-4 sm:w-5 h-5 text-white transition-colors duration-300" />,
                   title: "Absolute Autonomy",
                   desc: "We hire brilliant minds and get out of their way. Own your tasks, drive execution, and shape solutions with total trust."
                 },
                 {
-                  icon: <Award className="w-4 h-4 sm:w-5 h-5 text-white group-hover:text-[#A855F7] transition-colors duration-300" />,
+                  icon: <Award className="w-4 h-4 sm:w-5 h-5 text-white transition-colors duration-300" />,
                   title: "Continuous Growth",
                   desc: "Invest in your career path with sponsored technical trainings, professional education, certifications, and active mentorship."
                 },
                 {
-                  icon: <ShieldCheck className="w-4 h-4 sm:w-5 h-5 text-white group-hover:text-[#A855F7] transition-colors duration-300" />,
+                  icon: <ShieldCheck className="w-4 h-4 sm:w-5 h-5 text-white transition-colors duration-300" />,
                   title: "Modern Collaboration",
                   desc: "Work in visual, friction-free office spaces (or remote/hybrid set ups) utilizing the best collaboration suites and tech stacks."
                 }
               ].map((card, idx) => (
                 <div
                   key={idx}
-                  className="flex gap-3 sm:gap-4 p-4 lg:p-5 bg-white/[0.02] border border-white/[0.07] backdrop-blur-md rounded-2xl hover:border-[#A855F7]/30 hover:shadow-[0_8px_32px_rgba(168,85,247,0.15)] hover:bg-white/[0.04] transition-all duration-300 shadow-[0_8px_32px_rgba(0,0,0,0.4)] group"
+                  className="flex gap-3 sm:gap-4 p-4 lg:p-5 bg-white/[0.02] border border-white/[0.07] backdrop-blur-md rounded-2xl transition-all duration-300 shadow-[0_8px_32px_rgba(0,0,0,0.4)] group"
                 >
-                  <div className="w-9 h-9 sm:w-10 sm:h-10 flex-shrink-0 rounded-xl bg-white/[0.03] border border-white/10 flex items-center justify-center group-hover:bg-[#A855F7]/10 group-hover:border-[#A855F7]/20 transition-all duration-300">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 flex-shrink-0 rounded-xl bg-white/[0.03] border border-white/10 flex items-center justify-center transition-all duration-300">
                     {card.icon}
                   </div>
                   <div className="space-y-1 text-left">
-                    <h3 className="font-sans text-xs sm:text-sm lg:text-base font-semibold text-white group-hover:text-[#A855F7] transition-colors duration-200">
+                    <h3 className="font-sans text-xs sm:text-sm lg:text-base font-semibold text-white transition-colors duration-200">
                       {card.title}
                     </h3>
                     <p className="text-white/50 text-[10px] sm:text-xs leading-relaxed">

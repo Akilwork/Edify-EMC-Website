@@ -120,7 +120,7 @@ export default function CareerHero() {
       {/* GSAP Staggered Cards container */}
       <div className="relative w-full z-10 container-responsive container-max max-w-[1240px]">
         {/* Horizontal flex swipeable container on mobile, fixed grid on desktop */}
-        <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-none px-6 py-8 w-full max-w-full lg:overflow-x-visible lg:snap-none lg:px-0 lg:py-0 lg:grid lg:grid-cols-5 lg:gap-6">
+        <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar scrollbar-none px-6 py-8 w-full max-w-full lg:overflow-x-visible lg:snap-none lg:px-0 lg:py-0 lg:grid lg:grid-cols-5 lg:gap-6">
           {CARDS_DATA.map((card, idx) => {
             const isHovered = hoveredIndex === idx;
             const isAnyHovered = hoveredIndex !== null;

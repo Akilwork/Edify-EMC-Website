@@ -889,12 +889,9 @@ export default function CareerPositions() {
               className="relative w-full max-w-lg bg-white/95 backdrop-blur-2xl border border-neutral-200/80 rounded-[32px] sm:rounded-[36px] p-6 sm:p-8 z-10 shadow-[0_25px_70px_rgba(0,0,0,0.18)] text-neutral-900 overflow-hidden max-h-[90vh] flex flex-col"
             >
               {/* Top Row */}
-              <div className="flex items-start justify-between pb-4 border-b border-neutral-200/80 flex-shrink-0">
+              <div className="flex items-center justify-between pb-4 border-b border-neutral-200/80 flex-shrink-0">
                 <div>
-                  <span className="text-[10px] font-semibold text-[#a855f7] uppercase tracking-wider block">
-                    Submit Application
-                  </span>
-                  <h3 className="font-sans text-lg sm:text-xl font-bold mt-1 text-neutral-950 uppercase">
+                  <h3 className="font-sans text-lg sm:text-xl font-bold text-neutral-950 uppercase">
                     {selectedJob.title}
                   </h3>
                 </div>
