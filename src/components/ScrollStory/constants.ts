@@ -12,8 +12,8 @@ export const SCROLL_MULTIPLIER = 1.5;
 
 // ─── Final frame geometry (the frame StoryHandoff overlays) ──────────────────
 /** Source dimensions of the final frame, drawn object-fit: cover. */
-export const FRAME_W = 3840;
-export const FRAME_H = 2160;
+export const FRAME_W = 1920;
+export const FRAME_H = 1080;
 
 // ─── Frame sequence configuration ────────────────────────────────────────────
 /**
@@ -30,7 +30,7 @@ export const FRAME_PREFIX = 'frame_';
 /**
  * The file extension of the frame images (e.g., 'jpg', 'png', 'webp').
  */
-export const FRAME_EXTENSION = 'jpg';
+export const FRAME_EXTENSION = 'webp';
 
 /**
  * The character padding for the filename numbers.
