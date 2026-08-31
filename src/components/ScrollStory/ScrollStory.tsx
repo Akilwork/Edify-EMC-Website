@@ -219,8 +219,9 @@ export const ScrollStory = () => {
 
     // Calculate total horizontal scroll travel needed for cards across all devices
     const cardScrollDistance = Math.max(0, container.scrollWidth - overlay.clientWidth);
+    const cardTravelDist = cardScrollDistance * 1.2; // Slightly stretched for responsive card movement
     const baseDist = windowSize.height * SCROLL_MULTIPLIER;
-    const totalDist = baseDist + cardScrollDistance;
+    const totalDist = baseDist + cardTravelDist;
 
     const st = ScrollTrigger.create({
       trigger: section,
@@ -228,7 +229,7 @@ export const ScrollStory = () => {
       end: `+=${totalDist}`,
       pin: true,
       pinSpacing: true,
-      scrub: 0.3,
+      scrub: 0.45,
       refreshPriority: 3,
       onUpdate: (self) => {
         const scrolledPx = self.progress * totalDist;
