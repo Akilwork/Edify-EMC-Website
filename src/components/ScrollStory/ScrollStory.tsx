@@ -74,7 +74,7 @@ const CARDS_DATA = [
   },
   {
     id: 'transportation',
-    title: 'Institutional Transport',
+    title: 'Transport Service',
     image: '/Service-page/Transportation-&-Fleet-Support.png',
     link: '/services#transportation',
   },

@@ -234,8 +234,8 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
   },
   transportation: {
     id: 'transportation',
-    title: 'Institutional Transport',
-    categoryTag: 'Institutional Transport',
+    title: 'Transport Service',
+    categoryTag: 'Transport Service',
     mainHeader: 'Reliable Mobility. Safe Journeys. Seamless Operations.',
     introBodyText: 'Providing safe, reliable, and compliant passenger transportation solutions across the UAE, supported by a modern fleet, professional drivers, and disciplined operations.',
     tagline: 'Keeping Your Institution Moving Safely.',
