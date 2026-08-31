@@ -183,7 +183,7 @@ export default function WhyEdifySection() {
             className="absolute inset-0 flex items-start pt-[10vh] lg:pt-0 lg:items-center justify-center lg:justify-end"
           >
             <div
-              className="relative w-full max-w-[540px] lg:max-w-[600px] lg:ml-auto min-h-[220px] sm:min-h-[240px] lg:min-h-[420px] text-center lg:text-right"
+              className="relative w-full max-w-[560px] lg:max-w-[680px] lg:ml-auto min-h-[220px] sm:min-h-[240px] lg:min-h-[420px] text-center lg:text-right"
             >
             {/* ── Stage 1 ── */}
             <div ref={text1Ref} style={textBase}>
@@ -203,7 +203,7 @@ export default function WhyEdifySection() {
             {/* ── Stage 2 ── */}
             <div ref={text2Ref} style={{ ...textBase, opacity: 0 }}>
               <span
-                className="block font-medium tracking-tight leading-none mb-3"
+                className="block font-medium tracking-tight leading-none mb-5"
                 style={{
                   fontFamily: "var(--font-inter-tight, 'Inter Tight', sans-serif)",
                   fontSize: "clamp(1.25rem, 4vw, 3rem)",
@@ -214,22 +214,24 @@ export default function WhyEdifySection() {
                 Beyond Consulting.
               </span>
               <span
-                className="block text-white font-medium tracking-tight leading-tight"
+                className="block text-white font-medium tracking-tight leading-snug"
                 style={{
                   fontFamily: "var(--font-inter-tight, 'Inter Tight', sans-serif)",
-                  fontSize: "clamp(2.0rem, 7vw, 4.8rem)",
+                  fontSize: "clamp(2.0rem, 5.2vw, 4.2rem)",
                   fontWeight: 500,
+                  lineHeight: 1.2,
                   textShadow: "0 0 80px rgba(42,126,245,0.2)",
                 }}
               >
-                Built For Institutional Growth.
+                Built For <br />
+                <span className="whitespace-nowrap">Institutional Growth.</span>
               </span>
             </div>
 
             {/* ── Stage 3 ── */}
             <div ref={text3Ref} style={{ ...textBase, opacity: 0 }}>
               <span
-                className="block font-medium tracking-tight leading-none mb-2"
+                className="block font-medium tracking-tight leading-none mb-4"
                 style={{
                   fontFamily: "var(--font-inter-tight, 'Inter Tight', sans-serif)",
                   fontSize: "clamp(1.1rem, 3.5vw, 2.4rem)",
@@ -240,15 +242,17 @@ export default function WhyEdifySection() {
                 Beyond Consulting.
               </span>
               <span
-                className="block font-medium tracking-tight leading-none mb-6"
+                className="block font-medium tracking-tight leading-snug mb-8"
                 style={{
                   fontFamily: "var(--font-inter-tight, 'Inter Tight', sans-serif)",
-                  fontSize: "clamp(1.2rem, 3.8vw, 2.6rem)",
+                  fontSize: "clamp(1.2rem, 3.5vw, 2.5rem)",
                   fontWeight: 400,
+                  lineHeight: 1.25,
                   color: "rgba(255,255,255,0.32)",
                 }}
               >
-                Built For Institutional Growth.
+                Built For <br />
+                <span className="whitespace-nowrap">Institutional Growth.</span>
               </span>
               <span
                 className="block font-medium leading-snug text-white mx-auto lg:ml-auto lg:mr-0"

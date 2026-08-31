@@ -265,6 +265,39 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
       '24/7 Fleet Coordination & Professional Drivers',
     ],
   },
+  transportation_admin: {
+    id: 'transportation_admin',
+    title: 'Transportation and Administration',
+    categoryTag: 'Transportation & Administration',
+    mainHeader: 'Comprehensive Fleet Mobility & Administrative Operations',
+    introBodyText: 'Integrated transportation management and administrative support services designed to streamline institutional logistics, vehicle maintenance, route optimization, and operational governance across educational and corporate institutions.',
+    tagline: 'Streamlined Mobility & Institutional Administration.',
+    bgImage: '/Service-page/Transportation-&-Fleet-Support.png',
+    subServices: [
+      {
+        title: 'Fleet Logistics & Administration',
+        description: 'End-to-end fleet administration, licensing, regulatory compliance, vehicle maintenance schedules, and driver management.',
+      },
+      {
+        title: 'Institutional Operations & Facilities Management',
+        description: 'Comprehensive administrative oversight for school facilities, transport safety protocols, and daily campus logistics.',
+      },
+      {
+        title: 'Smart Fleet Tracking & Compliance',
+        description: 'Automated fleet tracking, safety audit compliance, fuel management, and real-time administrative reporting.',
+      },
+      {
+        title: 'Vendor & Resource Coordination',
+        description: 'Centralized administrative procurement, vendor contract management, and operational resource planning.',
+      },
+    ],
+    keyBenefits: [
+      'Complete Institutional Transport & Administrative Integration',
+      'Full UAE & RTA Regulatory Compliance',
+      'Optimized Operational Costs & Fleet Maintenance',
+      'Seamless Facility Oversight & Real-Time Tracking',
+    ],
+  },
 };
 
 interface ServiceDetailsModalProps {
