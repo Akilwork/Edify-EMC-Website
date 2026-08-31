@@ -90,6 +90,12 @@ const CARDS_DATA = [
     image: '/Services/printing_&_branding_solutions_card_image.png',
     link: '/services#printing',
   },
+  {
+    id: 'transportation_admin',
+    title: 'Transportation and Administration',
+    image: '/Service-page/Transportation-&-Fleet-Support.png',
+    link: '/services#transportation_admin',
+  },
 ];
 
 export const ScrollStory = () => {
@@ -145,28 +151,29 @@ export const ScrollStory = () => {
 
   // ── 1. Preload every frame ──────────────────────────────────────────────────
   useEffect(() => {
-    let settled = 0;
+    let isMounted = true;
     const images: HTMLImageElement[] = new Array(TOTAL_FRAMES);
 
-    const onSettle = () => {
-      settled++;
-      if (settled === TOTAL_FRAMES) setLoadState('ready');
+    const onFrameLoad = (index: number) => {
+      if (!isMounted) return;
+      // Mark ready as soon as the first frame is available so user sees content instantly
+      if (index === 0) {
+        setLoadState('ready');
+      }
     };
 
     for (let i = 0; i < TOTAL_FRAMES; i++) {
       const img = new Image();
-      img.onload = () => {
-        if ('decode' in img) {
-          img.decode().catch(() => {}).finally(onSettle);
-        } else {
-          onSettle();
-        }
-      };
-      img.onerror = onSettle;
+      img.onload = () => onFrameLoad(i);
+      img.onerror = () => onFrameLoad(i);
       img.src = getFrameSrc(i);
       images[i] = img;
     }
     imagesRef.current = images;
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   // ── 2. Size canvas to true screen dimensions ───────────────────────────────
@@ -240,8 +247,8 @@ export const ScrollStory = () => {
 
         const contentWrapper = contentWrapperRef.current;
         if (overlay && contentWrapper) {
-          // ── Cards Fade-in & Canvas Fade-out ──
-          const fadeStartPx = baseDist * 0.65;
+          // ── Cards Fade-in & Canvas Fade-out (Clean transition to eliminate 3D card ghosting) ──
+          const fadeStartPx = baseDist * 0.70;
           const fadeEndPx = baseDist * 0.82;
           let opacity = 0;
 
@@ -258,10 +265,10 @@ export const ScrollStory = () => {
           contentWrapper.style.pointerEvents = opacity > 0.7 ? 'auto' : 'none';
 
           if (canvas) {
-            // Hide canvas completely as cards fade in to eliminate background 3D card ghosting
-            const canvasOpacity = Math.max(0, 1 - opacity * 1.2);
+            // Drop canvas opacity rapidly to zero as cards fade in to eliminate ghosting of background 3D text/cards
+            const canvasOpacity = Math.max(0, 1 - opacity * 2.2);
             canvas.style.opacity = `${canvasOpacity}`;
-            canvas.style.visibility = opacity >= 0.85 ? 'hidden' : 'visible';
+            canvas.style.visibility = canvasOpacity <= 0.05 ? 'hidden' : 'visible';
           }
 
           // ── Phase 2: Horizontal Card Movement across Fixed Clean Background ──
