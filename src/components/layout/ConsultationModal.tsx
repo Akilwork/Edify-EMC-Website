@@ -82,6 +82,7 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
   const [showCountryCodes, setShowCountryCodes] = useState(false);
   const [showInstTypes, setShowInstTypes] = useState(false);
   const [showServices, setShowServices] = useState(false);
+  const [formErrors, setFormErrors] = useState<{ name?: boolean; contactNumber?: boolean; email?: boolean }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const submittingRef = useRef(false);
 
@@ -123,6 +124,7 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
       setShowCountryCodes(false);
       setShowInstTypes(false);
       setShowServices(false);
+      setFormErrors({});
       submittingRef.current = false;
       setIsSubmitting(false);
     }
@@ -132,10 +134,17 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
     e.preventDefault();
     if (submittingRef.current) return;
 
-    if (!formData.name.trim() || !formData.email.trim() || !formData.contactNumber.trim()) {
+    const errors: { name?: boolean; contactNumber?: boolean; email?: boolean } = {};
+    if (!formData.name.trim()) errors.name = true;
+    if (!formData.contactNumber.trim()) errors.contactNumber = true;
+    if (!formData.email.trim() || !formData.email.includes("@")) errors.email = true;
+
+    setFormErrors(errors);
+
+    if (Object.keys(errors).length > 0) {
       toast({
         title: "Validation Error",
-        description: "Please fill out Name, Contact Number, and Email Address.",
+        description: "Please fill out all required fields marked in red.",
         variant: "destructive",
       });
       return;
@@ -279,7 +288,7 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
               ].join(" ")}
             >
               <div className="flex-1 min-h-0 overflow-y-auto no-scrollbar pt-5 px-5 pb-24 sm:pt-7 sm:px-7 sm:pb-28 md:pt-9 md:px-9 md:pb-32 lg:pt-14 lg:px-8 lg:pb-6 xl:pt-16 xl:px-12 xl:pb-8">
-                <form id="consultation-form" onSubmit={handleSubmit} className="space-y-5 sm:space-y-6 lg:space-y-5 xl:space-y-6 pb-6 lg:pb-0">
+                <form id="consultation-form" onSubmit={handleSubmit} noValidate className="space-y-5 sm:space-y-6 lg:space-y-5 xl:space-y-6 pb-6 lg:pb-0">
 
                   {/* ── Row 1: Name & Contact Number ───────────────────────────── */}
                   <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 lg:gap-5 xl:gap-6 relative ${showCountryCodes ? "z-30" : "z-10"}`}>
@@ -293,10 +302,14 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                         type="text"
                         placeholder="Enter Full Name"
                         value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full px-4 h-[48px] sm:h-[52px] lg:h-[48px] xl:h-[52px] border border-white/8 rounded-[8px] text-white text-[13px] sm:text-sm placeholder-white/25 focus:outline-none focus:border-white/20 transition-all duration-200 backdrop-blur-sm"
+                        onChange={(e) => {
+                          setFormData({ ...formData, name: e.target.value });
+                          if (formErrors.name) setFormErrors((prev) => ({ ...prev, name: false }));
+                        }}
+                        className={`w-full px-4 h-[48px] sm:h-[52px] lg:h-[48px] xl:h-[52px] border rounded-[8px] text-white text-[13px] sm:text-sm placeholder-white/25 focus:outline-none transition-all duration-200 backdrop-blur-sm ${
+                          formErrors.name ? "border-red-500 focus:border-red-500" : "border-white/8 focus:border-white/20"
+                        }`}
                         style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
-                        required
                       />
                     </div>
 
@@ -305,7 +318,9 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                         Contact Number
                       </label>
                       <div
-                        className="flex items-center border border-white/8 rounded-[8px] h-[48px] sm:h-[52px] lg:h-[48px] xl:h-[52px] focus-within:border-white/20 transition-all duration-200 backdrop-blur-sm"
+                        className={`flex items-center border rounded-[8px] h-[48px] sm:h-[52px] lg:h-[48px] xl:h-[52px] transition-all duration-200 backdrop-blur-sm ${
+                          formErrors.contactNumber ? "border-red-500 focus-within:border-red-500" : "border-white/8 focus-within:border-white/20"
+                        }`}
                         style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
                       >
                         <div ref={countryDropdownRef} className="relative flex-shrink-0 h-full">
@@ -343,9 +358,17 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                           type="tel"
                           placeholder="Enter Contact Number"
                           value={formData.contactNumber}
-                          onChange={(e) => setFormData({ ...formData, contactNumber: e.target.value })}
+                          onChange={(e) => {
+                            setFormData({ ...formData, contactNumber: e.target.value.replace(/[^0-9]/g, "") });
+                            if (formErrors.contactNumber) setFormErrors((prev) => ({ ...prev, contactNumber: false }));
+                          }}
+                          onKeyDown={(e) => {
+                            const allowedKeys = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab", "Enter", "Home", "End"];
+                            if (!/^[0-9]$/.test(e.key) && !allowedKeys.includes(e.key) && !e.ctrlKey && !e.metaKey) {
+                              e.preventDefault();
+                            }
+                          }}
                           className="w-full h-full bg-transparent px-3 text-[13px] sm:text-sm text-white placeholder-white/25 focus:outline-none"
-                          required
                         />
                       </div>
                     </div>
@@ -363,10 +386,14 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                         type="email"
                         placeholder="Enter Email Address"
                         value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full px-4 h-[48px] sm:h-[52px] lg:h-[48px] xl:h-[52px] border border-white/8 rounded-[8px] text-white text-[13px] sm:text-sm placeholder-white/25 focus:outline-none focus:border-white/20 transition-all duration-200 backdrop-blur-sm"
+                        onChange={(e) => {
+                          setFormData({ ...formData, email: e.target.value });
+                          if (formErrors.email) setFormErrors((prev) => ({ ...prev, email: false }));
+                        }}
+                        className={`w-full px-4 h-[48px] sm:h-[52px] lg:h-[48px] xl:h-[52px] border rounded-[8px] text-white text-[13px] sm:text-sm placeholder-white/25 focus:outline-none transition-all duration-200 backdrop-blur-sm ${
+                          formErrors.email ? "border-red-500 focus:border-red-500" : "border-white/8 focus:border-white/20"
+                        }`}
                         style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
-                        required
                       />
                     </div>
 

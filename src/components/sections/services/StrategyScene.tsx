@@ -62,7 +62,7 @@ export default function StrategyScene({ isVisible }: StrategySceneProps) {
   ];
 
   return (
-    <div className="w-full max-w-[1600px] mx-auto grid lg:grid-cols-[45%_55%] gap-8 lg:gap-16 items-center px-4 md:px-8">
+    <div className="container-responsive container-max grid lg:grid-cols-[45%_55%] gap-8 lg:gap-16 items-center">
       {/* Left Column: Content */}
       <div ref={leftColRef} className="order-2 lg:order-1 text-left">
         <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-cyan-500/20 to-blue-600/20 rounded-2xl mb-6">

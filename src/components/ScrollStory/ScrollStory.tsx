@@ -49,6 +49,12 @@ function drawBlended(
 
 const CARDS_DATA = [
   {
+    id: 'educational',
+    title: 'Academic services.',
+    image: '/Services/educational_&_institutional_consulting_card_image.png',
+    link: '/services#educational',
+  },
+  {
     id: 'hr',
     title: 'Human Resource Services',
     image: '/Services/human_resource_services_card_image.png',
@@ -56,7 +62,7 @@ const CARDS_DATA = [
   },
   {
     id: 'financial',
-    title: 'Financial Consultancy',
+    title: 'Financial Services',
     image: '/Services/financial_consultancy_card_image.png',
     link: '/services#financial',
   },
@@ -67,10 +73,10 @@ const CARDS_DATA = [
     link: '/services#it',
   },
   {
-    id: 'educational',
-    title: 'Academic services.',
-    image: '/Services/educational_&_institutional_consulting_card_image.png',
-    link: '/services#educational',
+    id: 'transportation',
+    title: 'Institutional Transport',
+    image: '/Service-page/Transportation-&-Fleet-Support.png',
+    link: '/services#transportation',
   },
   {
     id: 'behavioural',
@@ -193,31 +199,21 @@ export const ScrollStory = () => {
     return () => window.removeEventListener('resize', applySize);
   }, [loadState]);
 
-  // ── 3. GSAP ScrollTrigger – pin + scrub ────────────────────────────────────
+  // ── 3. GSAP ScrollTrigger – 2-Phase Animation (3D Intro + Cards Horizontal Movement) ──
   useEffect(() => {
     if (loadState !== 'ready') return;
     const section = sectionRef.current;
     const canvas = canvasRef.current;
-    if (!section || !canvas) return;
+    const overlay = cardsOverlayRef.current;
+    const container = cardsContainerRef.current;
+    if (!section || !canvas || !overlay || !container) return;
 
     drawBlended(canvas, imagesRef.current, 0, dprRef.current);
 
-    // ── Mobile/Tablet: extend pin to cover card overflow so page scroll drives it ──
-    const isMobileOrTablet = windowSize.width <= 1024;
+    // Calculate total horizontal scroll travel needed for cards across all devices
+    const cardScrollDistance = Math.max(0, container.scrollWidth - overlay.clientWidth);
     const baseDist = windowSize.height * SCROLL_MULTIPLIER;
-    let extraScrollPx = 0;
-
-    if (isMobileOrTablet) {
-      const overlay = cardsOverlayRef.current;
-      const container = cardsContainerRef.current;
-      if (overlay && container) {
-        extraScrollPx = Math.max(0, container.scrollHeight - overlay.offsetHeight);
-      }
-    }
-
-    // Map the page scroll 1:1 to the card list scrolling
-    const lastFrameScrollDistance = isMobileOrTablet ? extraScrollPx * 1.0 : 0;
-    const totalDist = baseDist + lastFrameScrollDistance;
+    const totalDist = baseDist + cardScrollDistance;
 
     const st = ScrollTrigger.create({
       trigger: section,
@@ -228,8 +224,10 @@ export const ScrollStory = () => {
       scrub: 0.3,
       refreshPriority: 3,
       onUpdate: (self) => {
-        // 3D Canvas animation plays over the first 92% of baseDist scroll travel
-        const animProgress = Math.min(1, (self.progress * totalDist) / (baseDist * 0.92));
+        const scrolledPx = self.progress * totalDist;
+
+        // ── Phase 1: 3D Canvas animation scrubs over the first 85% of baseDist ──
+        const animProgress = Math.min(1, scrolledPx / (baseDist * 0.85));
         const next = scrollProgressToFractionalFrame(animProgress);
 
         if (Math.round(next) !== Math.round(fractionalFrame.current)) {
@@ -240,40 +238,41 @@ export const ScrollStory = () => {
           );
         }
 
-        const cardsOverlay = cardsOverlayRef.current;
         const contentWrapper = contentWrapperRef.current;
-        if (cardsOverlay && contentWrapper) {
-          // Cards fade in AFTER 3D animation reaches frame 45 (between 92% and 98%)
-          const fadeStart = 0.92;
-          const fadeEnd = 0.98;
-          const currentScrollProgress = (self.progress * totalDist) / baseDist;
+        if (overlay && contentWrapper) {
+          // ── Cards Fade-in & Canvas Fade-out ──
+          const fadeStartPx = baseDist * 0.65;
+          const fadeEndPx = baseDist * 0.82;
           let opacity = 0;
-          if (currentScrollProgress >= fadeEnd) {
+
+          if (scrolledPx >= fadeEndPx) {
             opacity = 1;
-          } else if (currentScrollProgress <= fadeStart) {
+          } else if (scrolledPx <= fadeStartPx) {
             opacity = 0;
           } else {
-            opacity = (currentScrollProgress - fadeStart) / (fadeEnd - fadeStart);
+            opacity = (scrolledPx - fadeStartPx) / (fadeEndPx - fadeStartPx);
           }
-          cardsOverlay.style.opacity = `${opacity}`;
-          cardsOverlay.style.pointerEvents = opacity > 0.9 ? 'auto' : 'none';
-          contentWrapper.style.pointerEvents = opacity > 0.9 ? 'auto' : 'none';
+
+          overlay.style.opacity = `${opacity}`;
+          overlay.style.pointerEvents = opacity > 0.7 ? 'auto' : 'none';
+          contentWrapper.style.pointerEvents = opacity > 0.7 ? 'auto' : 'none';
 
           if (canvas) {
-            canvas.style.opacity = `${1 - opacity}`;
-            canvas.style.visibility = opacity >= 0.99 ? 'hidden' : 'visible';
+            // Hide canvas completely as cards fade in to eliminate background 3D card ghosting
+            const canvasOpacity = Math.max(0, 1 - opacity * 1.2);
+            canvas.style.opacity = `${canvasOpacity}`;
+            canvas.style.visibility = opacity >= 0.85 ? 'hidden' : 'visible';
           }
 
-          // ── Drive mobile/tablet card list scroll via page scroll ────────────────
-          if (isMobileOrTablet && extraScrollPx > 0) {
-            const cardsPhaseStart = baseDist / totalDist;
-            if (self.progress > cardsPhaseStart) {
-              const cardsScrollProgress =
-                (self.progress - cardsPhaseStart) / (1 - cardsPhaseStart);
-              cardsOverlay.scrollTop = cardsScrollProgress * extraScrollPx;
-            } else {
-              cardsOverlay.scrollTop = 0;
-            }
+          // ── Phase 2: Horizontal Card Movement across Fixed Clean Background ──
+          if (scrolledPx > baseDist * 0.82 && cardScrollDistance > 0) {
+            const cardsPhaseProgress =
+              (scrolledPx - baseDist * 0.82) / Math.max(1, totalDist - baseDist * 0.82);
+            const clampedProgress = Math.min(1, Math.max(0, cardsPhaseProgress));
+            const xOffset = -clampedProgress * cardScrollDistance;
+            container.style.transform = `translate3d(${xOffset}px, 0, 0)`;
+          } else {
+            container.style.transform = 'translate3d(0px, 0, 0)';
           }
         }
       },

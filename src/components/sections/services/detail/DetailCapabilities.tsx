@@ -15,6 +15,7 @@ const CAPABILITIES_SUBTITLES: Record<string, string> = {
   "uniform-solutions": "Custom school clothing and sports kits designed for comfort, durability, and institutional pride.",
   "sports-training-talent-development": "Professional coaching and athletic development pathways to foster talent and character.",
   "canteen-management-services": "Turnkey canteen management, nutritious meal planning, and strict food hygiene standards for student wellbeing.",
+  "project-management-development": "End-to-end project management and consulting for the development of schools, residential projects, offices, and facilities.",
 };
 
 function getCapabilityIconUrl(index: number) {
@@ -37,6 +38,15 @@ export default function DetailCapabilities({ detail }: { detail: ServiceDetail }
 
   // Helper to determine col-span classes based on total items and current index
   const getColSpanClass = (index: number, totalCount: number) => {
+    if (totalCount === 10) {
+      if (index === 0 || index === 1) return "col-span-12 md:col-span-6";
+      if (index >= 2 && index <= 7) return "col-span-12 md:col-span-4";
+      return "col-span-12 md:col-span-6";
+    }
+    if (totalCount === 8) {
+      if (index === 0 || index === 1) return "col-span-12 md:col-span-6";
+      return "col-span-12 md:col-span-4";
+    }
     if (totalCount === 7) {
       if (index === 0 || index === 1) return "col-span-12 md:col-span-6";
       if (index >= 2 && index <= 4) return "col-span-12 md:col-span-4";

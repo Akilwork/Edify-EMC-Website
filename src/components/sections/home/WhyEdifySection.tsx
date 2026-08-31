@@ -123,65 +123,68 @@ export default function WhyEdifySection() {
           }}
         />
 
-        {/* ═══════════════════════════
-            GRAPHIC LAYER – left side on desktop, bottom-centered on mobile/tablet
-        ═══════════════════════════ */}
+        {/* Global Grid Container */}
+        <div className="container-responsive container-max h-full relative">
 
-        {/* Stage 1 – Wave */}
-        <div
-          ref={img1Ref}
-          style={graphicBase}
-          className="absolute left-6 sm:left-12 lg:left-0 bottom-[4vh] lg:top-1/2 lg:-translate-y-1/2 lg:bottom-auto w-[86vw] h-[86vw] sm:w-[70vw] sm:h-[70vw] lg:w-[48vw] lg:h-[48vw] max-w-[380px] max-h-[380px] sm:max-w-[480px] sm:max-h-[480px] lg:max-w-[640px] lg:max-h-[640px]"
-        >
-          <Image
-            src="/WhyEdify/1.png"
-            alt="Abstract wave graphic"
-            fill
-            className="object-contain object-left"
-            sizes="(max-width: 1024px) 90vw, 48vw"
-            priority
-          />
-        </div>
+          {/* ═══════════════════════════
+              GRAPHIC LAYER – left side on desktop, bottom-centered on mobile/tablet
+          ═══════════════════════════ */}
 
-        {/* Stage 2 – Growth Arrow */}
-        <div
-          ref={img2Ref}
-          style={{ ...graphicBase, opacity: 0 }}
-          className="absolute left-6 sm:left-12 lg:left-0 bottom-[4vh] lg:top-1/2 lg:-translate-y-1/2 lg:bottom-auto w-[86vw] h-[86vw] sm:w-[70vw] sm:h-[70vw] lg:w-[48vw] lg:h-[48vw] max-w-[380px] max-h-[380px] sm:max-w-[480px] sm:max-h-[480px] lg:max-w-[640px] lg:max-h-[640px]"
-        >
-          <Image
-            src="/WhyEdify/2.png"
-            alt="Growth arrow graphic"
-            fill
-            className="object-contain object-left"
-            sizes="(max-width: 1024px) 90vw, 48vw"
-          />
-        </div>
-
-        {/* Stage 3 – Connected Ecosystem */}
-        <div
-          ref={img3Ref}
-          style={{ ...graphicBase, opacity: 0 }}
-          className="absolute left-6 sm:left-12 lg:left-0 bottom-[4vh] lg:top-1/2 lg:-translate-y-1/2 lg:bottom-auto w-[86vw] h-[86vw] sm:w-[70vw] sm:h-[70vw] lg:w-[48vw] lg:h-[48vw] max-w-[380px] max-h-[380px] sm:max-w-[480px] sm:max-h-[480px] lg:max-w-[640px] lg:max-h-[640px]"
-        >
-          <Image
-            src="/WhyEdify/3.png"
-            alt="Connected ecosystem graphic"
-            fill
-            className="object-contain object-left"
-            sizes="(max-width: 1024px) 90vw, 48vw"
-          />
-        </div>
-
-        {/* ═══════════════════════════
-            TEXT LAYER – right side on desktop, top-centered on mobile/tablet
-        ═══════════════════════════ */}
-        <div
-          className="absolute inset-0 flex items-start pt-[10vh] lg:pt-0 lg:items-center px-6 sm:px-12 lg:px-0 lg:pl-[clamp(1rem,5vw,6rem)] justify-center lg:justify-end"
-        >
+          {/* Stage 1 – Wave */}
           <div
-            className="relative w-full max-w-[540px] lg:max-w-none lg:ml-auto lg:mr-[clamp(1rem,5vw,10rem)] lg:pr-[clamp(0.5rem,3vw,5rem)] min-h-[220px] sm:min-h-[240px] lg:min-h-[420px] text-center lg:text-right"
+            ref={img1Ref}
+            style={graphicBase}
+            className="absolute left-1/2 -translate-x-1/2 lg:left-0 lg:translate-x-0 bottom-[4vh] lg:top-1/2 lg:-translate-y-1/2 lg:bottom-auto w-[86vw] h-[86vw] sm:w-[70vw] sm:h-[70vw] lg:w-[45vw] lg:h-[45vw] max-w-[380px] max-h-[380px] sm:max-w-[480px] sm:max-h-[480px] lg:max-w-[600px] lg:max-h-[600px]"
           >
+            <Image
+              src="/WhyEdify/1.png"
+              alt="Abstract wave graphic"
+              fill
+              className="object-contain object-center lg:object-left"
+              sizes="(max-width: 1024px) 90vw, 45vw"
+              priority
+            />
+          </div>
+
+          {/* Stage 2 – Growth Arrow */}
+          <div
+            ref={img2Ref}
+            style={{ ...graphicBase, opacity: 0 }}
+            className="absolute left-1/2 -translate-x-1/2 lg:left-0 lg:translate-x-0 bottom-[4vh] lg:top-1/2 lg:-translate-y-1/2 lg:bottom-auto w-[86vw] h-[86vw] sm:w-[70vw] sm:h-[70vw] lg:w-[45vw] lg:h-[45vw] max-w-[380px] max-h-[380px] sm:max-w-[480px] sm:max-h-[480px] lg:max-w-[600px] lg:max-h-[600px]"
+          >
+            <Image
+              src="/WhyEdify/2.png"
+              alt="Growth arrow graphic"
+              fill
+              className="object-contain object-center lg:object-left"
+              sizes="(max-width: 1024px) 90vw, 45vw"
+            />
+          </div>
+
+          {/* Stage 3 – Connected Ecosystem */}
+          <div
+            ref={img3Ref}
+            style={{ ...graphicBase, opacity: 0 }}
+            className="absolute left-1/2 -translate-x-1/2 lg:left-0 lg:translate-x-0 bottom-[4vh] lg:top-1/2 lg:-translate-y-1/2 lg:bottom-auto w-[86vw] h-[86vw] sm:w-[70vw] sm:h-[70vw] lg:w-[45vw] lg:h-[45vw] max-w-[380px] max-h-[380px] sm:max-w-[480px] sm:max-h-[480px] lg:max-w-[600px] lg:max-h-[600px]"
+          >
+            <Image
+              src="/WhyEdify/3.png"
+              alt="Connected ecosystem graphic"
+              fill
+              className="object-contain object-center lg:object-left"
+              sizes="(max-width: 1024px) 90vw, 45vw"
+            />
+          </div>
+
+          {/* ═══════════════════════════
+              TEXT LAYER – right side on desktop, top-centered on mobile/tablet
+          ═══════════════════════════ */}
+          <div
+            className="absolute inset-0 flex items-start pt-[10vh] lg:pt-0 lg:items-center justify-center lg:justify-end"
+          >
+            <div
+              className="relative w-full max-w-[540px] lg:max-w-[600px] lg:ml-auto min-h-[220px] sm:min-h-[240px] lg:min-h-[420px] text-center lg:text-right"
+            >
             {/* ── Stage 1 ── */}
             <div ref={text1Ref} style={textBase}>
               <span
@@ -262,6 +265,7 @@ export default function WhyEdifySection() {
             </div>
           </div>
         </div>
+      </div>
 
         {/* Bottom vignette */}
         <div

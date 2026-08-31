@@ -81,12 +81,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Hide scrollbar utility */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
+.no-scrollbar::-webkit-scrollbar,
+.scrollbar-none::-webkit-scrollbar {
+  display: none !important;
 }
-.no-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+.no-scrollbar,
+.scrollbar-none {
+  -ms-overflow-style: none !important;  /* IE and Edge */
+  scrollbar-width: none !important;  /* Firefox */
 }
 
 @layer utilities {
@@ -166,6 +168,39 @@ h1, h2, h3, h4, h5, h6 {
     }
   }
 
+  .container-custom {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1440px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  @media (min-width: 640px) {
+    .container-custom {
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+  }
+  @media (min-width: 768px) {
+    .container-custom {
+      padding-left: 40px;
+      padding-right: 40px;
+    }
+  }
+  @media (min-width: 1024px) {
+    .container-custom {
+      padding-left: 64px;
+      padding-right: 64px;
+    }
+  }
+  @media (min-width: 1280px) {
+    .container-custom {
+      padding-left: 96px;
+      padding-right: 96px;
+    }
+  }
+
   .container-sm { max-width: min(90vw, 640px); }
   .container-md { max-width: min(90vw, 768px); }
   .container-lg { max-width: min(90vw, 1024px); }
@@ -186,14 +221,6 @@ h1, h2, h3, h4, h5, h6 {
   
   .pt-safe { padding-top: max(env(safe-area-inset-top), 72px); }
   .pb-safe { padding-bottom: max(env(safe-area-inset-bottom), 0px); }
-}
-
-/* Responsive Media Queries */
-@media (max-width: 479px) {
-  .container-responsive {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
 }
 
 /* Accessibility */

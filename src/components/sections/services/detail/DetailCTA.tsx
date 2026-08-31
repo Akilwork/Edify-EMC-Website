@@ -33,12 +33,12 @@ const INSTITUTION_TYPES = [
 const SERVICE_OPTIONS = [
   "Human Resource Management",
   "Academics",
-  "Financial Consultancy",
+  "Financial Services",
   "IT Solutions & Digital Transformation",
   "Marketing",
   "E-Commerce & Digital Services",
   "Civil Engineering & Infrastructure Development",
-  "Transportation & Fleet Support",
+  "Institutional Transport",
   "Uniform Solutions",
   "Sports Training & Talent Development",
   "Other / General Enquiry"
@@ -95,6 +95,7 @@ export default function DetailCTA({
   const [showCountryCodes, setShowCountryCodes] = useState(false);
   const [showInstTypes, setShowInstTypes] = useState(false);
   const [showServices, setShowServices] = useState(false);
+  const [formErrors, setFormErrors] = useState<{ name?: boolean; contactNumber?: boolean; email?: boolean }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const countryDropdownRef = useRef<HTMLDivElement>(null);
@@ -124,11 +125,17 @@ export default function DetailCTA({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Basic Validation
-    if (!formData.name.trim() || !formData.email.trim() || !formData.contactNumber.trim()) {
+    const errors: { name?: boolean; contactNumber?: boolean; email?: boolean } = {};
+    if (!formData.name.trim()) errors.name = true;
+    if (!formData.contactNumber.trim()) errors.contactNumber = true;
+    if (!formData.email.trim() || !formData.email.includes("@")) errors.email = true;
+
+    setFormErrors(errors);
+
+    if (Object.keys(errors).length > 0) {
       toast({
         title: "Validation Error",
-        description: "Please fill out Name, Contact Number, and Email Address.",
+        description: "Please fill out all required fields marked in red.",
         variant: "destructive",
       });
       return;
@@ -172,6 +179,7 @@ export default function DetailCTA({
         howCanWeHelp: "",
       });
       setCountryCode("+971");
+      setFormErrors({});
     } catch (err: any) {
       toast({
         title: "Submission Failed",
@@ -213,7 +221,7 @@ export default function DetailCTA({
 
           {/* Form */}
           <RevealSection delay={0.1}>
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} noValidate className="space-y-6">
               {/* Row 1: Name, Contact Number, Email Address */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="flex flex-col">
@@ -225,9 +233,13 @@ export default function DetailCTA({
                     type="text"
                     placeholder="Enter Full Name"
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 h-[56px] border border-white/10 rounded-[8px] text-white placeholder-white/30 focus:outline-none focus:border-white/30 transition-all duration-200 text-sm backdrop-blur-sm bg-white/[0.03]"
-                    required
+                    onChange={(e) => {
+                      setFormData({ ...formData, name: e.target.value });
+                      if (formErrors.name) setFormErrors((prev) => ({ ...prev, name: false }));
+                    }}
+                    className={`w-full px-4 h-[56px] border rounded-[8px] text-white placeholder-white/30 focus:outline-none transition-all duration-200 text-sm backdrop-blur-sm bg-white/[0.03] ${
+                      formErrors.name ? "border-red-500 focus:border-red-500" : "border-white/10 focus:border-white/30"
+                    }`}
                   />
                 </div>
 
@@ -235,7 +247,9 @@ export default function DetailCTA({
                   <label htmlFor="cta-phone" className="text-[13px] font-normal text-white/70 mb-2 block">
                     Contact Number
                   </label>
-                  <div className="flex items-center border border-white/10 rounded-[8px] h-[56px] focus-within:border-white/30 transition-all duration-200 backdrop-blur-sm bg-white/[0.03]">
+                  <div className={`flex items-center border rounded-[8px] h-[56px] transition-all duration-200 backdrop-blur-sm bg-white/[0.03] ${
+                    formErrors.contactNumber ? "border-red-500 focus-within:border-red-500" : "border-white/10 focus-within:border-white/30"
+                  }`}>
                     <div ref={countryDropdownRef} className="relative flex-shrink-0 h-full">
                       <button
                         type="button"
@@ -269,9 +283,17 @@ export default function DetailCTA({
                       type="tel"
                       placeholder="Contact Number"
                       value={formData.contactNumber}
-                      onChange={(e) => setFormData({ ...formData, contactNumber: e.target.value })}
+                      onChange={(e) => {
+                        setFormData({ ...formData, contactNumber: e.target.value.replace(/[^0-9]/g, "") });
+                        if (formErrors.contactNumber) setFormErrors((prev) => ({ ...prev, contactNumber: false }));
+                      }}
+                      onKeyDown={(e) => {
+                        const allowedKeys = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab", "Enter", "Home", "End"];
+                        if (!/^[0-9]$/.test(e.key) && !allowedKeys.includes(e.key) && !e.ctrlKey && !e.metaKey) {
+                          e.preventDefault();
+                        }
+                      }}
                       className="w-full h-full bg-transparent px-4 text-sm text-white placeholder-white/30 focus:outline-none"
-                      required
                     />
                   </div>
                 </div>
@@ -285,9 +307,13 @@ export default function DetailCTA({
                     type="email"
                     placeholder="Enter Email Address"
                     value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-4 h-[56px] border border-white/10 rounded-[8px] text-white placeholder-white/30 focus:outline-none focus:border-white/30 transition-all duration-200 text-sm backdrop-blur-sm bg-white/[0.03]"
-                    required
+                    onChange={(e) => {
+                      setFormData({ ...formData, email: e.target.value });
+                      if (formErrors.email) setFormErrors((prev) => ({ ...prev, email: false }));
+                    }}
+                    className={`w-full px-4 h-[56px] border rounded-[8px] text-white placeholder-white/30 focus:outline-none transition-all duration-200 text-sm backdrop-blur-sm bg-white/[0.03] ${
+                      formErrors.email ? "border-red-500 focus:border-red-500" : "border-white/10 focus:border-white/30"
+                    }`}
                   />
                 </div>
               </div>

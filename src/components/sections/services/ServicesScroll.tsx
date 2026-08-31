@@ -60,10 +60,17 @@ export default function ServicesScroll() {
     },
     {
       image: "/Service-page/Financial-Consultancy.png",
-      title: "Financial Consultancy",
+      title: "Financial Services",
       description: "Financial planning, budgeting, compliance, auditing support, and long-term sustainability strategies.",
       isWide: false,
       slug: "financial-consultancy"
+    },
+    {
+      image: "/Service-page/Civil-Engineering-&-Infrastructure-Development.png",
+      title: "Project Management & Development",
+      description: "End-to-end project management and consulting for schools, residential projects, offices, and facilities.",
+      isWide: false,
+      slug: "project-management-development"
     }
   ];
 
@@ -112,7 +119,7 @@ export default function ServicesScroll() {
     },
     {
       image: "/Service-page/Transportation-&-Fleet-Support.png",
-      title: "Transportation & Fleet Support",
+      title: "Institutional Transport",
       description: "Safe, reliable student transportation, fleet management, route optimisation, and compliance that keep your institution moving.",
       colSpan: "col-span-12 md:col-span-6 lg:col-span-4",
       slug: "transportation-fleet-support"
@@ -227,7 +234,7 @@ export default function ServicesScroll() {
           </div>
 
           {/* Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-5 xl:gap-6 mb-12 md:mb-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-5 xl:gap-6 mb-12 md:mb-16">
             {serviceCards.map((card, index) => (
               <Link
                 key={index}

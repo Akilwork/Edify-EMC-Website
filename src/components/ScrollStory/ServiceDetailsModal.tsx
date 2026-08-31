@@ -8,6 +8,7 @@ import styles from './ServiceDetailsModal.module.css';
 
 interface SubService {
   title: string;
+  subHeading?: string;
   description: string;
 }
 
@@ -59,8 +60,8 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
   },
   financial: {
     id: 'financial',
-    title: 'Financial Consultancy',
-    categoryTag: 'Financial Consultancy',
+    title: 'Financial Services',
+    categoryTag: 'Financial Services',
     mainHeader: 'Securing the Financial Future and Operational Sustainability of Institutions',
     introBodyText: 'We provide strategic financial advice, auditing, and structural planning to help educational institutions optimize budgets, identify cost efficiencies, and build sustainable financial models.',
     tagline: 'Optimize Budgets. Secure Long-term Financial Health.',
@@ -94,26 +95,35 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
     id: 'it',
     title: 'IT Solutions & Digital Transformation',
     categoryTag: 'IT Solutions & Digital Transformation',
-    mainHeader: 'Empowering Institutions with Advanced Digital Infrastructures',
-    introBodyText: 'Accelerate your digital evolution with customized IT solutions, learning management systems, school ERPs, and cloud infrastructures designed for modern learning environments.',
-    tagline: 'Innovate Learning. Automate Operations.',
+    mainHeader: 'IT Solutions That Power Your Business',
+    introBodyText: 'We deliver smart, secure and scalable IT solutions that simplify operations, connect people and systems, and accelerate digital growth across key sectors in the UAE.',
+    tagline: 'Empowering Education. Enabling Business. Driving Digital Transformation.',
     bgImage: '/Services/it_solutions_&_digital_transformation_card_image.png',
     subServices: [
       {
-        title: 'School ERP & LMS Integration',
-        description: 'Implement robust campus management software and learning management systems for seamless student-teacher collaboration.',
+        title: 'Education — Our Flagship',
+        subHeading: 'Transforming Institutions Through Technology',
+        description: 'Educational ERP • Digital Campus • Academic Systems • HR & Payroll • Cloud • Cybersecurity • Dashboards • System Integration',
       },
       {
-        title: 'Cloud Infrastructure & Cybersecurity',
-        description: 'Build secure cloud environments for institutional data and protect operations from advanced cyber threats.',
+        title: 'Transport',
+        subHeading: 'Connected Operations. Smarter Mobility.',
+        description: 'Fleet Management • Tracking • Automation • Digital Operations',
       },
       {
-        title: 'IT Audits & Digital Roadmap',
-        description: 'Assess current technology stacks, identify bottlenecks, and design a customized digital transformation plan.',
+        title: 'E-Commerce',
+        subHeading: 'Powering Digital Commerce',
+        description: 'E-Commerce Platforms • Payment Integration • Inventory • Order Management • Analytics',
       },
       {
-        title: 'Faculty & Staff IT Training',
-        description: 'Empower your educators and support teams to leverage digital tools effectively in and out of the classroom.',
+        title: 'HR Services',
+        subHeading: 'Technology for a Smarter Workforce',
+        description: 'HRMS • Payroll • Attendance • Employee Self-Service • Workflow Automation',
+      },
+      {
+        title: 'Apparels',
+        subHeading: 'Digitising Apparel Operations',
+        description: 'Order Management • Production • Inventory • Procurement • Sales & Reporting',
       },
     ],
     keyBenefits: [
@@ -220,6 +230,39 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
       'Professional Campus Signage & Engaging Visual Environments',
       'Customized Uniforms & Merchandising Built on Brand Pride',
       'Coordinated Marketing Collateral & Dynamic Print Ecosystems',
+    ],
+  },
+  transportation: {
+    id: 'transportation',
+    title: 'Institutional Transport',
+    categoryTag: 'Institutional Transport',
+    mainHeader: 'Reliable Mobility. Safe Journeys. Seamless Operations.',
+    introBodyText: 'Providing safe, reliable, and compliant passenger transportation solutions across the UAE, supported by a modern fleet, professional drivers, and disciplined operations.',
+    tagline: 'Keeping Your Institution Moving Safely.',
+    bgImage: '/Service-page/Transportation-&-Fleet-Support.png',
+    subServices: [
+      {
+        title: 'School Transport',
+        description: 'Safe & RTA-compliant student transportation with trained drivers and continuous route monitoring.',
+      },
+      {
+        title: 'Corporate Mobility & Fleet Solutions',
+        description: 'Employee shuttles and flexible fleet options (13–64 seater buses) tailored for institutional operations.',
+      },
+      {
+        title: 'Route Management & GPS Tracking',
+        description: 'Real-time GPS tracking, automated route planning, and optimization for maximum efficiency.',
+      },
+      {
+        title: 'Safety & Compliance Standards',
+        description: 'Fully compliant UAE/RTA transport operations, 24/7 service support, and safety-certified drivers.',
+      },
+    ],
+    keyBenefits: [
+      'Enhanced Student Safety & Parent Peace of Mind',
+      'RTA & UAE Statutory Compliance Guaranteed',
+      'Optimized Transport Routes & Lower Operational Costs',
+      '24/7 Fleet Coordination & Professional Drivers',
     ],
   },
 };
@@ -550,6 +593,11 @@ export const ServiceDetailsModal = ({
                       <h4 className={styles.subServiceTitle}>
                         {detail.subServices[activeSection - 1].title}
                       </h4>
+                      {detail.subServices[activeSection - 1].subHeading && (
+                        <h5 className={styles.subServiceSubHeading}>
+                          {detail.subServices[activeSection - 1].subHeading}
+                        </h5>
+                      )}
                       <p className={styles.subServiceDesc}>
                         {detail.subServices[activeSection - 1].description}
                       </p>
