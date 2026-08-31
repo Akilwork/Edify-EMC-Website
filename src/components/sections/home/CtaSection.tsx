@@ -40,7 +40,7 @@ export default function CtaSection({
       <div className="container-responsive container-max relative z-10 w-full">
         <div
           ref={ref}
-          className="w-full max-w-[1600px] mx-auto grid lg:grid-cols-[40%_60%] gap-8 lg:gap-12 items-center text-left"
+          className="w-full grid lg:grid-cols-[40%_60%] gap-8 lg:gap-12 items-center text-left"
         >
           {/* Left Column: Heading */}
           <div className="order-1 lg:order-1 text-left mb-8 md:mb-0">

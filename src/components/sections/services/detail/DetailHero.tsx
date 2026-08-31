@@ -29,8 +29,8 @@ export default function DetailHero({
         <div className="absolute inset-0 bg-gradient-to-r from-black via-black to-black/30" />
       </div>
 
-      <div className="relative z-10 flex flex-col min-h-[100svh] px-6 pt-28 pb-10 md:px-12 md:pt-36 md:pb-12 lg:px-20 lg:pt-40 lg:pb-16 xl:px-32 xl:pt-44 xl:pb-20">
-        <div className="mt-auto flex flex-col max-w-4xl">
+      <div className="relative z-10 flex flex-col min-h-[100svh] container-responsive container-max pt-28 pb-10 md:pt-36 md:pb-12 lg:pt-40 lg:pb-16 xl:pt-44 xl:pb-20">
+        <div className="mt-auto flex flex-col max-w-5xl">
           {/* Service eyebrow */}
           <RevealSection>
             <p className="text-white/60 text-xs md:text-sm font-medium uppercase tracking-[0.2em] mb-4">
@@ -40,7 +40,7 @@ export default function DetailHero({
  
           {/* Hero headline (the tagline) */}
           <RevealSection delay={0.05}>
-            <h1 className="font-sans text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-[72px] font-normal leading-tight tracking-tight text-white mb-6">
+            <h1 className="font-sans text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-[72px] font-normal leading-tight tracking-tight text-white mb-6 whitespace-pre-line">
               {detail.hero.tagline}
             </h1>
           </RevealSection>

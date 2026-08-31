@@ -9,7 +9,7 @@ const INFO = [
 export default function ContactInfoSection() {
   return (
     <section id="contact-info" className="section-padding bg-[#0F0F1A]">
-      <div className="container-custom">
+      <div className="container-responsive container-max">
         <h2 className="font-heading text-4xl font-bold text-white mb-10">Find Us</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {INFO.map(({ icon: Icon, label, value }) => (

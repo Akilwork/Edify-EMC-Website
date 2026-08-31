@@ -37,7 +37,7 @@ export default function ServicesScroll() {
   }, []);
 
   const heroHighlights = [
-    "11 Specialized Domains",
+    "10 Specialized Domains",
     "Integrated Solutions",
     "Expert Professionals",
     "Long-Term Support"
@@ -48,25 +48,29 @@ export default function ServicesScroll() {
       image: "/Service-page/Human-Resource-Services.png",
       title: "Human Resource Management",
       description: "Recruitment, workforce planning, payroll, compliance, performance management, and employee development.",
+      isWide: false,
       slug: "human-resource-services"
     },
     {
       image: "/Service-page/Educationalal.png",
-      title: "Educational & Institutional Consulting",
-      description: "Strategic guidance for institutional planning, governance, accreditation, and operational excellence.",
+      title: "Academics",
+      description: "Strategic guidance for institutional planning, governance, accreditation, student support, and academic excellence.",
+      isWide: false,
       slug: "educational-institutional-consulting"
     },
     {
       image: "/Service-page/Financial-Consultancy.png",
-      title: "Financial Consultancy",
+      title: "Financial Services",
       description: "Financial planning, budgeting, compliance, auditing support, and long-term sustainability strategies.",
+      isWide: false,
       slug: "financial-consultancy"
     },
     {
-      image: "/Service-page/Behavioural-Counselling-&-Student-Support.png",
-      title: "Behavioural Counselling & Student Support",
-      description: "Professional counselling, wellbeing programmes, mentoring, and student support services.",
-      slug: "behavioural-counselling-student-support"
+      image: "/Service-page/Civil-Engineering-&-Infrastructure-Development.png",
+      title: "Project Management & Development",
+      description: "End-to-end project management and consulting for schools, residential projects, offices, and facilities.",
+      isWide: false,
+      slug: "project-management-development"
     }
   ];
 
@@ -74,20 +78,13 @@ export default function ServicesScroll() {
     {
       image: "/Service-page/IT-Solutions-%26-Digital-Transformation.png",
       title: "IT Solutions & Digital Transformation",
-      description: "Technology consulting, software solutions, automation, infrastructure, and digital modernization.",
-      isWide: false,
+      description: "Technology consulting, software solutions, E-Commerce, digital platforms, automation, infrastructure, and digital modernization.",
+      isWide: true,
       slug: "it-solutions-digital-transformation"
     },
     {
-      image: "/Service-page/E-Commerce-%26-Digital-Services.png",
-      title: "E-Commerce & Digital Services",
-      description: "Digital platforms, online solutions, web services, and technology-driven growth.",
-      isWide: false,
-      slug: "ecommerce-digital-services"
-    },
-    {
       image: "/Service-page/Printing-%26-Branding-Solutions.png",
-      title: "Printing & Branding Solutions",
+      title: "Marketing",
       description: "Professional branding, printing, promotional materials, and visual communication services.",
       isWide: true,
       slug: "printing-branding-solutions"
@@ -117,24 +114,35 @@ export default function ServicesScroll() {
       image: "/Service-page/Civil-Engineering-&-Infrastructure-Development.png",
       title: "Civil Engineering & Infrastructure Development",
       description: "Infrastructure planning, civil engineering, and construction support that build safe, modern, future-ready learning environments.",
+      colSpan: "col-span-12 md:col-span-6 lg:col-span-4",
       slug: "civil-engineering-infrastructure"
     },
     {
       image: "/Service-page/Transportation-&-Fleet-Support.png",
-      title: "Transportation & Fleet Support",
+      title: "Institutional Transport",
       description: "Safe, reliable student transportation, fleet management, route optimisation, and compliance that keep your institution moving.",
+      colSpan: "col-span-12 md:col-span-6 lg:col-span-4",
       slug: "transportation-fleet-support"
+    },
+    {
+      image: "/Service-page/student-development.jpg",
+      title: "Canteen Service",
+      description: "Hygienic, nutritious, and high-quality canteen management and catering services tailored for educational institutions.",
+      colSpan: "col-span-12 md:col-span-12 lg:col-span-4",
+      slug: "canteen-management-services"
     },
     {
       image: "/Service-page/Uniform-&-Clothing-Solutions.png",
       title: "Uniform Solutions",
       description: "Quality school uniforms, sports kits, and institutional clothing designed to reflect your institution's identity and standards.",
+      colSpan: "col-span-12 md:col-span-6 lg:col-span-6",
       slug: "uniform-solutions"
     },
     {
       image: "/Service-page/Sports-Training-&-Talent-Development.png",
       title: "Sports Training & Talent Development",
       description: "Professional sports coaching, athletic development, and talent identification programmes that nurture student athletes.",
+      colSpan: "col-span-12 md:col-span-6 lg:col-span-6",
       slug: "sports-training-talent-development"
     }
   ];
@@ -176,7 +184,7 @@ export default function ServicesScroll() {
         </div>
 
         {/* Content */}
-        <div className="relative z-10 flex flex-col min-h-[100svh] px-5 py-16 sm:px-8 md:px-12 lg:px-20 xl:px-32">
+        <div className="relative z-10 flex flex-col min-h-[100svh] container-responsive container-max py-16">
           {/* Main content - centered */}
           <div className={`flex-1 flex flex-col justify-center max-w-4xl transition-opacity duration-1000 ${heroVisible ? 'opacity-100' : 'opacity-0'}`}>
             {/* Headline */}
@@ -212,9 +220,9 @@ export default function ServicesScroll() {
       {/* ─── Service Listing Section ─── */}
       <section
         ref={sectionRef}
-        className="relative w-full bg-white px-5 py-20 sm:px-8 md:py-28 lg:px-12 xl:px-16"
+        className="relative w-full bg-white py-20 md:py-28"
       >
-        <div className={`max-w-[1440px] mx-auto transition-all duration-1000 ${sectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+        <div className={`container-responsive container-max transition-all duration-1000 ${sectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           {/* Heading and Subhead */}
           <div className="text-center mb-10 md:mb-14 lg:mb-20">
             <h2 className="font-sans text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-black font-normal mb-3 md:mb-4">
@@ -232,7 +240,9 @@ export default function ServicesScroll() {
                 key={index}
                 href={`/services/${card.slug}`}
                 aria-label={card.title}
-                className={`group relative overflow-hidden rounded-2xl lg:rounded-[28px] ${cardHeight} w-full border border-black/10 bg-white shadow-sm hover:shadow-xl transition-shadow duration-500 block`}
+                className={`group relative overflow-hidden rounded-2xl lg:rounded-[28px] ${cardHeight} w-full ${
+                  card.isWide ? 'sm:col-span-2 lg:col-span-2' : 'lg:col-span-1'
+                } border border-black/10 bg-white shadow-sm hover:shadow-xl transition-shadow duration-500 block`}
                 onMouseEnter={() => setHoveredCard(index)}
                 onMouseLeave={() => setHoveredCard(null)}
               >
@@ -242,7 +252,7 @@ export default function ServicesScroll() {
                     src={card.image}
                     alt={card.title}
                     fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    sizes="(max-width: 768px) 100vw, 33vw"
                     className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   />
                 </div>
@@ -288,8 +298,8 @@ export default function ServicesScroll() {
       </section>
 
       {/* ─── Technology & Innovation Section ─── */}
-      <section className="relative w-full bg-white px-5 py-20 sm:px-8 md:py-28 lg:px-12 xl:px-16">
-        <div className="max-w-[1440px] mx-auto">
+      <section className="relative w-full bg-white py-20 md:py-28">
+        <div className="container-responsive container-max">
           {/* Heading and Subhead */}
           <div className="text-center mb-10 md:mb-14 lg:mb-20">
             <h2 className="font-sans text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-black font-normal mb-3 md:mb-4">
@@ -360,8 +370,8 @@ export default function ServicesScroll() {
       </section>
 
       {/* ─── Campus & Student Services Section ─── */}
-      <section className="relative w-full bg-white px-5 py-20 sm:px-8 md:py-28 lg:px-12 xl:px-16">
-        <div className="max-w-[1440px] mx-auto">
+      <section className="relative w-full bg-white py-20 md:py-28">
+        <div className="container-responsive container-max">
           {/* Heading and Subhead */}
           <div className="text-center mb-10 md:mb-14 lg:mb-20">
             <h2 className="font-sans text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-black font-normal mb-3 md:mb-4">
@@ -372,14 +382,14 @@ export default function ServicesScroll() {
             </p>
           </div>
 
-          {/* Cards Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-5 xl:gap-6 mb-12 md:mb-16">
+          {/* Cards Grid — Bento Grid 5 Layout */}
+          <div className="grid grid-cols-12 gap-4 md:gap-6 lg:gap-5 xl:gap-6 mb-12 md:mb-16">
             {campusServiceCards.map((card, index) => (
               <Link
                 key={index}
                 href={`/services/${card.slug}`}
                 aria-label={card.title}
-                className={`group relative overflow-hidden rounded-2xl lg:rounded-[28px] ${cardHeight} w-full border border-black/10 bg-white shadow-sm hover:shadow-xl transition-shadow duration-500 block`}
+                className={`group relative overflow-hidden rounded-2xl lg:rounded-[28px] ${cardHeight} w-full ${card.colSpan} border border-black/10 bg-white shadow-sm hover:shadow-xl transition-shadow duration-500 block`}
                 onMouseEnter={() => setHoveredCard(200 + index)}
                 onMouseLeave={() => setHoveredCard(null)}
               >

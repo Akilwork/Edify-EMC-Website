@@ -67,7 +67,7 @@ export default function CompaniesSection() {
       ref={containerRef}
       className="relative w-full bg-white py-10 md:py-16 overflow-hidden font-sans border-t border-[#F1F5F9]"
     >
-      <div className="container-responsive container-xl relative z-10">
+      <div className="container-responsive container-max relative z-10">
         
         {/* Header Section */}
         <div className="text-center max-w-3xl mx-auto mb-8 md:mb-12">
@@ -101,7 +101,7 @@ export default function CompaniesSection() {
         </div>
 
         {/* Retro Grid Container */}
-        <div className="relative w-full max-w-[1100px] mx-auto px-4 md:px-0">
+        <div className="relative w-full mx-auto">
           
           {/* ========================================================================= */}
           {/* DESKTOP RETRO GRID (5 cols x 2 rows) - Visible md and up                 */}

@@ -49,7 +49,7 @@ export default function TestimonialsSection() {
 
   return (
     <section id="testimonials" className="bg-[#F8F9FA] py-24 md:py-32 overflow-hidden">
-      <div className="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-16">
+      <div className="container-responsive container-max">
 
         {/* Header */}
         <div ref={ref} className="text-center mb-16">

@@ -74,8 +74,8 @@ export default function ServiceSection() {
       {/* Content */}
       <div className="relative z-10">
         {/* Introduction */}
-        <div className="w-full px-4 md:px-8 lg:px-16 py-20 md:py-32">
-          <div className="w-full max-w-[1920px] mx-auto">
+        <div className="w-full py-20 md:py-32 container-responsive container-max">
+          <div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold text-white mb-6 leading-tight">
               One Ecosystem.<br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">
@@ -102,11 +102,11 @@ export default function ServiceSection() {
                 }
               }}
               data-index={index}
-              className={`w-full py-16 md:py-24 px-4 md:px-8 lg:px-16 transition-all duration-1000 ease-out ${
+              className={`w-full py-16 md:py-24 container-responsive container-max transition-all duration-1000 ease-out ${
                 isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-32"
               }`}
             >
-              <div className="w-full max-w-[1920px] mx-auto">
+              <div className="w-full">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-16 items-start">
                   {/* Left: Title and Description */}
                   <div className="lg:col-span-1 lg:sticky lg:top-32">

@@ -5,7 +5,52 @@ import Image from "next/image";
 import GridBackground from "@/components/ui/GridBackground";
 import { DottedGlowBackground } from "@/components/ui/dotted-glow-background";
 import BlurText from "@/components/ui/BlurText";
-import PersonProfileCard from "@/components/ui/PersonProfileCard";
+
+function PersonProfileCard({
+  name,
+  title,
+  imageSrc,
+  imageAlt,
+  className = "",
+}: {
+  name: string;
+  title: string;
+  imageSrc: string;
+  imageAlt?: string;
+  className?: string;
+}) {
+  return (
+    <div
+      className={`relative w-[220px] xs:w-[260px] sm:w-[320px] mx-auto ${className}`}
+      style={{ filter: "drop-shadow(0 16px 32px rgba(0,0,0,0.15))" }}
+    >
+      <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden bg-gray-200">
+        <Image
+          src={imageSrc}
+          alt={imageAlt || name}
+          fill
+          className="object-cover object-center"
+          sizes="(max-width: 480px) 220px, (max-width: 640px) 260px, 320px"
+          priority
+        />
+        <div
+          className="absolute inset-0 flex flex-col justify-end p-4 sm:p-5"
+          style={{
+            background:
+              "linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.35) 35%, transparent 65%)",
+          }}
+        >
+          <span className="text-white font-sans font-bold text-base sm:text-lg leading-tight drop-shadow-sm">
+            {name}
+          </span>
+          <span className="text-white/70 text-xs sm:text-sm font-medium mt-1">
+            {title}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function AboutHero() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -910,7 +955,7 @@ export default function AboutHero() {
           {/* Scene 2 - visible initially, fades out */}
           <div
             ref={scene2Ref}
-            className="absolute w-[90%] md:w-full max-w-[1100px] text-center top-[60%] -translate-y-1/2 left-1/2 -translate-x-1/2 px-4 md:px-8"
+            className="absolute w-full container-responsive container-max text-center top-[60%] -translate-y-1/2 left-1/2 -translate-x-1/2"
           >
             <h1 className="font-sans font-normal leading-[1.1] text-white text-center m-0 tracking-tight text-[clamp(22px,5vw,28px)] md:text-[clamp(34px,4vw,40px)] lg:text-[clamp(36px,4vw,52px)] 2xl:text-[clamp(46px,3.5vw,56px)]">
               <span className="block">
@@ -926,7 +971,7 @@ export default function AboutHero() {
           {/* Scene 4 - fades in with blur */}
           <div
             ref={scene4Ref}
-            className="absolute w-full max-w-[1100px] text-center opacity-0 px-4 md:px-8"
+            className="absolute w-full container-responsive container-max text-center opacity-0"
           >
             <h1 className="font-sans font-medium leading-[1.1] text-white text-center m-0 tracking-tight text-[clamp(28px,6vw,36px)] md:text-[clamp(42px,5vw,48px)] lg:text-[clamp(48px,5vw,64px)] 2xl:text-[clamp(60px,4.5vw,68px)]">
               <span className="block">Building Institutions That Inspire</span>
@@ -937,7 +982,7 @@ export default function AboutHero() {
           {/* Scene 5 - VisionValues content (slides in from right) */}
           <div
             ref={scene5Ref}
-            className="absolute inset-0 overflow-hidden flex items-center justify-center p-6 md:p-8 md:px-16 lg:px-20 opacity-0"
+            className="absolute inset-0 overflow-hidden flex items-center justify-center container-responsive container-max opacity-0"
           >
             {/* Gradient 1 (Blue) - Top-left corner glow */}
             <div
@@ -957,7 +1002,7 @@ export default function AboutHero() {
               }}
             />
 
-            <div className="grid lg:grid-cols-[49.5%_50.5%] gap-8 lg:gap-0 items-center justify-center max-w-[1280px] w-full">
+            <div className="grid lg:grid-cols-[49.5%_50.5%] gap-8 lg:gap-0 items-center justify-center w-full">
               {/* Left column - content */}
               <div ref={scene5LeftRef} className="order-2 lg:order-1 opacity-0 will-change-transform">
                 <h2 className="font-sans text-[1.8rem] xs:text-[2rem] sm:text-[2.5rem] lg:text-[3rem] xl:text-[3.5rem] font-semibold text-white leading-[1.08] tracking-tight">
@@ -1390,10 +1435,10 @@ export default function AboutHero() {
             {/* Scene 8B: Top text - "The Expertise Behind Every Solution" */}
             <div
               ref={scene8TextBRef}
-              className="absolute top-0 left-0 right-0 pt-20 md:pt-28 lg:pt-32 z-[10] opacity-0 will-change-transform"
+              className="absolute top-0 left-0 right-0 pt-20 sm:pt-24 md:pt-28 lg:pt-30 z-[10] opacity-0 will-change-transform"
             >
-              <div className="text-center px-8">
-                <h2 className="font-sans text-[clamp(24px,5vw,32px)] md:text-[clamp(32px,4vw,40px)] lg:text-[clamp(36px,4vw,48px)] font-medium leading-[1.1] tracking-tight text-[#1a1a1a]">
+              <div className="text-center px-6 md:px-8">
+                <h2 className="font-sans text-[clamp(22px,4vw,30px)] md:text-[clamp(28px,3.5vw,36px)] lg:text-[clamp(32px,3vw,42px)] font-medium leading-[1.15] tracking-tight text-[#1a1a1a]">
                   The Expertise Behind Every Solution
                 </h2>
               </div>
@@ -1402,10 +1447,9 @@ export default function AboutHero() {
             {/* Scene 8B: Person Cards - Horizontal Scroll */}
             <div
               ref={scene8CardsContainerRef}
-              className="absolute inset-0 flex items-center z-[20] opacity-0 will-change-transform pointer-events-none"
+              className="absolute top-[140px] sm:top-[160px] md:top-[175px] lg:top-[190px] bottom-0 left-0 right-0 flex items-center z-[20] opacity-0 will-change-transform pointer-events-none"
             >
               <div className="flex gap-6 md:gap-8 px-8 md:px-16 w-max">
-                {/* Person Profile Cards - wrapped for scale/opacity animation */}
                 <div ref={(el) => { if (el) scene8CardRefs.current[0] = el; }} className="will-change-transform">
                   <PersonProfileCard
                     name="Ethan Carter"
@@ -1519,6 +1563,8 @@ export default function AboutHero() {
               </div>
             </div>
           </div>
+
+
 
         </div>
 

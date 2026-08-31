@@ -15,12 +15,6 @@ export default function DetailOverview({ detail }: { detail: ServiceDetail }) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
           {/* Left Column: Text Copy */}
           <div className="lg:col-span-6 flex flex-col justify-center">
-            <RevealSection>
-              <p className="text-white/40 text-xs font-semibold uppercase tracking-[0.2em] mb-4">
-                Overview
-              </p>
-            </RevealSection>
-            
             <RevealSection delay={0.05}>
               <h2 className="font-sans text-3xl md:text-4xl lg:text-5xl text-white font-normal leading-tight tracking-tight mb-6">
                 {detail.overview.heading}

@@ -81,12 +81,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Hide scrollbar utility */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
+.no-scrollbar::-webkit-scrollbar,
+.scrollbar-none::-webkit-scrollbar {
+  display: none !important;
 }
-.no-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+.no-scrollbar,
+.scrollbar-none {
+  -ms-overflow-style: none !important;  /* IE and Edge */
+  scrollbar-width: none !important;  /* Firefox */
 }
 
 @layer utilities {
@@ -104,20 +106,107 @@ h1, h2, h3, h4, h5, h6 {
     border: 1px solid rgba(255, 255, 255, 0.08);
   }
   
-  /* Container Utilities */
+  /* Container & Grid Padding Utilities */
+  .px-global {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  @media (min-width: 640px) {
+    .px-global {
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+  }
+  @media (min-width: 768px) {
+    .px-global {
+      padding-left: 40px;
+      padding-right: 40px;
+    }
+  }
+  @media (min-width: 1024px) {
+    .px-global {
+      padding-left: 64px;
+      padding-right: 64px;
+    }
+  }
+  @media (min-width: 1280px) {
+    .px-global {
+      padding-left: 96px;
+      padding-right: 96px;
+    }
+  }
+
   .container-responsive {
     width: 100%;
-    margin: 0 auto;
-    padding-left: clamp(1rem, 4vw, 2rem);
-    padding-right: clamp(1rem, 4vw, 2rem);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 20px;
+    padding-right: 20px;
   }
-  
+  @media (min-width: 640px) {
+    .container-responsive {
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+  }
+  @media (min-width: 768px) {
+    .container-responsive {
+      padding-left: 40px;
+      padding-right: 40px;
+    }
+  }
+  @media (min-width: 1024px) {
+    .container-responsive {
+      padding-left: 64px;
+      padding-right: 64px;
+    }
+  }
+  @media (min-width: 1280px) {
+    .container-responsive {
+      padding-left: 96px;
+      padding-right: 96px;
+    }
+  }
+
+  .container-custom {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1440px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  @media (min-width: 640px) {
+    .container-custom {
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+  }
+  @media (min-width: 768px) {
+    .container-custom {
+      padding-left: 40px;
+      padding-right: 40px;
+    }
+  }
+  @media (min-width: 1024px) {
+    .container-custom {
+      padding-left: 64px;
+      padding-right: 64px;
+    }
+  }
+  @media (min-width: 1280px) {
+    .container-custom {
+      padding-left: 96px;
+      padding-right: 96px;
+    }
+  }
+
   .container-sm { max-width: min(90vw, 640px); }
   .container-md { max-width: min(90vw, 768px); }
   .container-lg { max-width: min(90vw, 1024px); }
   .container-xl { max-width: min(90vw, 1280px); }
   .container-2xl { max-width: min(90vw, 1536px); }
-  .container-max { max-width: min(95vw, 1440px); }
+  .container-max { max-width: 1440px; }
   
   /* Fluid Typography Utilities */
   .text-fluid-xs { font-size: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem); }
@@ -132,14 +221,6 @@ h1, h2, h3, h4, h5, h6 {
   
   .pt-safe { padding-top: max(env(safe-area-inset-top), 72px); }
   .pb-safe { padding-bottom: max(env(safe-area-inset-bottom), 0px); }
-}
-
-/* Responsive Media Queries */
-@media (max-width: 479px) {
-  .container-responsive {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
 }
 
 /* Accessibility */

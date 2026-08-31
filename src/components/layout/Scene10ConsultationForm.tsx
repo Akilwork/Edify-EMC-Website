@@ -52,6 +52,7 @@ export default function Scene10ConsultationForm({
   const [showCountryCodes, setShowCountryCodes] = useState(false);
   const [showInstTypes, setShowInstTypes] = useState(false);
   const [showServices, setShowServices] = useState(false);
+  const [formErrors, setFormErrors] = useState<{ name?: boolean; contactNumber?: boolean; email?: boolean }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const countryDropdownRef = useRef<HTMLDivElement>(null);
@@ -81,11 +82,17 @@ export default function Scene10ConsultationForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Basic Validation
-    if (!formData.name.trim() || !formData.email.trim() || !formData.contactNumber.trim()) {
+    const errors: { name?: boolean; contactNumber?: boolean; email?: boolean } = {};
+    if (!formData.name.trim()) errors.name = true;
+    if (!formData.contactNumber.trim()) errors.contactNumber = true;
+    if (!formData.email.trim() || !formData.email.includes("@")) errors.email = true;
+
+    setFormErrors(errors);
+
+    if (Object.keys(errors).length > 0) {
       toast({
         title: "Validation Error",
-        description: "Please fill out Name, Contact Number, and Email Address.",
+        description: "Please fill out all required fields marked in red.",
         variant: "destructive",
       });
       return;
@@ -129,6 +136,7 @@ export default function Scene10ConsultationForm({
         howCanWeHelp: "",
       });
       setCountryCode("+971");
+      setFormErrors({});
     } catch (err: any) {
       toast({
         title: "Submission Failed",
@@ -141,7 +149,7 @@ export default function Scene10ConsultationForm({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
+    <form onSubmit={handleSubmit} noValidate className="space-y-4">
       {/* Line 1: Name, Contact Number, Email Address */}
       <div className={`grid grid-cols-1 md:grid-cols-3 gap-4 relative ${showCountryCodes ? "z-30" : "z-10"}`}>
         <div className="flex flex-col relative z-10">
@@ -153,10 +161,14 @@ export default function Scene10ConsultationForm({
             type="text"
             placeholder="Enter Full Name"
             value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            className="w-full px-4 h-[52px] border border-white/5 rounded-[8px] text-white placeholder-white/30 focus:outline-none focus:border-white/20 transition-all duration-200 text-sm backdrop-blur-sm"
+            onChange={(e) => {
+              setFormData({ ...formData, name: e.target.value });
+              if (formErrors.name) setFormErrors((prev) => ({ ...prev, name: false }));
+            }}
+            className={`w-full px-4 h-[52px] border rounded-[8px] text-white placeholder-white/30 focus:outline-none transition-all duration-200 text-sm backdrop-blur-sm ${
+              formErrors.name ? "border-red-500 focus:border-red-500" : "border-white/5 focus:border-white/20"
+            }`}
             style={{ backgroundColor: "rgba(34, 34, 37, 0.65)" }}
-            required
           />
         </div>
 
@@ -165,7 +177,9 @@ export default function Scene10ConsultationForm({
             Contact Number
           </label>
           <div
-            className="flex items-center border border-white/5 rounded-[8px] h-[52px] focus-within:border-white/20 transition-all duration-200 backdrop-blur-sm"
+            className={`flex items-center border rounded-[8px] h-[52px] transition-all duration-200 backdrop-blur-sm ${
+              formErrors.contactNumber ? "border-red-500 focus-within:border-red-500" : "border-white/5 focus-within:border-white/20"
+            }`}
             style={{ backgroundColor: "rgba(34, 34, 37, 0.65)" }}
           >
             <div ref={countryDropdownRef} className="relative flex-shrink-0 h-full">
@@ -208,9 +222,17 @@ export default function Scene10ConsultationForm({
               type="tel"
               placeholder="Contact Number"
               value={formData.contactNumber}
-              onChange={(e) => setFormData({ ...formData, contactNumber: e.target.value })}
+              onChange={(e) => {
+                setFormData({ ...formData, contactNumber: e.target.value.replace(/[^0-9]/g, "") });
+                if (formErrors.contactNumber) setFormErrors((prev) => ({ ...prev, contactNumber: false }));
+              }}
+              onKeyDown={(e) => {
+                const allowedKeys = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab", "Enter", "Home", "End"];
+                if (!/^[0-9]$/.test(e.key) && !allowedKeys.includes(e.key) && !e.ctrlKey && !e.metaKey) {
+                  e.preventDefault();
+                }
+              }}
               className="w-full h-full bg-transparent px-3 text-sm text-white placeholder-white/30 focus:outline-none"
-              required
             />
           </div>
         </div>
@@ -224,10 +246,14 @@ export default function Scene10ConsultationForm({
             type="email"
             placeholder="Enter Email Address"
             value={formData.email}
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            className="w-full px-4 h-[52px] border border-white/5 rounded-[8px] text-white placeholder-white/30 focus:outline-none focus:border-white/20 transition-all duration-200 text-sm backdrop-blur-sm"
+            onChange={(e) => {
+              setFormData({ ...formData, email: e.target.value });
+              if (formErrors.email) setFormErrors((prev) => ({ ...prev, email: false }));
+            }}
+            className={`w-full px-4 h-[52px] border rounded-[8px] text-white placeholder-white/30 focus:outline-none transition-all duration-200 text-sm backdrop-blur-sm ${
+              formErrors.email ? "border-red-500 focus:border-red-500" : "border-white/5 focus:border-white/20"
+            }`}
             style={{ backgroundColor: "rgba(34, 34, 37, 0.65)" }}
-            required
           />
         </div>
       </div>

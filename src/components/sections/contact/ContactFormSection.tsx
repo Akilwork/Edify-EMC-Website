@@ -8,6 +8,7 @@ export default function ContactFormSection() {
   const [formData, setFormData] = useState({
     name: "", email: "", company: "", message: "",
   });
+  const [formErrors, setFormErrors] = useState<{ name?: boolean; email?: boolean; message?: boolean }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const submittingRef = useRef(false);
 
@@ -15,11 +16,17 @@ export default function ContactFormSection() {
     e.preventDefault();
     if (submittingRef.current) return;
 
-    // Basic Validation
-    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+    const errors: { name?: boolean; email?: boolean; message?: boolean } = {};
+    if (!formData.name.trim()) errors.name = true;
+    if (!formData.email.trim() || !formData.email.includes("@")) errors.email = true;
+    if (!formData.message.trim()) errors.message = true;
+
+    setFormErrors(errors);
+
+    if (Object.keys(errors).length > 0) {
       toast({
         title: "Validation Error",
-        description: "Please fill out Name, Email, and Message fields.",
+        description: "Please fill out all required fields marked in red.",
         variant: "destructive",
       });
       return;
@@ -55,6 +62,7 @@ export default function ContactFormSection() {
         company: "",
         message: "",
       });
+      setFormErrors({});
       success = true;
 
       // Allow new submissions after a short delay (2 seconds)
@@ -78,9 +86,9 @@ export default function ContactFormSection() {
 
   return (
     <section id="contact-form" className="section-padding bg-[#16213E]">
-      <div className="container-custom max-w-2xl">
+      <div className="container-responsive container-max max-w-2xl">
         <h2 className="font-heading text-4xl font-bold text-white mb-10">Send Us a Message</h2>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+        <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-6">
           {[
             { id: "name",    label: "Full Name",    type: "text",  placeholder: "John Smith" },
             { id: "email",   label: "Email Address",type: "email", placeholder: "john@company.com" },
@@ -93,8 +101,15 @@ export default function ContactFormSection() {
                 type={type}
                 placeholder={placeholder}
                 value={formData[id as keyof typeof formData]}
-                onChange={(e) => setFormData({ ...formData, [id]: e.target.value })}
-                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-[#E8C97A] transition-colors duration-200"
+                onChange={(e) => {
+                  setFormData({ ...formData, [id]: e.target.value });
+                  if (formErrors[id as keyof typeof formErrors]) {
+                    setFormErrors((prev) => ({ ...prev, [id]: false }));
+                  }
+                }}
+                className={`w-full px-4 py-3 bg-white/5 border rounded-xl text-white placeholder-white/30 focus:outline-none transition-colors duration-200 ${
+                  formErrors[id as keyof typeof formErrors] ? "border-red-500 focus:border-red-500" : "border-white/10 focus:border-[#E8C97A]"
+                }`}
               />
             </div>
           ))}
@@ -105,8 +120,13 @@ export default function ContactFormSection() {
               rows={5}
               placeholder="Tell us about your project..."
               value={formData.message}
-              onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-[#E8C97A] transition-colors duration-200 resize-none"
+              onChange={(e) => {
+                setFormData({ ...formData, message: e.target.value });
+                if (formErrors.message) setFormErrors((prev) => ({ ...prev, message: false }));
+              }}
+              className={`w-full px-4 py-3 bg-white/5 border rounded-xl text-white placeholder-white/30 focus:outline-none transition-colors duration-200 resize-none ${
+                formErrors.message ? "border-red-500 focus:border-red-500" : "border-white/10 focus:border-[#E8C97A]"
+              }`}
             />
           </div>
           <button

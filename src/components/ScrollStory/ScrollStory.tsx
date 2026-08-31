@@ -19,7 +19,7 @@ function scrollProgressToFractionalFrame(progress: number): number {
   return p * (TOTAL_FRAMES - 1);
 }
 
-// ─── Draw helper – single frame, cover-scaled, no blending ───────────────────
+// ─── Draw helper – single crisp frame, cover-scaled, no ghosting/double-vision ───
 function drawBlended(
   canvas: HTMLCanvasElement,
   images: HTMLImageElement[],
@@ -43,10 +43,17 @@ function drawBlended(
   const oy = (ch - sh) / 2;
 
   ctx.clearRect(0, 0, cw, ch);
+  ctx.globalAlpha = 1;
   ctx.drawImage(img, ox, oy, sw, sh);
 }
 
 const CARDS_DATA = [
+  {
+    id: 'educational',
+    title: 'Academic services.',
+    image: '/Services/educational_&_institutional_consulting_card_image.png',
+    link: '/services#educational',
+  },
   {
     id: 'hr',
     title: 'Human Resource Services',
@@ -55,7 +62,7 @@ const CARDS_DATA = [
   },
   {
     id: 'financial',
-    title: 'Financial Consultancy',
+    title: 'Financial Services',
     image: '/Services/financial_consultancy_card_image.png',
     link: '/services#financial',
   },
@@ -66,20 +73,20 @@ const CARDS_DATA = [
     link: '/services#it',
   },
   {
-    id: 'educational',
-    title: 'Educational & Institutional Consulting',
-    image: '/Services/educational_&_institutional_consulting_card_image.png',
-    link: '/services#educational',
+    id: 'transportation',
+    title: 'Institutional Transport',
+    image: '/Service-page/Transportation-&-Fleet-Support.png',
+    link: '/services#transportation',
   },
   {
     id: 'behavioural',
-    title: 'Behavioural Counselling & Student Support',
+    title: 'Canteen service',
     image: '/Services/behavioural_counselling_&_student_support_card_image.png',
     link: '/services#behavioural',
   },
   {
     id: 'printing',
-    title: 'Printing & Branding Solutions',
+    title: 'Marketing',
     image: '/Services/printing_&_branding_solutions_card_image.png',
     link: '/services#printing',
   },
@@ -148,7 +155,13 @@ export const ScrollStory = () => {
 
     for (let i = 0; i < TOTAL_FRAMES; i++) {
       const img = new Image();
-      img.onload = onSettle;
+      img.onload = () => {
+        if ('decode' in img) {
+          img.decode().catch(() => {}).finally(onSettle);
+        } else {
+          onSettle();
+        }
+      };
       img.onerror = onSettle;
       img.src = getFrameSrc(i);
       images[i] = img;
@@ -163,7 +176,7 @@ export const ScrollStory = () => {
     if (!canvas) return;
 
     const applySize = () => {
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       dprRef.current = dpr;
       const w = window.innerWidth;
       const h = window.innerHeight;
@@ -186,31 +199,21 @@ export const ScrollStory = () => {
     return () => window.removeEventListener('resize', applySize);
   }, [loadState]);
 
-  // ── 3. GSAP ScrollTrigger – pin + scrub ────────────────────────────────────
+  // ── 3. GSAP ScrollTrigger – 2-Phase Animation (3D Intro + Cards Horizontal Movement) ──
   useEffect(() => {
     if (loadState !== 'ready') return;
     const section = sectionRef.current;
     const canvas = canvasRef.current;
-    if (!section || !canvas) return;
+    const overlay = cardsOverlayRef.current;
+    const container = cardsContainerRef.current;
+    if (!section || !canvas || !overlay || !container) return;
 
     drawBlended(canvas, imagesRef.current, 0, dprRef.current);
 
-    // ── Mobile/Tablet: extend pin to cover card overflow so page scroll drives it ──
-    const isMobileOrTablet = windowSize.width <= 1024;
+    // Calculate total horizontal scroll travel needed for cards across all devices
+    const cardScrollDistance = Math.max(0, container.scrollWidth - overlay.clientWidth);
     const baseDist = windowSize.height * SCROLL_MULTIPLIER;
-    let extraScrollPx = 0;
-
-    if (isMobileOrTablet) {
-      const overlay = cardsOverlayRef.current;
-      const container = cardsContainerRef.current;
-      if (overlay && container) {
-        extraScrollPx = Math.max(0, container.scrollHeight - overlay.offsetHeight);
-      }
-    }
-
-    // Map the page scroll 1:1 to the card list scrolling
-    const lastFrameScrollDistance = isMobileOrTablet ? extraScrollPx * 1.0 : 0;
-    const totalDist = baseDist + lastFrameScrollDistance;
+    const totalDist = baseDist + cardScrollDistance;
 
     const st = ScrollTrigger.create({
       trigger: section,
@@ -218,12 +221,14 @@ export const ScrollStory = () => {
       end: `+=${totalDist}`,
       pin: true,
       pinSpacing: true,
-      scrub: 0.6,
+      scrub: 0.3,
       refreshPriority: 3,
       onUpdate: (self) => {
-        // Canvas animation always plays over the first baseDist of scroll
-        const canvasProgress = Math.min(1, (self.progress * totalDist) / baseDist);
-        const next = scrollProgressToFractionalFrame(canvasProgress);
+        const scrolledPx = self.progress * totalDist;
+
+        // ── Phase 1: 3D Canvas animation scrubs over the first 85% of baseDist ──
+        const animProgress = Math.min(1, scrolledPx / (baseDist * 0.85));
+        const next = scrollProgressToFractionalFrame(animProgress);
 
         if (Math.round(next) !== Math.round(fractionalFrame.current)) {
           fractionalFrame.current = next;
@@ -233,41 +238,41 @@ export const ScrollStory = () => {
           );
         }
 
-        const cardsOverlay = cardsOverlayRef.current;
         const contentWrapper = contentWrapperRef.current;
-        if (cardsOverlay && contentWrapper) {
-          const fadeStart = 0.9;
-          const fadeEnd = 0.98;
+        if (overlay && contentWrapper) {
+          // ── Cards Fade-in & Canvas Fade-out ──
+          const fadeStartPx = baseDist * 0.65;
+          const fadeEndPx = baseDist * 0.82;
           let opacity = 0;
-          if (canvasProgress >= fadeEnd) {
+
+          if (scrolledPx >= fadeEndPx) {
             opacity = 1;
-          } else if (canvasProgress <= fadeStart) {
+          } else if (scrolledPx <= fadeStartPx) {
             opacity = 0;
           } else {
-            opacity = (canvasProgress - fadeStart) / (fadeEnd - fadeStart);
+            opacity = (scrolledPx - fadeStartPx) / (fadeEndPx - fadeStartPx);
           }
-          cardsOverlay.style.opacity = `${opacity}`;
-          cardsOverlay.style.pointerEvents = opacity > 0.9 ? 'auto' : 'none';
-          contentWrapper.style.pointerEvents = opacity > 0.9 ? 'auto' : 'none';
 
-          if (canvasProgress >= fadeStart) {
-            canvas.style.opacity = '0';
-            canvas.style.visibility = 'hidden';
+          overlay.style.opacity = `${opacity}`;
+          overlay.style.pointerEvents = opacity > 0.7 ? 'auto' : 'none';
+          contentWrapper.style.pointerEvents = opacity > 0.7 ? 'auto' : 'none';
+
+          if (canvas) {
+            // Hide canvas completely as cards fade in to eliminate background 3D card ghosting
+            const canvasOpacity = Math.max(0, 1 - opacity * 1.2);
+            canvas.style.opacity = `${canvasOpacity}`;
+            canvas.style.visibility = opacity >= 0.85 ? 'hidden' : 'visible';
+          }
+
+          // ── Phase 2: Horizontal Card Movement across Fixed Clean Background ──
+          if (scrolledPx > baseDist * 0.82 && cardScrollDistance > 0) {
+            const cardsPhaseProgress =
+              (scrolledPx - baseDist * 0.82) / Math.max(1, totalDist - baseDist * 0.82);
+            const clampedProgress = Math.min(1, Math.max(0, cardsPhaseProgress));
+            const xOffset = -clampedProgress * cardScrollDistance;
+            container.style.transform = `translate3d(${xOffset}px, 0, 0)`;
           } else {
-            canvas.style.opacity = '1';
-            canvas.style.visibility = 'visible';
-          }
-
-          // ── Drive mobile/tablet card list scroll via page scroll ────────────────
-          if (isMobileOrTablet && extraScrollPx > 0) {
-            const cardsPhaseStart = baseDist / totalDist;
-            if (self.progress > cardsPhaseStart) {
-              const cardsScrollProgress =
-                (self.progress - cardsPhaseStart) / (1 - cardsPhaseStart);
-              cardsOverlay.scrollTop = cardsScrollProgress * extraScrollPx;
-            } else {
-              cardsOverlay.scrollTop = 0;
-            }
+            container.style.transform = 'translate3d(0px, 0, 0)';
           }
         }
       },
