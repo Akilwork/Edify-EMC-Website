@@ -1086,12 +1086,8 @@ export default function CareerPositions() {
                         disabled={isSubmitting}
                         className="flex items-center gap-2 px-6 py-2.5 bg-black hover:bg-neutral-800 disabled:bg-neutral-400 text-white font-sans text-xs font-bold rounded-full transition-all duration-200 shadow-md cursor-pointer outline-none active:scale-95"
                       >
-                        {isSubmitting ? "Uploading..." : (
-                          <>
-                            Submit Application
-                            <Send size={12} />
-                          </>
-                        )}
+                        Submit Application
+                        <Send size={12} />
                       </button>
                     </div>
                   </form>
