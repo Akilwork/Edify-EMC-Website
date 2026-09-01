@@ -1,8 +1,10 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ChevronLeft, ChevronRight, ChevronDown, ArrowRight, ArrowDown } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import { useConsultation } from '@/components/providers/ConsultationProvider';
 import styles from './ServiceDetailsModal.module.css';
 
@@ -14,6 +16,7 @@ interface SubService {
 
 interface ServiceDetail {
   id: string;
+  slug: string;
   title: string; // matches cards_data
   categoryTag: string;
   mainHeader: string;
@@ -27,28 +30,53 @@ interface ServiceDetail {
 const SERVICE_DETAILS: Record<string, ServiceDetail> = {
   hr: {
     id: 'hr',
+    slug: 'human-resource-services',
     title: 'Human Resource Services',
     categoryTag: 'Human Resource Management Services',
-    mainHeader: 'Building Strong Educational Institutions Through Strategic People Management',
-    introBodyText: 'Services designed to help educational institutions build, manage, and retain high-performing academic and administrative teams. Our solutions support workforce planning, regulatory compliance, employee development, and organizational growth, ensuring institutions operate efficiently while maintaining a positive and productive work environment.',
-    tagline: 'Build Stronger Teams. Strengthen Institutional Performance.',
+    mainHeader: 'Empowering People. Enabling Schools. Building Futures.',
+    introBodyText: 'A people-first, compliance-driven HR ecosystem supporting educational institutions across the complete employee lifecycle—from talent acquisition to exit management, while enabling a high-performing and engaged workforce',
+    tagline: 'Right Talent • Right Processes • Strong Compliance • Engaged People • Better Education',
     bgImage: '/Services/human_resource_services_card_image.png',
     subServices: [
       {
-        title: 'HR Policy Development & Compliance',
-        description: 'Develop and implement HR policies, employee handbooks, compliance frameworks, and governance procedures aligned with labour regulations and institutional standards.',
+        title: 'Strategic HR & Compliance',
+        description: 'MOHRE • KHDA/ADEK/SPEA • Policies • Regulatory Compliance',
       },
       {
-        title: 'Payroll Management & Statutory Compliance',
-        description: 'Streamline payroll processing, attendance management, employee benefits administration, and statutory compliances like PF, ESI, and tax declarations.',
+        title: 'Talent Acquisition',
+        description: 'Workforce Planning • Global Recruitment • Talent Pool • Safer Recruitment',
       },
       {
-        title: 'HR Audits & Organizational Development',
-        description: 'Assess existing HR practices, identify operational gaps, improve organizational structures, and align human capital with strategic goals.',
+        title: 'Onboarding & PRO Services',
+        description: 'Visas • Emirates ID • Teacher Licensing • Government Liaison',
       },
       {
-        title: 'Performance Management Systems',
-        description: 'Design performance appraisal frameworks, KPI structures, faculty evaluation systems, and feedback loops to drive growth and excellence.',
+        title: 'Payroll & Benefits',
+        description: 'WPS • Insurance • Allowances • Pension Schemes',
+      },
+      {
+        title: 'Employee Lifecycle',
+        description: 'Contracts • Leave • Employee Engagement • Team Building',
+      },
+      {
+        title: 'Performance & Development',
+        description: 'Appraisals • PIPs • CPD • Career Growth',
+      },
+      {
+        title: 'Safeguarding & Training',
+        description: 'Child Protection • Health & Safety • Code of Conduct',
+      },
+      {
+        title: 'Employee Relations',
+        description: 'Grievances • Disciplinary Processes • Labour Compliance',
+      },
+      {
+        title: 'HR Digital & Analytics',
+        description: 'HRIS • Attendance • Employee Data • HR Dashboards',
+      },
+      {
+        title: 'Offboarding & Final Settlement',
+        description: 'EOSG • Visa Cancellation • Exit Management • Regulatory Closure',
       },
     ],
     keyBenefits: [
@@ -60,6 +88,7 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
   },
   financial: {
     id: 'financial',
+    slug: 'financial-consultancy',
     title: 'Financial Services',
     categoryTag: 'Financial Services',
     mainHeader: 'Securing the Financial Future and Operational Sustainability of Institutions',
@@ -68,20 +97,52 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
     bgImage: '/Services/financial_consultancy_card_image.png',
     subServices: [
       {
-        title: 'Financial Audits & Risk Assessment',
-        description: 'Perform comprehensive audits of institutional expenditures, identify financial risks, and establish internal control systems.',
+        title: 'FP&A',
+        description: 'Budgeting Planning • Forecasting • Financial Modelling',
       },
       {
-        title: 'Budgeting & Cost Optimization',
-        description: 'Design custom budgeting processes, manage cash flows, and find strategic opportunities to reduce operational costs.',
+        title: 'Accounting & Reporting',
+        description: 'Bookkeeping • Ledgers • Financial Reporting • Financial Analysis',
       },
       {
-        title: 'Capital Planning & Funding Strategy',
-        description: 'Assist in planning capital expenditures, securing funding for expansion, and managing investment portfolios.',
+        title: 'Cash & Treasury',
+        description: 'Cash Flow Management • Liquidity • Bank Liaisoning',
       },
       {
-        title: 'Statutory & Tax Compliance',
-        description: 'Ensure complete adherence to institutional tax laws, filing requirements, and regulatory reporting standards.',
+        title: 'Risk & Compliance',
+        description: 'Risk Assessment • Controls • Regulatory Compliance',
+      },
+      {
+        title: 'Tax Management',
+        description: 'VAT • Corporate Tax • Tax Planning',
+      },
+      {
+        title: 'Corporate Finance',
+        description: 'Capital Planning • Investments • M&A',
+      },
+      {
+        title: 'Business Setup',
+        description: 'Startup Costing • Capital Requirements • Feasibility Study',
+      },
+      {
+        title: 'Market & Scenario Planning',
+        description: 'Market study • Risk Modelling • Expansion Planning',
+      },
+      {
+        title: 'Internal Audit',
+        description: 'Controls Review • Process Audit • Gap Identification',
+      },
+      {
+        title: 'Business Advisory',
+        description: 'Strategy • Financial Insights • Decision Support',
+      },
+      {
+        title: 'Banking Support',
+        description: 'KYC • Corporate Account Opening • Documentation',
+      },
+      {
+        title: 'Business Growth',
+        description: 'Financial Controls • Performance Insights • Sustainable Growth',
       },
     ],
     keyBenefits: [
@@ -93,6 +154,7 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
   },
   it: {
     id: 'it',
+    slug: 'it-solutions-digital-transformation',
     title: 'IT Solutions & Digital Transformation',
     categoryTag: 'IT Solutions & Digital Transformation',
     mainHeader: 'IT Solutions That Power Your Business',
@@ -101,27 +163,27 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
     bgImage: '/Services/it_solutions_&_digital_transformation_card_image.png',
     subServices: [
       {
-        title: 'Education — Our Flagship',
+        title: 'EDUCATION — OUR FLAGSHIP',
         subHeading: 'Transforming Institutions Through Technology',
         description: 'Educational ERP • Digital Campus • Academic Systems • HR & Payroll • Cloud • Cybersecurity • Dashboards • System Integration',
       },
       {
-        title: 'Transport',
+        title: 'TRANSPORT',
         subHeading: 'Connected Operations. Smarter Mobility.',
         description: 'Fleet Management • Tracking • Automation • Digital Operations',
       },
       {
-        title: 'E-Commerce',
+        title: 'E-COMMERCE',
         subHeading: 'Powering Digital Commerce',
         description: 'E-Commerce Platforms • Payment Integration • Inventory • Order Management • Analytics',
       },
       {
-        title: 'HR Services',
+        title: 'HR SERVICES',
         subHeading: 'Technology for a Smarter Workforce',
         description: 'HRMS • Payroll • Attendance • Employee Self-Service • Workflow Automation',
       },
       {
-        title: 'Apparels',
+        title: 'APPARELS',
         subHeading: 'Digitising Apparel Operations',
         description: 'Order Management • Production • Inventory • Procurement • Sales & Reporting',
       },
@@ -135,28 +197,45 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
   },
   educational: {
     id: 'educational',
+    slug: 'educational-institutional-consulting',
     title: 'Academics',
     categoryTag: 'Academics',
-    mainHeader: 'Driving Academic Excellence and Institutional Growth',
-    introBodyText: 'From accreditation preparation to curriculum development, our expert consultants guide institutions through the complexities of academic quality assurance and strategic scaling.',
-    tagline: 'Elevate Standards. Expand Your Educational Impact.',
+    mainHeader: 'Administration, Operations, Audit & Risk Management',
+    introBodyText: 'We help organizations establish efficient administrative systems, stronger internal controls, risk-aware operations, and sustainable business processes—from start-up setup to continuous improvement.',
+    tagline: 'Build Strong • Control Better • Operate Smarter',
     bgImage: '/Services/educational_&_institutional_consulting_card_image.png',
     subServices: [
       {
-        title: 'Accreditation & Quality Assurance',
-        description: 'Prepare for national and international accreditations (like NAAC, NBA, and international equivalencies) with meticulous mock audits.',
+        title: 'Administration & Operations',
+        description: 'Structures • SOPs • Workflows • Documentation',
       },
       {
-        title: 'Curriculum Design & Development',
-        description: 'Create modern, outcome-based curricula aligned with global benchmarks and national education frameworks.',
+        title: 'Audit & Controls',
+        description: 'Process Audits • Gap Analysis • Corrective Actions',
       },
       {
-        title: 'Institution Setup & Planning',
-        description: 'Feasibility studies, regulatory approvals, infrastructure planning, and initial launch strategy for new schools and colleges.',
+        title: 'Risk Management',
+        description: 'Risk Assessment • Mitigation • Internal Controls',
       },
       {
-        title: 'Academic Audits',
-        description: 'Evaluate teaching-learning methodologies, assessment patterns, and student feedback systems to continuously upgrade academic standards.',
+        title: 'Facilities & Assets',
+        description: 'Facility Setup • PPM • Asset Tracking • Safety',
+      },
+      {
+        title: 'Procurement & Vendors',
+        description: 'Supplier Management • Cost Comparison • Performance',
+      },
+      {
+        title: 'Compliance & Governance',
+        description: 'Licenses • Regulatory Tracking • Audit Readiness',
+      },
+      {
+        title: 'Process Improvement',
+        description: 'Process Mapping • Optimization • Standardization',
+      },
+      {
+        title: 'Monitoring & Reporting',
+        description: 'KPIs • Management Reports • Performance Tracking',
       },
     ],
     keyBenefits: [
@@ -168,6 +247,7 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
   },
   behavioural: {
     id: 'behavioural',
+    slug: 'behavioural-counselling-student-support',
     title: 'Academics',
     categoryTag: 'Academics',
     mainHeader: 'Fostering Student Well-being and Constructive Learning Environments',
@@ -201,6 +281,7 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
   },
   printing: {
     id: 'printing',
+    slug: 'printing-branding-solutions',
     title: 'Marketing',
     categoryTag: 'Marketing',
     mainHeader: 'Shaping a Powerful and Unified Brand Identity for Your Institution',
@@ -234,6 +315,7 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
   },
   transportation: {
     id: 'transportation',
+    slug: 'transportation-fleet-support',
     title: 'Transport Service',
     categoryTag: 'Transport Service',
     mainHeader: 'Reliable Mobility. Safe Journeys. Seamless Operations.',
@@ -243,19 +325,35 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
     subServices: [
       {
         title: 'School Transport',
-        description: 'Safe & RTA-compliant student transportation with trained drivers and continuous route monitoring.',
+        description: 'Safe & RTA-compliant student transportation',
       },
       {
-        title: 'Corporate Mobility & Fleet Solutions',
-        description: 'Employee shuttles and flexible fleet options (13–64 seater buses) tailored for institutional operations.',
+        title: 'Corporate Mobility',
+        description: 'Employee shuttles & daily staff transport',
       },
       {
-        title: 'Route Management & GPS Tracking',
-        description: 'Real-time GPS tracking, automated route planning, and optimization for maximum efficiency.',
+        title: 'Fleet Solutions',
+        description: '13–64 seater buses for flexible requirements',
       },
       {
-        title: 'Safety & Compliance Standards',
-        description: 'Fully compliant UAE/RTA transport operations, 24/7 service support, and safety-certified drivers.',
+        title: 'Route Management',
+        description: 'GPS tracking, route planning & optimization',
+      },
+      {
+        title: 'Safety & Compliance',
+        description: 'Trained drivers & UAE/RTA-compliant operations',
+      },
+      {
+        title: 'Professional Workforce',
+        description: 'Experienced, multilingual & customer-focused drivers',
+      },
+      {
+        title: '24/7 Operations',
+        description: 'Reliable coordination and service support',
+      },
+      {
+        title: 'Scalable Mobility',
+        description: 'Flexible solutions that grow with client requirements',
       },
     ],
     keyBenefits: [
@@ -267,6 +365,7 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
   },
   transportation_admin: {
     id: 'transportation_admin',
+    slug: 'transportation-fleet-support',
     title: 'Transportation and Administration',
     categoryTag: 'Transportation & Administration',
     mainHeader: 'Comprehensive Fleet Mobility & Administrative Operations',
@@ -298,6 +397,98 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
       'Seamless Facility Oversight & Real-Time Tracking',
     ],
   },
+  uniforms: {
+    id: 'uniforms',
+    slug: 'uniform-solutions',
+    title: 'Uniforms services',
+    categoryTag: 'Uniform Solutions',
+    mainHeader: 'Identity, Quality, and Comfort in Every Stitch',
+    introBodyText: 'We design, source, and deliver high-quality uniforms and institutional clothing that reflect your identity and uphold your standards. From everyday school uniforms to sports kits and staff attire, our solutions balance comfort, durability, and affordability — making it easy for families and giving your institution a polished, unified appearance that builds belonging and pride.',
+    tagline: 'Identity, Quality, And Comfort In Every Stitch',
+    bgImage: '/Service-page/Uniform-&-Clothing-Solutions.png',
+    subServices: [
+      {
+        title: 'Uniform Design',
+        description: 'Custom designs that express your institutional identity.',
+      },
+      {
+        title: 'School Uniforms',
+        description: 'Durable, comfortable everyday wear for students.',
+      },
+      {
+        title: 'Sports & Activity Kits',
+        description: 'High-performance kits for athletics, teams, and events.',
+      },
+      {
+        title: 'Staff Attire',
+        description: 'Professional clothing designed for educators and administration staff.',
+      },
+      {
+        title: 'Sourcing & Manufacturing',
+        description: 'Reliable, ethical, and quality-controlled garment production.',
+      },
+      {
+        title: 'Distribution & Inventory',
+        description: 'Efficient supply management for families and on-campus stores.',
+      },
+    ],
+    keyBenefits: [
+      'Custom Designs Expressing Institutional Identity',
+      'Durable, Comfortable Everyday School Uniforms',
+      'Ethical Sourcing & Quality-Controlled Garment Production',
+      'Streamlined Supply & On-Campus Distribution',
+    ],
+  },
+  project_management: {
+    id: 'project_management',
+    slug: 'project-management-development',
+    title: 'Project Management & Development',
+    categoryTag: 'Project Management & Development',
+    mainHeader: 'Plan • Manage • Deliver • Succeed',
+    introBodyText: 'We provide end-to-end project management and consulting for the development of schools, residential projects, offices, and other facilities—ensuring projects are efficient, functional, compliant, and aligned with business objectives.',
+    tagline: 'From Concept to Completion — Delivered with Control, Quality & Purpose.',
+    bgImage: '/Service-page/Civil-Engineering-&-Infrastructure-Development.png',
+    subServices: [
+      {
+        title: 'Project Planning',
+        description: 'Scope • Budget • Timeline • Resources',
+      },
+      {
+        title: 'Project Development',
+        description: 'Design • Construction • Infrastructure',
+      },
+      {
+        title: 'Consultancy & Coordination',
+        description: 'Client • Consultants • Contractors • Vendors',
+      },
+      {
+        title: 'Cost & Schedule Control',
+        description: 'Budget Monitoring • Timelines • Progress Tracking',
+      },
+      {
+        title: 'Facility & Infrastructure',
+        description: 'Amenities • Utilities • Operational Readiness',
+      },
+      {
+        title: 'Quality & Compliance',
+        description: 'Standards • Approvals • Quality Assurance',
+      },
+      {
+        title: 'Operational Readiness',
+        description: 'Functional Planning • Systems • Handover',
+      },
+      {
+        title: 'Business Alignment',
+        description: 'Requirements • Objectives • Value Delivery',
+      },
+    ],
+    keyBenefits: [
+      'Structured Scope & Realistic Milestone Planning',
+      'Seamless Multi-Stakeholder Coordination & Oversight',
+      'Disciplined Cost & Schedule Control',
+      'Turnkey Operational Readiness & Smooth Handover',
+    ],
+  },
 };
 
 interface ServiceDetailsModalProps {
@@ -307,51 +498,50 @@ interface ServiceDetailsModalProps {
   onNext: () => void;
 }
 
-// Framer Motion variants for premium staggered content animations
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.15,
-    },
-  },
-};
+function getCapabilityIconUrl(index: number) {
+  const frames = [
+    '/Service%20details/Frame1.png',
+    '/Service%20details/Frame2.png',
+    '/Service%20details/Frame3.png',
+    '/Service%20details/Frame4.png',
+    '/Service%20details/Frame5.png',
+    '/Service%20details/Frame6.png',
+    '/Service%20details/Frame.png',
+  ];
+  return frames[index % frames.length];
+}
 
-const slideUpItem = {
-  hidden: { opacity: 0, y: 25 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: [0.215, 0.61, 0.355, 1] as any, // easeOutCubic
-    },
-  },
-};
-
-const contentVariants = {
-  initial: (direction: number) => ({
-    opacity: 0,
-    y: direction > 0 ? 30 : -30,
-  }),
-  animate: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.5,
-      ease: [0.25, 1, 0.5, 1] as any, // easeOutQuart
-    },
-  },
-  exit: (direction: number) => ({
-    opacity: 0,
-    y: direction > 0 ? -30 : 30,
-    transition: {
-      duration: 0.4,
-      ease: [0.25, 1, 0.5, 1] as any,
-    },
-  }),
+const getColSpanClass = (index: number, totalCount: number) => {
+  if (totalCount === 12) {
+    if (index === 0 || index === 1) return 'col-span-12 md:col-span-6';
+    if (index >= 2 && index <= 7) return 'col-span-12 md:col-span-4';
+    return 'col-span-12 md:col-span-6';
+  }
+  if (totalCount === 10) {
+    if (index === 0 || index === 1) return 'col-span-12 md:col-span-6';
+    if (index >= 2 && index <= 7) return 'col-span-12 md:col-span-4';
+    return 'col-span-12 md:col-span-6';
+  }
+  if (totalCount === 8) {
+    if (index === 0 || index === 1) return 'col-span-12 md:col-span-6';
+    return 'col-span-12 md:col-span-4';
+  }
+  if (totalCount === 7) {
+    if (index === 0 || index === 1) return 'col-span-12 md:col-span-6';
+    if (index >= 2 && index <= 4) return 'col-span-12 md:col-span-4';
+    return 'col-span-12 md:col-span-6';
+  }
+  if (totalCount === 5) {
+    if (index === 0 || index === 1) return 'col-span-12 md:col-span-6';
+    return 'col-span-12 md:col-span-4';
+  }
+  if (totalCount % 3 === 0) {
+    return 'col-span-12 md:col-span-4';
+  }
+  if (totalCount % 2 === 0) {
+    return 'col-span-12 md:col-span-6';
+  }
+  return 'col-span-12 md:col-span-4';
 };
 
 export const ServiceDetailsModal = ({
@@ -362,17 +552,18 @@ export const ServiceDetailsModal = ({
 }: ServiceDetailsModalProps) => {
   const { openConsultation } = useConsultation();
   const contentRef = useRef<HTMLDivElement>(null);
-  const [activeSection, setActiveSection] = useState(0); // 0 = Intro, 1..N = subServices
-  const [direction, setDirection] = useState(1); // 1 = scrolling down, -1 = scrolling up
+  const capabilitiesRef = useRef<HTMLDivElement>(null);
 
-  // Reset scroll and state when service changes
+  const scrollToCapabilities = () => {
+    if (capabilitiesRef.current) {
+      capabilitiesRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  // Reset scroll when service changes
   useEffect(() => {
-    if (serviceId) {
-      setActiveSection(0);
-      setDirection(1);
-      if (contentRef.current) {
-        contentRef.current.scrollTop = 0;
-      }
+    if (serviceId && contentRef.current) {
+      contentRef.current.scrollTop = 0;
     }
   }, [serviceId]);
 
@@ -410,40 +601,6 @@ export const ServiceDetailsModal = ({
   if (!serviceId || !SERVICE_DETAILS[serviceId]) return null;
 
   const detail = SERVICE_DETAILS[serviceId];
-
-  // Scroll handler to track virtual scroll stages
-  const handleScroll = () => {
-    const container = contentRef.current;
-    if (!container) return;
-
-    const scrollTop = container.scrollTop;
-    const clientHeight = container.clientHeight || 810;
-    const scrollHeight = container.scrollHeight;
-
-    const isAtBottom = scrollTop + clientHeight >= scrollHeight - 50;
-
-    // Calculate active stage (0 = Intro, 1..N = Sub-services, N+1 = Key Benefits)
-    const pageIndex = Math.round(scrollTop / clientHeight);
-    const activeIndex = isAtBottom
-      ? detail.subServices.length + 1
-      : Math.min(Math.max(pageIndex, 0), detail.subServices.length + 1);
-
-    if (activeIndex !== activeSection) {
-      setDirection(activeIndex > activeSection ? 1 : -1);
-      setActiveSection(activeIndex);
-    }
-  };
-
-  const scrollToSection = (index: number) => {
-    const container = contentRef.current;
-    if (!container) return;
-
-    const clientHeight = container.clientHeight || 810;
-    container.scrollTo({
-      top: index * clientHeight,
-      behavior: 'smooth',
-    });
-  };
 
   return (
     <AnimatePresence>
@@ -529,173 +686,121 @@ export const ServiceDetailsModal = ({
           <div
             ref={contentRef}
             className={styles.modalContent}
-            onScroll={handleScroll}
           >
-            {/* Sticky Viewport (captures gestures/wheel events, stays pinned) */}
-            <div className={styles.stickyViewport}>
-              
-              {/* Pinned Top Area */}
-              <div className={styles.pinnedTop}>
-                <span className={styles.introCategoryTag}>
-                  {detail.categoryTag}
-                </span>
-                <h2 className={styles.introMainTitle}>
-                  {detail.mainHeader}
-                </h2>
-                <div className={styles.introCtaWrapper}>
-                  <button
-                    onClick={() => {
-                      onClose();
-                      openConsultation();
-                    }}
-                    className={styles.ctaButton}
-                  >
-                    <span>Get a Free Consultation</span>
-                    <ArrowRight size={16} className={styles.ctaArrow} />
-                  </button>
-                </div>
-              </div>
-
-              {/* Dynamic Scroll-stage-based content */}
-              <div className={`${styles.dynamicArea} ${activeSection > 0 ? styles.subServicesMode : ''}`}>
-                <AnimatePresence>
-                  {activeSection > 0 && activeSection <= detail.subServices.length && (
-                    <motion.div
-                      key="subServicesHeader"
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      transition={{ duration: 0.3 }}
-                      className={styles.subServicesHeader}
-                    >
-                      <span className={styles.subServicesLabel}>
-                        OUR {detail.id.toUpperCase()} SERVICES
-                      </span>
-                      
-                      {/* Custom Interactive Segment Bar */}
-                      <div className={styles.progressBar}>
-                        {detail.subServices.map((_, idx) => {
-                          const sectionIndex = idx + 1;
-                          const isActive = activeSection === sectionIndex;
-                          return (
-                            <div
-                              key={idx}
-                              onClick={() => scrollToSection(sectionIndex)}
-                              className={`${styles.progressSegment} ${
-                                isActive ? styles.activeSegment : ''
-                              }`}
-                              title={_.title}
-                            />
-                          );
-                        })}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
-                <AnimatePresence mode="wait" custom={direction}>
-                  {activeSection === 0 ? (
-                    <motion.div
-                      key="intro"
-                      custom={direction}
-                      variants={contentVariants}
-                      initial="initial"
-                      animate="animate"
-                      exit="exit"
-                      className={styles.introContentContainer}
-                    >
-                      <p className={styles.introText}>
-                        {detail.introBodyText}
-                      </p>
-                      {detail.tagline && (
-                        <h3 className={styles.introTagline}>
-                          {detail.tagline}
-                        </h3>
-                      )}
-                    </motion.div>
-                  ) : activeSection <= detail.subServices.length ? (
-                    <motion.div
-                      key={activeSection}
-                      custom={direction}
-                      variants={contentVariants}
-                      initial="initial"
-                      animate="animate"
-                      exit="exit"
-                      className={styles.subServicesContentContainer}
-                    >
-                      <h4 className={styles.subServiceTitle}>
-                        {detail.subServices[activeSection - 1].title}
-                      </h4>
-                      {detail.subServices[activeSection - 1].subHeading && (
-                        <h5 className={styles.subServiceSubHeading}>
-                          {detail.subServices[activeSection - 1].subHeading}
-                        </h5>
-                      )}
-                      <p className={styles.subServiceDesc}>
-                        {detail.subServices[activeSection - 1].description}
-                      </p>
-                    </motion.div>
-                  ) : null}
-                </AnimatePresence>
-              </div>
-
-              {/* Scroll Down Indicator */}
-              {activeSection < detail.subServices.length + 1 && (
-                <div className={styles.stickyScrollIndicator}>
-                  <div
-                    className={styles.scrollDownIndicator}
-                    onClick={() => scrollToSection(activeSection + 1)}
-                  >
-                    <div className={styles.mouseIcon}>
-                      <motion.div
-                        animate={{ y: [0, 8, 0] }}
-                        transition={{
-                          repeat: Infinity,
-                          duration: 1.5,
-                          ease: 'easeInOut',
-                        }}
-                        className={styles.mouseWheel}
-                      />
-                    </div>
-                    <ChevronDown
-                      size={14}
-                      className={styles.scrollDownChevron}
-                    />
-                    <span className={styles.scrollDownText}>
-                      Scroll Down
-                    </span>
-                  </div>
-                </div>
+            {/* Top Intro Section */}
+            <div className={styles.introSection}>
+              <span className={styles.introCategoryTag}>
+                {detail.categoryTag}
+              </span>
+              <h2 className={styles.introMainTitle}>
+                {detail.mainHeader}
+              </h2>
+              <p className={styles.introText}>
+                {detail.introBodyText}
+              </p>
+              {detail.tagline && (
+                <h3 className={styles.introTagline}>
+                  {detail.tagline}
+                </h3>
               )}
-
-            </div>
-
-            {/* Spacer to push keyBenefitsSection down to the final stage */}
-            <div
-              style={{
-                height: `${detail.subServices.length * 100}%`,
-              }}
-            />
-
-            {/* Key Benefits Section - renders in normal scroll flow below sticky area */}
-            <div className={styles.keyBenefitsSection}>
-              <h4 className={styles.keyBenefitsLabel}>KEY BENEFITS</h4>
-              <div className={styles.benefitsGrid}>
-                {detail.keyBenefits?.map((benefit, idx) => (
-                  <div key={idx} className={styles.benefitCard}>
-                    <div className={styles.cardGlowLine} />
-                    <div className={styles.cloverIcon}>
-                      <img
-                        src="/Services/Frame.png"
-                        alt="Benefit Icon"
-                        className={styles.cardIconImg}
-                      />
-                    </div>
-                    <p className={styles.benefitText}>{benefit}</p>
-                  </div>
-                ))}
+              <div className={styles.introCtaWrapper}>
+                <button
+                  onClick={() => {
+                    onClose();
+                    openConsultation();
+                  }}
+                  className={styles.ctaButton}
+                >
+                  <span>Get a Free Consultation</span>
+                  <ArrowRight size={16} className={styles.ctaArrow} />
+                </button>
+                <Link
+                  href={`/services/${detail.slug}`}
+                  className={styles.secondaryCtaButton}
+                  onClick={onClose}
+                >
+                  <span>Explore Our Solutions</span>
+                </Link>
               </div>
             </div>
+
+            {/* Service Capabilities (Card Type Design from DetailCapabilities) */}
+            <div ref={capabilitiesRef} className={styles.capabilitiesSection}>
+              <div className="text-center max-w-3xl mx-auto mb-10 md:mb-14">
+                <h3 className="font-sans text-2xl md:text-3xl lg:text-4xl text-white font-semibold leading-tight tracking-tight uppercase">
+                  OUR SERVICES
+                </h3>
+              </div>
+
+              {/* Grid of Cards */}
+              <div className="grid grid-cols-12 gap-6 w-full max-w-6xl mx-auto">
+                {detail.subServices.map((item, index) => {
+                  const iconUrl = getCapabilityIconUrl(index);
+                  const colSpan = getColSpanClass(index, detail.subServices.length);
+
+                  return (
+                    <div key={item.title} className={`${colSpan} w-full flex`}>
+                      <div className="group relative bg-[#111115] rounded-[16px] border border-white/10 hover:border-white/20 shadow-[0_10px_30px_rgba(0,0,0,0.5)] hover:shadow-[0_15px_40px_rgba(159,125,255,0.15)] transform hover:-translate-y-1 transition-all duration-300 p-6 md:p-8 flex flex-col w-full h-full overflow-hidden text-left">
+                        {/* Custom Corner Glow Border */}
+                        <div className="absolute top-[-1px] left-[-1px] right-[-1px] h-[20px] border-t-[4px] border-l-[4px] border-r-[4px] border-[#9F7DFF] rounded-t-[16px] pointer-events-none bg-transparent" />
+
+                        {/* Icon container */}
+                        <div className="mb-5 flex items-start">
+                          <Image
+                            src={iconUrl}
+                            alt={item.title}
+                            width={48}
+                            height={48}
+                            className="h-12 w-auto object-contain filter brightness-110 transform transition-transform duration-500 ease-out group-hover:rotate-12 group-hover:scale-110"
+                          />
+                        </div>
+
+                        {/* Title */}
+                        <h4 className="text-white text-lg md:text-xl font-bold mb-2 font-sans tracking-tight">
+                          {item.title}
+                        </h4>
+
+                        {/* Subheading if present */}
+                        {item.subHeading && (
+                          <p className="text-[#9F7DFF] text-xs font-semibold uppercase tracking-wider mb-3">
+                            {item.subHeading}
+                          </p>
+                        )}
+
+                        {/* Description */}
+                        {item.description && (
+                          <p className="text-white/70 text-sm leading-relaxed font-sans font-normal mt-auto">
+                            {item.description}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Key Benefits Section */}
+            {detail.keyBenefits && detail.keyBenefits.length > 0 && (
+              <div className={styles.keyBenefitsSection}>
+                <h4 className={styles.keyBenefitsLabel}>KEY BENEFITS</h4>
+                <div className={styles.benefitsGrid}>
+                  {detail.keyBenefits.map((benefit, idx) => (
+                    <div key={idx} className={styles.benefitCard}>
+                      <div className={styles.cardGlowLine} />
+                      <div className={styles.cloverIcon}>
+                        <img
+                          src="/Services/Frame.png"
+                          alt="Benefit Icon"
+                          className={styles.cardIconImg}
+                        />
+                      </div>
+                      <p className={styles.benefitText}>{benefit}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </motion.div>
       </div>

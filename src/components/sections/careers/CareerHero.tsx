@@ -40,38 +40,36 @@ export default function CareerHero() {
 
   // GSAP Animations on Mount
   useEffect(() => {
-    // Initial entry animations
+    // Initial entry animations - Snappy & smooth timings
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
     tl.fromTo(
       ".hero-title",
-      { opacity: 0, y: 40 },
-      { opacity: 1, y: 0, duration: 1.1 }
+      { opacity: 0, y: 25 },
+      { opacity: 1, y: 0, duration: 0.6 }
     );
 
     tl.fromTo(
       ".hero-subtitle",
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 0.9 },
-      "-=0.7"
+      { opacity: 0, y: 15 },
+      { opacity: 1, y: 0, duration: 0.5 },
+      "-=0.4"
     );
 
-
-
-    // Staggered entry for cards
+    // Staggered entry for cards (fast & crisp fade-up)
     tl.fromTo(
       ".career-card-wrapper",
-      { opacity: 0, y: 100 },
-      { opacity: 1, y: 0, duration: 1.2, stagger: 0.12, ease: "power4.out" },
-      "-=0.7"
+      { opacity: 0, y: 35 },
+      { opacity: 1, y: 0, duration: 0.6, stagger: 0.08, ease: "power3.out" },
+      "-=0.45"
     );
 
     // Continuous float loop animation (applied to the inner container to avoid overriding layout coordinates)
     const floatElements = document.querySelectorAll(".career-card-inner");
     const floatTweens = Array.from(floatElements).map((el, idx) => {
       const direction = idx % 2 === 0 ? -1 : 1;
-      const amplitude = 12 + (idx % 3) * 4; // 12px, 16px, 20px variation
-      const duration = 3.2 + idx * 0.45; // 3.2s, 3.65s, 4.1s, etc. variation
+      const amplitude = 8 + (idx % 3) * 3; // 8px, 11px, 14px variation
+      const duration = 3.0 + idx * 0.4;
       
       return gsap.to(el, {
         y: `${direction * amplitude}px`,
@@ -79,7 +77,7 @@ export default function CareerHero() {
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut",
-        delay: idx * 0.15
+        delay: idx * 0.1
       });
     });
 
@@ -113,8 +111,6 @@ export default function CareerHero() {
         <p className="hero-subtitle text-white/60 text-sm sm:text-base md:text-md max-w-2xl mt-6 leading-relaxed font-sans font-normal">
           Join a growing team where your ideas, skills, and ambition can create meaningful impact.
         </p>
-
-
       </div>
 
       {/* GSAP Staggered Cards container */}
@@ -147,9 +143,9 @@ export default function CareerHero() {
                       src={card.image}
                       alt={card.alt}
                       fill
+                      priority
                       sizes="(max-width: 1024px) 280px, 240px"
                       className="object-cover object-center filter grayscale contrast-[1.05] hover:grayscale-0 transition-all duration-500"
-                      priority={idx <= 2}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
                   </div>

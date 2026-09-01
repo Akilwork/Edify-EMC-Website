@@ -96,6 +96,18 @@ const CARDS_DATA = [
     image: '/Service-page/Transportation-&-Fleet-Support.png',
     link: '/services#transportation_admin',
   },
+  {
+    id: 'uniforms',
+    title: 'Uniforms services',
+    image: '/Service-page/Uniform-&-Clothing-Solutions.png',
+    link: '/services#uniforms',
+  },
+  {
+    id: 'project_management',
+    title: 'Project Management & Development',
+    image: '/Service-page/Civil-Engineering-&-Infrastructure-Development.png',
+    link: '/services#project_management',
+  },
 ];
 
 export const ScrollStory = () => {
@@ -313,7 +325,7 @@ export const ScrollStory = () => {
         <div ref={contentWrapperRef} className={styles.contentWrapper}>
           <div className={`${styles.textOverlay} ${loadState === 'ready' ? styles.visible : ''}`}>
             <h2 className={styles.title}>
-              One Trusted Partner for Every Educational<br className={styles.desktopOnlyBr} /> Institution Need
+              One Trusted Partner for Every<br className={styles.responsiveBr} /> Educational Institution Need
             </h2>
           </div>
 

@@ -5,6 +5,8 @@ import Image from "next/image";
 import GridBackground from "@/components/ui/GridBackground";
 import { DottedGlowBackground } from "@/components/ui/dotted-glow-background";
 import BlurText from "@/components/ui/BlurText";
+import { TEAM_MEMBERS, TeamMember } from "./teamData";
+import TeamMemberModal from "./TeamMemberModal";
 
 function PersonProfileCard({
   name,
@@ -12,39 +14,45 @@ function PersonProfileCard({
   imageSrc,
   imageAlt,
   className = "",
+  onClick,
 }: {
   name: string;
   title: string;
   imageSrc: string;
   imageAlt?: string;
   className?: string;
+  onClick?: () => void;
 }) {
   return (
     <div
-      className={`relative w-[220px] xs:w-[260px] sm:w-[320px] mx-auto ${className}`}
+      onClick={onClick}
+      className={`relative w-[220px] xs:w-[260px] sm:w-[320px] mx-auto cursor-pointer group transition-transform duration-300 hover:scale-[1.03] ${className}`}
       style={{ filter: "drop-shadow(0 16px 32px rgba(0,0,0,0.15))" }}
     >
-      <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden bg-gray-200">
+      <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden bg-gray-200 ring-0 group-hover:ring-2 group-hover:ring-blue-500/60 transition-all duration-300">
         <Image
           src={imageSrc}
           alt={imageAlt || name}
           fill
-          className="object-cover object-center"
+          className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
           sizes="(max-width: 480px) 220px, (max-width: 640px) 260px, 320px"
           priority
         />
         <div
-          className="absolute inset-0 flex flex-col justify-end p-4 sm:p-5"
+          className="absolute inset-0 flex flex-col justify-end p-4 sm:p-5 transition-opacity duration-300"
           style={{
             background:
-              "linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.35) 35%, transparent 65%)",
+              "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 40%, transparent 70%)",
           }}
         >
-          <span className="text-white font-sans font-bold text-base sm:text-lg leading-tight drop-shadow-sm">
+          <span className="text-white font-sans font-bold text-base sm:text-lg leading-tight drop-shadow-sm group-hover:text-blue-300 transition-colors">
             {name}
           </span>
           <span className="text-white/70 text-xs sm:text-sm font-medium mt-1">
             {title}
+          </span>
+          <span className="inline-flex items-center gap-1 text-blue-400 text-xs font-semibold mt-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0">
+            View Profile →
           </span>
         </div>
       </div>
@@ -102,6 +110,7 @@ export default function AboutHero() {
   const scene8CardsContainerRef = useRef<HTMLDivElement>(null);
   const scene8WhiteVignetteRef = useRef<HTMLDivElement>(null);
   const [scene8Visible, setScene8Visible] = useState(false);
+  const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
   // Individual card refs for scale/opacity animation
   const scene8CardRefs = useRef<(HTMLDivElement | null)[]>([]);
   // Scene 9 refs
@@ -1450,70 +1459,23 @@ export default function AboutHero() {
               className="absolute top-[140px] sm:top-[160px] md:top-[175px] lg:top-[190px] bottom-0 left-0 right-0 flex items-center z-[20] opacity-0 will-change-transform pointer-events-none"
             >
               <div className="flex gap-6 md:gap-8 px-8 md:px-16 w-max">
-                <div ref={(el) => { if (el) scene8CardRefs.current[0] = el; }} className="will-change-transform">
-                  <PersonProfileCard
-                    name="Ethan Carter"
-                    title="Founder & Chief Executive Officer"
-                    imageSrc="/about/team/Ethan-Carter.jpg"
-                    className="pointer-events-auto"
-                  />
-                </div>
-                <div ref={(el) => { if (el) scene8CardRefs.current[1] = el; }} className="will-change-transform">
-                  <PersonProfileCard
-                    name="Sophia Bennett"
-                    title="Chief Operating Officer"
-                    imageSrc="/about/team/Sophia-Bennett.jpg"
-                    className="pointer-events-auto"
-                  />
-                </div>
-                <div ref={(el) => { if (el) scene8CardRefs.current[2] = el; }} className="will-change-transform">
-                  <PersonProfileCard
-                    name="Liam Anderson"
-                    title="Chief Technology Officer"
-                    imageSrc="/about/team/Liam-Anderson.jpg"
-                    className="pointer-events-auto"
-                  />
-                </div>
-                <div ref={(el) => { if (el) scene8CardRefs.current[3] = el; }} className="will-change-transform">
-                  <PersonProfileCard
-                    name="Olivia Parker"
-                    title="Head of Product Design"
-                    imageSrc="/about/team/Olivia-Parker.jpg"
-                    className="pointer-events-auto"
-                  />
-                </div>
-                <div ref={(el) => { if (el) scene8CardRefs.current[4] = el; }} className="will-change-transform">
-                  <PersonProfileCard
-                    name="Noah Mitchell"
-                    title="Lead Software Engineer"
-                    imageSrc="/about/team/Noah-Mitchell.avif"
-                    className="pointer-events-auto"
-                  />
-                </div>
-                <div ref={(el) => { if (el) scene8CardRefs.current[5] = el; }} className="will-change-transform">
-                  <PersonProfileCard
-                    name="Ava Collins"
-                    title="Marketing & Brand Strategist"
-                    imageSrc="/about/team/Ava-Collins.avif"
-                    className="pointer-events-auto"
-                  />
-                </div>
-                <div ref={(el) => { if (el) scene8CardRefs.current[6] = el; }} className="will-change-transform">
-                  <PersonProfileCard
-                    name="Mason Brooks"
-                    title="Business Development Manager"
-                    imageSrc="/about/team/Mason-Brooks.jpg"
-                    className="pointer-events-auto"
-                  />
-                </div>
-                <div ref={(el) => { if (el) scene8CardRefs.current[7] = el; }} className="will-change-transform">
-                  <PersonProfileCard
-                    name="Isabella Reed"
-                    title="Customer Success Manager"
-                    imageSrc="/about/team/Isabella-Reed.jpg"
-                    className="pointer-events-auto"
-                  />
-                </div>
+                {TEAM_MEMBERS.map((member, index) => (
+                  <div
+                    key={member.id}
+                    ref={(el) => {
+                      if (el) scene8CardRefs.current[index] = el;
+                    }}
+                    className="will-change-transform"
+                  >
+                    <PersonProfileCard
+                      name={member.name}
+                      title={member.title}
+                      imageSrc={member.imageSrc}
+                      className="pointer-events-auto"
+                      onClick={() => setSelectedMember(member)}
+                    />
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -1592,6 +1554,12 @@ export default function AboutHero() {
           animation: spin-fast 25s linear infinite;
         }
       `}</style>
+        {/* Team Member Profile Modal */}
+        <TeamMemberModal
+          selectedMember={selectedMember}
+          onClose={() => setSelectedMember(null)}
+          onSelectMember={(member) => setSelectedMember(member)}
+        />
       </section>
     </div>
   );
