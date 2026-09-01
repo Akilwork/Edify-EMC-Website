@@ -32,6 +32,14 @@ export default function TeamMemberModal({
   onSelectMember,
 }: TeamMemberModalProps) {
   useEffect(() => {
+    if (selectedMember) {
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+    }
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!selectedMember) return;
       if (e.key === "Escape") {
@@ -44,7 +52,11 @@ export default function TeamMemberModal({
     };
 
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, [selectedMember]);
 
   if (!selectedMember) return null;
@@ -94,8 +106,10 @@ export default function TeamMemberModal({
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.25 }}
-        className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-xl flex items-center justify-center p-3 xs:p-4 sm:p-6 md:p-8 overflow-y-auto"
+        className="fixed inset-0 z-[100] bg-black/80 flex items-center justify-center p-3 xs:p-4 sm:p-6 md:p-8 overflow-y-auto"
         onClick={onClose}
+        onWheel={(e) => e.stopPropagation()}
+        onTouchMove={(e) => e.stopPropagation()}
       >
         <motion.div
           initial={{ opacity: 0, scale: 0.94, y: 15 }}
@@ -169,9 +183,9 @@ export default function TeamMemberModal({
           </div>
 
           {/* Bottom Highlights & Specializations Container */}
-          <div className="bg-[#0D121F]/90 border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-6 backdrop-blur-md mx-4 xs:mx-6 sm:mx-8 md:mx-10 mb-6 sm:mb-8 md:mb-10">
+          <div className="bg-[#0D121F] border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-6 mx-4 xs:mx-6 sm:mx-8 md:mx-10 mb-6 sm:mb-8 md:mb-10">
             {/* 3 Feature cards grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-5">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
               {selectedMember.features.map((feature, idx) => (
                 <div
                   key={idx}
@@ -190,16 +204,6 @@ export default function TeamMemberModal({
                   </div>
                 </div>
               ))}
-            </div>
-
-            {/* Specializations / Technologies bottom line */}
-            <div className="flex flex-wrap items-center gap-2 pt-3.5 border-t border-white/10 text-xs sm:text-sm">
-              <span className="text-blue-400 font-bold uppercase tracking-wider text-xs">
-                SPECIALIZATIONS:
-              </span>
-              <span className="text-white/70 font-medium">
-                {selectedMember.specializations.join(" • ")}
-              </span>
             </div>
           </div>
         </motion.div>
