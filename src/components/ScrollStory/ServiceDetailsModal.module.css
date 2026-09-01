@@ -197,6 +197,10 @@
 
 .introCtaWrapper {
   margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
 }
 
 .ctaButton {
@@ -232,6 +236,35 @@
   transform: translateX(4px);
 }
 
+.secondaryCtaButton {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 28px;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  font-family: var(--font-inter-tight), "Inter Tight", system-ui, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  margin-top: 10px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.secondaryCtaButton:hover {
+  background-color: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px rgba(255, 255, 255, 0.1);
+}
+
 /* Scrollable Content Area */
 .modalContent {
   position: relative;
@@ -257,51 +290,33 @@
   height: 0;
 }
 
-/* Sticky Viewport containing pinned elements and dynamic content */
-.stickyViewport {
-  position: sticky;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 100%;
-  width: 100%;
-  pointer-events: none;
-  /* Let scroll events pass through to modalContent */
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-  padding: var(--vp-top) var(--vp-right) var(--vp-bottom) var(--vp-left);
+/* Intro section at top of modal content */
+.introSection {
+  position: relative;
   z-index: 10;
-}
-
-/* Pinned elements at the top */
-.pinnedTop {
-  pointer-events: auto;
-  /* Enable clicks on CTA button */
+  padding: var(--vp-top) var(--vp-right) 48px var(--vp-left);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   text-align: left;
+  max-width: 1000px;
+  box-sizing: border-box;
 }
 
-/* Dynamic content area in the middle/bottom */
-.dynamicArea {
-  position: relative;
-  pointer-events: auto;
-  /* Enable clicks on tabs/links */
-  flex-grow: 1;
+/* Service Capabilities Section (Dark background with dark theme cards) */
+.capabilitiesSection {
+  background-color: #080512;
+  width: 100%;
+  padding: 56px var(--vp-right) 64px var(--vp-left);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  /* Center content vertically in the remaining space */
-  margin-top: 24px;
+  align-items: center;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 10;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.subServicesMode {
-  justify-content: flex-start;
-}
-
-/* Intro content (State 0) */
 .introContentContainer {
   display: flex;
   flex-direction: column;
@@ -321,133 +336,16 @@
 
 .introTagline {
   font-family: var(--font-inter-tight), "Inter Tight", system-ui, sans-serif;
-  font-size: clamp(1.6rem, 1.3rem + 1.5vw, 2.3rem);
+  font-size: clamp(1.4rem, 1.2rem + 1.2vw, 2.1rem);
   font-weight: 500;
   line-height: 1.3;
   color: #ffffff;
-  margin-top: 64px;
+  margin-top: 36px;
   margin-bottom: 0;
   letter-spacing: -0.015em;
   max-width: 850px;
 }
 
-/* Sub-services content (State 1..N) */
-.subServicesContentContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  max-width: 800px;
-  margin: 0 auto;
-  padding-top: 76px;
-  /* Space for the absolute header: header height + gap */
-}
-
-/* Progress bar under label */
-.subServicesHeader {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  z-index: 20;
-}
-
-.subServicesLabel {
-  font-family: var(--font-inter-tight), "Inter Tight", system-ui, sans-serif;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  color: rgba(255, 255, 255, 0.4);
-}
-
-.progressBar {
-  display: flex;
-  width: 320px;
-  max-width: 100%;
-  gap: 8px;
-}
-
-.progressSegment {
-  flex: 1;
-  height: 2px;
-  background-color: rgba(255, 255, 255, 0.15);
-  border-radius: 99px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.progressSegment:hover {
-  background-color: rgba(255, 255, 255, 0.4);
-}
-
-.activeSegment {
-  background-color: #ffffff;
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
-}
-
-.subServiceTitle {
-  font-family: var(--font-inter-tight), "Inter Tight", system-ui, sans-serif;
-  font-size: clamp(1.4rem, 1.2rem + 1.2vw, 2.2rem);
-  font-weight: 500;
-  color: #ffffff;
-  margin: 0 0 12px 0;
-  letter-spacing: -0.015em;
-  line-height: 1.3;
-}
-
-.subServiceSubHeading {
-  font-family: var(--font-inter-tight), "Inter Tight", system-ui, sans-serif;
-  font-size: clamp(1rem, 0.95rem + 0.3vw, 1.25rem);
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.8);
-  margin: 0 0 16px 0;
-  letter-spacing: -0.01em;
-  line-height: 1.4;
-}
-
-.subServiceDesc {
-  font-family: var(--font-inter-tight), "Inter Tight", system-ui, sans-serif;
-  font-size: clamp(0.95rem, 0.9rem + 0.3vw, 1.12rem);
-  line-height: 1.8;
-  color: rgba(255, 255, 255, 0.6);
-  margin: 0;
-  max-width: 720px;
-}
-
-/* Scroll down cue style */
-.scrollDownIndicator {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-  opacity: 0.65;
-  transition: opacity 0.3s ease;
-}
-
-.scrollDownIndicator:hover {
-  opacity: 1;
-}
-
-.scrollDownChevron {
-  color: rgba(255, 255, 255, 0.4);
-  margin-top: 2px;
-  transition: transform 0.3s ease;
-}
-
-.scrollDownText {
-  font-family: var(--font-inter-tight), "Inter Tight", system-ui, sans-serif;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: rgba(255, 255, 255, 0.5);
-  margin-top: 2px;
-}
 
 .mouseIcon {
   width: 20px;
@@ -504,7 +402,8 @@
     margin-top: 4px;
   }
 
-  .ctaButton {
+  .ctaButton,
+  .secondaryCtaButton {
     padding: 10px 22px;
     font-size: 0.85rem;
   }
@@ -548,7 +447,8 @@
     font-size: 1.8rem;
   }
 
-  .ctaButton {
+  .ctaButton,
+  .secondaryCtaButton {
     padding: 8px 16px;
     font-size: 0.8rem;
   }
@@ -715,7 +615,7 @@
 }
 
 .benefitCard:hover .cardIconImg {
-  transform: scale(1.08);
+  transform: rotate(12deg) scale(1.1);
 }
 
 .benefitText {

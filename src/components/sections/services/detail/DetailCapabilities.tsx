@@ -38,6 +38,11 @@ export default function DetailCapabilities({ detail }: { detail: ServiceDetail }
 
   // Helper to determine col-span classes based on total items and current index
   const getColSpanClass = (index: number, totalCount: number) => {
+    if (totalCount === 12) {
+      if (index === 0 || index === 1) return "col-span-12 md:col-span-6";
+      if (index >= 2 && index <= 7) return "col-span-12 md:col-span-4";
+      return "col-span-12 md:col-span-6";
+    }
     if (totalCount === 10) {
       if (index === 0 || index === 1) return "col-span-12 md:col-span-6";
       if (index >= 2 && index <= 7) return "col-span-12 md:col-span-4";
@@ -71,8 +76,8 @@ export default function DetailCapabilities({ detail }: { detail: ServiceDetail }
         {/* Heading */}
         <div className="text-center max-w-3xl mx-auto mb-16 md:mb-20">
           <RevealSection>
-            <h2 className="font-sans text-3xl md:text-4xl lg:text-5xl text-black font-semibold leading-tight tracking-tight mb-4">
-              Service Capabilities
+            <h2 className="font-sans text-3xl md:text-4xl lg:text-5xl text-black font-semibold leading-tight tracking-tight mb-4 uppercase">
+              OUR SERVICES
             </h2>
           </RevealSection>
           <RevealSection delay={0.05}>

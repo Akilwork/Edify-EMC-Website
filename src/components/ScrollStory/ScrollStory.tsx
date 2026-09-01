@@ -96,6 +96,18 @@ const CARDS_DATA = [
     image: '/Service-page/Transportation-&-Fleet-Support.png',
     link: '/services#transportation_admin',
   },
+  {
+    id: 'uniforms',
+    title: 'Uniforms services',
+    image: '/Service-page/Uniform-&-Clothing-Solutions.png',
+    link: '/services#uniforms',
+  },
+  {
+    id: 'project_management',
+    title: 'Project Management & Development',
+    image: '/Service-page/Civil-Engineering-&-Infrastructure-Development.png',
+    link: '/services#project_management',
+  },
 ];
 
 export const ScrollStory = () => {
@@ -219,8 +231,9 @@ export const ScrollStory = () => {
 
     // Calculate total horizontal scroll travel needed for cards across all devices
     const cardScrollDistance = Math.max(0, container.scrollWidth - overlay.clientWidth);
+    const cardTravelDist = cardScrollDistance * 1.2; // Slightly stretched for responsive card movement
     const baseDist = windowSize.height * SCROLL_MULTIPLIER;
-    const totalDist = baseDist + cardScrollDistance;
+    const totalDist = baseDist + cardTravelDist;
 
     const st = ScrollTrigger.create({
       trigger: section,
@@ -228,7 +241,7 @@ export const ScrollStory = () => {
       end: `+=${totalDist}`,
       pin: true,
       pinSpacing: true,
-      scrub: 0.3,
+      scrub: 0.45,
       refreshPriority: 3,
       onUpdate: (self) => {
         const scrolledPx = self.progress * totalDist;
@@ -312,7 +325,7 @@ export const ScrollStory = () => {
         <div ref={contentWrapperRef} className={styles.contentWrapper}>
           <div className={`${styles.textOverlay} ${loadState === 'ready' ? styles.visible : ''}`}>
             <h2 className={styles.title}>
-              One Trusted Partner for Every Educational<br className={styles.desktopOnlyBr} /> Institution Need
+              One Trusted Partner for Every<br className={styles.responsiveBr} /> Educational Institution Need
             </h2>
           </div>
 
