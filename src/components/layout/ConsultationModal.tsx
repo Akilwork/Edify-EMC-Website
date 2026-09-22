@@ -191,7 +191,7 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
          * Mobile / Tablet  →  bottom-sheet: slides up from bottom, fills screen, rounded top
          * Desktop (lg+)    →  centred card: classic left-text / right-form split layout
          */
-        <div className="fixed inset-0 z-50 flex items-end lg:items-center justify-center lg:p-6 xl:p-10">
+        <div className="fixed inset-0 z-[100] flex items-end lg:items-center justify-center lg:p-6 xl:p-10">
 
           {/* ── Backdrop ──────────────────────────────────────────────────────── */}
           <motion.div

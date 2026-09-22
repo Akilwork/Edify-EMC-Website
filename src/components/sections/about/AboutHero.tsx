@@ -29,7 +29,7 @@ function PersonProfileCard({
       className={`relative w-[220px] xs:w-[260px] sm:w-[320px] mx-auto cursor-pointer group transition-transform duration-300 hover:scale-[1.03] ${className}`}
       style={{ filter: "drop-shadow(0 16px 32px rgba(0,0,0,0.15))" }}
     >
-      <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden bg-gray-200 ring-0 group-hover:ring-2 group-hover:ring-blue-500/60 transition-all duration-300">
+      <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden bg-gray-200 ring-0 group-hover:ring-2 group-hover:ring-[#a855f7]/70 transition-all duration-300">
         <Image
           src={imageSrc}
           alt={imageAlt || name}
@@ -45,13 +45,13 @@ function PersonProfileCard({
               "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 40%, transparent 70%)",
           }}
         >
-          <span className="text-white font-sans font-bold text-base sm:text-lg leading-tight drop-shadow-sm group-hover:text-blue-300 transition-colors">
+          <span className="text-white font-sans font-bold text-base sm:text-lg leading-tight drop-shadow-sm group-hover:text-white transition-colors duration-300">
             {name}
           </span>
-          <span className="text-white/70 text-xs sm:text-sm font-medium mt-1">
+          <span className="text-white/75 text-xs sm:text-sm font-medium mt-1 group-hover:text-white/95 transition-colors duration-300">
             {title}
           </span>
-          <span className="inline-flex items-center gap-1 text-blue-400 text-xs font-semibold mt-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0">
+          <span className="inline-flex items-center gap-1 text-[#a855f7] text-xs font-semibold mt-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0">
             View Profile →
           </span>
         </div>
@@ -694,7 +694,7 @@ export default function AboutHero() {
                 const cardWidth = viewportWidth >= 640 ? 320 : (viewportWidth >= 480 ? 260 : 220);
                 const gap = viewportWidth >= 768 ? 32 : 24;
                 const padding = viewportWidth >= 768 ? 64 : 32;
-                const lastCardCenter = padding + (7 * (cardWidth + gap)) + cardWidth / 2;
+                const lastCardCenter = padding + ((TEAM_MEMBERS.length - 1) * (cardWidth + gap)) + cardWidth / 2;
                 return viewportWidth / 2 - lastCardCenter;
               },
               duration: 6,
@@ -711,9 +711,9 @@ export default function AboutHero() {
 
                     // Calculate scale, opacity and blur based on distance from center
                     const normalizedDistance = Math.min(distanceFromCenter / (maxDistance * 0.8), 1);
-                    const scale = 1 - (normalizedDistance * 0.15); // 1.0 → 0.85
-                    const opacity = 1 - (normalizedDistance * 0.5); // 1.0 → 0.5
-                    const blur = normalizedDistance * 5; // 0px → 5px (depth-of-field effect)
+                    const scale = 1 - (normalizedDistance * 0.12); // 1.0 → 0.88
+                    const opacity = 1 - (normalizedDistance * 0.3); // 1.0 → 0.7
+                    const blur = normalizedDistance * 1.5; // 0px → 1.5px (subtle depth effect)
 
                     gsap.set(card, { scale, opacity, filter: `blur(${blur}px)` });
                   }
@@ -727,7 +727,7 @@ export default function AboutHero() {
           requestAnimationFrame(() => {
             scene8CardRefs.current.forEach((card) => {
               if (card) {
-                gsap.set(card, { scale: 0.85, opacity: 0.5, filter: "blur(5px)" });
+                gsap.set(card, { scale: 0.88, opacity: 0.7, filter: "blur(1.5px)" });
               }
             });
           });
@@ -853,7 +853,51 @@ export default function AboutHero() {
           1.7
         );
 
+        const handleHashScroll = () => {
+          const hash = typeof window !== 'undefined' ? window.location.hash : '';
+          if (!hash) return;
+
+          const st = tl.scrollTrigger;
+          if (!st) return;
+
+          const totalDuration = tl.duration();
+          if (!totalDuration) return;
+
+          let targetProgress = -1;
+          if (hash === '#leadership') {
+            targetProgress = 28.8 / totalDuration;
+            setScene8Visible(true);
+          } else if (hash === '#story') {
+            targetProgress = 4.0 / totalDuration;
+          } else if (hash === '#companies') {
+            targetProgress = 36.5 / totalDuration;
+            setScene9Visible(true);
+          } else if (hash === '#overview') {
+            targetProgress = 0;
+          }
+
+          if (targetProgress >= 0) {
+            const start = st.start;
+            const end = st.end;
+            const targetY = start + (end - start) * targetProgress;
+
+            setTimeout(() => {
+              window.scrollTo({
+                top: targetY,
+                behavior: 'smooth',
+              });
+            }, 200);
+          }
+        };
+
+        // Initial check if opened with a hash
+        handleHashScroll();
+
+        // Listen for hash changes
+        window.addEventListener('hashchange', handleHashScroll);
+
         cleanupFnRef.current = () => {
+          window.removeEventListener('hashchange', handleHashScroll);
           ScrollTrigger.getAll().forEach((st) => st.kill());
           loadTimeline.kill();
         };
@@ -1365,6 +1409,7 @@ export default function AboutHero() {
 
           {/* Scene 8 - Leadership Driven → Expertise Behind Every Solution */}
           <div
+            id="leadership"
             ref={scene8Ref}
             className="absolute inset-0 flex items-center justify-center overflow-hidden z-[5] opacity-0"
           >

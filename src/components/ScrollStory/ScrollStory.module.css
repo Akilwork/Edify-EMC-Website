@@ -170,6 +170,25 @@
   cursor: pointer;
 }
 
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 12%;
+  right: 12%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #9F7DFF, transparent);
+  opacity: 0.7;
+  z-index: 10;
+  transition: all 0.4s ease;
+}
+
+.card:hover::before {
+  opacity: 1;
+  height: 3px;
+  box-shadow: 0 0 15px #9F7DFF;
+}
+
 .card:hover {
   transform: translateY(-10px);
   border-color: rgba(168, 85, 247, 0.6);

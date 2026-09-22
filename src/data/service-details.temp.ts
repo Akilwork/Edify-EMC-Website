@@ -168,27 +168,27 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
     },
   },
 
-  /* ───────────────────── 2. Academic Services ───────────────────── */
-  "academic-services": {
-    slug: "academic-services",
-    title: "Academic Services",
-    metaTitle: "Academic Services",
+  /* ───────────────────── 2. Educational & Institutional Consulting ───────────────────── */
+  "educational-institutional-consulting": {
+    slug: "educational-institutional-consulting",
+    title: "Academics",
+    metaTitle: "Academics",
     metaDescription:
-      "Strategic guidance for institutional planning, governance, accreditation, academic excellence, student wellbeing, and holistic growth.",
+      "Strategic guidance for institutional planning, governance, accreditation, and academic excellence — helping schools and colleges thrive and scale sustainably.",
     heroImage: "/Service-page/Educationalal.png",
     cardImage: "/Service-page/Educationalal.png",
     hero: {
-      tagline: "Driving Academic Excellence And Holistic Student Growth",
+      tagline: "Driving Academic Excellence And Institutional Growth",
       supportingCopy:
-        "From accreditation to curriculum design, and integrated counselling, we guide institutions through academic quality and student wellbeing.",
+        "From accreditation to curriculum design, expert consultants guide institutions through the complexities of academic quality and strategic scaling.",
       ctas: [CONSULTATION_CTA],
     },
     overview: {
       heading: "Guiding Institutions Toward Lasting Excellence",
-      body: "We partner with schools, colleges, and education providers to strengthen governance, raise academic standards, and nurture student wellbeing. Whether preparing for accreditation, designing outcome-based curricula, or implementing professional counselling and mentoring programmes, our consultants translate ambition into structured, measurable progress across every layer of your institution.",
+      body: "We partner with schools, colleges, and education providers to strengthen governance, raise academic standards, and plan sustainable growth. Whether preparing for accreditation, designing outcome-based curricula, or planning a new campus, our consultants translate ambition into structured, measurable progress across every layer of your institution.",
     },
     capabilities: {
-      heading: "Strategic & Student Support Capabilities",
+      heading: "Strategic Consulting Capabilities",
       items: [
         { title: "Accreditation & Quality Assurance", description: "Mock audits and readiness for NAAC, NBA, and international bodies." },
         { title: "Curriculum Design & Development", description: "Modern, outcome-based curricula aligned to global benchmarks." },
@@ -196,12 +196,6 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
         { title: "Academic Audits", description: "Evaluate teaching, assessment, and feedback systems." },
         { title: "Governance & Policy Advisory", description: "Clear governance structures and institutional policies." },
         { title: "Strategic Growth Planning", description: "Roadmaps for sustainable scaling and new programmes." },
-        { title: "Student Counselling Services", description: "Professional psychological support and stress management." },
-        { title: "Career Guidance & Development", description: "Pathways for higher education and future careers." },
-        { title: "Teacher Training in Student Psychology", description: "Equip educators to identify and support student needs." },
-        { title: "Wellbeing Programmes", description: "Structured initiatives for mental and emotional health." },
-        { title: "Mentoring & Behaviour Support", description: "Positive behaviour strategies and one-to-one mentoring." },
-        { title: "Parent–School Engagement", description: "Workshops that strengthen the home–school connection." },
       ],
     },
     whyItMatters: {
@@ -211,12 +205,8 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
         { title: "Achieve Accreditation", description: "Navigate compliance with confidence." },
         { title: "Strengthen Governance", description: "Clarify roles, accountability, and decision-making." },
         { title: "Plan Sustainable Growth", description: "Scale programmes without diluting quality." },
-        { title: "Enhance Student Wellbeing", description: "Proactive mental health support systems." },
-        { title: "Improve Behaviour & Engagement", description: "Positive, constructive classroom cultures." },
-        { title: "Strengthen Career Readiness", description: "Clear pathways beyond school." },
-        { title: "Empower Educators", description: "Skills to recognise and respond to student needs." },
-        { title: "Build Parent Partnerships", description: "Aligned support between home and school." },
-        { title: "Promote Holistic Growth", description: "Develop the whole student, not just academics." },
+        { title: "Align Curriculum To Outcomes", description: "Make learning measurable and relevant." },
+        { title: "Improve Stakeholder Confidence", description: "Build trust with parents, boards, and regulators." },
       ],
     },
     approach: {
@@ -224,24 +214,22 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
       steps: [
         { number: "01", title: "Discover", description: "Understand your vision, strengths, and the gaps holding you back." },
         { number: "02", title: "Strategize", description: "Craft a clear roadmap with prioritised, achievable milestones." },
-        { number: "03", title: "Execute", description: "Implement governance, curriculum, and wellbeing plans with you." },
+        { number: "03", title: "Execute", description: "Implement governance, curriculum, and accreditation plans with you." },
         { number: "04", title: "Sustain", description: "Embed review cycles so excellence becomes the norm." },
       ],
     },
     whyChoose: {
-      heading: "Expertise You Trust",
+      heading: "Expertise You Can Trust",
       items: [
         "Deep Education Sector Experience",
         "Accreditation Specialists",
         "Outcome-Focused Methodology",
-        "Qualified Counselling Professionals",
-        "Holistic Development Focus",
-        "Collaborative School Partnerships",
+        "Long-Term Partnership",
       ],
     },
     related: {
       heading: "Explore Connected Solutions",
-      slugs: ["human-resource-services", "financial-services", "it-solutions-digital-transformation"],
+      slugs: ["human-resource-services", "financial-consultancy", "it-solutions-digital-transformation"],
     },
     cta: {
       heading: "Let's Elevate Your Institution Together",
@@ -251,8 +239,8 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
   },
 
   /* ───────────────────────────── 3. Financial Services ───────────────────────────── */
-  "financial-services": {
-    slug: "financial-services",
+  "financial-consultancy": {
+    slug: "financial-consultancy",
     title: "Financial Services",
     metaTitle: "Financial Services",
     metaDescription:
@@ -317,7 +305,7 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
     },
     related: {
       heading: "Explore Connected Solutions",
-      slugs: ["human-resource-services", "academic-services", "it-solutions-digital-transformation"],
+      slugs: ["human-resource-services", "educational-institutional-consulting", "it-solutions-digital-transformation"],
     },
     cta: {
       heading: "Let's Secure Your Financial Future",
@@ -326,6 +314,75 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
     },
   },
 
+  /* ──────────────── 4. Behavioural Counselling & Student Support ──────────────── */
+  "behavioural-counselling-student-support": {
+    slug: "behavioural-counselling-student-support",
+    title: "Academics",
+    metaTitle: "Academics",
+    metaDescription:
+      "Professional counselling, wellbeing programmes, mentoring, and student support services that nurture mental health, behaviour, and holistic growth.",
+    heroImage: "/Service-page/Behavioural-Counselling-&-Student-Support.png",
+    cardImage: "/Service-page/Behavioural-Counselling-&-Student-Support.png",
+    hero: {
+      tagline: "Nurturing Wellbeing And Holistic Student Growth",
+      supportingCopy:
+        "Support students' mental health, career readiness, and behavioural development through integrated counselling and wellbeing programmes.",
+      ctas: [CONSULTATION_CTA],
+    },
+    overview: {
+      heading: "Fostering Confident, Resilient Learners",
+      body: "We help institutions create caring, constructive environments where students thrive. Through professional counselling, structured wellbeing programmes, mentoring, and career guidance, we support mental health, positive behaviour, and personal growth — strengthening the connection between student wellbeing and academic success across every stage of school life.",
+    },
+    capabilities: {
+      heading: "Comprehensive Student Support",
+      items: [
+        { title: "Student Counselling Services", description: "Professional psychological support and stress management." },
+        { title: "Career Guidance & Development", description: "Pathways for higher education and future careers." },
+        { title: "Teacher Training in Student Psychology", description: "Equip educators to identify and support student needs." },
+        { title: "Wellbeing Programmes", description: "Structured initiatives for mental and emotional health." },
+        { title: "Mentoring & Behaviour Support", description: "Positive behaviour strategies and one-to-one mentoring." },
+        { title: "Parent–School Engagement", description: "Workshops that strengthen the home–school connection." },
+      ],
+    },
+    whyItMatters: {
+      heading: "Supporting Student Success",
+      items: [
+        { title: "Enhance Student Wellbeing", description: "Proactive mental health support systems." },
+        { title: "Improve Behaviour & Engagement", description: "Positive, constructive classroom cultures." },
+        { title: "Strengthen Career Readiness", description: "Clear pathways beyond school." },
+        { title: "Empower Educators", description: "Skills to recognise and respond to student needs." },
+        { title: "Build Parent Partnerships", description: "Aligned support between home and school." },
+        { title: "Promote Holistic Growth", description: "Develop the whole student, not just academics." },
+      ],
+    },
+    approach: {
+      heading: "A Student-Centred Framework",
+      steps: [
+        { number: "01", title: "Listen", description: "Understand student needs and your current support landscape." },
+        { number: "02", title: "Design", description: "Tailor counselling, mentoring, and wellbeing programmes." },
+        { number: "03", title: "Support", description: "Deliver services and train your educators and parents." },
+        { number: "04", title: "Nurture", description: "Sustain a culture of ongoing wellbeing and growth." },
+      ],
+    },
+    whyChoose: {
+      heading: "Expertise You Can Trust",
+      items: [
+        "Qualified Counselling Professionals",
+        "Age-Appropriate Programmes",
+        "Holistic Development Focus",
+        "Collaborative School Partnerships",
+      ],
+    },
+    related: {
+      heading: "Explore Connected Solutions",
+      slugs: ["human-resource-services", "sports-training-talent-development", "educational-institutional-consulting"],
+    },
+    cta: {
+      heading: "Let's Nurture Every Student Together",
+      description: "Build a support system where every learner feels seen, valued, and guided.",
+      ctas: [CONSULTATION_CTA, CONTACT_CTA],
+    },
+  },
 
   /* ─────────────── 5. IT Solutions & Digital Transformation ─────────────── */
   "it-solutions-digital-transformation": {
@@ -360,20 +417,14 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
     },
     whyItMatters: {
       heading: "Why Digital Transformation Matters",
-        items: [
+      items: [
         { title: "Cloud & Enterprise IT", description: "Scalable, secure cloud infrastructure and enterprise architecture designed for institutional growth." },
         { title: "Software Development", description: "Custom web and mobile application engineering built to solve complex operational challenges." },
         { title: "E-Commerce Solutions", description: "Custom online storefronts, digital payment gateways, and scalable commerce platforms." },
         { title: "Cybersecurity", description: "Advanced threat protection, data encryption, and compliance frameworks safeguarding your data." },
         { title: "AI & Automation", description: "Intelligent automation and AI tools that eliminate manual tasks and boost productivity." },
         { title: "Smart Enterprise Solutions", description: "Integrated IoT and smart campus systems creating connected, future-ready environments." },
-                { title: "Modern E-Commerce Platform", description: "Custom, scalable online storefronts designed for seamless digital commerce." },
-          { title: "Digital Commerce Analytics", description: "Real-time data insights and performance tracking to optimize online sales." },
-          { title: "Software & Web Development", description: "High-performance, responsive websites and web applications built to scale." },
-          { title: "Secure Digital Payments", description: "Frictionless, multi-gateway payment processing with robust data security." },
-          { title: "Order Fulfillment & Logistics", description: "Streamlined order processing and automated supply chain integration." },
-          { title: "Digital Growth Strategy", description: "Targeted digital marketing and strategy to reach new audiences and grow revenue." },
-        ],
+      ],
     },
     approach: {
       heading: "A Structured Transformation Framework",
@@ -395,7 +446,7 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
     },
     related: {
       heading: "Explore Connected Solutions",
-      slugs: ["marketing", "academic-services"],
+      slugs: ["ecommerce-digital-services", "marketing", "educational-institutional-consulting"],
     },
     cta: {
       heading: "Let's Modernise Your Institution Together",
@@ -424,7 +475,7 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
       body: "We help institutions craft a unified, memorable brand and bring it to life across print and digital media. From prospectus and admissions kits to campus signage, uniforms, and marketing collateral, our branding and printing services strengthen identity, build community pride, and support admissions with materials that look exceptional and communicate clearly.",
     },
     capabilities: {
-      heading: "Marketing Capabilities",
+      heading: "Branding & Printing Capabilities",
       items: [
         { title: "Prospectus & Admissions Kit Design", description: "Premium brochures and enrollment materials that convert." },
         { title: "Campus Branding & Signage", description: "External and internal signage that builds presence." },
@@ -465,7 +516,7 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
     },
     related: {
       heading: "Explore Connected Solutions",
-      slugs: ["uniform-services", "it-solutions-digital-transformation"],
+      slugs: ["uniform-services", "it-solutions-digital-transformation", "ecommerce-digital-services"],
     },
     cta: {
       heading: "Let's Build A Brand That Lasts",
@@ -474,6 +525,75 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
     },
   },
 
+  /* ───────────────────── 7. E-Commerce & Digital Services ───────────────────── */
+  "ecommerce-digital-services": {
+    slug: "ecommerce-digital-services",
+    title: "E-Commerce & Digital Services",
+    metaTitle: "E-Commerce & Digital Services",
+    metaDescription:
+      "Digital platforms, online solutions, web services, and technology-driven growth that help institutions transact, engage, and expand online.",
+    heroImage: "/Service-page/E-Commerce-&-Digital-Services.png",
+    cardImage: "/Service-page/E-Commerce-&-Digital-Services.png",
+    hero: {
+      tagline: "Growing Your Institution Through Digital Channels",
+      supportingCopy:
+        "Digital platforms, online services, and web solutions engineered to extend your institution's reach and revenue online.",
+      ctas: [CONSULTATION_CTA],
+    },
+    overview: {
+      heading: "Unlocking Digital Growth",
+      body: "We help institutions extend their presence and operations into the digital space — building online platforms, e-commerce channels, and web services that make it easy to engage families, sell products and programmes, and reach new audiences. From strategy to launch, we deliver reliable, scalable digital solutions that drive measurable growth and a seamless online experience.",
+    },
+    capabilities: {
+      heading: "Digital Services Capabilities",
+      items: [
+        { title: "Online Platforms & Portals", description: "Custom web platforms for engagement and transactions." },
+        { title: "E-Commerce & Payments", description: "Secure online stores and payment integration." },
+        { title: "Web & App Development", description: "Fast, responsive sites and applications." },
+        { title: "Digital Marketing", description: "Campaigns that grow reach and conversions." },
+        { title: "Analytics & Optimization", description: "Insight-driven improvement over time." },
+        { title: "Managed Digital Operations", description: "Ongoing support that keeps you performing." },
+      ],
+    },
+    whyItMatters: {
+      heading: "Why Digital Services Matter",
+      items: [
+        { title: "Modern E-Commerce Platform", description: "Custom, scalable online storefronts designed for seamless digital commerce." },
+        { title: "Digital Commerce Analytics", description: "Real-time data insights and performance tracking to optimize online sales." },
+        { title: "Software & Web Development", description: "High-performance, responsive websites and web applications built to scale." },
+        { title: "Secure Digital Payments", description: "Frictionless, multi-gateway payment processing with robust data security." },
+        { title: "Order Fulfillment & Logistics", description: "Streamlined order processing and automated supply chain integration." },
+        { title: "Digital Growth Strategy", description: "Targeted digital marketing and strategy to reach new audiences and grow revenue." },
+      ],
+    },
+    approach: {
+      heading: "A Growth-Focused Framework",
+      steps: [
+        { number: "01", title: "Strategize", description: "Define goals, audience, and the right digital channels." },
+        { number: "02", title: "Build", description: "Develop platforms, stores, and campaigns." },
+        { number: "03", title: "Launch", description: "Go live with secure, tested, optimised experiences." },
+        { number: "04", title: "Grow", description: "Analyse, optimise, and scale results." },
+      ],
+    },
+    whyChoose: {
+      heading: "Expertise You Can Trust",
+      items: [
+        "Full-Stack Digital Expertise",
+        "Conversion-Focused Design",
+        "Secure & Scalable Platforms",
+        "Results-Driven Delivery",
+      ],
+    },
+    related: {
+      heading: "Explore Connected Solutions",
+      slugs: ["it-solutions-digital-transformation", "marketing", "uniform-services"],
+    },
+    cta: {
+      heading: "Let's Grow Your Digital Presence",
+      description: "Build digital channels that extend your reach and drive real growth.",
+      ctas: [CONSULTATION_CTA, CONTACT_CTA],
+    },
+  },
 
   /* ─────────────── 8. Civil Engineering & Infrastructure Development ─────────────── */
   "civil-engineering-infrastructure": {
@@ -536,7 +656,7 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
     },
     related: {
       heading: "Explore Connected Solutions",
-      slugs: ["transportation-service", "uniform-services", "financial-services"],
+      slugs: ["transportation-service", "uniform-services", "financial-consultancy"],
     },
     cta: {
       heading: "Let's Build Your Future Campus",
@@ -676,7 +796,7 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
     },
     related: {
       heading: "Explore Connected Solutions",
-      slugs: ["marketing", "sports-training-talent-development"],
+      slugs: ["marketing", "sports-training-talent-development", "ecommerce-digital-services"],
     },
     cta: {
       heading: "Let's Dress Your Institution With Pride",
@@ -746,7 +866,7 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
     },
     related: {
       heading: "Explore Connected Solutions",
-      slugs: ["uniform-services", "academic-services", "civil-engineering-infrastructure"],
+      slugs: ["uniform-services", "behavioural-counselling-student-support", "civil-engineering-infrastructure"],
     },
     cta: {
       heading: "Let's Develop Your Student Athletes",
@@ -887,7 +1007,7 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
     },
     related: {
       heading: "Explore Connected Solutions",
-      slugs: ["civil-engineering-infrastructure", "financial-services", "academic-services"],
+      slugs: ["civil-engineering-infrastructure", "financial-consultancy", "educational-institutional-consulting"],
     },
     cta: {
       heading: "Let's Plan & Deliver Your Project",
