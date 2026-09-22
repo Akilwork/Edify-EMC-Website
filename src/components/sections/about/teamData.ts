@@ -13,6 +13,7 @@ export interface TeamMember {
   bio: string;
   features: [TeamFeature, TeamFeature, TeamFeature];
   specializations: string[];
+  imageClassName?: string;
 }
 
 export const TEAM_MEMBERS: TeamMember[] = [
@@ -74,6 +75,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     title: "Academics - General counseling (SEED)",
     roleSubtitle: "ACADEMICS - GENERAL COUNSELING (SEED)",
     imageSrc: "/about/team/Ms. Bindu.jpg",
+    imageClassName: "scale-[1.15] group-hover:scale-[1.20]",
     bio: "Architecting next-generation digital campuses, AI-powered learning infrastructure, and enterprise-grade data security systems for modern education ecosystems.",
     features: [
       {
@@ -125,7 +127,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     name: "Afzal-M",
     title: "IT Director",
     roleSubtitle: "IT DIRECTOR",
-    imageSrc: "/about/team/Afzal-M.Png",
+    imageSrc: "/about/team/Afzal-M.jpg",
     bio: "Building robust, ultra-fast web platforms and real-time administrative dashboards. Specialist in clean architecture, API design, and high-load web applications.",
     features: [
       {

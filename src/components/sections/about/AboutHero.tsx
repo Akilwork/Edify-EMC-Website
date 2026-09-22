@@ -13,6 +13,7 @@ function PersonProfileCard({
   title,
   imageSrc,
   imageAlt,
+  imageClassName,
   className = "",
   onClick,
 }: {
@@ -20,6 +21,7 @@ function PersonProfileCard({
   title: string;
   imageSrc: string;
   imageAlt?: string;
+  imageClassName?: string;
   className?: string;
   onClick?: () => void;
 }) {
@@ -34,7 +36,7 @@ function PersonProfileCard({
           src={imageSrc}
           alt={imageAlt || name}
           fill
-          className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
+          className={`object-cover object-center transition-transform duration-500 ${imageClassName || "group-hover:scale-105"}`}
           sizes="(max-width: 480px) 220px, (max-width: 640px) 260px, 320px"
           priority
         />
@@ -1516,6 +1518,7 @@ export default function AboutHero() {
                       name={member.name}
                       title={member.title}
                       imageSrc={member.imageSrc}
+                      imageClassName={member.imageClassName}
                       className="pointer-events-auto"
                       onClick={() => setSelectedMember(member)}
                     />
