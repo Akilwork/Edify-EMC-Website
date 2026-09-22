@@ -154,7 +154,7 @@ export default function ChatWidget() {
     <>
       {/* Floating Widget Button */}
       {!isOpen && (
-        <div className="fixed bottom-8 right-8 z-50">
+        <div className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 z-40">
           {/* Tooltip */}
           {showTooltip && (
             <div className="absolute bottom-full right-0 mb-4 w-64 p-4 bg-black border border-white/10 rounded-2xl shadow-xl animate-in slide-in-from-bottom-2 fade-in duration-300">
@@ -171,10 +171,10 @@ export default function ChatWidget() {
 
           <button
             onClick={handleOpen}
-            className="group relative w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-xl hover:bg-white/85 hover:scale-105 active:scale-95 transition-all duration-200"
+            className="group relative w-12 h-12 sm:w-14 sm:h-14 bg-white rounded-full flex items-center justify-center shadow-xl hover:bg-white/85 hover:scale-105 active:scale-95 transition-all duration-200"
             aria-label="Open chat"
           >
-            <MessageCircle className="text-black" size={26} strokeWidth={2} />
+            <MessageCircle className="text-black w-5 h-5 sm:w-6 sm:h-6" strokeWidth={2} />
 
             {/* Unread badge */}
             {unreadCount > 0 && (
@@ -190,10 +190,10 @@ export default function ChatWidget() {
       {isMinimized && (
         <button
           onClick={handleRestore}
-          className="fixed bottom-8 right-8 z-50 w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-xl hover:bg-white/85 hover:scale-105 active:scale-95 transition-all duration-200"
+          className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 z-40 w-12 h-12 sm:w-14 sm:h-14 bg-white rounded-full flex items-center justify-center shadow-xl hover:bg-white/85 hover:scale-105 active:scale-95 transition-all duration-200"
           aria-label="Restore chat"
         >
-          <MessageCircle className="relative z-10 text-black" size={26} strokeWidth={2} />
+          <MessageCircle className="relative z-10 text-black w-5 h-5 sm:w-6 sm:h-6" strokeWidth={2} />
 
           {/* Unread badge */}
           {unreadCount > 0 && (

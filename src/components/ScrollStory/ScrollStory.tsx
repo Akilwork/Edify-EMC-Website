@@ -9,7 +9,7 @@ import {
   SCROLL_MULTIPLIER,
   getFrameSrc,
 } from './constants';
-import { ServiceDetailsModal } from './ServiceDetailsModal';
+import Link from 'next/link';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -52,61 +52,61 @@ const CARDS_DATA = [
     id: 'educational',
     title: 'Academic services.',
     image: '/Services/educational_&_institutional_consulting_card_image.png',
-    link: '/services#educational',
+    link: '/services/academic-services',
   },
   {
     id: 'hr',
     title: 'Human Resource Services',
     image: '/Services/human_resource_services_card_image.png',
-    link: '/services#hr',
+    link: '/services/human-resource-services',
   },
   {
     id: 'financial',
     title: 'Financial Services',
     image: '/Services/financial_consultancy_card_image.png',
-    link: '/services#financial',
+    link: '/services/financial-services',
   },
   {
     id: 'it',
     title: 'IT Solutions & Digital Transformation',
     image: '/Services/it_solutions_&_digital_transformation_card_image.png',
-    link: '/services#it',
+    link: '/services/it-solutions-digital-transformation',
   },
   {
     id: 'transportation',
     title: 'Transport Service',
     image: '/Service-page/Transportation-&-Fleet-Support.png',
-    link: '/services#transportation',
+    link: '/services/transportation-service',
   },
   {
     id: 'behavioural',
     title: 'Canteen service',
     image: '/Services/behavioural_counselling_&_student_support_card_image.png',
-    link: '/services#behavioural',
+    link: '/services/canteen-management-services',
   },
   {
     id: 'printing',
     title: 'Marketing',
     image: '/Services/printing_&_branding_solutions_card_image.png',
-    link: '/services#printing',
+    link: '/services/marketing',
   },
   {
     id: 'transportation_admin',
-    title: 'Transportation and Administration',
+    title: 'Administration Service',
     image: '/Service-page/Transportation-&-Fleet-Support.png',
-    link: '/services#transportation_admin',
+    link: '/services/administration-service',
   },
   {
     id: 'uniforms',
     title: 'Uniforms services',
     image: '/Service-page/Uniform-&-Clothing-Solutions.png',
-    link: '/services#uniforms',
+    link: '/services/uniform-services',
   },
   {
     id: 'project_management',
     title: 'Project Management & Development',
     image: '/Service-page/Civil-Engineering-&-Infrastructure-Development.png',
-    link: '/services#project_management',
+    link: '/services/project-management-development',
   },
 ];
 
@@ -122,7 +122,6 @@ export const ScrollStory = () => {
   const dprRef = useRef(1);
 
   const [loadState, setLoadState] = useState<'loading' | 'ready'>('loading');
-  const [selectedServiceId, setSelectedServiceId] = useState<string | null>(null);
 
   const [windowSize, setWindowSize] = useState({
     width: typeof window !== 'undefined' ? window.innerWidth : 1200,
@@ -146,20 +145,6 @@ export const ScrollStory = () => {
       clearTimeout(timeoutId);
     };
   }, []);
-
-  const handlePrevService = () => {
-    if (!selectedServiceId) return;
-    const idx = CARDS_DATA.findIndex((c) => c.id === selectedServiceId);
-    const prevIdx = (idx - 1 + CARDS_DATA.length) % CARDS_DATA.length;
-    setSelectedServiceId(CARDS_DATA[prevIdx].id);
-  };
-
-  const handleNextService = () => {
-    if (!selectedServiceId) return;
-    const idx = CARDS_DATA.findIndex((c) => c.id === selectedServiceId);
-    const nextIdx = (idx + 1) % CARDS_DATA.length;
-    setSelectedServiceId(CARDS_DATA[nextIdx].id);
-  };
 
   // ── 1. Preload every frame ──────────────────────────────────────────────────
   useEffect(() => {
@@ -308,7 +293,7 @@ export const ScrollStory = () => {
   }, [loadState, windowSize.width, windowSize.height]);
 
   return (
-    <div>
+    <div id="overview">
       <section
         ref={sectionRef}
         className={styles.section}
@@ -336,14 +321,10 @@ export const ScrollStory = () => {
           >
             <div ref={cardsContainerRef} className={styles.cardsContainer}>
               {CARDS_DATA.map((card) => (
-                <a
+                <Link
                   key={card.id}
                   href={card.link}
                   className={styles.card}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setSelectedServiceId(card.id);
-                  }}
                 >
                   <div className={styles.cardImageContainer}>
                     <img
@@ -364,21 +345,12 @@ export const ScrollStory = () => {
                       </svg>
                     </span>
                   </div>
-                </a>
+                </Link>
               ))}
             </div>
           </div>
         </div>
       </section>
-
-      {selectedServiceId && (
-        <ServiceDetailsModal
-          serviceId={selectedServiceId}
-          onClose={() => setSelectedServiceId(null)}
-          onPrev={handlePrevService}
-          onNext={handleNextService}
-        />
-      )}
     </div>
   );
 };

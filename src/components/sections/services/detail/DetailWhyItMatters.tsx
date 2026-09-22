@@ -4,15 +4,13 @@ import type { ServiceDetail } from "@/data/service-details";
 
 const WHY_IT_MATTERS_SUBTITLES: Record<string, string> = {
   "human-resource-services": "Empowering institutions with strategic expertise, operational excellence, and sustainable growth.",
-  "educational-institutional-consulting": "Driving academic standards, regulatory compliance, and community trust across your campus.",
-  "financial-consultancy": "Optimizing budgets, reducing risk exposure, and funding future growth with clarity and assurance.",
-  "behavioural-counselling-student-support": "Promoting holistic student success, mental wellness, and resilient home-school partnerships.",
+  "academic-services": "Driving academic standards, regulatory compliance, and holistic student success across your campus.",
+  "financial-services": "Optimizing budgets, reducing risk exposure, and funding future growth with clarity and assurance.",
   "it-solutions-digital-transformation": "Streamlining administrative workflows and modernizing learning environments with robust security.",
-  "printing-branding-solutions": "Building distinct institutional presence, student enrollment growth, and strong communal identity.",
-  "ecommerce-digital-services": "Reaching new educational markets, simplifying tuition payments, and diversifying digital revenue.",
+  "marketing": "Building distinct institutional presence, student enrollment growth, and strong communal identity.",
   "civil-engineering-infrastructure": "Designing safe, compliant, and inspiring facilities built to host generations of learners.",
-  "transportation-fleet-support": "Ensuring student safety, route efficiency, and absolute compliance to put parent minds at ease.",
-  "uniform-solutions": "Promoting absolute campus equality, student belonging, and a polished, professional brand image.",
+  "transportation-service": "Ensuring student safety, route efficiency, and absolute compliance to put parent minds at ease.",
+  "uniform-services": "Promoting absolute campus equality, student belonging, and a polished, professional brand image.",
   "sports-training-talent-development": "Developing active health habits, personal discipline, and inter-school competition success.",
   "canteen-management-services": "Fostering student health, food safety compliance, and enjoyable, hygienic dining experiences.",
   "project-management-development": "Ensuring projects are efficient, functional, compliant, and aligned with business objectives.",
@@ -27,7 +25,6 @@ const IMAGES_BY_SERVICE: Record<string, string[]> = {
     "/Why It Matters/Civil/img-5.png",
     "/Why It Matters/Civil/img-6.png",
   ],
-  // ── Human Resource Management — original Figma frames ──────────────────
   "human-resource-services": [
     "/Why It Matters/Frame 19.png",
     "/Why It Matters/Frame 20.png",
@@ -37,18 +34,16 @@ const IMAGES_BY_SERVICE: Record<string, string[]> = {
     "/Why It Matters/Frame 24.png",
   ],
 
-  // ── Educational & Institutional Consulting — AI-generated images ─────────
-  "educational-institutional-consulting": [
+  "academic-services": [
     "/Why It Matters/educational-institutional/img-1.png",
     "/Why It Matters/educational-institutional/img-2.png",
     "/Why It Matters/educational-institutional/img-3.png",
-    "/Why It Matters/educational-institutional/img-4.png",
-    "/Why It Matters/educational-institutional/img-5.png",
-    "/Why It Matters/educational-institutional/img-6.png",
+    "/Why It Matters/behavioural-counselling/img-1.png",
+    "/Why It Matters/behavioural-counselling/img-2.png",
+    "/Why It Matters/behavioural-counselling/img-3.png",
   ],
 
-  // ── Financial Services — AI-generated images ─────────────────────────
-  "financial-consultancy": [
+  "financial-services": [
     "/Why It Matters/financial-consultancy/img-1.png",
     "/Why It Matters/financial-consultancy/img-2.png",
     "/Why It Matters/financial-consultancy/img-3.png",
@@ -57,15 +52,6 @@ const IMAGES_BY_SERVICE: Record<string, string[]> = {
     "/Why It Matters/financial-consultancy/img-6.png",
   ],
 
-  // ── Behavioural Counselling — dedicated folder images (img-1 → img-6) ──────
-  "behavioural-counselling-student-support": [
-    "/Why It Matters/behavioural-counselling/img-1.png",
-    "/Why It Matters/behavioural-counselling/img-2.png",
-    "/Why It Matters/behavioural-counselling/img-3.png",
-    "/Why It Matters/behavioural-counselling/img-4.png",
-    "/Why It Matters/behavioural-counselling/img-5.png",
-    "/Why It Matters/behavioural-counselling/img-6.png",
-  ],
 
   // ── IT Solutions — dedicated folder images (Frame1 → Frame6) ─────────────
   "it-solutions-digital-transformation": [
@@ -88,14 +74,6 @@ const IMAGES_BY_SERVICE: Record<string, string[]> = {
   ],
 
   // ── E-Commerce & Digital Services — dedicated folder images (Frame1 → Frame6) ─
-  "ecommerce-digital-services": [
-    "/Why It Matters/Ecommerce/Frame1.png",
-    "/Why It Matters/Ecommerce/Frame2.png",
-    "/Why It Matters/Ecommerce/Frame3.png",
-    "/Why It Matters/Ecommerce/Frame4.png",
-    "/Why It Matters/Ecommerce/Frame5.png",
-    "/Why It Matters/Ecommerce/Frame6.png",
-  ],
 
   // ── Civil Engineering — dedicated folder images (img-1 → img-6) ────────────
   "civil-engineering-infrastructure": [
@@ -108,7 +86,7 @@ const IMAGES_BY_SERVICE: Record<string, string[]> = {
   ],
 
   // ── Transportation — dedicated folder images (Frame1 → Frame6) ───────────
-  "transportation-fleet-support": [
+  "transportation-service": [
     "/Why It Matters/Transport/Frame1.png",
     "/Why It Matters/Transport/Frame2.png",
     "/Why It Matters/Transport/Frame3.png",
@@ -117,8 +95,8 @@ const IMAGES_BY_SERVICE: Record<string, string[]> = {
     "/Why It Matters/Transport/Frame6.png",
   ],
 
-  // ── Uniform Solutions — dedicated folder images (Frame1 → Frame6) ──────────
-  "uniform-solutions": [
+  // ── Uniform Services — dedicated folder images (Frame1 → Frame6) ──────────
+  "uniform-services": [
     "/Why It Matters/Uniform/Frame1.png",
     "/Why It Matters/Uniform/Frame2.png",
     "/Why It Matters/Uniform/Frame3.png",

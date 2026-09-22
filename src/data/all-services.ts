@@ -10,13 +10,13 @@ export const ALL_SERVICES: AllService[] = [
     id: "academic-service",
     title: "Academic Services",
     image: "/Services/educational_&_institutional_consulting_card_image.png",
-    slug: "educational-institutional-consulting",
+    slug: "academic-services",
   },
   {
-    id: "financial-consultancy",
+    id: "financial-services",
     title: "Financial Services",
     image: "/Services/financial_consultancy_card_image.png",
-    slug: "financial-consultancy",
+    slug: "financial-services",
   },
   {
     id: "hr-services",
@@ -31,16 +31,16 @@ export const ALL_SERVICES: AllService[] = [
     slug: "it-solutions-digital-transformation",
   },
   {
-    id: "printing-branding",
+    id: "marketing",
     title: "Marketing",
     image: "/Services/printing_&_branding_solutions_card_image.png",
-    slug: "printing-branding-solutions",
+    slug: "marketing",
   },
   {
-    id: "uniform-solutions",
-    title: "Uniform Solutions",
+    id: "uniform-services",
+    title: "Uniform Services",
     image: "/Service-page/Uniform-&-Clothing-Solutions.png",
-    slug: "uniform-solutions",
+    slug: "uniform-services",
   },
   {
     id: "canteen-services",

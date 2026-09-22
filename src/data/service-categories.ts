@@ -60,8 +60,8 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
         title: "Institutional Transport",
       },
       {
-        id: "uniform-solutions",
-        title: "Uniform Solutions",
+        id: "uniform-services",
+        title: "Uniform Services",
       },
       {
         id: "canteen-services",
@@ -90,7 +90,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
     description: "Strengthening institutional identity through impactful branding and communication solutions.",
     services: [
       {
-        id: "printing-branding",
+        id: "marketing",
         title: "Marketing",
       },
     ],

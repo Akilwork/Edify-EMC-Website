@@ -43,15 +43,15 @@ export default function   () {
       }, (context) => {
         const { isMobile, isTablet } = context.conditions || {};
         
-        // Responsive scale targets to fit cover aspect perfectly without over-zooming
-        const targetScale = isMobile ? 1.8 : isTablet ? 2.4 : 3.2;
+        // Responsive scale targets to fit cover aspect perfectly without over-zooming or black gaps
+        const targetScale = isMobile ? 2.5 : isTablet ? 3.5 : 3.8;
 
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: outerRef.current,
             start: "top top",
-            end: "+=200%",
-            scrub: 1.2,
+            end: "bottom bottom",
+            scrub: 0.4,
             pin: stickyRef.current,
             anticipatePin: 1,
             invalidateOnRefresh: true,
@@ -63,8 +63,8 @@ export default function   () {
           initialHeaderRef.current,
           {
             opacity: 0,
-            y: -40,
-            duration: 0.6,
+            y: -30,
+            duration: 0.4,
             ease: "power2.out",
           },
           0
@@ -79,7 +79,7 @@ export default function   () {
                 xPercent: -120,
                 opacity: 0,
                 scale: 0.8,
-                duration: 1.2,
+                duration: 0.8,
                 ease: "power2.inOut",
               },
               0
@@ -94,7 +94,7 @@ export default function   () {
                 xPercent: 120,
                 opacity: 0,
                 scale: 0.8,
-                duration: 1.2,
+                duration: 0.8,
                 ease: "power2.inOut",
               },
               0
@@ -108,7 +108,7 @@ export default function   () {
           {
             scale: targetScale,
             borderRadius: "0px",
-            duration: 1.6,
+            duration: 1.0,
             ease: "power2.inOut",
           },
           0
@@ -119,10 +119,10 @@ export default function   () {
           scrimRef.current,
           {
             opacity: 0.75,
-            duration: 1.4,
+            duration: 0.8,
             ease: "power1.inOut",
           },
-          0.2
+          0.1
         );
 
         // ── PHASE 2: Fade in and slide up main content panels ──
@@ -133,25 +133,25 @@ export default function   () {
           },
           {
             autoAlpha: 1,
-            duration: 0.4,
+            duration: 0.3,
           },
-          0.8
+          0.3
         );
 
         // Slide up left text column
         tl.fromTo(
           leftTextRef.current,
           {
-            y: 60,
+            y: 40,
             opacity: 0,
           },
           {
             y: 0,
             opacity: 1,
-            duration: 0.8,
+            duration: 0.5,
             ease: "power2.out",
           },
-          1.0
+          0.4
         );
 
         // Slide up cards staggered
@@ -160,7 +160,7 @@ export default function   () {
           tl.fromTo(
             cards,
             {
-              y: 50,
+              y: 40,
               opacity: 0,
               scale: 0.96,
             },
@@ -168,11 +168,11 @@ export default function   () {
               y: 0,
               opacity: 1,
               scale: 1,
-              stagger: 0.15,
-              duration: 0.8,
+              stagger: 0.1,
+              duration: 0.5,
               ease: "power3.out",
             },
-            1.2
+            0.5
           );
         }
       }, outerRef);
@@ -190,12 +190,12 @@ export default function   () {
   return (
     <section
       ref={outerRef}
-      className="relative w-full overflow-visible bg-black"
-      style={{ height: "280vh" }}
+      className="relative w-full overflow-hidden bg-black z-10"
+      style={{ height: "200vh" }}
     >
       <div
         ref={stickyRef}
-        className="w-full h-screen overflow-hidden flex flex-col justify-center items-center bg-[#05060b] z-10"
+        className="w-full h-screen h-[100dvh] overflow-hidden flex flex-col justify-center items-center bg-[#05060b] z-10"
       >
         {/* Background Visual Layer */}
         <div className="absolute inset-0 flex items-center justify-center z-0 overflow-hidden pointer-events-none select-none">
@@ -220,7 +220,7 @@ export default function   () {
           {/* Center Main Column Image (Zooms in to fill background) */}
           <div
             ref={centerImageRef}
-            className="w-[85vw] sm:w-[48vw] md:w-[32vw] h-[48vh] md:h-[55vh] rounded-3xl overflow-hidden relative border border-white/15 z-10 shadow-[0_20px_50px_rgba(0,0,0,0.8)] will-change-transform"
+            className="w-[85vw] sm:w-[46vw] md:w-[38vw] lg:w-[30vw] h-[48vh] md:h-[52vh] lg:h-[55vh] rounded-3xl overflow-hidden relative border border-white/15 z-10 shadow-[0_20px_50px_rgba(0,0,0,0.8)] will-change-transform"
           >
             <Image
               src="/assets/careers/career-3.png"
@@ -271,19 +271,19 @@ export default function   () {
         {/* Main Content Layer (Fades in overlaying the zoomed image) */}
         <div
           ref={mainContentRef}
-          className="absolute inset-0 z-30 flex items-center justify-center pointer-events-auto opacity-0 invisible"
+          className="absolute inset-0 z-10 flex items-center justify-center pointer-events-auto opacity-0 invisible"
         >
-          <div className="w-full max-w-7xl mx-auto px-4 sm:px-12 lg:px-8 py-4 sm:py-8 lg:py-12 grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-8 lg:gap-12 items-center">
+          <div className="w-full max-w-7xl mx-auto px-4 sm:px-12 lg:px-8 py-4 sm:py-8 lg:py-12 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-center">
             
             {/* Left side text block */}
             <div ref={leftTextRef} className="lg:col-span-5 space-y-3 sm:space-y-4 lg:space-y-5 text-left">
-              <span className="text-[11px] font-semibold tracking-[0.2em] text-white uppercase block">
+              <span className="text-[12px] sm:text-xs font-semibold tracking-[0.2em] text-white/90 uppercase block">
                 Vibrant & Empowering
               </span>
               <h2 className="font-sans text-2xl sm:text-3xl lg:text-[48px] lg:leading-[1.15] font-medium tracking-tight text-white">
-                Where Passion <br /> Meets Purpose.
+                Where Passion <br className="hidden sm:inline" /> Meets Purpose.
               </h2>
-              <p className="text-white/70 text-[11px] sm:text-xs md:text-sm lg:text-base leading-relaxed font-sans">
+              <p className="text-white/85 text-xs sm:text-xs md:text-sm lg:text-base leading-relaxed font-sans">
                 At EDIFY, we believe that reshaping educational and enterprise consultancy requires trust, continuous development, and high execution. We offer our team members room to lead, collaborate globally, and make a tangible impact.
               </p>
             </div>
@@ -291,7 +291,7 @@ export default function   () {
             {/* Right side glassmorphic cards */}
             <div
               ref={cardsContainerRef}
-              className="lg:col-span-7 flex flex-col gap-3 lg:gap-4 w-full"
+              className="lg:col-span-7 flex flex-col gap-3 sm:gap-4 lg:gap-5 w-full"
             >
               {[
                 {
@@ -312,16 +312,16 @@ export default function   () {
               ].map((card, idx) => (
                 <div
                   key={idx}
-                  className="flex gap-3 sm:gap-4 p-4 lg:p-5 bg-white/[0.02] border border-white/[0.07] backdrop-blur-md rounded-2xl transition-all duration-300 shadow-[0_8px_32px_rgba(0,0,0,0.4)] group"
+                  className="flex gap-3 sm:gap-4 p-3.5 sm:p-4 lg:p-5 bg-white/[0.03] border border-white/[0.09] backdrop-blur-md rounded-xl sm:rounded-2xl transition-all duration-300 shadow-[0_8px_32px_rgba(0,0,0,0.4)] group"
                 >
-                  <div className="w-9 h-9 sm:w-10 sm:h-10 flex-shrink-0 rounded-xl bg-white/[0.03] border border-white/10 flex items-center justify-center transition-all duration-300">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center transition-all duration-300">
                     {card.icon}
                   </div>
-                  <div className="space-y-1 text-left">
+                  <div className="space-y-0.5 sm:space-y-1 text-left">
                     <h3 className="font-sans text-xs sm:text-sm lg:text-base font-semibold text-white transition-colors duration-200">
                       {card.title}
                     </h3>
-                    <p className="text-white/50 text-[10px] sm:text-xs leading-relaxed">
+                    <p className="text-white/70 text-[11px] sm:text-xs leading-relaxed">
                       {card.desc}
                     </p>
                   </div>

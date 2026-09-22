@@ -56,14 +56,14 @@ export default function ServicesScroll() {
       title: "Academics",
       description: "Strategic guidance for institutional planning, governance, accreditation, student support, and academic excellence.",
       isWide: false,
-      slug: "educational-institutional-consulting"
+      slug: "academic-services"
     },
     {
       image: "/Service-page/Financial-Consultancy.png",
       title: "Financial Services",
       description: "Financial planning, budgeting, compliance, auditing support, and long-term sustainability strategies.",
       isWide: false,
-      slug: "financial-consultancy"
+      slug: "financial-services"
     },
     {
       image: "/Service-page/Civil-Engineering-&-Infrastructure-Development.png",
@@ -87,7 +87,7 @@ export default function ServicesScroll() {
       title: "Marketing",
       description: "Professional branding, printing, promotional materials, and visual communication services.",
       isWide: true,
-      slug: "printing-branding-solutions"
+      slug: "marketing"
     }
   ];
 
@@ -122,7 +122,7 @@ export default function ServicesScroll() {
       title: "Institutional Transport",
       description: "Safe, reliable student transportation, fleet management, route optimisation, and compliance that keep your institution moving.",
       colSpan: "col-span-12 md:col-span-6 lg:col-span-4",
-      slug: "transportation-fleet-support"
+      slug: "transportation-service"
     },
     {
       image: "/Service-page/student-development.jpg",
@@ -133,10 +133,10 @@ export default function ServicesScroll() {
     },
     {
       image: "/Service-page/Uniform-&-Clothing-Solutions.png",
-      title: "Uniform Solutions",
+      title: "Uniform Services",
       description: "Quality school uniforms, sports kits, and institutional clothing designed to reflect your institution's identity and standards.",
       colSpan: "col-span-12 md:col-span-6 lg:col-span-6",
-      slug: "uniform-solutions"
+      slug: "uniform-services"
     },
     {
       image: "/Service-page/Sports-Training-&-Talent-Development.png",

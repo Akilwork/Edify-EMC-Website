@@ -88,7 +88,7 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
   },
   financial: {
     id: 'financial',
-    slug: 'financial-consultancy',
+    slug: 'financial-services',
     title: 'Financial Services',
     categoryTag: 'Financial Services',
     mainHeader: 'Securing the Financial Future and Operational Sustainability of Institutions',
@@ -197,7 +197,7 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
   },
   educational: {
     id: 'educational',
-    slug: 'educational-institutional-consulting',
+    slug: 'academic-services',
     title: 'Academics',
     categoryTag: 'Academics',
     mainHeader: 'Administration, Operations, Audit & Risk Management',
@@ -281,7 +281,7 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
   },
   printing: {
     id: 'printing',
-    slug: 'printing-branding-solutions',
+    slug: 'marketing',
     title: 'Marketing',
     categoryTag: 'Marketing',
     mainHeader: 'Shaping a Powerful and Unified Brand Identity for Your Institution',
@@ -315,7 +315,7 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
   },
   transportation: {
     id: 'transportation',
-    slug: 'transportation-fleet-support',
+    slug: 'transportation-service',
     title: 'Transport Service',
     categoryTag: 'Transport Service',
     mainHeader: 'Reliable Mobility. Safe Journeys. Seamless Operations.',
@@ -365,7 +365,7 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
   },
   transportation_admin: {
     id: 'transportation_admin',
-    slug: 'transportation-fleet-support',
+    slug: 'transportation-service',
     title: 'Transportation and Administration',
     categoryTag: 'Transportation & Administration',
     mainHeader: 'Comprehensive Fleet Mobility & Administrative Operations',
@@ -399,9 +399,9 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
   },
   uniforms: {
     id: 'uniforms',
-    slug: 'uniform-solutions',
+    slug: 'uniform-services',
     title: 'Uniforms services',
-    categoryTag: 'Uniform Solutions',
+    categoryTag: 'Uniform Services',
     mainHeader: 'Identity, Quality, and Comfort in Every Stitch',
     introBodyText: 'We design, source, and deliver high-quality uniforms and institutional clothing that reflect your identity and uphold your standards. From everyday school uniforms to sports kits and staff attire, our solutions balance comfort, durability, and affordability — making it easy for families and giving your institution a polished, unified appearance that builds belonging and pride.',
     tagline: 'Identity, Quality, And Comfort In Every Stitch',
@@ -498,51 +498,6 @@ interface ServiceDetailsModalProps {
   onNext: () => void;
 }
 
-function getCapabilityIconUrl(index: number) {
-  const frames = [
-    '/Service%20details/Frame1.png',
-    '/Service%20details/Frame2.png',
-    '/Service%20details/Frame3.png',
-    '/Service%20details/Frame4.png',
-    '/Service%20details/Frame5.png',
-    '/Service%20details/Frame6.png',
-    '/Service%20details/Frame.png',
-  ];
-  return frames[index % frames.length];
-}
-
-const getColSpanClass = (index: number, totalCount: number) => {
-  if (totalCount === 12) {
-    if (index === 0 || index === 1) return 'col-span-12 md:col-span-6';
-    if (index >= 2 && index <= 7) return 'col-span-12 md:col-span-4';
-    return 'col-span-12 md:col-span-6';
-  }
-  if (totalCount === 10) {
-    if (index === 0 || index === 1) return 'col-span-12 md:col-span-6';
-    if (index >= 2 && index <= 7) return 'col-span-12 md:col-span-4';
-    return 'col-span-12 md:col-span-6';
-  }
-  if (totalCount === 8) {
-    if (index === 0 || index === 1) return 'col-span-12 md:col-span-6';
-    return 'col-span-12 md:col-span-4';
-  }
-  if (totalCount === 7) {
-    if (index === 0 || index === 1) return 'col-span-12 md:col-span-6';
-    if (index >= 2 && index <= 4) return 'col-span-12 md:col-span-4';
-    return 'col-span-12 md:col-span-6';
-  }
-  if (totalCount === 5) {
-    if (index === 0 || index === 1) return 'col-span-12 md:col-span-6';
-    return 'col-span-12 md:col-span-4';
-  }
-  if (totalCount % 3 === 0) {
-    return 'col-span-12 md:col-span-4';
-  }
-  if (totalCount % 2 === 0) {
-    return 'col-span-12 md:col-span-6';
-  }
-  return 'col-span-12 md:col-span-4';
-};
 
 export const ServiceDetailsModal = ({
   serviceId,
@@ -552,13 +507,6 @@ export const ServiceDetailsModal = ({
 }: ServiceDetailsModalProps) => {
   const { openConsultation } = useConsultation();
   const contentRef = useRef<HTMLDivElement>(null);
-  const capabilitiesRef = useRef<HTMLDivElement>(null);
-
-  const scrollToCapabilities = () => {
-    if (capabilitiesRef.current) {
-      capabilitiesRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
 
   // Reset scroll when service changes
   useEffect(() => {
@@ -724,61 +672,7 @@ export const ServiceDetailsModal = ({
               </div>
             </div>
 
-            {/* Service Capabilities (Card Type Design from DetailCapabilities) */}
-            <div ref={capabilitiesRef} className={styles.capabilitiesSection}>
-              <div className="text-center max-w-3xl mx-auto mb-10 md:mb-14">
-                <h3 className="font-sans text-2xl md:text-3xl lg:text-4xl text-white font-semibold leading-tight tracking-tight uppercase">
-                  OUR SERVICES
-                </h3>
-              </div>
 
-              {/* Grid of Cards */}
-              <div className="grid grid-cols-12 gap-6 w-full max-w-6xl mx-auto">
-                {detail.subServices.map((item, index) => {
-                  const iconUrl = getCapabilityIconUrl(index);
-                  const colSpan = getColSpanClass(index, detail.subServices.length);
-
-                  return (
-                    <div key={item.title} className={`${colSpan} w-full flex`}>
-                      <div className="group relative bg-[#111115] rounded-[16px] border border-white/10 hover:border-white/20 shadow-[0_10px_30px_rgba(0,0,0,0.5)] hover:shadow-[0_15px_40px_rgba(159,125,255,0.15)] transform hover:-translate-y-1 transition-all duration-300 p-6 md:p-8 flex flex-col w-full h-full overflow-hidden text-left">
-                        {/* Custom Corner Glow Border */}
-                        <div className="absolute top-[-1px] left-[-1px] right-[-1px] h-[20px] border-t-[4px] border-l-[4px] border-r-[4px] border-[#9F7DFF] rounded-t-[16px] pointer-events-none bg-transparent" />
-
-                        {/* Icon container */}
-                        <div className="mb-5 flex items-start">
-                          <Image
-                            src={iconUrl}
-                            alt={item.title}
-                            width={48}
-                            height={48}
-                            className="h-12 w-auto object-contain filter brightness-110 transform transition-transform duration-500 ease-out group-hover:rotate-12 group-hover:scale-110"
-                          />
-                        </div>
-
-                        {/* Title */}
-                        <h4 className="text-white text-lg md:text-xl font-bold mb-2 font-sans tracking-tight">
-                          {item.title}
-                        </h4>
-
-                        {/* Subheading if present */}
-                        {item.subHeading && (
-                          <p className="text-[#9F7DFF] text-xs font-semibold uppercase tracking-wider mb-3">
-                            {item.subHeading}
-                          </p>
-                        )}
-
-                        {/* Description */}
-                        {item.description && (
-                          <p className="text-white/70 text-sm leading-relaxed font-sans font-normal mt-auto">
-                            {item.description}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
 
             {/* Key Benefits Section */}
             {detail.keyBenefits && detail.keyBenefits.length > 0 && (
@@ -787,7 +681,6 @@ export const ServiceDetailsModal = ({
                 <div className={styles.benefitsGrid}>
                   {detail.keyBenefits.map((benefit, idx) => (
                     <div key={idx} className={styles.benefitCard}>
-                      <div className={styles.cardGlowLine} />
                       <div className={styles.cloverIcon}>
                         <img
                           src="/Services/Frame.png"

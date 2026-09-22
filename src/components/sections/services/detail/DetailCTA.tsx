@@ -39,7 +39,7 @@ const SERVICE_OPTIONS = [
   "E-Commerce & Digital Services",
   "Civil Engineering & Infrastructure Development",
   "Institutional Transport",
-  "Uniform Solutions",
+  "Uniform Services",
   "Sports Training & Talent Development",
   "Other / General Enquiry"
 ];
