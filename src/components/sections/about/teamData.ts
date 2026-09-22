@@ -17,11 +17,11 @@ export interface TeamMember {
 
 export const TEAM_MEMBERS: TeamMember[] = [
   {
-    id: "ethan-carter",
-    name: "Ethan Carter",
-    title: "Founder & Chief Executive Officer",
-    roleSubtitle: "FOUNDER & CHIEF EXECUTIVE OFFICER",
-    imageSrc: "/about/team/Ethan-Carter.jpg",
+    id: "fahim-ejaj",
+    name: "Fahim Ejaj",
+    title: "Group Administration Manager",
+    roleSubtitle: "GROUP ADMINISTRATION MANAGER",
+    imageSrc: "/about/team/Fahim Ejaj.jpg",
     bio: "Driving strategic vision and operational transformation for educational institutions globally. Focused on sustainable growth, institutional governance, and building high-impact academic frameworks.",
     features: [
       {
@@ -43,11 +43,11 @@ export const TEAM_MEMBERS: TeamMember[] = [
     specializations: ["Strategic Planning", "Executive Leadership", "Academic Governance", "Institutional Growth"],
   },
   {
-    id: "sophia-bennett",
-    name: "Sophia Bennett",
-    title: "Chief Operating Officer",
-    roleSubtitle: "CHIEF OPERATING OFFICER",
-    imageSrc: "/about/team/Sophia-Bennett.jpg",
+    id: "ujjwal-jani",
+    name: "Ujjwal Jani",
+    title: "Finance Manager",
+    roleSubtitle: "FINANCE MANAGER",
+    imageSrc: "/about/team/Ujjwal Jani.png",
     bio: "Streamlining operational workflows, optimizing campus resource allocation, and delivering high-performance administrative structures across diverse academic environments.",
     features: [
       {
@@ -69,11 +69,11 @@ export const TEAM_MEMBERS: TeamMember[] = [
     specializations: ["Operational Strategy", "Change Management", "Resource Allocation", "Performance Optimization"],
   },
   {
-    id: "liam-anderson",
-    name: "Liam Anderson",
-    title: "Chief Technology Officer",
-    roleSubtitle: "CHIEF TECHNOLOGY OFFICER",
-    imageSrc: "/about/team/Liam-Anderson.jpg",
+    id: "ms-bindu",
+    name: "Ms. Bindu",
+    title: "Academics - General counseling (SEED)",
+    roleSubtitle: "ACADEMICS - GENERAL COUNSELING (SEED)",
+    imageSrc: "/about/team/Ms. Bindu.jpg",
     bio: "Architecting next-generation digital campuses, AI-powered learning infrastructure, and enterprise-grade data security systems for modern education ecosystems.",
     features: [
       {
@@ -95,11 +95,11 @@ export const TEAM_MEMBERS: TeamMember[] = [
     specializations: ["Cloud Architecture", "AI in Education", "Campus Security", "Enterprise Infrastructure"],
   },
   {
-    id: "olivia-parker",
-    name: "Olivia Parker",
-    title: "Head of Product Design",
-    roleSubtitle: "HEAD OF PRODUCT DESIGN",
-    imageSrc: "/about/team/Olivia-Parker.jpg",
+    id: "feroz-mammed",
+    name: "Feroz Mammed",
+    title: "HR department - Group HR Manager",
+    roleSubtitle: "HR DEPARTMENT - GROUP HR MANAGER",
+    imageSrc: "/about/team/Feroz Mammed.jpg",
     bio: "Crafting human-centered learning platforms, intuitive digital student experiences, and accessible design systems that foster deep engagement and educational success.",
     features: [
       {
@@ -121,11 +121,11 @@ export const TEAM_MEMBERS: TeamMember[] = [
     specializations: ["UI/UX Strategy", "Design Systems", "Product Research", "Student Experience"],
   },
   {
-    id: "noah-mitchell",
-    name: "Noah Mitchell",
-    title: "Lead Software Engineer",
-    roleSubtitle: "LEAD SOFTWARE ENGINEER",
-    imageSrc: "/about/team/Noah-Mitchell.avif",
+    id: "afzal-m",
+    name: "Afzal-M",
+    title: "IT Director",
+    roleSubtitle: "IT DIRECTOR",
+    imageSrc: "/about/team/Afzal-M.Png",
     bio: "Building robust, ultra-fast web platforms and real-time administrative dashboards. Specialist in clean architecture, API design, and high-load web applications.",
     features: [
       {
@@ -147,11 +147,11 @@ export const TEAM_MEMBERS: TeamMember[] = [
     specializations: ["React", "Next.js", "Node.js", "Tailwind CSS", "API Systems"],
   },
   {
-    id: "ava-collins",
-    name: "Ava Collins",
-    title: "Marketing & Brand Strategist",
-    roleSubtitle: "MARKETING & BRAND STRATEGIST",
-    imageSrc: "/about/team/Ava-Collins.avif",
+    id: "zakir-hussain-kamaluddin",
+    name: "Zakir Hussain Kamaluddin",
+    title: "Chairman",
+    roleSubtitle: "CHAIRMAN",
+    imageSrc: "/about/team/Zakir_Hussain_Kamaluddin.jpg",
     bio: "Building powerful institutional brand narratives, recruitment campaigns, and global outreach strategies that increase enrollment and elevate market reputation.",
     features: [
       {
@@ -172,56 +172,5 @@ export const TEAM_MEMBERS: TeamMember[] = [
     ],
     specializations: ["Brand Strategy", "Digital Marketing", "Enrollment Growth", "Market Research"],
   },
-  {
-    id: "mason-brooks",
-    name: "Mason Brooks",
-    title: "Business Development Manager",
-    roleSubtitle: "BUSINESS DEVELOPMENT MANAGER",
-    imageSrc: "/about/team/Mason-Brooks.jpg",
-    bio: "Fostering strategic enterprise alliances, institutional funding pathways, and corporate partnerships that create new revenue streams and growth opportunities.",
-    features: [
-      {
-        iconType: "users",
-        title: "Strategic Alliances",
-        description: "High-value institutional and corporate partnership building.",
-      },
-      {
-        iconType: "chart",
-        title: "Revenue Expansion",
-        description: "Sustainable monetization models and funding strategies.",
-      },
-      {
-        iconType: "globe",
-        title: "Market Expansion",
-        description: "Identifying untapped regional and international opportunities.",
-      },
-    ],
-    specializations: ["Partnership Development", "Strategic Growth", "Market Expansion", "Deal Structuring"],
-  },
-  {
-    id: "isabella-reed",
-    name: "Isabella Reed",
-    title: "Customer Success Manager",
-    roleSubtitle: "CUSTOMER SUCCESS MANAGER",
-    imageSrc: "/about/team/Isabella-Reed.jpg",
-    bio: "Ensuring seamless client onboarding, continuous institutional support, and long-term partnership value for all partner schools and universities.",
-    features: [
-      {
-        iconType: "users",
-        title: "Client Onboarding",
-        description: "Structured transition plans and comprehensive stakeholder training.",
-      },
-      {
-        iconType: "shield",
-        title: "Relationship Mgmt",
-        description: "Proactive support, account health tracking, and feedback loops.",
-      },
-      {
-        iconType: "zap",
-        title: "Retention & Value",
-        description: "Maximizing institutional ROI through continuous guidance.",
-      },
-    ],
-    specializations: ["Client Success", "Account Strategy", "Stakeholder Training", "Service Excellence"],
-  },
+
 ];

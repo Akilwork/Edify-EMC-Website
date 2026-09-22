@@ -4,19 +4,20 @@ import { Phone, Mail } from 'lucide-react';
 
 const Footer = () => {
   const exploreLinks = [
-    { name: 'Overview', href: '#overview' },
-    { name: 'Our Story', href: '#story' },
-    { name: 'Leadership Team', href: '#leadership' },
-    { name: 'Group Companies', href: '#companies' },
+    { name: 'Overview', href: '/#overview' },
+    { name: 'Our Story', href: '/about#story' },
+    { name: 'Leadership Team', href: '/about#leadership' },
+    { name: 'Group Companies', href: '/about#companies' },
+    { name: 'Careers', href: '/careers#open-positions' },
   ];
 
   const serviceLinks = [
     { name: 'Academic Services', href: '#academic' },
     { name: 'HR & Recruitment', href: '#hr' },
-    { name: 'Technology & Innovation', href: '#technology' },
-    { name: 'Facilities Management', href: '#facilities' },
-    { name: 'Financial Services', href: '#financial' },
-    { name: 'Specialized Services', href: '#specialized' },
+    { name: 'IT Solutions & Digital Transformation', href: '#it' },
+    { name: 'Marketing', href: '#printing' },
+    { name: 'Uniform Services', href: '#uniforms' },
+    { name: 'Canteen Service', href: '#canteen' },
   ];
 
   return (

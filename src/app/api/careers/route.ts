@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 import * as XLSX from "xlsx";
 
 // Helper function to escape values for RFC 4180 CSV compliance
@@ -64,171 +64,195 @@ export async function POST(request: Request) {
 
     console.log("New Careers Application:", JSON.stringify({ timestamp, isoISTTime, ...data }));
 
-    // 1. Send data to Google Sheets Webhook (Synchronous to get the Drive link)
-    let googleDriveLink = "";
-    const googleWebhookUrl = process.env.GOOGLE_SHEETS_CAREERS_WEBHOOK_URL || process.env.GOOGLE_SHEETS_WEBHOOK_URL;
-    if (googleWebhookUrl) {
-      try {
-        const webhookResponse = await fetch(googleWebhookUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            requestType: "career",
-            sheetName: "Career Request",
-            targetSheet: "Career Request",
-            sheet: "Career Request",
-            formType: "Career Request",
-            timestamp,
-            istTime: timestamp,
-            formattedTimestamp: timestamp,
-            isoISTTime,
-            name: name || "",
-            email: email || "",
-            phone: phone ? (phone.startsWith("+") ? "'" + phone : phone) : "",
-            contactNumber: phone ? (phone.startsWith("+") ? "'" + phone : phone) : "",
-            countryCode: "",
-            position: jobTitle || "Applicant",
-            jobTitle: jobTitle || "",
-            jobId: jobId || "",
-            department: "",
-            location: "",
-            experience: "",
-            employmentType: "",
-            resume: cvName || "",
-            cvName: cvName || "",
-            cvBase64: cvBase64 || "",
-            cvMimeType: cvMimeType || "",
-            message: coverNote || "",
-            coverNote: coverNote || "",
-            requestDetails: coverNote || "",
-            serviceRequired: "Careers Application",
-          }),
-        });
+    // Extract base URL from environment or request headers to pass to background task
+    const reqOrigin = request.headers.get("origin") || request.headers.get("referer") || "";
+    const cleanOrigin = reqOrigin ? reqOrigin.replace(/\/$/, "") : "";
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || cleanOrigin || "http://localhost:3000";
 
-        if (webhookResponse.ok) {
-          const webhookResult = await webhookResponse.json();
-          if (webhookResult && webhookResult.fileUrl) {
-            googleDriveLink = webhookResult.fileUrl;
-            console.log("Google Sheets Webhook succeeded, got link:", googleDriveLink);
-          } else {
-            console.log("Google Sheets Webhook succeeded, but no link returned.");
-          }
-        } else {
-          console.warn("Google Sheets Webhook responded with error status:", webhookResponse.status);
-        }
-      } catch (webhookError) {
-        console.error("Google Sheets Webhook integration error:", webhookError);
-      }
-    }
-
-    // 1.5 Save uploaded CV file locally to public/uploads/resumes/
-    let localCvPath = "";
-    if (cvBase64 && cvName) {
-      try {
-        const uploadDir = path.join(process.cwd(), "public", "uploads", "resumes");
-        if (!fs.existsSync(uploadDir)) {
-          fs.mkdirSync(uploadDir, { recursive: true });
-        }
-        const safeFileName = `${Date.now()}_${cvName.replace(/[^a-zA-Z0-9.-]/g, "_")}`;
-        const targetPath = path.join(uploadDir, safeFileName);
-        const buffer = Buffer.from(cvBase64, "base64");
-        fs.writeFileSync(targetPath, buffer);
-        localCvPath = `/uploads/resumes/${safeFileName}`;
-        console.log("Uploaded resume saved locally to:", targetPath);
-      } catch (fileErr) {
-        console.warn("Failed to save uploaded resume file locally:", fileErr);
-      }
-    }
-
-    const finalCvLink = googleDriveLink || localCvPath || cvName || "";
-
-    // 2. Write to local CSV spreadsheet file first
-    try {
-      const filePath = path.join(process.cwd(), "careers_submissions.csv");
-      const fileExists = fs.existsSync(filePath);
-
-      const headers = ["Timestamp", "Job ID", "Job Title", "Name", "Email", "Phone", "CV File", "Cover Note"];
-      const rowData = [
-        timestamp,
-        jobId || "",
-        jobTitle || "",
-        name || "",
-        email || "",
-        phone || "",
-        finalCvLink,
-        coverNote || "",
-      ];
-      const csvRow = rowData.map(escapeCSV).join(",") + "\n";
-
-      if (!fileExists) {
-        const csvHeader = headers.map(escapeCSV).join(",") + "\n";
-        fs.writeFileSync(filePath, csvHeader + csvRow, "utf8");
-      } else {
-        fs.appendFileSync(filePath, csvRow, "utf8");
-      }
-    } catch (csvError) {
-      console.warn("Failed to write careers submission to local CSV file:", csvError);
-    }
-
-    // 3. Write to local Excel file (Hiring Details sheet)
-    try {
-      const xlsxPath = path.join(process.cwd(), "careers_submissions.xlsx");
-      const SHEET_NAME = "Hiring Details";
-      const headers = ["Timestamp", "Job ID", "Job Title", "Applicant Name", "Email", "Phone", "CV File", "Cover Note"];
-      const newRow = [
-        timestamp,
-        jobId || "",
-        jobTitle || "",
-        name || "",
-        email || "",
-        phone || "",
-        finalCvLink,
-        coverNote || "",
-      ];
-
-      let workbook: XLSX.WorkBook;
-
-      if (fs.existsSync(xlsxPath)) {
-        // Read existing workbook
-        workbook = XLSX.readFile(xlsxPath);
-      } else {
-        // Create a fresh workbook
-        workbook = XLSX.utils.book_new();
-      }
-
-      // Find or create the "Hiring Details" sheet
-      if (!workbook.SheetNames.includes(SHEET_NAME)) {
-        const sheetData = [headers, newRow];
-        const worksheet = XLSX.utils.aoa_to_sheet(sheetData);
-        XLSX.utils.book_append_sheet(workbook, worksheet, SHEET_NAME);
-      } else {
-        const worksheet = workbook.Sheets[SHEET_NAME];
-        XLSX.utils.sheet_add_aoa(worksheet, [newRow], { origin: -1 });
-      }
-
-      XLSX.writeFile(workbook, xlsxPath);
-      console.log("Career application written to Excel (Hiring Details sheet):", xlsxPath);
-    } catch (xlsxError) {
-      console.warn("Failed to write careers submission to local Excel file:", xlsxError);
-    }
-
-    // 4. Perform External API Integrations (Asynchronously in Background)
+    // 4. Perform All Integrations (Asynchronously in Background)
     const runBackgroundIntegrations = async () => {
-
-      // A. Email Notification via Resend
-      const resendApiKey = process.env.RESEND_API_KEY;
-      const notificationEmail = process.env.NOTIFICATION_EMAIL || "akilwork04@gmail.com";
-
-      if (resendApiKey) {
+      // 1. Send data to Google Sheets Webhook
+      let googleDriveLink = "";
+      const googleWebhookUrl = process.env.GOOGLE_SHEETS_CAREERS_WEBHOOK_URL || process.env.GOOGLE_SHEETS_WEBHOOK_URL;
+      if (googleWebhookUrl) {
         try {
-          const resend = new Resend(resendApiKey);
+          const webhookResponse = await fetch(googleWebhookUrl, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              requestType: "career",
+              sheetName: "Career Request",
+              targetSheet: "Career Request",
+              sheet: "Career Request",
+              formType: "Career Request",
+              timestamp,
+              istTime: timestamp,
+              formattedTimestamp: timestamp,
+              isoISTTime,
+              name: name || "",
+              email: email || "",
+              phone: phone ? (phone.startsWith("+") ? "'" + phone : phone) : "",
+              contactNumber: phone ? (phone.startsWith("+") ? "'" + phone : phone) : "",
+              countryCode: "",
+              position: jobTitle || "Applicant",
+              jobTitle: jobTitle || "",
+              jobId: jobId || "",
+              department: "",
+              location: "",
+              experience: "",
+              employmentType: "",
+              resume: cvName || "",
+              cvName: cvName || "",
+              cvBase64: cvBase64 || "",
+              cvMimeType: cvMimeType || "",
+              message: coverNote || "",
+              coverNote: coverNote || "",
+              requestDetails: coverNote || "",
+              serviceRequired: "Careers Application",
+            }),
+          });
 
-          const { data, error } = await resend.emails.send({
-            from: "Edify EMC Careers <onboarding@resend.dev>",
-            to: [notificationEmail],
+          if (webhookResponse.ok) {
+            const webhookResult = await webhookResponse.json();
+            if (webhookResult && webhookResult.fileUrl) {
+              googleDriveLink = webhookResult.fileUrl;
+              console.log("Google Sheets Webhook succeeded, got link:", googleDriveLink);
+            } else {
+              console.log("Google Sheets Webhook succeeded, but no link returned.");
+            }
+          } else {
+            console.warn("Google Sheets Webhook responded with error status:", webhookResponse.status);
+          }
+        } catch (webhookError) {
+          console.error("Google Sheets Webhook integration error:", webhookError);
+        }
+      }
+
+      // 1.5 Save uploaded CV file locally to public/uploads/resumes/
+      let localCvPath = "";
+      let absoluteCvUrl = "";
+      if (cvBase64 && cvName) {
+        try {
+          const uploadDir = path.join(process.cwd(), "public", "uploads", "resumes");
+          if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir, { recursive: true });
+          }
+          const safeFileName = `${Date.now()}_${cvName.replace(/[^a-zA-Z0-9.-]/g, "_")}`;
+          const targetPath = path.join(uploadDir, safeFileName);
+          const buffer = Buffer.from(cvBase64, "base64");
+          fs.writeFileSync(targetPath, buffer);
+          localCvPath = `/uploads/resumes/${safeFileName}`;
+          absoluteCvUrl = `${baseUrl}${localCvPath}`;
+          console.log("Uploaded resume saved locally to:", targetPath);
+        } catch (fileErr) {
+          console.warn("Failed to save uploaded resume file locally:", fileErr);
+        }
+      }
+
+      const finalCvLink = googleDriveLink || absoluteCvUrl || localCvPath || cvName || "";
+
+      // 2. Write to local CSV spreadsheet file first
+      try {
+        const filePath = path.join(process.cwd(), "careers_submissions.csv");
+        const fileExists = fs.existsSync(filePath);
+
+        const headers = ["Timestamp", "Job ID", "Job Title", "Name", "Email", "Phone", "CV File", "Cover Note"];
+        const rowData = [
+          timestamp,
+          jobId || "",
+          jobTitle || "",
+          name || "",
+          email || "",
+          phone || "",
+          finalCvLink,
+          coverNote || "",
+        ];
+        const csvRow = rowData.map(escapeCSV).join(",") + "\n";
+
+        if (!fileExists) {
+          const csvHeader = headers.map(escapeCSV).join(",") + "\n";
+          fs.writeFileSync(filePath, csvHeader + csvRow, "utf8");
+        } else {
+          fs.appendFileSync(filePath, csvRow, "utf8");
+        }
+      } catch (csvError) {
+        console.warn("Failed to write careers submission to local CSV file:", csvError);
+      }
+
+      // 3. Write to local Excel file (Hiring Details sheet)
+      try {
+        const xlsxPath = path.join(process.cwd(), "careers_submissions.xlsx");
+        const SHEET_NAME = "Hiring Details";
+        const headers = ["Timestamp", "Job ID", "Job Title", "Applicant Name", "Email", "Phone", "CV File", "Cover Note"];
+        const newRow = [
+          timestamp,
+          jobId || "",
+          jobTitle || "",
+          name || "",
+          email || "",
+          phone || "",
+          finalCvLink,
+          coverNote || "",
+        ];
+
+        let workbook: XLSX.WorkBook;
+
+        if (fs.existsSync(xlsxPath)) {
+          workbook = XLSX.readFile(xlsxPath);
+        } else {
+          workbook = XLSX.utils.book_new();
+        }
+
+        if (!workbook.SheetNames.includes(SHEET_NAME)) {
+          const sheetData = [headers, newRow];
+          const worksheet = XLSX.utils.aoa_to_sheet(sheetData);
+          XLSX.utils.book_append_sheet(workbook, worksheet, SHEET_NAME);
+        } else {
+          const worksheet = workbook.Sheets[SHEET_NAME];
+          XLSX.utils.sheet_add_aoa(worksheet, [newRow], { origin: -1 });
+        }
+
+        XLSX.writeFile(workbook, xlsxPath);
+        console.log("Career application written to Excel (Hiring Details sheet):", xlsxPath);
+      } catch (xlsxError) {
+        console.warn("Failed to write careers submission to local Excel file:", xlsxError);
+      }
+
+      // A. Email Notification via Nodemailer
+      const notificationEmail = process.env.NOTIFICATION_EMAIL || "akilwork04@gmail.com";
+      const gmailUser = process.env.GMAIL_USER || notificationEmail;
+      const gmailPass = process.env.GMAIL_APP_PASSWORD;
+
+      if (gmailPass) {
+        try {
+          const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+              user: gmailUser,
+              pass: gmailPass,
+            },
+          });
+
+          const cvDisplayUrl = googleDriveLink || absoluteCvUrl;
+          const cvLinkHtml = cvDisplayUrl
+            ? `<a href="${cvDisplayUrl}" target="_blank" style="color: #a855f7; text-decoration: underline; font-weight: bold;">${cvName || "View Resume Document"}</a>`
+            : `${cvName || "CV Document"} (Attached to email)`;
+
+          const emailAttachments = (cvBase64 && cvName) ? [
+            {
+              filename: cvName,
+              content: cvBase64,
+              encoding: 'base64'
+            }
+          ] : [];
+
+          await transporter.sendMail({
+            from: `"Edify EMC Careers" <${gmailUser}>`,
+            to: notificationEmail,
             subject: `New Job Application: ${jobTitle} - ${name}`,
+            attachments: emailAttachments,
             html: `
               <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
                 <h2 style="color: #a855f7; border-bottom: 2px solid #a855f7; padding-bottom: 10px;">New Careers Submission</h2>
@@ -251,9 +275,9 @@ export async function POST(request: Request) {
                     <td style="padding: 8px 0; border-bottom: 1px solid #f4f4f4;">${phone}</td>
                   </tr>
                   <tr>
-                    <td style="padding: 8px 0; font-weight: bold; border-bottom: 1px solid #f4f4f4;">CV / Resume:</td>
+                    <td style="padding: 8px 0; font-weight: bold; border-bottom: 1px solid #f4f4f4;">CV / Resume Document:</td>
                     <td style="padding: 8px 0; border-bottom: 1px solid #f4f4f4;">
-                      ${googleDriveLink ? `<a href="${googleDriveLink}" target="_blank" style="color: #a855f7; text-decoration: none; font-weight: bold;">View in Google Drive</a>` : cvName}
+                      ${cvLinkHtml}
                     </td>
                   </tr>
                 </table>
@@ -265,17 +289,32 @@ export async function POST(request: Request) {
               </div>
             `,
           });
+          
+          console.log("Nodemailer notification sent successfully to admin");
 
-          if (error) {
-            console.error("Resend email error for Careers Form:", error);
-          } else {
-            console.log("Resend notification sent successfully:", data?.id);
+          // B. Email Confirmation to Applicant
+          if (email) {
+            await transporter.sendMail({
+              from: `"Edify EMC Careers" <${gmailUser}>`,
+              to: email,
+              subject: `Application Received: ${jobTitle} at Edify EMC`,
+              html: `
+                <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
+                  <h2 style="color: #a855f7; border-bottom: 2px solid #a855f7; padding-bottom: 10px;">Application Received</h2>
+                  <p>Dear ${name},</p>
+                  <p>Thank you for applying for the <strong>${jobTitle}</strong> position at Edify EMC.</p>
+                  <p>We have successfully received your application and resume. Our hiring team will review your application and get back to you if your profile matches our requirements.</p>
+                  <p>Best regards,<br>The Edify EMC Team</p>
+                </div>
+              `,
+            });
+            console.log("Nodemailer applicant confirmation sent successfully to", email);
           }
         } catch (emailError) {
-          console.error("Resend notification integration error for Careers Form:", emailError);
+          console.error("Nodemailer integration error for Careers Form:", emailError);
         }
       } else {
-        console.warn("Email notification skipped: RESEND_API_KEY environment variable is not configured.");
+        console.warn("Email notification skipped: GMAIL_APP_PASSWORD environment variable is not configured.");
       }
     };
 

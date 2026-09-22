@@ -481,6 +481,20 @@ export default function CareerPositions() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Auto-close the success popup after a few seconds
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (isSubmitSuccess) {
+      timer = setTimeout(() => {
+        handleCloseModal();
+      }, 4000);
+    }
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSubmitSuccess]);
+
   const currentPositions = POSITIONS_PAGES[currentPage] || POSITIONS_PAGES[1];
 
   const handleApplyClick = (job: PositionItem, e?: React.MouseEvent, fromDetail: boolean = false) => {
@@ -762,7 +776,7 @@ export default function CareerPositions() {
       {/* Position Details Slide-over / Modal */}
       <AnimatePresence>
         {detailJob && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -775,10 +789,10 @@ export default function CareerPositions() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-2xl bg-white/95 backdrop-blur-2xl border border-neutral-200/80 rounded-[32px] sm:rounded-[36px] p-6 sm:p-8 md:p-9 z-10 shadow-[0_25px_70px_rgba(0,0,0,0.18)] text-neutral-900 overflow-hidden max-h-[88vh] flex flex-col"
+              className="relative w-full max-w-2xl bg-white/95 backdrop-blur-2xl border border-neutral-200/80 rounded-[28px] sm:rounded-[36px] py-5 sm:py-7 z-10 shadow-[0_25px_70px_rgba(0,0,0,0.18)] text-neutral-900 overflow-hidden max-h-[88vh] flex flex-col"
             >
               {/* Top Header */}
-              <div className="flex items-start justify-between pb-5 sm:pb-6 border-b border-neutral-200/80 flex-shrink-0">
+              <div className="flex items-start justify-between px-5 sm:px-8 pb-4 sm:pb-5 border-b border-neutral-200/80 flex-shrink-0">
                 <div>
                   <h3 className="font-sans text-2xl sm:text-3xl font-medium tracking-tight text-neutral-950 uppercase">
                     {detailJob.title}
@@ -808,7 +822,7 @@ export default function CareerPositions() {
               </div>
 
               {/* Scrollable Content */}
-              <div className="overflow-y-auto pt-6 space-y-6 text-sm sm:text-base flex-grow pr-2 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-neutral-300/80 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-button]:hidden [&::-webkit-scrollbar-button]:h-0">
+              <div className="overflow-y-auto px-5 sm:px-8 py-5 space-y-6 text-sm sm:text-base flex-grow [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-neutral-300/80 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-button]:hidden [&::-webkit-scrollbar-button]:h-0">
                 {/* Overview */}
                 <div className="space-y-2">
                   <h4 className="font-semibold text-[#a855f7] text-xs uppercase tracking-wider">Position Overview</h4>
@@ -843,7 +857,7 @@ export default function CareerPositions() {
               </div>
 
               {/* Bottom Action Footer */}
-              <div className="pt-5 border-t border-neutral-200/80 flex justify-end gap-3 flex-shrink-0">
+              <div className="px-5 sm:px-8 pt-4 sm:pt-5 border-t border-neutral-200/80 flex justify-end gap-3 flex-shrink-0">
                 <button
                   onClick={handleCloseDetail}
                   className="px-6 py-2.5 rounded-full border border-neutral-300 text-neutral-700 hover:bg-neutral-100 text-xs font-semibold cursor-pointer transition-all duration-200"
@@ -871,7 +885,7 @@ export default function CareerPositions() {
       {/* Interactive Application Modal Popup */}
       <AnimatePresence>
         {selectedJob && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4">
             {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
@@ -886,27 +900,28 @@ export default function CareerPositions() {
               initial={{ opacity: 0, scale: 0.95, y: 15 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 15 }}
-              className="relative w-full max-w-lg bg-white/95 backdrop-blur-2xl border border-neutral-200/80 rounded-[32px] sm:rounded-[36px] p-6 sm:p-8 z-10 shadow-[0_25px_70px_rgba(0,0,0,0.18)] text-neutral-900 overflow-hidden max-h-[90vh] flex flex-col"
+              className="relative w-full max-w-lg bg-white/95 backdrop-blur-2xl border border-neutral-200/80 rounded-[28px] sm:rounded-[36px] py-4 sm:py-6 z-10 shadow-[0_25px_70px_rgba(0,0,0,0.18)] text-neutral-900 overflow-hidden max-h-[90vh] flex flex-col"
             >
-              {/* Top Row */}
-              <div className="flex items-center justify-between pb-4 border-b border-neutral-200/80 flex-shrink-0">
-                <div>
-                  <h3 className="font-sans text-lg sm:text-xl font-bold text-neutral-950 uppercase">
-                    {selectedJob.title}
-                  </h3>
-                </div>
-                <button
-                  onClick={handleCloseModal}
-                  className="p-2 rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-500 hover:text-neutral-900 transition-colors duration-200 cursor-pointer"
-                >
-                  <X size={18} />
-                </button>
-              </div>
+              {!isSubmitSuccess ? (
+                <form onSubmit={handleSubmit} noValidate className="flex flex-col flex-grow min-h-0">
+                  {/* Top Row Header */}
+                  <div className="flex items-center justify-between px-5 sm:px-8 pb-3.5 sm:pb-4 border-b border-neutral-200/80 flex-shrink-0">
+                    <div>
+                      <h3 className="font-sans text-lg sm:text-xl font-bold text-neutral-950 uppercase">
+                        {selectedJob.title}
+                      </h3>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleCloseModal}
+                      className="p-2 rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-500 hover:text-neutral-900 transition-colors duration-200 cursor-pointer"
+                    >
+                      <X size={18} />
+                    </button>
+                  </div>
 
-              {/* Form Content / Success Panel */}
-              <div className="overflow-y-auto pt-6 flex-grow [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-neutral-300/80 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-button]:hidden [&::-webkit-scrollbar-button]:h-0 pr-1">
-                {!isSubmitSuccess ? (
-                  <form onSubmit={handleSubmit} noValidate className="space-y-5">
+                  {/* Form Content (Scrollable Area) */}
+                  <div className="overflow-y-auto px-5 sm:px-8 py-4 sm:py-5 flex-grow space-y-4 sm:space-y-5 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-neutral-300/80 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-button]:hidden [&::-webkit-scrollbar-button]:h-0">
                     {/* Name */}
                     <div className="space-y-1.5">
                       <label className="text-xs text-neutral-600 font-semibold uppercase tracking-wider block">
@@ -1024,7 +1039,7 @@ export default function CareerPositions() {
                         />
                         <div className={`w-full bg-neutral-50 hover:bg-neutral-100/80 border border-dashed ${
                           formErrors.cv || fileError ? "border-red-500" : "border-neutral-300"
-                        } rounded-xl py-6 px-4 flex flex-col items-center justify-center text-center gap-2 transition-colors duration-200`}>
+                        } rounded-xl py-5 sm:py-6 px-4 flex flex-col items-center justify-center text-center gap-2 transition-colors duration-200`}>
                           <Upload size={22} className="text-[#a855f7]" />
                           <span className="text-xs text-neutral-800 font-semibold">
                             {formData.cvName ? "Replace File" : "Choose file or drag here"}
@@ -1054,71 +1069,71 @@ export default function CareerPositions() {
                         className="w-full bg-neutral-50 border border-neutral-200 focus:border-[#a855f7] focus:bg-white rounded-xl px-4 py-2.5 text-sm text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-0 transition-all duration-200 resize-none"
                       />
                     </div>
+                  </div>
 
-                    {/* Footer Row */}
-                    <div className="pt-4 flex justify-end gap-3 border-t border-neutral-200/80">
-                      {openedFromDetail ? (
-                        <button
-                          type="button"
-                          onClick={() => {
-                            const jobToApply = selectedJob;
-                            handleCloseModal();
-                            if (jobToApply) {
-                              setDetailJob(jobToApply);
-                            }
-                          }}
-                          className="flex items-center gap-1.5 px-5 py-2.5 rounded-full hover:bg-neutral-100 border border-neutral-300 text-neutral-700 transition-all duration-200 text-xs font-semibold cursor-pointer outline-none"
-                        >
-                          <ChevronLeft size={14} className="stroke-[2.5]" />
-                          Back
-                        </button>
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={handleCloseModal}
-                          className="px-5 py-2.5 rounded-full hover:bg-neutral-100 border border-neutral-300 text-neutral-700 transition-all duration-200 text-xs font-semibold cursor-pointer outline-none"
-                        >
-                          Cancel
-                        </button>
-                      )}
+                  {/* Fixed Bottom Action Footer */}
+                  <div className="px-5 sm:px-8 pt-3.5 border-t border-neutral-200/80 flex items-center justify-end gap-3 flex-shrink-0">
+                    {openedFromDetail ? (
                       <button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className="flex items-center gap-2 px-6 py-2.5 bg-black hover:bg-neutral-800 disabled:bg-neutral-400 text-white font-sans text-xs font-bold rounded-full transition-all duration-200 shadow-md cursor-pointer outline-none active:scale-95"
+                        type="button"
+                        onClick={() => {
+                          const jobToApply = selectedJob;
+                          handleCloseModal();
+                          if (jobToApply) {
+                            setDetailJob(jobToApply);
+                          }
+                        }}
+                        className="flex items-center gap-1.5 px-5 py-2 rounded-full hover:bg-neutral-100 border border-neutral-300 text-neutral-700 transition-all duration-200 text-xs font-semibold cursor-pointer outline-none"
                       >
-                        Submit Application
-                        <Send size={12} />
+                        <ChevronLeft size={14} className="stroke-[2.5]" />
+                        Back
                       </button>
-                    </div>
-                  </form>
-                ) : (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="text-center py-8 space-y-4"
-                  >
-                    <div className="w-14 h-14 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
-                      <CheckCircle2 size={32} />
-                    </div>
-
-                    <div className="space-y-2">
-                      <h4 className="font-sans text-lg font-bold text-neutral-950">Application Received!</h4>
-                      <p className="text-neutral-600 text-xs sm:text-sm max-w-xs mx-auto leading-relaxed">
-                        Thank you for applying, {formData.name}. Our recruitment managers will review your application for the <strong>{selectedJob.title}</strong> role and reach out shortly.
-                      </p>
-                    </div>
-
-                    <div className="pt-4">
+                    ) : (
                       <button
+                        type="button"
                         onClick={handleCloseModal}
-                        className="px-6 py-2 bg-black text-white hover:bg-neutral-800 rounded-full text-xs font-semibold transition-colors duration-200 cursor-pointer outline-none"
+                        className="px-5 py-2 rounded-full hover:bg-neutral-100 border border-neutral-300 text-neutral-700 transition-all duration-200 text-xs font-semibold cursor-pointer outline-none"
                       >
-                        Done
+                        Cancel
                       </button>
-                    </div>
-                  </motion.div>
-                )}
-              </div>
+                    )}
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="flex items-center gap-2 px-6 py-2 bg-black hover:bg-neutral-800 disabled:bg-neutral-400 text-white font-sans text-xs font-bold rounded-full transition-all duration-200 shadow-md cursor-pointer outline-none active:scale-95"
+                    >
+                      Submit
+                      <Send size={12} />
+                    </button>
+                  </div>
+                </form>
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="px-5 sm:px-8 text-center py-8 space-y-4"
+                >
+                  <div className="w-14 h-14 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
+                    <CheckCircle2 size={32} />
+                  </div>
+
+                  <div className="space-y-2">
+                    <h4 className="font-sans text-lg font-bold text-neutral-950">Application Received!</h4>
+                    <p className="text-neutral-600 text-xs sm:text-sm max-w-xs mx-auto leading-relaxed">
+                      Thank you for applying, {formData.name}. Our recruitment managers will review your application for the <strong>{selectedJob.title}</strong> role and reach out shortly.
+                    </p>
+                  </div>
+
+                  <div className="pt-4">
+                    <button
+                      onClick={handleCloseModal}
+                      className="px-6 py-2 bg-black text-white hover:bg-neutral-800 rounded-full text-xs font-semibold transition-colors duration-200 cursor-pointer outline-none"
+                    >
+                      Done
+                    </button>
+                  </div>
+                </motion.div>
+              )}
             </motion.div>
           </div>
         )}
