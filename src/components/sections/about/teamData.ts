@@ -356,4 +356,30 @@ export const TEAM_MEMBERS: TeamMember[] = [
     ],
     specializations: ["Partnerships", "Operational Strategy", "Resource Allocation", "Governance"],
   },
+  {
+    id: "dummy-academic",
+    name: "Dummy Name",
+    title: "Academic",
+    roleSubtitle: "ACADEMIC",
+    imageSrc: "/about/team/Mason-Brooks.jpg",
+    bio: "Placeholder bio for the academic role. Dedicated to fostering excellence in education and implementing innovative learning methodologies.",
+    features: [
+      {
+        iconType: "sparkles",
+        title: "Academic Excellence",
+        description: "Driving standards and ensuring quality educational outcomes.",
+      },
+      {
+        iconType: "users",
+        title: "Student Success",
+        description: "Focusing on holistic development and academic achievement.",
+      },
+      {
+        iconType: "target",
+        title: "Curriculum Innovation",
+        description: "Designing modern, future-ready learning frameworks.",
+      },
+    ],
+    specializations: ["Education", "Curriculum Design", "Student Success", "Academic Strategy"],
+  },
 ];
