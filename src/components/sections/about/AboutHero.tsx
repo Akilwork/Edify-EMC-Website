@@ -230,12 +230,12 @@ export default function AboutHero() {
             scrub: 1,
             invalidateOnRefresh: true,
             onUpdate: (self) => {
-              // Trigger Scene 8 BlurText animation when Scene 8 starts fading in (at 26.0 = ~65% progress)
-              if (self.progress >= 0.65 && !scene8Visible) {
+              // Trigger Scene 8 BlurText animation when Scene 8 starts fading in (at 26.0 = ~61% progress)
+              if (self.progress >= 0.61 && !scene8Visible) {
                 setScene8Visible(true);
               }
               // Trigger Scene 9 BlurText animation when Scene 9 starts fading in
-              if (self.progress >= 0.92 && !scene9Visible) {
+              if (self.progress >= 0.98 && !scene9Visible) {
                 setScene9Visible(true);
               }
             },
@@ -674,7 +674,7 @@ export default function AboutHero() {
           );
         }
 
-        // Horizontal scroll for cards (from 29.0 to 35.0)
+        // Horizontal scroll for cards (from 29.0 to 41.0)
         // Start: First card centered | End: Last card centered
         if (scene8CardsContainerRef.current) {
           const cardsContainer = scene8CardsContainerRef.current;
@@ -699,7 +699,7 @@ export default function AboutHero() {
                 const lastCardCenter = padding + ((TEAM_MEMBERS.length - 1) * (cardWidth + gap)) + cardWidth / 2;
                 return viewportWidth / 2 - lastCardCenter;
               },
-              duration: 6,
+              duration: 12,
               ease: "none",
               onUpdate: function() {
                 // Scale + Opacity Focus animation for each card
@@ -735,13 +735,13 @@ export default function AboutHero() {
           });
         }
 
-        // ─── Scene 8B → Scene 9 Transition (at 35.5) ─────────────────────
+        // ─── Scene 8B → Scene 9 Transition (at 41.5) ─────────────────────
         // Fade out Scene 8B white background
         if (scene8WhiteBgRef.current) {
           tl.to(
             scene8WhiteBgRef.current,
             { autoAlpha: 0, duration: 0.6, ease: "power2.inOut" },
-            35.5
+            41.5
           );
         }
 
@@ -750,7 +750,7 @@ export default function AboutHero() {
           tl.to(
             scene8GridDarkRef.current,
             { autoAlpha: 0, duration: 0.6, ease: "power2.inOut" },
-            35.5
+            41.5
           );
         }
 
@@ -759,7 +759,7 @@ export default function AboutHero() {
           tl.to(
             scene8WhiteVignetteRef.current,
             { autoAlpha: 0, duration: 0.6, ease: "power2.inOut" },
-            35.5
+            41.5
           );
         }
 
@@ -768,7 +768,7 @@ export default function AboutHero() {
           tl.to(
             scene8TextBRef.current,
             { autoAlpha: 0, y: -20, filter: "blur(8px)", duration: 0.5, ease: "power2.inOut" },
-            35.5
+            41.5
           );
         }
 
@@ -777,7 +777,7 @@ export default function AboutHero() {
           tl.to(
             scene8CardsContainerRef.current,
             { autoAlpha: 0, y: -20, duration: 0.5, ease: "power2.inOut" },
-            35.5
+            41.5
           );
         }
 
@@ -786,7 +786,7 @@ export default function AboutHero() {
           tl.to(
             scene9Ref.current,
             { autoAlpha: 1, filter: "blur(0px)", duration: 0.6, ease: "power2.inOut" },
-            36.0
+            42.0
           );
         }
 
@@ -872,7 +872,7 @@ export default function AboutHero() {
           } else if (hash === '#story') {
             targetProgress = 4.0 / totalDuration;
           } else if (hash === '#companies') {
-            targetProgress = 36.5 / totalDuration;
+            targetProgress = 42.5 / totalDuration;
             setScene9Visible(true);
           } else if (hash === '#overview') {
             targetProgress = 0;
