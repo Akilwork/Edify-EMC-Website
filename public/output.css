@@ -1892,6 +1892,15 @@ body {
   width: 1px;
 }
 
+.w-\[220px\] {
+  width: 220px;
+}
+
+.w-max {
+  width: -moz-max-content;
+  width: max-content;
+}
+
 .min-w-0 {
   min-width: 0px;
 }
@@ -6619,6 +6628,10 @@ h1, h2, h3, h4, h5, h6 {
     height: 120px;
   }
 
+  .xs\:w-\[260px\] {
+    width: 260px;
+  }
+
   .xs\:max-w-\[280px\] {
     max-width: 280px;
   }
@@ -6912,6 +6925,10 @@ h1, h2, h3, h4, h5, h6 {
 
   .sm\:w-auto {
     width: auto;
+  }
+
+  .sm\:w-\[320px\] {
+    width: 320px;
   }
 
   .sm\:max-w-\[320px\] {
