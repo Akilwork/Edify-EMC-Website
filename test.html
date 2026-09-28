@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  body { background: #f0f0f0; padding: 50px; }
+  .img-container {
+    width: 480px;
+    height: 600px;
+    background: url('/Chairman/Zakir_Hussain_Kamaluddin.jpg') center/cover;
+    border-radius: 24px;
+    /* The cutout on the right */
+    -webkit-mask-image: radial-gradient(circle 100px at 100% 40%, transparent 100%, black 100%);
+    mask-image: radial-gradient(circle 100px at 100% 40%, transparent 100%, black 100%);
+  }
+</style>
+</head>
+<body>
+  <div class="img-container"></div>
+</body>
+</html>
