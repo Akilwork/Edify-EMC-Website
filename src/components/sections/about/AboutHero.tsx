@@ -28,7 +28,7 @@ function PersonProfileCard({
   return (
     <div
       onClick={onClick}
-      className={`relative w-[220px] xs:w-[260px] sm:w-[320px] mx-auto cursor-pointer group transition-transform duration-300 hover:scale-[1.03] ${className}`}
+      className={`relative w-full max-w-[320px] mx-auto cursor-pointer group transition-transform duration-300 hover:scale-[1.03] ${className}`}
       style={{ filter: "drop-shadow(0 16px 32px rgba(0,0,0,0.15))" }}
     >
       <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden bg-gray-200 ring-0 group-hover:ring-2 group-hover:ring-[#a855f7]/70 transition-all duration-300">
@@ -62,7 +62,14 @@ function PersonProfileCard({
   );
 }
 
+const displayMembers = TEAM_MEMBERS.filter(member => member.id !== "dummy-academic");
+
 export default function AboutHero() {
+  const chunkedMembers = [];
+  for (let i = 0; i < displayMembers.length; i += 4) {
+    chunkedMembers.push(displayMembers.slice(i, i + 4));
+  }
+
   const sectionRef = useRef<HTMLDivElement>(null);
   const backImageRef = useRef<HTMLDivElement>(null);
   const gridBg70Ref = useRef<HTMLDivElement>(null); // Frame 2: 70% vignette
@@ -113,8 +120,8 @@ export default function AboutHero() {
   const scene8WhiteVignetteRef = useRef<HTMLDivElement>(null);
   const [scene8Visible, setScene8Visible] = useState(false);
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
-  // Individual card refs for scale/opacity animation
-  const scene8CardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  // Page refs for multi-page fade animation
+  const scene8PageRefs = useRef<(HTMLDivElement | null)[]>([]);
   // Scene 9 refs
   const scene9Ref = useRef<HTMLDivElement>(null);
   const scene9TextRef = useRef<HTMLDivElement>(null);
@@ -665,7 +672,7 @@ export default function AboutHero() {
           );
         }
 
-        // Fade in person cards with stagger
+        // Fade in cards container
         if (scene8CardsContainerRef.current) {
           tl.to(
             scene8CardsContainerRef.current,
@@ -674,65 +681,35 @@ export default function AboutHero() {
           );
         }
 
-        // Horizontal scroll for cards (from 29.0 to 41.0)
-        // Start: First card centered | End: Last card centered
-        if (scene8CardsContainerRef.current) {
-          const cardsContainer = scene8CardsContainerRef.current;
-
-          tl.fromTo(
-            cardsContainer,
-            {
-              x: () => {
-                const viewportWidth = window.innerWidth;
-                const cardWidth = viewportWidth >= 640 ? 320 : (viewportWidth >= 480 ? 260 : 220);
-                const padding = viewportWidth >= 768 ? 64 : 32;
-                const firstCardCenter = padding + cardWidth / 2;
-                return viewportWidth / 2 - firstCardCenter;
+        if (scene8PageRefs.current.length > 0) {
+          // Initialize all pages
+          scene8PageRefs.current.forEach((page, idx) => {
+            if (page) {
+              if (idx === 0) {
+                gsap.set(page, { autoAlpha: 1, y: 0 }); 
+              } else {
+                gsap.set(page, { autoAlpha: 0, y: 20 });
               }
-            },
-            {
-              x: () => {
-                const viewportWidth = window.innerWidth;
-                const cardWidth = viewportWidth >= 640 ? 320 : (viewportWidth >= 480 ? 260 : 220);
-                const gap = viewportWidth >= 768 ? 32 : 24;
-                const padding = viewportWidth >= 768 ? 64 : 32;
-                const lastCardCenter = padding + ((TEAM_MEMBERS.length - 1) * (cardWidth + gap)) + cardWidth / 2;
-                return viewportWidth / 2 - lastCardCenter;
-              },
-              duration: 12,
-              ease: "none",
-              onUpdate: function() {
-                // Scale + Opacity Focus animation for each card
-                scene8CardRefs.current.forEach((card) => {
-                  if (card) {
-                    const cardRect = card.getBoundingClientRect();
-                    const cardCenter = cardRect.left + cardRect.width / 2;
-                    const viewportCenter = window.innerWidth / 2;
-                    const distanceFromCenter = Math.abs(cardCenter - viewportCenter);
-                    const maxDistance = window.innerWidth / 2;
-
-                    // Calculate scale, opacity and blur based on distance from center
-                    const normalizedDistance = Math.min(distanceFromCenter / (maxDistance * 0.8), 1);
-                    const scale = 1 - (normalizedDistance * 0.12); // 1.0 → 0.88
-                    const opacity = 1 - (normalizedDistance * 0.3); // 1.0 → 0.7
-                    const blur = normalizedDistance * 1.5; // 0px → 1.5px (subtle depth effect)
-
-                    gsap.set(card, { scale, opacity, filter: `blur(${blur}px)` });
-                  }
-                });
-              }
-            },
-            29.0
-          );
-
-          // Set initial state for all cards (with delay to ensure refs are populated)
-          requestAnimationFrame(() => {
-            scene8CardRefs.current.forEach((card) => {
-              if (card) {
-                gsap.set(card, { scale: 0.88, opacity: 0.7, filter: "blur(1.5px)" });
-              }
-            });
+            }
           });
+
+          // Dynamic Page Transitions
+          const totalPages = Math.ceil(displayMembers.length / 4);
+          if (totalPages > 1) {
+            const startTime = 31.0;
+            const endTime = 40.0;
+            const interval = (endTime - startTime) / (totalPages - 1);
+
+            for (let i = 0; i < totalPages - 1; i++) {
+              const tTime = startTime + (i * interval);
+              if (scene8PageRefs.current[i]) {
+                tl.to(scene8PageRefs.current[i], { autoAlpha: 0, y: -20, duration: 0.6, ease: "power2.inOut" }, tTime);
+              }
+              if (scene8PageRefs.current[i+1]) {
+                tl.to(scene8PageRefs.current[i+1], { autoAlpha: 1, y: 0, duration: 0.6, ease: "power2.out" }, tTime + 0.4);
+              }
+            }
+          }
         }
 
         // ─── Scene 8B → Scene 9 Transition (at 41.5) ─────────────────────
@@ -1500,28 +1477,39 @@ export default function AboutHero() {
               </div>
             </div>
 
-            {/* Scene 8B: Person Cards - Horizontal Scroll */}
+            {/* Scene 8B: Person Cards - Pages */}
             <div
               ref={scene8CardsContainerRef}
-              className="absolute top-[140px] sm:top-[160px] md:top-[175px] lg:top-[190px] bottom-0 left-0 right-0 flex items-center z-[20] opacity-0 will-change-transform pointer-events-none"
+              className="absolute top-[140px] sm:top-[160px] md:top-[175px] lg:top-[190px] bottom-0 left-0 right-0 flex justify-center items-start z-[20] opacity-0 will-change-transform pointer-events-auto pb-12 overflow-hidden"
             >
-              <div className="flex gap-6 md:gap-8 px-8 md:px-16 w-max">
-                {TEAM_MEMBERS.map((member, index) => (
+              <div className="relative max-w-[1400px] w-full h-full">
+                {chunkedMembers.map((pageMembers, pageIndex) => (
                   <div
-                    key={member.id}
+                    key={pageIndex}
                     ref={(el) => {
-                      if (el) scene8CardRefs.current[index] = el;
+                      if (el) scene8PageRefs.current[pageIndex] = el;
                     }}
-                    className="will-change-transform"
+                    className={`absolute inset-0 pt-4 md:pt-8 opacity-0 will-change-transform content-start px-4 sm:px-8 ${
+                      pageMembers.length === 4
+                        ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8"
+                        : "flex flex-wrap justify-center gap-6 md:gap-8"
+                    }`}
                   >
-                    <PersonProfileCard
-                      name={member.name}
-                      title={member.title}
-                      imageSrc={member.imageSrc}
-                      imageClassName={member.imageClassName}
-                      className="pointer-events-auto"
-                      onClick={() => setSelectedMember(member)}
-                    />
+                    {pageMembers.map((member) => (
+                      <div 
+                        key={member.id} 
+                        className={pageMembers.length === 4 ? "w-full flex justify-center" : "w-full max-w-[320px] flex justify-center"}
+                      >
+                        <PersonProfileCard
+                          name={member.name}
+                          title={member.title}
+                          imageSrc={member.imageSrc}
+                          imageClassName={member.imageClassName}
+                          className="pointer-events-auto"
+                          onClick={() => setSelectedMember(member)}
+                        />
+                      </div>
+                    ))}
                   </div>
                 ))}
               </div>
