@@ -63,14 +63,14 @@ const IMAGES_BY_SERVICE: Record<string, string[]> = {
     "/Why It Matters/IT/Frame6.png",
   ],
 
-  // ── Marketing — dedicated folder images (Frame1 → Frame6) ────────
-  "Marketing": [
-    "/Why It Matters/Printing/Frame1.png",
-    "/Why It Matters/Printing/Frame2.png",
-    "/Why It Matters/Printing/Frame3.png",
-    "/Why It Matters/Printing/Frame4.png",
-    "/Why It Matters/Printing/Frame5.png",
-    "/Why It Matters/Printing/Frame6.png",
+  // ── Marketing — dedicated folder images ────────
+  "marketing": [
+    "/Why It Matters/Marketing/Commercial Printing.jpg",
+    "/Why It Matters/Marketing/Creative Branding Studio.jpg",
+    "/Why It Matters/Marketing/Corporate Brand Identity.jpg",
+    "/Why It Matters/Marketing/Signage & Display Branding.jpg",
+    "/Why It Matters/Marketing/Promotional Products.jpg",
+    "/Why It Matters/Marketing/Markeing Print Materids.jpg",
   ],
 
   // ── E-Commerce & Digital Services — dedicated folder images (Frame1 → Frame6) ─
@@ -113,6 +113,26 @@ const IMAGES_BY_SERVICE: Record<string, string[]> = {
     "/Why It Matters/Sports/Frame4.png",
     "/Why It Matters/Sports/Frame5.png",
     "/Why It Matters/Sports/Frame6.png",
+  ],
+
+  // ── Canteen Service — dedicated folder images ───────────
+  "canteen-management-services": [
+    "/Why It Matters/Canteen/Promote Student Health.jpg",
+    "/Why It Matters/Canteen/Ensure Food Safety.jpg",
+    "/Why It Matters/Canteen/Enhance Campus life.jpg",
+    "/Why It Matters/Canteen/Streamline Operations.jpg",
+    "/Why It Matters/Canteen/Offer Variety & Dietary Support.jpg",
+    "/Why It Matters/Canteen/Modernize Dining System.jpg",
+  ],
+
+  // ── Administration Service — dedicated folder images ───────────
+  "administration-service": [
+    "/Why It Matters/Administration service/Focus on Core mission.jpg",
+    "/Why It Matters/Administration service/Improved Efficiency.jpg",
+    "/Why It Matters/Administration service/Administration Service.jpg",
+    "/Why It Matters/Administration service/Enhanced Professionalism.jpg",
+    "/Why It Matters/Administration service/Compuance & Safety.jpg",
+    "/Why It Matters/Administration service/Scalability.jpg",
   ],
 };
 
