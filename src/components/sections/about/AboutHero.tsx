@@ -183,7 +183,7 @@ export default function AboutHero() {
         if (scene7LeftRef.current) gsap.set(scene7LeftRef.current, { autoAlpha: 0, x: -50 });
         if (scene7RightRef.current) gsap.set(scene7RightRef.current, { autoAlpha: 0, x: 50, scale: 0.9 });
         if (scene7BlackBgRef.current) gsap.set(scene7BlackBgRef.current, { autoAlpha: 0 });
-        if (scene8Ref.current) gsap.set(scene8Ref.current, { autoAlpha: 0, filter: "blur(12px)" });
+        if (scene8Ref.current) gsap.set(scene8Ref.current, { autoAlpha: 0, filter: "blur(4px)" });
         if (scene8WhiteBgRef.current) gsap.set(scene8WhiteBgRef.current, { autoAlpha: 0 });
         if (scene8GridDarkRef.current) gsap.set(scene8GridDarkRef.current, { autoAlpha: 0 });
         if (scene8WhiteVignetteRef.current) gsap.set(scene8WhiteVignetteRef.current, { autoAlpha: 0 });
@@ -598,7 +598,7 @@ export default function AboutHero() {
         if (scene7Ref.current) {
           tl.to(
             scene7Ref.current,
-            { autoAlpha: 0, filter: "blur(12px)", duration: 0.5, ease: "power2.inOut" },
+            { autoAlpha: 0, filter: "blur(4px)", duration: 0.5, ease: "power2.inOut" },
             25.5
           );
         }
@@ -624,7 +624,7 @@ export default function AboutHero() {
         if (scene8TextARef.current) {
           tl.to(
             scene8TextARef.current,
-            { autoAlpha: 0, y: -20, filter: "blur(8px)", duration: 0.5, ease: "power2.inOut" },
+            { autoAlpha: 0, y: -20, filter: "blur(2px)", duration: 0.5, ease: "power2.inOut" },
             28.0
           );
         }
@@ -744,7 +744,7 @@ export default function AboutHero() {
         if (scene8TextBRef.current) {
           tl.to(
             scene8TextBRef.current,
-            { autoAlpha: 0, y: -20, filter: "blur(8px)", duration: 0.5, ease: "power2.inOut" },
+            { autoAlpha: 0, y: -20, filter: "blur(2px)", duration: 0.5, ease: "power2.inOut" },
             41.5
           );
         }

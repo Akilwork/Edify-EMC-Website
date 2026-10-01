@@ -3,7 +3,7 @@ import type { ServiceDetail } from "@/data/service-details";
 
 export default function DetailOverview({ detail }: { detail: ServiceDetail }) {
   // Configurable overview images (defaulting to the exported Figma rectangle shapes)
-  const images = [
+  const images = detail.overviewImages || [
     "/Service details/Rectangle 199.png",
     "/Service details/Rectangle 200.png",
     "/Service details/Rectangle 202.png",
