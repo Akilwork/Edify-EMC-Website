@@ -86,6 +86,9 @@ export interface ServiceDetail {
     description: string;
     ctas: Cta[];
   };
+  
+  // Custom overview images
+  overviewImages?: string[];
 }
 
 /** Reusable CTA presets — every CTA on every page opens the consultation modal. */
@@ -113,6 +116,11 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
       heading: "Building Strong Institutions Through People",
       body: "Strong institutions begin with great people. Our Human Resources & Talent Operations services help organizations attract, develop, and retain talent while improving workforce performance, compliance, and long-term organizational growth.",
     },
+    overviewImages: [
+      "/Service details/hr_service_overview_1.png",
+      "/Service details/hr_service_overview_2.png",
+      "/Service details/hr_service_overview_3.png",
+    ],
     capabilities: {
       heading: "Comprehensive HR Solutions",
       items: [
@@ -187,6 +195,11 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
       heading: "Guiding Institutions Toward Lasting Excellence",
       body: "We partner with schools, colleges, and education providers to strengthen governance, raise academic standards, and nurture student wellbeing. Whether preparing for accreditation, designing outcome-based curricula, or implementing professional counselling and mentoring programmes, our consultants translate ambition into structured, measurable progress across every layer of your institution.",
     },
+    overviewImages: [
+      "/Service details/academic_service_overview_1.png",
+      "/Service details/academic_service_overview_2.png",
+      "/Service details/academic_service_overview_3.png",
+    ],
     capabilities: {
       heading: "Strategic & Student Support Capabilities",
       items: [
@@ -213,10 +226,6 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
         { title: "Plan Sustainable Growth", description: "Scale programmes without diluting quality." },
         { title: "Enhance Student Wellbeing", description: "Proactive mental health support systems." },
         { title: "Improve Behaviour & Engagement", description: "Positive, constructive classroom cultures." },
-        { title: "Strengthen Career Readiness", description: "Clear pathways beyond school." },
-        { title: "Empower Educators", description: "Skills to recognise and respond to student needs." },
-        { title: "Build Parent Partnerships", description: "Aligned support between home and school." },
-        { title: "Promote Holistic Growth", description: "Develop the whole student, not just academics." },
       ],
     },
     approach: {
@@ -269,6 +278,11 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
       heading: "Building Financial Strength And Sustainability",
       body: "We provide strategic financial guidance that helps educational institutions optimise budgets, identify cost efficiencies, manage risk, and plan for long-term sustainability. From day-to-day compliance to capital planning, our advisory ensures your institution remains financially resilient and well-positioned to invest in growth, facilities, and student outcomes.",
     },
+    overviewImages: [
+      "/Service details/finance_service_overview_1.png",
+      "/Service details/finance_service_overview_2.png",
+      "/Service details/finance_service_overview_3.png",
+    ],
     capabilities: {
       heading: "Comprehensive Financial Capabilities",
       items: [
@@ -346,6 +360,11 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
       heading: "Accelerating Digital Evolution",
       body: "We help institutions modernise with technology that genuinely fits their needs — from school ERP, E-Commerce platforms, and web solutions to secure cloud infrastructure and automation. Our consultants assess your current technology, design a realistic digital roadmap, and deliver solutions that improve teaching, streamline administration, and build a secure, future-ready foundation.",
     },
+    overviewImages: [
+      "/Service details/it_service_overview_1.png",
+      "/Service details/it_service_overview_2.png",
+      "/Service details/it_service_overview_3.png",
+    ],
     capabilities: {
       heading: "End-to-End Technology Capabilities",
       items: [
@@ -367,12 +386,6 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
         { title: "Cybersecurity", description: "Advanced threat protection, data encryption, and compliance frameworks safeguarding your data." },
         { title: "AI & Automation", description: "Intelligent automation and AI tools that eliminate manual tasks and boost productivity." },
         { title: "Smart Enterprise Solutions", description: "Integrated IoT and smart campus systems creating connected, future-ready environments." },
-                { title: "Modern E-Commerce Platform", description: "Custom, scalable online storefronts designed for seamless digital commerce." },
-          { title: "Digital Commerce Analytics", description: "Real-time data insights and performance tracking to optimize online sales." },
-          { title: "Software & Web Development", description: "High-performance, responsive websites and web applications built to scale." },
-          { title: "Secure Digital Payments", description: "Frictionless, multi-gateway payment processing with robust data security." },
-          { title: "Order Fulfillment & Logistics", description: "Streamlined order processing and automated supply chain integration." },
-          { title: "Digital Growth Strategy", description: "Targeted digital marketing and strategy to reach new audiences and grow revenue." },
         ],
     },
     approach: {
@@ -423,6 +436,11 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
       heading: "Designing Identity With Impact",
       body: "We help institutions craft a unified, memorable brand and bring it to life across print and digital media. From prospectus and admissions kits to campus signage, uniforms, and marketing collateral, our branding and printing services strengthen identity, build community pride, and support admissions with materials that look exceptional and communicate clearly.",
     },
+    overviewImages: [
+      "/Service details/Marketing/Generated Image.png",
+      "/Service details/Marketing/IMG46321.png",
+      "/Service details/Marketing/image 2690.png",
+    ],
     capabilities: {
       heading: "Marketing Capabilities",
       items: [
@@ -564,6 +582,11 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
       heading: "Department Overview",
       body: "Providing safe, reliable, and compliant passenger transportation solutions across the UAE, supported by a modern fleet, professional drivers, and disciplined operations.",
     },
+    overviewImages: [
+      "/Service details/Transport/transport_service_overview_1.png",
+      "/Service details/Transport/school.png",
+      "/Service details/Transport/School saftey.png",
+    ],
     capabilities: {
       heading: "Transportation Capabilities",
       items: [
@@ -635,6 +658,11 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
       heading: "Dressing Your Institution With Pride",
       body: "We design, source, and deliver high-quality uniforms and institutional clothing that reflect your identity and uphold your standards. From everyday school uniforms to sports kits and staff attire, our solutions balance comfort, durability, and affordability — making it easy for families and giving your institution a polished, unified appearance that builds belonging and pride.",
     },
+    overviewImages: [
+      "/Service details/Uniform/IMG5254.jpg",
+      "/Service details/Uniform/asf010.jpg",
+      "/Service details/Uniform/image 2689.png",
+    ],
     capabilities: {
       heading: "Uniform & Clothing Capabilities",
       items: [
@@ -774,6 +802,11 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
       heading: "Nourishing Campus Communities",
       body: "We help educational institutions and corporate organizations operate clean, efficient, and health-focused dining facilities. From menu design and dietary balance to food safety standards and vendor management, our canteen services ensure students and staff enjoy fresh, nutritious meals every day while keeping operations seamless and cost-effective.",
     },
+    overviewImages: [
+      "/Service details/Canteen/28fcbfdb9f961d54cc273d2ba877556a.jpg",
+      "/Service details/Canteen/Supply.png",
+      "/Service details/Canteen/dc7f18a352ea41e5d4552726f3026ac0.jpg",
+    ],
     capabilities: {
       heading: "Canteen & Catering Capabilities",
       items: [
@@ -914,6 +947,11 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
       heading: "Efficient Administration & Operations",
       body: "Our Administration Service is designed to handle the complexities of daily operations. From facility management to administrative staffing and workflow optimization, we ensure your institution runs smoothly and efficiently.",
     },
+    overviewImages: [
+      "/Service details/Admistrative services/382dcc22bfd443294a93d472df563454.jpg",
+      "/Service details/Admistrative services/cefb5018d65c8d9d57a8ad0d10e45695.jpg",
+      "/Service details/Admistrative services/dc8b3a2c62d908e5d2144142a8dd3e1f.jpg",
+    ],
     capabilities: {
       heading: "Administrative Capabilities",
       items: [

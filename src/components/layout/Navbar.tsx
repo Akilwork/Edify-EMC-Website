@@ -342,8 +342,9 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 backdrop-blur-sm border-b border-white/10 ${hidden ? "-translate-y-full" : "translate-y-0"
-          } ${scrolled ? "bg-black/50" : "bg-transparent"}`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 backdrop-blur-sm border-b ${
+          megaOpen ? "bg-white border-black/10 shadow-sm" : "border-white/10 " + (scrolled ? "bg-black/50" : "bg-transparent")
+        } ${hidden ? "-translate-y-full" : "translate-y-0"}`}
       >
         <div className="container-responsive container-max flex items-center justify-between pt-[clamp(12px,1.4vw,20px)] pb-[clamp(8px,1vw,14px)]">
           {/* Logo */}
@@ -353,7 +354,9 @@ export default function Navbar() {
               alt="Edify Management Consultancy"
               width={82}
               height={36}
-              className="h-[35.8px] w-auto object-contain"
+              className={`h-[35.8px] w-auto object-contain transition-all duration-300 ${
+                megaOpen ? "brightness-0" : ""
+              }`}
               priority
             />
           </Link>
@@ -373,16 +376,24 @@ export default function Navbar() {
                       setMegaOpen(false);
                       router.push(href);
                     }}
-                    className={`flex items-center gap-1 text-[14px] font-semibold tracking-[0.96px] transition-colors duration-200 whitespace-nowrap cursor-pointer hover:text-white ${pathname.startsWith("/services") ? "text-white" : "text-white/60"
-                      }`}
+                    className={`flex items-center gap-1 text-[14px] font-semibold tracking-[0.96px] transition-colors duration-200 whitespace-nowrap cursor-pointer ${
+                      megaOpen
+                        ? pathname.startsWith("/services")
+                          ? "text-black"
+                          : "text-black/60 hover:text-black"
+                        : pathname.startsWith("/services")
+                        ? "text-white"
+                        : "text-white/60 hover:text-white"
+                    }`}
                     aria-haspopup="true"
                     aria-expanded={megaOpen}
                   >
                     {label}
                     <ChevronDown
                       size={13}
-                      className={`transition-transform duration-200 ${megaOpen ? "rotate-180" : ""
-                        }`}
+                      className={`transition-transform duration-200 ${
+                        megaOpen ? "rotate-180" : ""
+                      }`}
                     />
                   </button>
                 </div>
@@ -390,8 +401,15 @@ export default function Navbar() {
                 <Link
                   key={href}
                   href={href}
-                  className={`text-[14px] font-semibold tracking-[0.96px] transition-colors duration-200 whitespace-nowrap cursor-pointer hover:text-white ${pathname === href ? "text-white" : "text-white/60"
-                    }`}
+                  className={`text-[14px] font-semibold tracking-[0.96px] transition-colors duration-200 whitespace-nowrap cursor-pointer ${
+                    megaOpen
+                      ? pathname === href
+                        ? "text-black"
+                        : "text-black/60 hover:text-black"
+                      : pathname === href
+                      ? "text-white"
+                      : "text-white/60 hover:text-white"
+                  }`}
                 >
                   {label}
                 </Link>
@@ -403,14 +421,22 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center gap-2 flex-shrink-0">
             <button
               onClick={openConsultation}
-              className="flex items-center gap-2 px-7 py-[14px] text-[14px] font-normal rounded-[40px] bg-white text-black hover:bg-white/90 transition-all duration-200 whitespace-nowrap cursor-pointer border-none outline-none"
+              className={`flex items-center gap-2 px-7 py-[14px] text-[14px] font-normal rounded-[40px] transition-all duration-200 whitespace-nowrap cursor-pointer border-none outline-none ${
+                megaOpen
+                  ? "bg-black text-white hover:bg-black/80"
+                  : "bg-white text-black hover:bg-white/90"
+              }`}
             >
               Get a Free Consultation
               <ArrowRight size={18} />
             </button>
             <Link
               href="tel:+601234567890"
-              className="flex items-center gap-2 px-7 py-[14px] text-[14px] font-normal rounded-[40px] bg-[#3a3a3a] text-white border border-white/60 hover:bg-[#4a4a4a] transition-all duration-200 cursor-pointer"
+              className={`flex items-center gap-2 px-7 py-[14px] text-[14px] font-normal rounded-[40px] transition-all duration-200 cursor-pointer ${
+                megaOpen
+                  ? "bg-white text-black border border-black/30 hover:bg-black/5"
+                  : "bg-[#3a3a3a] text-white border border-white/60 hover:bg-[#4a4a4a]"
+              }`}
             >
               <Phone size={16} />
               Call Us
@@ -420,7 +446,9 @@ export default function Navbar() {
           {/* Mobile Toggle */}
           <button
             id="mobile-menu-toggle"
-            className="lg:hidden text-white p-2 hover:bg-white/10 rounded-lg transition-colors duration-200 cursor-pointer"
+            className={`lg:hidden p-2 rounded-lg transition-colors duration-200 cursor-pointer ${
+              megaOpen ? "text-black hover:bg-black/10" : "text-white hover:bg-white/10"
+            }`}
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle menu"
             aria-expanded={menuOpen}
@@ -430,7 +458,9 @@ export default function Navbar() {
         </div>
 
         {/* Horizontal Divider */}
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-white/10" />
+        <div className={`absolute bottom-0 left-0 right-0 h-px transition-colors duration-500 ${
+          megaOpen ? "bg-black/5" : "bg-white/10"
+        }`} />
 
         {/* Mobile Menu */}
         {menuOpen && (

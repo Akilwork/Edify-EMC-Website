@@ -384,7 +384,9 @@ export default function DetailCapabilities({ detail }: { detail: ServiceDetail }
                     <img 
                       src={`/Our Service/${(index % 12) + 1}.png`} 
                       alt={item.title} 
-                      className="w-full h-full object-contain object-bottom right-0 bottom-0 mix-blend-lighten pointer-events-none select-none" 
+                      className={`w-full h-full object-contain object-bottom right-0 bottom-0 mix-blend-lighten pointer-events-none select-none ${
+                        detail.slug === "academic-services" ? "hue-rotate-[-60deg] brightness-110" : ""
+                      }`} 
                       draggable="false"
                       onContextMenu={(e) => e.preventDefault()}
                       onError={(e) => {
