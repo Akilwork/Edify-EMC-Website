@@ -72,7 +72,6 @@ export default function AboutHero() {
 
   const sectionRef = useRef<HTMLDivElement>(null);
   const backImageRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const gridBg70Ref = useRef<HTMLDivElement>(null); // Frame 2: 70% vignette
   const gridBg30Ref = useRef<HTMLDivElement>(null); // Frame 3: 30% vignette
   const dotBgRef = useRef<HTMLDivElement>(null); // Frame 4: dot background
@@ -130,12 +129,6 @@ export default function AboutHero() {
   const [scene9Visible, setScene9Visible] = useState(false);
 
   const cleanupFnRef = useRef<(() => void) | null>(null);
-
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.playbackRate = 1.5;
-    }
-  }, []);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -902,20 +895,17 @@ export default function AboutHero() {
         ref={sectionRef}
         className="relative w-full h-screen min-h-[100svh] overflow-hidden bg-[#0A0D14]"
       >
-        {/* ── Background Building Video ── */}
+        {/* ── Background Image ── */}
         <div
           ref={backImageRef}
           className="absolute inset-0 z-[1] will-change-transform"
         >
-          <video
-            ref={videoRef}
-            src="/about/hero/Untitled%20design.mov"
-            autoPlay
-            preload="auto"
-            muted
-            loop
-            playsInline
-            className="w-full h-full object-cover object-center"
+          <Image
+            src="/about/hero/about-hero-bg.png"
+            alt="About Hero Background"
+            fill
+            className="object-cover object-center"
+            priority
           />
         </div>
 
