@@ -344,7 +344,7 @@ export default function Navbar() {
     <>
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 backdrop-blur-sm border-b ${
-          megaOpen ? "bg-white border-black/10 shadow-sm" : "border-white/10 " + (scrolled ? "bg-black/50" : "bg-transparent")
+          megaOpen || menuOpen ? "!bg-white border-black/10 shadow-sm" : "border-white/10 " + (scrolled ? "bg-black/50" : "bg-transparent")
         } ${hidden ? "-translate-y-full" : "translate-y-0"}`}
       >
         <div className="container-responsive container-max flex items-center justify-between pt-[clamp(12px,1.4vw,20px)] pb-[clamp(8px,1vw,14px)]">
@@ -448,7 +448,7 @@ export default function Navbar() {
           <button
             id="mobile-menu-toggle"
             className={`lg:hidden p-2 rounded-lg transition-colors duration-200 cursor-pointer ${
-              megaOpen ? "text-black hover:bg-black/10" : "text-white hover:bg-white/10"
+              megaOpen || menuOpen ? "text-black hover:bg-black/10" : "text-white hover:bg-white/10"
             }`}
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle menu"
@@ -460,12 +460,12 @@ export default function Navbar() {
 
         {/* Horizontal Divider */}
         <div className={`absolute bottom-0 left-0 right-0 h-px transition-colors duration-500 ${
-          megaOpen ? "bg-black/5" : "bg-white/10"
+          megaOpen || menuOpen ? "bg-black/5" : "bg-white/10"
         }`} />
 
         {/* Mobile Menu */}
         {menuOpen && (
-          <div className="lg:hidden bg-white border-t border-black/10">
+          <div className="lg:hidden bg-white border-t border-black/10 max-h-[calc(100vh-72px)] overflow-y-auto no-scrollbar">
             <div className="container-responsive py-4 space-y-1">
               {NAV_LINKS.map(({ label, href, hasMega }) =>
                 hasMega ? (
@@ -475,7 +475,7 @@ export default function Navbar() {
                       <Link
                         href={href}
                         onClick={() => setMenuOpen(false)}
-                        className={`flex-1 text-[14px] font-semibold tracking-[0.96px] py-2 cursor-pointer transition-colors duration-200 ${pathname.startsWith("/services")
+                        className={`flex-1 text-[16px] font-semibold tracking-[0.96px] py-3 cursor-pointer transition-colors duration-200 ${pathname.startsWith("/services")
                             ? "text-black"
                             : "text-black/50"
                           }`}
@@ -527,7 +527,7 @@ export default function Navbar() {
                     key={href}
                     href={href}
                     onClick={() => setMenuOpen(false)}
-                    className={`block text-[14px] font-semibold tracking-[0.96px] transition-colors duration-200 hover:text-black py-2 cursor-pointer ${pathname === href ? "text-black" : "text-black/50"
+                    className={`block text-[16px] font-semibold tracking-[0.96px] transition-colors duration-200 hover:text-black py-3 cursor-pointer ${pathname === href ? "text-black" : "text-black/50"
                       }`}
                   >
                     {label}
