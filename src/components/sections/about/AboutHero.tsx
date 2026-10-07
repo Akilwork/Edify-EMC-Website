@@ -72,6 +72,7 @@ export default function AboutHero() {
 
   const sectionRef = useRef<HTMLDivElement>(null);
   const backImageRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const gridBg70Ref = useRef<HTMLDivElement>(null); // Frame 2: 70% vignette
   const gridBg30Ref = useRef<HTMLDivElement>(null); // Frame 3: 30% vignette
   const dotBgRef = useRef<HTMLDivElement>(null); // Frame 4: dot background
@@ -129,6 +130,12 @@ export default function AboutHero() {
   const [scene9Visible, setScene9Visible] = useState(false);
 
   const cleanupFnRef = useRef<(() => void) | null>(null);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.playbackRate = 1.5;
+    }
+  }, []);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -215,12 +222,10 @@ export default function AboutHero() {
           {
             scale: 1,
             y: 0,
-            filter: "blur(1px)",
           },
           {
             scale: 1.08,
             y: -40,
-            filter: "blur(1.5px)",
             duration: 2.5,
           },
           0
@@ -253,7 +258,6 @@ export default function AboutHero() {
         tl.to(backImage, {
           scale: 3.5,
           y: -100,
-          filter: "blur(3px)",
           duration: 5,
           ease: "none",
         });
@@ -904,11 +908,11 @@ export default function AboutHero() {
           className="absolute inset-0 z-[1] will-change-transform"
         >
           <video
-            src="/about/hero/Untitled%20design.mp4"
+            ref={videoRef}
+            src="/about/hero/Untitled%20design.mov"
             autoPlay
             preload="auto"
             muted
-            defaultMuted
             loop
             playsInline
             className="w-full h-full object-cover object-center"
