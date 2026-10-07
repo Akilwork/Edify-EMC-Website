@@ -44,7 +44,7 @@ function PersonProfileCard({
           className="absolute inset-0 flex flex-col justify-end p-4 sm:p-5 transition-opacity duration-300"
           style={{
             background:
-              "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 40%, transparent 70%)",
+              "linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.15) 35%, transparent 60%)",
           }}
         >
           <span className="text-white font-sans font-bold text-base sm:text-lg leading-tight drop-shadow-sm group-hover:text-white transition-colors duration-300">
@@ -904,9 +904,11 @@ export default function AboutHero() {
           className="absolute inset-0 z-[1] will-change-transform"
         >
           <video
-            src="/about/hero/about-hero-video.mov"
+            src="/about/hero/Untitled%20design.mp4"
             autoPlay
+            preload="auto"
             muted
+            defaultMuted
             loop
             playsInline
             className="w-full h-full object-cover object-center"

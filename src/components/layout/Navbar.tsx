@@ -118,10 +118,11 @@ function ServicesMegaMenu({
 
   return (
     <div className="absolute top-full left-0 right-0 z-40">
-      {/* Full-screen backdrop to close on outside click */}
+      {/* Full-screen backdrop to close on outside click and mouse leave */}
       <div
         className="fixed inset-0 top-0 z-[-1] bg-black/20 backdrop-blur-[2px]"
         onClick={onClose}
+        onMouseEnter={onClose}
         aria-hidden="true"
       />
 
@@ -342,7 +343,7 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 backdrop-blur-sm border-b ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 backdrop-blur-sm border-b ${
           megaOpen ? "bg-white border-black/10 shadow-sm" : "border-white/10 " + (scrolled ? "bg-black/50" : "bg-transparent")
         } ${hidden ? "-translate-y-full" : "translate-y-0"}`}
       >
@@ -560,19 +561,19 @@ export default function Navbar() {
       </header>
 
       {/* Mega Menu – rendered outside header to avoid clipping */}
-      {megaOpen && (
-        <div
-          className="fixed left-0 right-0 z-40"
-          style={{ top: "var(--navbar-height, 72px)" }}
-          onMouseEnter={handleServicesEnter}
-          onMouseLeave={handleServicesLeave}
-        >
-          <ServicesMegaMenu
-            onClose={() => setMegaOpen(false)}
-            openConsultation={openConsultation}
-          />
-        </div>
-      )}
+      <div
+        className={`fixed left-0 right-0 z-40 transition-all duration-300 origin-top ${
+          megaOpen ? "opacity-100 visible" : "opacity-0 invisible -translate-y-2 pointer-events-none"
+        }`}
+        style={{ top: "var(--navbar-height, 72px)" }}
+        onMouseEnter={handleServicesEnter}
+        onMouseLeave={handleServicesLeave}
+      >
+        <ServicesMegaMenu
+          onClose={() => setMegaOpen(false)}
+          openConsultation={openConsultation}
+        />
+      </div>
     </>
   );
 }
