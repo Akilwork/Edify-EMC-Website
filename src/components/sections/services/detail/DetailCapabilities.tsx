@@ -269,6 +269,10 @@ function renderCardGraphic(index: number) {
 }
 
 const getColSpanClass = (index: number, totalCount: number) => {
+  if (totalCount === 13) {
+    if ([0, 1, 8, 9].includes(index)) return "col-span-12 md:col-span-6";
+    return "col-span-12 md:col-span-4";
+  }
   if (totalCount === 12) {
     if ([0, 1, 2, 5, 6, 7].includes(index)) return "col-span-12 md:col-span-4";
     return "col-span-12 md:col-span-6";

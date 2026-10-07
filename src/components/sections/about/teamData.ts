@@ -230,7 +230,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     name: "Afzal-M",
     title: "IT Director",
     roleSubtitle: "IT DIRECTOR",
-    imageSrc: "/about/team/Afzal-M.jpg",
+    imageSrc: "/about/team/afzal-hd.jpg",
     bio: "Building robust, ultra-fast web platforms and real-time administrative dashboards. Specialist in clean architecture, API design, and high-load web applications.",
     features: [
       {
