@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
+
 import { ArrowRight } from "lucide-react";
 import { motion, Variants } from "framer-motion";
 import { useConsultation } from "@/components/providers/ConsultationProvider";
@@ -42,13 +42,13 @@ export default function HeroSection({ isParentReady = true }: { isParentReady?: 
         animate={isParentReady ? { scale: 1, opacity: 1 } : { scale: 1.08, opacity: 0 }}
         transition={{ duration: 1.6, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] }}
       >
-        <Image
-          src="/assets/hero-bg.png"
-          alt=""
-          fill
-          className="object-cover object-center"
-          priority
-          sizes="100vw"
+        <video
+          src="/about/hero/about-hero-video.mov"
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="w-full h-full object-cover object-center"
         />
         {/* Gradient overlays matching Figma design */}
         <div

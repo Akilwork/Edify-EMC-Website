@@ -203,7 +203,8 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
     capabilities: {
       heading: "Strategic & Student Support Capabilities",
       items: [
-        { title: "Accreditation & Quality Assurance", description: "Mock audits and readiness for NAAC, NBA, and international bodies." },
+        { title: "Quality Assurance", description: "Mock audits and readiness for NAAC, NBA, and international bodies." },
+        { title: "Assessment and Data", description: "Comprehensive assessment strategies and data-driven insights to improve student outcomes." },
         { title: "Curriculum Design & Development", description: "Modern, outcome-based curricula aligned to global benchmarks." },
         { title: "Institution Setup & Planning", description: "Feasibility, approvals, infrastructure, and launch strategy." },
         { title: "Academic Audits", description: "Evaluate teaching, assessment, and feedback systems." },
