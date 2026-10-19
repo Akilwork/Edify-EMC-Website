@@ -7,7 +7,6 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   Menu,
   X,
-  Phone,
   ArrowRight,
   ChevronDown,
   BookOpen,
@@ -98,7 +97,8 @@ const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
   { label: "Services", href: "/services", hasMega: true },
-  { label: "Careers", href: "/careers" },
+  // { label: "Careers", href: "/careers" },
+  { label: "Contact Us", href: "/contact" },
 ];
 
 
@@ -273,6 +273,19 @@ export default function Navbar() {
   const router = useRouter();
   const { openConsultation } = useConsultation();
   const megaTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const headerRef = useRef<HTMLElement>(null);
+  const [headerHeight, setHeaderHeight] = useState(72);
+
+  useEffect(() => {
+    const updateHeaderHeight = () => {
+      if (headerRef.current) {
+        setHeaderHeight(headerRef.current.offsetHeight);
+      }
+    };
+    updateHeaderHeight();
+    window.addEventListener("resize", updateHeaderHeight);
+    return () => window.removeEventListener("resize", updateHeaderHeight);
+  }, []);
 
   // Prevent background scrolling when mega menu or mobile menu is open
   useEffect(() => {
@@ -340,23 +353,33 @@ export default function Navbar() {
     megaTimerRef.current = setTimeout(() => setMegaOpen(false), 150);
   };
 
+  const isLightPage = pathname === "/contact";
+  const isLightMode = megaOpen || isLightPage;
+
   return (
     <>
       <header
+        ref={headerRef}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 backdrop-blur-sm border-b ${
-          megaOpen || menuOpen ? "!bg-white border-black/10 shadow-sm" : "border-white/10 " + (scrolled ? "bg-black/50" : "bg-transparent")
+          megaOpen || menuOpen
+            ? "!bg-white border-black/10 shadow-sm"
+            : isLightPage
+            ? "border-black/10 " + (scrolled ? "bg-white/85 shadow-sm" : "bg-white/60")
+            : "border-white/10 " + (scrolled ? "bg-black/50" : "bg-transparent")
         } ${hidden ? "-translate-y-full" : "translate-y-0"}`}
       >
-        <div className="container-responsive container-max flex items-center justify-between pt-[clamp(12px,1.4vw,20px)] pb-[clamp(8px,1vw,14px)]">
+        <div className="container-responsive container-max flex items-center justify-between pt-[clamp(10px,1.2vw,16px)] pb-[clamp(10px,1.2vw,16px)]">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group flex-shrink-0">
             <Image
               src="/Edify logo.png"
               alt="Edify Management Consultancy"
-              width={82}
-              height={36}
-              className={`h-[35.8px] w-auto object-contain transition-all duration-300 ${
-                megaOpen ? "brightness-0" : ""
+              width={160}
+              height={70}
+              className={`h-[52px] sm:h-[60px] md:h-[68px] w-auto object-contain transition-all duration-300 ${
+                isLightMode || menuOpen
+                  ? ""
+                  : "brightness-[2.2] contrast-[1.1] drop-shadow-[0_0_12px_rgba(255,255,255,0.25)]"
               }`}
               priority
             />
@@ -378,7 +401,7 @@ export default function Navbar() {
                       router.push(href);
                     }}
                     className={`flex items-center gap-1 text-[14px] font-semibold tracking-[0.96px] transition-colors duration-200 whitespace-nowrap cursor-pointer ${
-                      megaOpen
+                      isLightMode
                         ? pathname.startsWith("/services")
                           ? "text-black"
                           : "text-black/60 hover:text-black"
@@ -403,7 +426,7 @@ export default function Navbar() {
                   key={href}
                   href={href}
                   className={`text-[14px] font-semibold tracking-[0.96px] transition-colors duration-200 whitespace-nowrap cursor-pointer ${
-                    megaOpen
+                    isLightMode
                       ? pathname === href
                         ? "text-black"
                         : "text-black/60 hover:text-black"
@@ -419,36 +442,12 @@ export default function Navbar() {
           </nav>
 
           {/* Desktop CTAs */}
-          <div className="hidden lg:flex items-center gap-2 flex-shrink-0">
-            <button
-              onClick={openConsultation}
-              className={`flex items-center gap-2 px-7 py-[14px] text-[14px] font-normal rounded-[40px] transition-all duration-200 whitespace-nowrap cursor-pointer border-none outline-none ${
-                megaOpen
-                  ? "bg-black text-white hover:bg-black/80"
-                  : "bg-white text-black hover:bg-white/90"
-              }`}
-            >
-              Get a Free Consultation
-              <ArrowRight size={18} />
-            </button>
-            <Link
-              href="tel:+601234567890"
-              className={`flex items-center gap-2 px-7 py-[14px] text-[14px] font-normal rounded-[40px] transition-all duration-200 cursor-pointer ${
-                megaOpen
-                  ? "bg-white text-black border border-black/30 hover:bg-black/5"
-                  : "bg-[#3a3a3a] text-white border border-white/60 hover:bg-[#4a4a4a]"
-              }`}
-            >
-              <Phone size={16} />
-              Call Us
-            </Link>
-          </div>
 
           {/* Mobile Toggle */}
           <button
             id="mobile-menu-toggle"
             className={`lg:hidden p-2 rounded-lg transition-colors duration-200 cursor-pointer ${
-              megaOpen || menuOpen ? "text-black hover:bg-black/10" : "text-white hover:bg-white/10"
+              isLightMode || menuOpen ? "text-black hover:bg-black/10" : "text-white hover:bg-white/10"
             }`}
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle menu"
@@ -460,7 +459,7 @@ export default function Navbar() {
 
         {/* Horizontal Divider */}
         <div className={`absolute bottom-0 left-0 right-0 h-px transition-colors duration-500 ${
-          megaOpen || menuOpen ? "bg-black/5" : "bg-white/10"
+          isLightMode || menuOpen ? "bg-black/10" : "bg-white/10"
         }`} />
 
         {/* Mobile Menu */}
@@ -535,26 +534,7 @@ export default function Navbar() {
                 )
               )}
 
-              <div className="pt-4 border-t border-black/10 space-y-3">
-                <button
-                  onClick={() => {
-                    setMenuOpen(false);
-                    openConsultation();
-                  }}
-                  className="flex items-center justify-center w-full gap-2 px-7 py-[14px] text-[14px] font-normal rounded-[40px] bg-black text-white cursor-pointer border-none outline-none"
-                >
-                  Get a Free Consultation
-                  <ArrowRight size={18} />
-                </button>
-                <Link
-                  href="tel:+601234567890"
-                  onClick={() => setMenuOpen(false)}
-                  className="flex items-center justify-center gap-2 px-7 py-[14px] text-[14px] font-normal rounded-[40px] bg-white text-black border border-black/30 cursor-pointer"
-                >
-                  <Phone size={16} />
-                  Call Us
-                </Link>
-              </div>
+
             </div>
           </div>
         )}
@@ -565,7 +545,7 @@ export default function Navbar() {
         className={`fixed left-0 right-0 z-40 transition-all duration-300 origin-top ${
           megaOpen ? "opacity-100 visible" : "opacity-0 invisible -translate-y-2 pointer-events-none"
         }`}
-        style={{ top: "var(--navbar-height, 72px)" }}
+        style={{ top: `${headerHeight}px` }}
         onMouseEnter={handleServicesEnter}
         onMouseLeave={handleServicesLeave}
       >

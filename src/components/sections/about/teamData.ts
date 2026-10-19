@@ -357,12 +357,12 @@ export const TEAM_MEMBERS: TeamMember[] = [
     specializations: ["Cloud Architecture", "AI in Education", "Campus Security", "Enterprise Infrastructure"],
   },
   {
-    id: "dummy-academic",
-    name: "Dummy Name",
-    title: "Academic",
-    roleSubtitle: "ACADEMIC",
-    imageSrc: "/about/team/Mason-Brooks.jpg",
-    bio: "Placeholder bio for the academic role. Dedicated to fostering excellence in education and implementing innovative learning methodologies.",
+    id: "karen-robinson",
+    name: "Karen Robinson",
+    title: "Director of Academics",
+    roleSubtitle: "DIRECTOR OF ACADEMICS",
+    imageSrc: "/about/team/KAREN-ROBINSON.jpg",
+    bio: "Guiding institutional academic standards, curriculum development, and instructional quality to foster exceptional student outcomes and continuous educational excellence.",
     features: [
       {
         iconType: "sparkles",
@@ -380,6 +380,6 @@ export const TEAM_MEMBERS: TeamMember[] = [
         description: "Designing modern, future-ready learning frameworks.",
       },
     ],
-    specializations: ["Education", "Curriculum Design", "Student Success", "Academic Strategy"],
+    specializations: ["Academic Leadership", "Curriculum Design", "Student Success", "Instructional Strategy"],
   },
 ];

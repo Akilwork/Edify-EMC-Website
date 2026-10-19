@@ -28,13 +28,17 @@ const FAQ_ITEMS = [
   },
 ];
 
-export default function DetailWhyChoose({ detail }: { detail: ServiceDetail }) {
+export default function DetailWhyChoose({ detail }: { detail?: ServiceDetail }) {
   const [openIndex, setOpenIndex] = useState<number | null>(0); // First item open by default
 
-  const subtitle = "Providing reliable consultancy and tailored strategies that drive excellence, efficiency, and long-term growth.";
+  const heading =
+    detail?.whyChoose?.heading ||
+    "Building Excellence in Institutional Management";
+  const subtitle =
+    "Providing reliable consultancy and tailored strategies that drive excellence, efficiency, and long-term growth.";
 
   return (
-    <section className="relative w-full bg-black py-28 md:py-36 lg:py-44 overflow-hidden">
+    <section className="relative w-full bg-black py-28 md:py-36 lg:py-44 overflow-hidden border-t border-white/5">
       <div className="container-responsive container-max">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center">
           {/* Left Column: Heading & Subtitle */}
@@ -47,7 +51,7 @@ export default function DetailWhyChoose({ detail }: { detail: ServiceDetail }) {
             
             <RevealSection delay={0.05}>
               <h2 className="font-sans text-3xl md:text-4xl lg:text-5xl text-white font-normal leading-tight tracking-tight mb-6">
-                {detail.whyChoose.heading}
+                {heading}
               </h2>
             </RevealSection>
             

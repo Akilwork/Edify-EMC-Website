@@ -182,7 +182,7 @@ export function getResponse(
   // Contact
   if (intent === 'contact') {
     return {
-      text: "You can reach us anytime:\n\n📧 Email: info@edify.com\n📞 Phone: +971 XX XXX XXX\n🌐 Website: www.edify.com\n\nOr I can connect you right now - just share your email and our team will reach out.",
+      text: "You can reach us anytime:\n\n📧 Email: info@edify.ae\n📞 Phone: +971 4 577 6655\n🌐 Website: www.edify.ae\n\nOr I can connect you right now - just share your email and our team will reach out.",
       quickReplies: [
         { text: "Connect me", intent: "lead_capture" },
         { text: "Thanks, just browsing", intent: "greeting" }

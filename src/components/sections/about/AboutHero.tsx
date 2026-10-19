@@ -27,34 +27,47 @@ function PersonProfileCard({
 }) {
   return (
     <div
+      role="button"
+      tabIndex={0}
       onClick={onClick}
-      className={`relative w-full max-w-[320px] mx-auto cursor-pointer group transition-transform duration-300 hover:scale-[1.03] ${className}`}
-      style={{ filter: "drop-shadow(0 16px 32px rgba(0,0,0,0.15))" }}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onClick?.();
+        }
+      }}
+      onContextMenu={(e) => e.preventDefault()}
+      className={`relative w-full max-w-[170px] xs:max-w-[200px] sm:max-w-[250px] md:max-w-[280px] lg:max-w-[270px] xl:max-w-[300px] 2xl:max-w-[320px] mx-auto cursor-pointer group transition-all duration-300 active:scale-[0.97] lg:hover:scale-[1.03] select-none ${className}`}
+      style={{ filter: "drop-shadow(0 12px 28px rgba(0,0,0,0.12))" }}
     >
-      <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden bg-gray-200 ring-0 group-hover:ring-2 group-hover:ring-[#a855f7]/70 transition-all duration-300">
+      <div className="relative w-full aspect-[3/4] rounded-xl xs:rounded-2xl overflow-hidden bg-gray-200 ring-0 lg:group-hover:ring-2 lg:group-hover:ring-[#a855f7]/70 transition-all duration-300 select-none">
         <Image
           src={imageSrc}
           alt={imageAlt || name}
           fill
-          className={`object-cover object-center transition-transform duration-500 ${imageClassName || "group-hover:scale-105"}`}
-          sizes="(max-width: 480px) 220px, (max-width: 640px) 260px, 320px"
+          draggable={false}
+          onContextMenu={(e) => e.preventDefault()}
+          onDragStart={(e) => e.preventDefault()}
+          className={`object-cover object-center transition-transform duration-500 pointer-events-none select-none ${imageClassName || "lg:group-hover:scale-105"}`}
+          sizes="(max-width: 480px) 170px, (max-width: 640px) 220px, (max-width: 1024px) 280px, 320px"
           priority
         />
         <div
-          className="absolute inset-0 flex flex-col justify-end p-4 sm:p-5 transition-opacity duration-300"
+          className="absolute inset-0 flex flex-col justify-end p-2.5 xs:p-3 sm:p-4 md:p-5 transition-opacity duration-300 pointer-events-none select-none"
           style={{
             background:
-              "linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.15) 35%, transparent 60%)",
+              "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.45) 45%, rgba(0,0,0,0.15) 70%, transparent 100%)",
           }}
         >
-          <span className="text-white font-sans font-bold text-base sm:text-lg leading-tight drop-shadow-sm group-hover:text-white transition-colors duration-300">
+          <span className="text-white font-sans font-bold text-xs xs:text-sm sm:text-base md:text-lg leading-tight drop-shadow-sm transition-colors duration-300 line-clamp-1">
             {name}
           </span>
-          <span className="text-white/75 text-xs sm:text-sm font-medium mt-1 group-hover:text-white/95 transition-colors duration-300">
+          <span className="text-white/85 text-[10px] xs:text-[11px] sm:text-xs md:text-sm font-medium mt-0.5 sm:mt-1 transition-colors duration-300 line-clamp-2">
             {title}
           </span>
-          <span className="inline-flex items-center gap-1 text-[#a855f7] text-xs font-semibold mt-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0">
-            View Profile →
+          <span className="inline-flex items-center gap-1 text-[#c084fc] lg:text-[#a855f7] text-[10px] xs:text-[11px] sm:text-xs font-semibold mt-1 xs:mt-1.5 sm:mt-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-all duration-300 translate-y-0 lg:translate-y-1 lg:group-hover:translate-y-0">
+            <span>View Profile</span>
+            <span className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
           </span>
         </div>
       </div>
@@ -62,7 +75,7 @@ function PersonProfileCard({
   );
 }
 
-const displayMembers = TEAM_MEMBERS.filter(member => member.id !== "dummy-academic");
+const displayMembers = TEAM_MEMBERS;
 
 export default function AboutHero() {
   const chunkedMembers = [];
@@ -898,13 +911,17 @@ export default function AboutHero() {
         {/* ── Background Image ── */}
         <div
           ref={backImageRef}
-          className="absolute inset-0 z-[1] will-change-transform"
+          className="absolute inset-0 z-[1] will-change-transform pointer-events-none select-none"
+          onContextMenu={(e) => e.preventDefault()}
         >
           <Image
             src="/about/hero/about-hero-bg.png"
             alt="About Hero Background"
             fill
-            className="object-cover object-center"
+            draggable={false}
+            onContextMenu={(e) => e.preventDefault()}
+            onDragStart={(e) => e.preventDefault()}
+            className="object-cover object-center pointer-events-none select-none"
             priority
           />
         </div>
@@ -1089,15 +1106,22 @@ export default function AboutHero() {
                   </div>
 
                   {/* Center image */}
-                  <div className="relative w-[52%] aspect-square rounded-full overflow-hidden border-4 border-white/5 z-10" style={{
-                    boxShadow: "0 0 80px rgba(59, 130, 246, 0.15), 0 0 40px rgba(34, 197, 94, 0.1), inset 0 0 60px rgba(0, 0, 0, 0.3)"
-                  }}>
+                  <div
+                    className="relative w-[52%] aspect-square rounded-full overflow-hidden border-4 border-white/5 z-10 pointer-events-none select-none"
+                    style={{
+                      boxShadow: "0 0 80px rgba(59, 130, 246, 0.15), 0 0 40px rgba(34, 197, 94, 0.1), inset 0 0 60px rgba(0, 0, 0, 0.3)"
+                    }}
+                    onContextMenu={(e) => e.preventDefault()}
+                  >
                     <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-green-500/10 z-10 pointer-events-none" />
                     <Image
                       src="/about/hero/circular_img.png"
                       alt="Vision & Values"
                       fill
-                      className="object-cover"
+                      draggable={false}
+                      onContextMenu={(e) => e.preventDefault()}
+                      onDragStart={(e) => e.preventDefault()}
+                      className="object-cover pointer-events-none select-none"
                       sizes="(max-width: 768px) 240px, (max-width: 1024px) 280px, 300px"
                       priority
                     />
@@ -1202,17 +1226,23 @@ export default function AboutHero() {
               </div>
 
               {/* Right - Dynamic images for each sub-scene */}
-              <div className="flex items-center justify-center relative w-full aspect-square max-w-[280px] xs:max-w-[340px] sm:max-w-[450px] lg:max-w-none lg:h-[450px] xl:h-[600px] mx-auto mt-8 lg:mt-0">
+              <div
+                className="flex items-center justify-center relative w-full aspect-square max-w-[280px] xs:max-w-[340px] sm:max-w-[450px] lg:max-w-none lg:h-[450px] xl:h-[600px] mx-auto mt-8 lg:mt-0 select-none"
+                onContextMenu={(e) => e.preventDefault()}
+              >
                 {/* Sub-scene 7A - Image */}
                 <div
                   ref={scene7ImgARef}
-                  className="absolute inset-0 flex items-center justify-center opacity-0 will-change-transform"
+                  className="absolute inset-0 flex items-center justify-center opacity-0 will-change-transform pointer-events-none select-none"
                 >
                   <Image
                     src="/about/hero/img1-vision.png"
                     alt="One Vision - Multiple Areas of Expertise"
                     fill
-                    className="object-contain"
+                    draggable={false}
+                    onContextMenu={(e) => e.preventDefault()}
+                    onDragStart={(e) => e.preventDefault()}
+                    className="object-contain pointer-events-none select-none"
                     sizes="(max-width: 480px) 280px, (max-width: 640px) 340px, (max-width: 1024px) 450px, 600px"
                     priority
                   />
@@ -1221,13 +1251,16 @@ export default function AboutHero() {
                 {/* Sub-scene 7B - Image */}
                 <div
                   ref={scene7ImgBRef}
-                  className="absolute inset-0 flex items-center justify-center opacity-0 will-change-transform"
+                  className="absolute inset-0 flex items-center justify-center opacity-0 will-change-transform pointer-events-none select-none"
                 >
                   <Image
                     src="/about/hero/img2-vision.png"
                     alt="Working alongside institutions"
                     fill
-                    className="object-contain"
+                    draggable={false}
+                    onContextMenu={(e) => e.preventDefault()}
+                    onDragStart={(e) => e.preventDefault()}
+                    className="object-contain pointer-events-none select-none"
                     sizes="(max-width: 480px) 280px, (max-width: 640px) 340px, (max-width: 1024px) 450px, 600px"
                     priority
                   />
@@ -1236,13 +1269,16 @@ export default function AboutHero() {
                 {/* Sub-scene 7C - Image */}
                 <div
                   ref={scene7ImgCRef}
-                  className="absolute inset-0 flex items-center justify-center opacity-0 will-change-transform"
+                  className="absolute inset-0 flex items-center justify-center opacity-0 will-change-transform pointer-events-none select-none"
                 >
                   <Image
                     src="/about/hero/img3-vision.png"
                     alt="Unique solutions for unique institutions"
                     fill
-                    className="object-contain"
+                    draggable={false}
+                    onContextMenu={(e) => e.preventDefault()}
+                    onDragStart={(e) => e.preventDefault()}
+                    className="object-contain pointer-events-none select-none"
                     sizes="(max-width: 480px) 280px, (max-width: 640px) 340px, (max-width: 1024px) 450px, 600px"
                     priority
                   />
@@ -1251,13 +1287,16 @@ export default function AboutHero() {
                 {/* Sub-scene 7D - Image */}
                 <div
                   ref={scene7ImgDRef}
-                  className="absolute inset-0 flex items-center justify-center opacity-0 will-change-transform"
+                  className="absolute inset-0 flex items-center justify-center opacity-0 will-change-transform pointer-events-none select-none"
                 >
                   <Image
                     src="/about/hero/img4-vision.png"
                     alt="Commitment to educational excellence"
                     fill
-                    className="object-contain"
+                    draggable={false}
+                    onContextMenu={(e) => e.preventDefault()}
+                    onDragStart={(e) => e.preventDefault()}
+                    className="object-contain pointer-events-none select-none"
                     sizes="(max-width: 480px) 280px, (max-width: 640px) 340px, (max-width: 1024px) 450px, 600px"
                     priority
                   />
@@ -1464,10 +1503,10 @@ export default function AboutHero() {
             {/* Scene 8B: Top text - "The Expertise Behind Every Solution" */}
             <div
               ref={scene8TextBRef}
-              className="absolute top-0 left-0 right-0 pt-20 sm:pt-24 md:pt-28 lg:pt-30 z-[10] opacity-0 will-change-transform"
+              className="absolute top-0 left-0 right-0 pt-14 xs:pt-16 sm:pt-20 md:pt-24 lg:pt-28 z-[10] opacity-0 will-change-transform"
             >
-              <div className="text-center px-6 md:px-8">
-                <h2 className="font-sans text-[clamp(22px,4vw,30px)] md:text-[clamp(28px,3.5vw,36px)] lg:text-[clamp(32px,3vw,42px)] font-medium leading-[1.15] tracking-tight text-[#1a1a1a]">
+              <div className="text-center px-4 sm:px-6 md:px-8">
+                <h2 className="font-sans text-[clamp(19px,4vw,28px)] md:text-[clamp(26px,3.5vw,34px)] lg:text-[clamp(32px,3vw,42px)] font-medium leading-[1.15] tracking-tight text-[#1a1a1a]">
                   The Expertise Behind Every Solution
                 </h2>
               </div>
@@ -1476,7 +1515,7 @@ export default function AboutHero() {
             {/* Scene 8B: Person Cards - Pages */}
             <div
               ref={scene8CardsContainerRef}
-              className="absolute top-[140px] sm:top-[160px] md:top-[175px] lg:top-[190px] bottom-0 left-0 right-0 flex justify-center items-start z-[20] opacity-0 will-change-transform pointer-events-auto pb-12 overflow-hidden"
+              className="absolute top-[95px] xs:top-[105px] sm:top-[130px] md:top-[155px] lg:top-[180px] bottom-0 left-0 right-0 flex justify-center items-start z-[20] opacity-0 will-change-transform pointer-events-auto pb-4 sm:pb-8 md:pb-12 overflow-y-auto lg:overflow-hidden"
             >
               <div className="relative max-w-[1400px] w-full h-full">
                 {chunkedMembers.map((pageMembers, pageIndex) => (
@@ -1485,16 +1524,16 @@ export default function AboutHero() {
                     ref={(el) => {
                       if (el) scene8PageRefs.current[pageIndex] = el;
                     }}
-                    className={`absolute inset-0 pt-4 md:pt-8 opacity-0 will-change-transform content-start px-4 sm:px-8 ${
+                    className={`absolute inset-0 pt-1 xs:pt-2 sm:pt-4 md:pt-6 opacity-0 will-change-transform content-start px-2.5 xs:px-4 sm:px-6 md:px-8 ${
                       pageMembers.length === 4
-                        ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8"
-                        : "flex flex-wrap justify-center gap-6 md:gap-8"
+                        ? "grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-2.5 xs:gap-3.5 sm:gap-5 md:gap-6 xl:gap-8 justify-items-center items-start"
+                        : "flex flex-wrap justify-center gap-2.5 xs:gap-3.5 sm:gap-5 md:gap-6 xl:gap-8"
                     }`}
                   >
                     {pageMembers.map((member) => (
                       <div 
                         key={member.id} 
-                        className={pageMembers.length === 4 ? "w-full flex justify-center" : "w-full max-w-[320px] flex justify-center"}
+                        className={pageMembers.length === 4 ? "w-full flex justify-center" : "w-full max-w-[170px] xs:max-w-[200px] sm:max-w-[250px] md:max-w-[280px] lg:max-w-[270px] xl:max-w-[300px] 2xl:max-w-[320px] flex justify-center"}
                       >
                         <PersonProfileCard
                           name={member.name}
