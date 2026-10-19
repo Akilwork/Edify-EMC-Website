@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import ContactHero from "@/components/sections/contact/ContactHero";
-import ContactFormSection from "@/components/sections/contact/ContactFormSection";
-import ContactInfoSection from "@/components/sections/contact/ContactInfoSection";
+import DetailWhyChoose from "@/components/sections/services/detail/DetailWhyChoose";
 
 export const metadata: Metadata = {
   title: "Contact Us",
@@ -13,8 +12,7 @@ export default function ContactPage() {
   return (
     <>
       <ContactHero />
-      <ContactFormSection />
-      <ContactInfoSection />
+      <DetailWhyChoose />
     </>
   );
 }

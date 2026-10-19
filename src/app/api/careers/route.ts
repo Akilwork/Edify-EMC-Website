@@ -221,7 +221,7 @@ export async function POST(request: Request) {
       }
 
       // A. Email Notification via Nodemailer
-      const notificationEmail = process.env.NOTIFICATION_EMAIL || "akilwork04@gmail.com";
+      const notificationEmail = process.env.NOTIFICATION_EMAIL || "info@edify.ae";
       const gmailUser = process.env.GMAIL_USER || notificationEmail;
       const gmailPass = process.env.GMAIL_APP_PASSWORD;
 

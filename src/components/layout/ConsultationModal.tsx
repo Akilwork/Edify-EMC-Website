@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ChevronDown, ArrowRight } from "lucide-react";
+import { X, ChevronDown, ArrowRight, CheckCircle2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface ConsultationModalProps {
@@ -80,27 +80,18 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
 
   const [countryCode, setCountryCode] = useState("+971");
   const [showCountryCodes, setShowCountryCodes] = useState(false);
-  const [showInstTypes, setShowInstTypes] = useState(false);
-  const [showServices, setShowServices] = useState(false);
   const [formErrors, setFormErrors] = useState<{ name?: boolean; contactNumber?: boolean; email?: boolean }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const submittingRef = useRef(false);
 
   const countryDropdownRef = useRef<HTMLDivElement>(null);
-  const instDropdownRef = useRef<HTMLDivElement>(null);
-  const serviceDropdownRef = useRef<HTMLDivElement>(null);
 
   // Close dropdowns when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (countryDropdownRef.current && !countryDropdownRef.current.contains(event.target as Node)) {
         setShowCountryCodes(false);
-      }
-      if (instDropdownRef.current && !instDropdownRef.current.contains(event.target as Node)) {
-        setShowInstTypes(false);
-      }
-      if (serviceDropdownRef.current && !serviceDropdownRef.current.contains(event.target as Node)) {
-        setShowServices(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -122,8 +113,6 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
       });
       setCountryCode("+971");
       setShowCountryCodes(false);
-      setShowInstTypes(false);
-      setShowServices(false);
       setFormErrors({});
       submittingRef.current = false;
       setIsSubmitting(false);
@@ -211,7 +200,7 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
             className={[
               "relative w-full overflow-hidden shadow-2xl z-10",
               "rounded-t-[24px] lg:rounded-[14px]",
-              "h-[92dvh] lg:max-w-6xl lg:h-[760px] lg:max-h-[90vh]",
+              "h-[92dvh] lg:max-w-5xl lg:h-[620px] xl:h-[640px] lg:max-h-[90vh]",
               "flex flex-col lg:flex-row",
               "border-0 lg:border lg:border-white/10",
             ].join(" ")}
@@ -260,12 +249,11 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
             {/* ══════════════════════════════════════════════════════════════════
                 DESKTOP  —  Left column (visible on lg+)
             ══════════════════════════════════════════════════════════════════ */}
-            <div className="hidden lg:flex lg:w-1/2 p-12 xl:p-16 flex-col justify-center relative backdrop-blur-md bg-black/30 border-r border-white/5 overflow-hidden flex-shrink-0 select-none z-10">
-              <div className="relative z-10 space-y-8 max-w-md">
-                <h2 className="font-sans font-medium text-white leading-[1.1] text-[40px] xl:text-[50px] 2xl:text-[54px] tracking-tight">
+            <div className="hidden lg:flex lg:w-1/2 p-8 lg:p-10 xl:p-12 flex-col justify-center relative backdrop-blur-md bg-black/30 border-r border-white/5 overflow-hidden flex-shrink-0 select-none z-10">
+              <div className="relative z-10 space-y-6 max-w-lg">
+                <h2 className="font-sans font-medium text-white leading-[1.2] text-[28px] lg:text-[32px] xl:text-[36px] tracking-tight">
                   Building Stronger <br />
-                  Institutions Starts <br />
-                  Here
+                  Institutions Starts Here
                 </h2>
                 <p className="text-white/70 text-[15px] xl:text-[16px] leading-relaxed font-normal">
                   Connect with our consultants to explore tailored solutions designed for your institution's unique needs and growth objectives.
@@ -287,229 +275,136 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                 "flex flex-col justify-start lg:justify-center",
               ].join(" ")}
             >
-              <div className="flex-1 min-h-0 overflow-y-auto no-scrollbar pt-5 px-5 pb-24 sm:pt-7 sm:px-7 sm:pb-28 md:pt-9 md:px-9 md:pb-32 lg:pt-14 lg:px-8 lg:pb-6 xl:pt-16 xl:px-12 xl:pb-8">
+              {isSubmitted ? (
+                <div className="flex-1 min-h-0 flex flex-col items-center justify-center py-12 px-6 sm:px-10 text-center">
+                  <div className="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 mb-6 shadow-sm">
+                    <CheckCircle2 size={32} />
+                  </div>
+                  <h3 className="font-sans text-2xl sm:text-3xl font-medium text-white mb-3">
+                    Enquiry Sent Successfully!
+                  </h3>
+                  <p className="text-white/60 text-sm sm:text-base max-w-md mx-auto mb-8 leading-relaxed">
+                    Thank you for contacting Edify Management Consultancy. Your details have been automatically sent to our mail, and an advisor will get back to you shortly.
+                  </p>
+                  <button
+                    onClick={() => {
+                      setIsSubmitted(false);
+                      onClose();
+                    }}
+                    className="inline-flex items-center gap-2 px-7 py-3 bg-white text-black font-semibold rounded-full hover:bg-neutral-100 transition-all duration-300 text-sm cursor-pointer shadow-md active:scale-95"
+                  >
+                    <span>Close</span>
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <div className="flex-1 min-h-0 overflow-y-auto no-scrollbar pt-5 px-5 pb-24 sm:pt-7 sm:px-7 sm:pb-28 md:pt-9 md:px-9 md:pb-32 lg:pt-14 lg:px-8 lg:pb-6 xl:pt-16 xl:px-12 xl:pb-8">
                 <form id="consultation-form" onSubmit={handleSubmit} noValidate className="space-y-5 sm:space-y-6 lg:space-y-5 xl:space-y-6 pb-6 lg:pb-0">
 
-                  {/* ── Row 1: Name & Contact Number ───────────────────────────── */}
-                  <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 lg:gap-5 xl:gap-6 relative ${showCountryCodes ? "z-30" : "z-10"}`}>
-
-                    <div className="flex flex-col relative z-10">
-                      <label htmlFor="modal-name" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-2 block">
-                        Name
-                      </label>
-                      <input
-                        id="modal-name"
-                        type="text"
-                        placeholder="Enter Full Name"
-                        value={formData.name}
-                        onChange={(e) => {
-                          setFormData({ ...formData, name: e.target.value });
-                          if (formErrors.name) setFormErrors((prev) => ({ ...prev, name: false }));
-                        }}
-                        className={`w-full px-4 h-[48px] sm:h-[52px] lg:h-[48px] xl:h-[52px] border rounded-[8px] text-white text-[13px] sm:text-sm placeholder-white/25 focus:outline-none transition-all duration-200 backdrop-blur-sm ${
-                          formErrors.name ? "border-red-500 focus:border-red-500" : "border-white/8 focus:border-white/20"
-                        }`}
-                        style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
-                      />
-                    </div>
-
-                    <div className={`flex flex-col relative ${showCountryCodes ? "z-50" : "z-10"}`}>
-                      <label htmlFor="modal-phone" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-2 block">
-                        Contact Number
-                      </label>
-                      <div
-                        className={`flex items-center border rounded-[8px] h-[48px] sm:h-[52px] lg:h-[48px] xl:h-[52px] transition-all duration-200 backdrop-blur-sm ${
-                          formErrors.contactNumber ? "border-red-500 focus-within:border-red-500" : "border-white/8 focus-within:border-white/20"
-                        }`}
-                        style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
-                      >
-                        <div ref={countryDropdownRef} className="relative flex-shrink-0 h-full">
-                          <button
-                            type="button"
-                            onClick={() => setShowCountryCodes(!showCountryCodes)}
-                            className="flex items-center gap-1 px-3 sm:px-3.5 text-[13px] sm:text-sm text-white/80 hover:text-white cursor-pointer h-full"
-                          >
-                            <span>{countryCode}</span>
-                            <ChevronDown
-                              size={13}
-                              className={`text-white/50 transition-transform duration-200 ${showCountryCodes ? "rotate-180" : ""}`}
-                            />
-                          </button>
-                          {showCountryCodes && (
-                            <div
-                              className="absolute top-[52px] sm:top-[56px] lg:top-[52px] xl:top-[56px] left-0 z-[100] border border-white/10 rounded-lg shadow-2xl py-1 max-h-44 overflow-y-auto w-32 sm:w-36 bg-[#1c1c1f]"
-                            >
-                              {COUNTRY_CODES.map((item) => (
-                                <button
-                                  key={item.code}
-                                  type="button"
-                                  onClick={() => { setCountryCode(item.code); setShowCountryCodes(false); }}
-                                  className="w-full text-left px-3 sm:px-4 py-2 text-[13px] text-white/80 hover:bg-white/5 hover:text-white transition-colors"
-                                >
-                                  {item.code} ({item.name})
-                                </button>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                        <div className="w-px h-5 bg-white/10 flex-shrink-0" />
-                        <input
-                          id="modal-phone"
-                          type="tel"
-                          placeholder="Enter Contact Number"
-                          value={formData.contactNumber}
-                          onChange={(e) => {
-                            setFormData({ ...formData, contactNumber: e.target.value.replace(/[^0-9]/g, "") });
-                            if (formErrors.contactNumber) setFormErrors((prev) => ({ ...prev, contactNumber: false }));
-                          }}
-                          onKeyDown={(e) => {
-                            const allowedKeys = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab", "Enter", "Home", "End"];
-                            if (!/^[0-9]$/.test(e.key) && !allowedKeys.includes(e.key) && !e.ctrlKey && !e.metaKey) {
-                              e.preventDefault();
-                            }
-                          }}
-                          className="w-full h-full bg-transparent px-3 text-[13px] sm:text-sm text-white placeholder-white/25 focus:outline-none"
-                        />
-                      </div>
-                    </div>
+                  {/* ── Field 1: Name ────────────────── */}
+                  <div className="flex flex-col relative z-10">
+                    <label htmlFor="modal-name" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-2 block">
+                      Name
+                    </label>
+                    <input
+                      id="modal-name"
+                      type="text"
+                      placeholder="Enter Full Name"
+                      value={formData.name}
+                      onChange={(e) => {
+                        setFormData({ ...formData, name: e.target.value });
+                        if (formErrors.name) setFormErrors((prev) => ({ ...prev, name: false }));
+                      }}
+                      className={`w-full px-4 h-[48px] sm:h-[52px] border rounded-[8px] text-white text-[13px] sm:text-sm placeholder-white/25 focus:outline-none transition-all duration-200 backdrop-blur-sm ${
+                        formErrors.name ? "border-red-500 focus:border-red-500" : "border-white/8 focus:border-white/20"
+                      }`}
+                      style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
+                    />
                   </div>
 
-                  {/* ── Row 2: Email Address & Designation ─────────────────────── */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 lg:gap-5 xl:gap-6 relative z-10">
-
-                    <div className="flex flex-col relative z-10">
-                      <label htmlFor="modal-email" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-2 block">
-                        Email Address
-                      </label>
-                      <input
-                        id="modal-email"
-                        type="email"
-                        placeholder="Enter Email Address"
-                        value={formData.email}
-                        onChange={(e) => {
-                          setFormData({ ...formData, email: e.target.value });
-                          if (formErrors.email) setFormErrors((prev) => ({ ...prev, email: false }));
-                        }}
-                        className={`w-full px-4 h-[48px] sm:h-[52px] lg:h-[48px] xl:h-[52px] border rounded-[8px] text-white text-[13px] sm:text-sm placeholder-white/25 focus:outline-none transition-all duration-200 backdrop-blur-sm ${
-                          formErrors.email ? "border-red-500 focus:border-red-500" : "border-white/8 focus:border-white/20"
-                        }`}
-                        style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
-                      />
-                    </div>
-
-                    <div className="flex flex-col relative z-10">
-                      <label htmlFor="modal-designation" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-2 block">
-                        Designation
-                      </label>
-                      <input
-                        id="modal-designation"
-                        type="text"
-                        placeholder="Enter Designation"
-                        value={formData.designation}
-                        onChange={(e) => setFormData({ ...formData, designation: e.target.value })}
-                        className="w-full px-4 h-[48px] sm:h-[52px] lg:h-[48px] xl:h-[52px] border border-white/8 rounded-[8px] text-white text-[13px] sm:text-sm placeholder-white/25 focus:outline-none focus:border-white/20 transition-all duration-200 backdrop-blur-sm"
-                        style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
-                      />
-                    </div>
+                  {/* ── Field 2: Email Address ────────────────── */}
+                  <div className="flex flex-col relative z-10">
+                    <label htmlFor="modal-email" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-2 block">
+                      Email Address
+                    </label>
+                    <input
+                      id="modal-email"
+                      type="email"
+                      placeholder="Enter Email Address"
+                      value={formData.email}
+                      onChange={(e) => {
+                        setFormData({ ...formData, email: e.target.value });
+                        if (formErrors.email) setFormErrors((prev) => ({ ...prev, email: false }));
+                      }}
+                      className={`w-full px-4 h-[48px] sm:h-[52px] border rounded-[8px] text-white text-[13px] sm:text-sm placeholder-white/25 focus:outline-none transition-all duration-200 backdrop-blur-sm ${
+                        formErrors.email ? "border-red-500 focus:border-red-500" : "border-white/8 focus:border-white/20"
+                      }`}
+                      style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
+                    />
                   </div>
 
-                  {/* ── Row 3: Institution Type & Institution Name ──────────────── */}
-                  <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 lg:gap-5 xl:gap-6 relative ${showInstTypes ? "z-30" : "z-10"}`}>
-
-                    <div className={`flex flex-col relative ${showInstTypes ? "z-50" : "z-10"}`} ref={instDropdownRef}>
-                      <label className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-2 block">
-                        Institution Type
-                      </label>
-                      <div className="relative">
+                  {/* ── Row 2: Contact Number ─────────────────────────────────── */}
+                  <div className={`flex flex-col relative ${showCountryCodes ? "z-50" : "z-10"}`}>
+                    <label htmlFor="modal-phone" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-2 block">
+                      Contact Number
+                    </label>
+                    <div
+                      className={`flex items-center border rounded-[8px] h-[48px] sm:h-[52px] lg:h-[48px] xl:h-[52px] transition-all duration-200 backdrop-blur-sm ${
+                        formErrors.contactNumber ? "border-red-500 focus-within:border-red-500" : "border-white/8 focus-within:border-white/20"
+                      }`}
+                      style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
+                    >
+                      <div ref={countryDropdownRef} className="relative flex-shrink-0 h-full">
                         <button
                           type="button"
-                          onClick={() => setShowInstTypes(!showInstTypes)}
-                          className="w-full flex items-center justify-between px-4 h-[48px] sm:h-[52px] lg:h-[48px] xl:h-[52px] border border-white/8 rounded-[8px] text-[13px] sm:text-sm text-left cursor-pointer focus:outline-none focus:border-white/20 transition-colors duration-200 backdrop-blur-sm"
-                          style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
+                          onClick={() => setShowCountryCodes(!showCountryCodes)}
+                          className="flex items-center gap-1 px-3 sm:px-3.5 text-[13px] sm:text-sm text-white/80 hover:text-white cursor-pointer h-full"
                         >
-                          <span className={`truncate mr-2 ${formData.institutionType ? "text-white" : "text-white/25"}`}>
-                            {formData.institutionType || "Select Institution Type"}
-                          </span>
+                          <span>{countryCode}</span>
                           <ChevronDown
-                            size={15}
-                            className={`flex-shrink-0 text-white/50 transition-transform duration-200 ${showInstTypes ? "rotate-180" : ""}`}
+                            size={13}
+                            className={`text-white/50 transition-transform duration-200 ${showCountryCodes ? "rotate-180" : ""}`}
                           />
                         </button>
-                        {showInstTypes && (
+                        {showCountryCodes && (
                           <div
-                            className="absolute top-[52px] sm:top-[56px] lg:top-[52px] xl:top-[56px] left-0 right-0 z-[100] border border-white/10 rounded-lg shadow-2xl py-1 max-h-44 sm:max-h-48 overflow-y-auto bg-[#1c1c1f]"
+                            className="absolute top-[52px] sm:top-[56px] lg:top-[52px] xl:top-[56px] left-0 z-[100] border border-white/10 rounded-lg shadow-2xl py-1 max-h-44 overflow-y-auto w-32 sm:w-36 bg-[#1c1c1f]"
                           >
-                            {INSTITUTION_TYPES.map((type) => (
+                            {COUNTRY_CODES.map((item) => (
                               <button
-                                key={type}
+                                key={item.code}
                                 type="button"
-                                onClick={() => { setFormData({ ...formData, institutionType: type }); setShowInstTypes(false); }}
-                                className="w-full text-left px-4 py-2.5 text-[13px] text-white/80 hover:bg-white/5 hover:text-white transition-colors"
+                                onClick={() => { setCountryCode(item.code); setShowCountryCodes(false); }}
+                                className="w-full text-left px-3 sm:px-4 py-2 text-[13px] text-white/80 hover:bg-white/5 hover:text-white transition-colors"
                               >
-                                {type}
+                                {item.code} ({item.name})
                               </button>
                             ))}
                           </div>
                         )}
                       </div>
-                    </div>
-
-                    <div className="flex flex-col relative z-10">
-                      <label htmlFor="modal-inst-name" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-2 block">
-                        Institution Name
-                      </label>
+                      <div className="w-px h-5 bg-white/10 flex-shrink-0" />
                       <input
-                        id="modal-inst-name"
-                        type="text"
-                        placeholder="Enter Institution Name"
-                        value={formData.institutionName}
-                        onChange={(e) => setFormData({ ...formData, institutionName: e.target.value })}
-                        className="w-full px-4 h-[48px] sm:h-[52px] lg:h-[48px] xl:h-[52px] border border-white/8 rounded-[8px] text-white text-[13px] sm:text-sm placeholder-white/25 focus:outline-none focus:border-white/20 transition-all duration-200 backdrop-blur-sm"
-                        style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
+                        id="modal-phone"
+                        type="tel"
+                        placeholder="Enter Contact Number"
+                        value={formData.contactNumber}
+                        onChange={(e) => {
+                          setFormData({ ...formData, contactNumber: e.target.value.replace(/[^0-9]/g, "") });
+                          if (formErrors.contactNumber) setFormErrors((prev) => ({ ...prev, contactNumber: false }));
+                        }}
+                        onKeyDown={(e) => {
+                          const allowedKeys = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab", "Enter", "Home", "End"];
+                          if (!/^[0-9]$/.test(e.key) && !allowedKeys.includes(e.key) && !e.ctrlKey && !e.metaKey) {
+                            e.preventDefault();
+                          }
+                        }}
+                        className="w-full h-full bg-transparent px-3 text-[13px] sm:text-sm text-white placeholder-white/25 focus:outline-none"
                       />
                     </div>
                   </div>
 
-                  {/* ── Row 4: Service Required (full width) ───────────────────── */}
-                  <div className={`flex flex-col relative ${showServices ? "z-50" : "z-10"}`} ref={serviceDropdownRef}>
-                    <label className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-2 block">
-                      Service Required
-                    </label>
-                    <div className="relative">
-                      <button
-                        type="button"
-                        onClick={() => setShowServices(!showServices)}
-                        className="w-full flex items-center justify-between px-4 h-[48px] sm:h-[52px] lg:h-[48px] xl:h-[52px] border border-white/8 rounded-[8px] text-[13px] sm:text-sm text-left cursor-pointer focus:outline-none focus:border-white/20 transition-colors duration-200 backdrop-blur-sm"
-                        style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
-                      >
-                        <span className={`truncate mr-2 ${formData.serviceRequired ? "text-white" : "text-white/25"}`}>
-                          {formData.serviceRequired || "Select Service Required"}
-                        </span>
-                        <ChevronDown
-                          size={15}
-                          className={`flex-shrink-0 text-white/50 transition-transform duration-200 ${showServices ? "rotate-180" : ""}`}
-                        />
-                      </button>
-                      {showServices && (
-                        <div
-                          className="absolute top-[52px] sm:top-[56px] lg:top-[52px] xl:top-[56px] left-0 right-0 z-[100] border border-white/10 rounded-lg shadow-2xl py-1 max-h-44 sm:max-h-48 overflow-y-auto bg-[#1c1c1f]"
-                        >
-                          {SERVICE_OPTIONS.map((service) => (
-                            <button
-                              key={service}
-                              type="button"
-                              onClick={() => { setFormData({ ...formData, serviceRequired: service }); setShowServices(false); }}
-                              className="w-full text-left px-4 py-2.5 text-[13px] text-white/80 hover:bg-white/5 hover:text-white transition-colors"
-                            >
-                              {service}
-                            </button>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* ── Row 5: How Can We Help? ─────────────────────────────────── */}
+                  {/* ── Row 3: How Can We Help? ─────────────────────────────────── */}
                   <div className="flex flex-col">
                     <label htmlFor="modal-help" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-2 block">
                       How Can We Help?
@@ -519,11 +414,10 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                       placeholder="Enter Text"
                       value={formData.howCanWeHelp}
                       onChange={(e) => setFormData({ ...formData, howCanWeHelp: e.target.value })}
-                      className="w-full px-4 py-3 border border-white/8 rounded-[8px] text-white text-[13px] sm:text-sm placeholder-white/25 focus:outline-none focus:border-white/20 transition-all duration-200 resize-none h-[96px] sm:h-[110px] lg:h-[95px] xl:h-[110px] backdrop-blur-sm"
+                      className="w-full px-4 py-3 border border-white/8 rounded-[8px] text-white text-[13px] sm:text-sm placeholder-white/25 focus:outline-none focus:border-white/20 transition-all duration-200 resize-none h-[96px] sm:h-[110px] lg:h-[105px] xl:h-[120px] backdrop-blur-sm"
                       style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
                     />
                   </div>
-
                 </form>
               </div>
 
@@ -535,13 +429,15 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                   disabled={isSubmitting}
                   className="group w-full sm:w-auto inline-flex items-center justify-center sm:justify-start gap-2 px-7 sm:px-8 py-3.5 sm:py-4 bg-white text-black font-semibold rounded-full hover:bg-neutral-100 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 disabled:opacity-50 disabled:pointer-events-none cursor-pointer shadow-lg text-[14px] sm:text-[15px]"
                 >
-                  <span>{isSubmitting ? "Requesting..." : "Request Consultation"}</span>
+                  <span>{isSubmitting ? "Submitting..." : "Submit"}</span>
                   <ArrowRight
                     size={15}
                     className="transition-transform duration-300 group-hover:translate-x-1"
                   />
                 </button>
               </div>
+                </>
+              )}
             </div>
           </motion.div>
         </div>

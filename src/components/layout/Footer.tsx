@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { Phone, Mail } from 'lucide-react';
+import { Mail, ArrowRight } from 'lucide-react';
 
 const Footer = () => {
   const exploreLinks = [
@@ -8,7 +8,7 @@ const Footer = () => {
     { name: 'Our Story', href: '/about#story' },
     { name: 'Leadership Team', href: '/about#leadership' },
     { name: 'Group Companies', href: '/about#companies' },
-    { name: 'Careers', href: '/careers#open-positions' },
+    { name: 'Careers', href: '/careers' },
   ];
 
   const serviceLinks = [
@@ -89,19 +89,21 @@ const Footer = () => {
               </p>
               <div className="space-y-3 pt-1">
                 <a
-                  href="tel:+971000000000"
-                  className="flex items-center gap-2.5 hover:text-white transition-colors duration-300"
-                >
-                  <Phone size={13} strokeWidth={1.5} className="text-neutral-500" />
-                  <span>+971 00 000 0000</span>
-                </a>
-                <a
                   href="mailto:info@edify.ae"
                   className="flex items-center gap-2.5 hover:text-white transition-colors duration-300"
                 >
                   <Mail size={13} strokeWidth={1.5} className="text-neutral-500" />
                   <span>info@edify.ae</span>
                 </a>
+                <div className="pt-1">
+                  <Link
+                    href="/contact"
+                    className="inline-flex items-center gap-2 px-4 py-2 text-[12px] font-semibold text-black bg-white hover:bg-neutral-200 rounded-full transition-all duration-300 group shadow-sm active:scale-95"
+                  >
+                    <span>Contact Us</span>
+                    <ArrowRight size={12} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+                  </Link>
+                </div>
               </div>
             </div>
           </div>

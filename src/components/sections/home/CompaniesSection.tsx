@@ -8,13 +8,15 @@ const logos = [
   { src: "/Client logo/1.png", alt: "Techno Alliance" },
   { src: "/Client logo/2.png", alt: "NIMS Group" },
   { src: "/Client logo/3.png", alt: "Imprint" },
-  { src: "/Client logo/4.png", alt: "Golden Career" },
+  { src: "/Client logo/4.png", alt: "Golden Cosmos" },
   { src: "/Client logo/5.png", alt: "Emke Garage" },
   { src: "/Client logo/6.png", alt: "EduCraft" },
   { src: "/Client logo/7.png", alt: "Uni Design" },
   { src: "/Client logo/8.png", alt: "Seed" },
   { src: "/Client logo/9.png", alt: "Toss Academy" },
-  { src: "/Client logo/10.png", alt: "Loyaltri" }
+  { src: "/Client logo/10.png", alt: "Loyaltri" },
+  { src: "/Client logo/11.png", alt: "ZASA" },
+  { src: "/Client logo/12.png", alt: "AquaClean" }
 ];
 
 export default function CompaniesSection() {
@@ -24,13 +26,18 @@ export default function CompaniesSection() {
   const gap = 8;     // Gap size around the plus signs (in pixels)
   const ext = 24;    // Outer line extension (in pixels)
 
-  // Grid boundaries for Desktop (5 columns, 2 rows)
-  const desktopCols = ["0%", "20%", "40%", "60%", "80%", "100%"];
-  const desktopRows = ["0%", "50%", "100%"];
+  const desktopColCount = 6;
+  const desktopRowCount = 2;
+  const mobileColCount = 2;
+  const mobileRowCount = 6;
 
-  // Grid boundaries for Mobile (2 columns, 5 rows)
-  const mobileCols = ["0%", "50%", "100%"];
-  const mobileRows = ["0%", "20%", "40%", "60%", "80%", "100%"];
+  // Grid boundaries for Desktop (6 columns, 2 rows)
+  const desktopCols = Array.from({ length: desktopColCount + 1 }, (_, i) => `${(i * 100) / desktopColCount}%`);
+  const desktopRows = Array.from({ length: desktopRowCount + 1 }, (_, i) => `${(i * 100) / desktopRowCount}%`);
+
+  // Grid boundaries for Mobile (2 columns, 6 rows)
+  const mobileCols = Array.from({ length: mobileColCount + 1 }, (_, i) => `${(i * 100) / mobileColCount}%`);
+  const mobileRows = Array.from({ length: mobileRowCount + 1 }, (_, i) => `${(i * 100) / mobileRowCount}%`);
 
   // Animation variants
   const lineVariants = {
@@ -104,14 +111,14 @@ export default function CompaniesSection() {
         <div className="relative w-full mx-auto">
           
           {/* ========================================================================= */}
-          {/* DESKTOP RETRO GRID (5 cols x 2 rows) - Visible md and up                 */}
+          {/* DESKTOP RETRO GRID (6 cols x 2 rows) - Visible md and up                 */}
           {/* ========================================================================= */}
           <div className="hidden md:block absolute inset-0 pointer-events-none z-0">
             {/* Horizontal Line Segments (broken at intersections) */}
             {desktopRows.map((topVal, yIdx) => {
               const segments = [];
               // Draw segments inside the grid
-              for (let c = 0; c < 5; c++) {
+              for (let c = 0; c < desktopColCount; c++) {
                 segments.push(
                   <motion.div
                     key={`desk-h-seg-${yIdx}-${c}`}
@@ -121,8 +128,8 @@ export default function CompaniesSection() {
                     className="absolute h-[1px] bg-[#E2E8F0]"
                     style={{
                       top: topVal,
-                      left: `calc(${c * 20}% + ${gap}px)`,
-                      width: `calc(20% - ${gap * 2}px)`
+                      left: `calc(${c * (100 / desktopColCount)}% + ${gap}px)`,
+                      width: `calc(${100 / desktopColCount}% - ${gap * 2}px)`
                     }}
                   />
                 );
@@ -163,7 +170,7 @@ export default function CompaniesSection() {
             {desktopCols.map((leftVal, xIdx) => {
               const segments = [];
               // Draw segments inside the grid
-              for (let r = 0; r < 2; r++) {
+              for (let r = 0; r < desktopRowCount; r++) {
                 segments.push(
                   <motion.div
                     key={`desk-v-seg-${xIdx}-${r}`}
@@ -173,8 +180,8 @@ export default function CompaniesSection() {
                     className="absolute w-[1px] bg-[#E2E8F0]"
                     style={{
                       left: leftVal,
-                      top: `calc(${r * 50}% + ${gap}px)`,
-                      height: `calc(50% - ${gap * 2}px)`
+                      top: `calc(${r * (100 / desktopRowCount)}% + ${gap}px)`,
+                      height: `calc(${100 / desktopRowCount}% - ${gap * 2}px)`
                     }}
                   />
                 );
@@ -215,14 +222,14 @@ export default function CompaniesSection() {
           </div>
 
           {/* ========================================================================= */}
-          {/* MOBILE RETRO GRID (2 cols x 5 rows) - Visible below md                  */}
+          {/* MOBILE RETRO GRID (2 cols x 6 rows) - Visible below md                  */}
           {/* ========================================================================= */}
           <div className="block md:hidden absolute inset-0 pointer-events-none z-0">
             {/* Horizontal Line Segments (broken at intersections) */}
             {mobileRows.map((topVal, yIdx) => {
               const segments = [];
               // Draw segments inside grid
-              for (let c = 0; c < 2; c++) {
+              for (let c = 0; c < mobileColCount; c++) {
                 segments.push(
                   <motion.div
                     key={`mob-h-seg-${yIdx}-${c}`}
@@ -232,8 +239,8 @@ export default function CompaniesSection() {
                     className="absolute h-[1px] bg-[#E2E8F0]"
                     style={{
                       top: topVal,
-                      left: `calc(${c * 50}% + ${gap}px)`,
-                      width: `calc(50% - ${gap * 2}px)`
+                      left: `calc(${c * (100 / mobileColCount)}% + ${gap}px)`,
+                      width: `calc(${100 / mobileColCount}% - ${gap * 2}px)`
                     }}
                   />
                 );
@@ -274,7 +281,7 @@ export default function CompaniesSection() {
             {mobileCols.map((leftVal, xIdx) => {
               const segments = [];
               // Draw segments inside grid
-              for (let r = 0; r < 5; r++) {
+              for (let r = 0; r < mobileRowCount; r++) {
                 segments.push(
                   <motion.div
                     key={`mob-v-seg-${xIdx}-${r}`}
@@ -284,8 +291,8 @@ export default function CompaniesSection() {
                     className="absolute w-[1px] bg-[#E2E8F0]"
                     style={{
                       left: leftVal,
-                      top: `calc(${r * 20}% + ${gap}px)`,
-                      height: `calc(20% - ${gap * 2}px)`
+                      top: `calc(${r * (100 / mobileRowCount)}% + ${gap}px)`,
+                      height: `calc(${100 / mobileRowCount}% - ${gap * 2}px)`
                     }}
                   />
                 );
@@ -332,22 +339,22 @@ export default function CompaniesSection() {
             variants={logoContainerVariants}
             initial="hidden"
             animate={inView ? "visible" : "hidden"}
-            className="relative z-10 grid grid-cols-2 md:grid-cols-5 w-full"
+            className="relative z-10 grid grid-cols-2 md:grid-cols-6 w-full"
           >
             {logos.map((logo, idx) => (
               <motion.div
                 key={idx}
                 variants={logoVariants}
-                className="relative flex items-center justify-center h-28 sm:h-32 md:h-36 px-4 py-6 sm:px-6 sm:py-8 md:p-8"
+                className="relative flex items-center justify-center h-28 sm:h-32 md:h-36 px-4 py-6 sm:px-6 sm:py-8 md:px-5 md:py-6 lg:p-7"
               >
                 <div className="relative w-full h-full flex items-center justify-center transition-all duration-300 hover:scale-[1.04]">
                   <Image
                     src={logo.src}
                     alt={logo.alt}
                     fill
-                    className="object-contain max-h-[56px] sm:max-h-[64px] md:max-h-[72px] transition-all duration-300 filter"
-                    sizes="(max-width: 768px) 45vw, 18vw"
-                    priority={idx < 5}
+                    className="object-contain max-h-[52px] sm:max-h-[60px] md:max-h-[64px] lg:max-h-[72px] transition-all duration-300 filter"
+                    sizes="(max-width: 768px) 45vw, 15vw"
+                    priority={idx < 6}
                   />
                 </div>
               </motion.div>

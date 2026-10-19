@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
+import * as XLSX from "xlsx";
 
 // Helper function to escape values for RFC 4180 CSV compliance
 const escapeCSV = (val: any): string => {
@@ -74,7 +75,72 @@ export async function POST(request: Request) {
     // Log the submission to console
     console.log("New Consultation Submission:", JSON.stringify({ timestamp, isoISTTime, ...data, detailsVal }));
 
-    // 1. Write to local CSV spreadsheet file first (Immediate & Safe)
+    // 1. Write to local Excel file (.xlsx)
+    try {
+      const xlsxPath = path.join(process.cwd(), "consultation_submissions.xlsx");
+      const SHEET_NAME = "Consultation Requests";
+      const headers = [
+        "Timestamp",
+        "Name",
+        "Country Code",
+        "Contact Number",
+        "Email",
+        "Designation",
+        "Institution Type",
+        "Institution Name",
+        "Service Required",
+        "Request Details",
+      ];
+      const newRow = [
+        timestamp,
+        name || "",
+        countryCode || "",
+        contactNumber || "",
+        email || "",
+        designation || "",
+        institutionType || "",
+        institutionName || "",
+        serviceRequired || "",
+        detailsVal || "",
+      ];
+
+      let workbook: XLSX.WorkBook;
+
+      if (fs.existsSync(xlsxPath)) {
+        workbook = XLSX.readFile(xlsxPath);
+      } else {
+        workbook = XLSX.utils.book_new();
+      }
+
+      if (!workbook.SheetNames.includes(SHEET_NAME)) {
+        const sheetData = [headers, newRow];
+        const worksheet = XLSX.utils.aoa_to_sheet(sheetData);
+        worksheet["!cols"] = [
+          { wch: 24 }, // Timestamp
+          { wch: 20 }, // Name
+          { wch: 14 }, // Country Code
+          { wch: 20 }, // Contact Number
+          { wch: 26 }, // Email
+          { wch: 18 }, // Designation
+          { wch: 22 }, // Institution Type
+          { wch: 25 }, // Institution Name
+          { wch: 25 }, // Service Required
+          { wch: 40 }, // Request Details
+        ];
+        XLSX.utils.book_append_sheet(workbook, worksheet, SHEET_NAME);
+      } else {
+        const worksheet = workbook.Sheets[SHEET_NAME];
+        XLSX.utils.sheet_add_aoa(worksheet, [newRow], { origin: -1 });
+      }
+
+      const buffer = XLSX.write(workbook, { type: "buffer", bookType: "xlsx" });
+      fs.writeFileSync(xlsxPath, buffer);
+      console.log("Consultation submission saved to Excel (.xlsx):", xlsxPath);
+    } catch (xlsxError) {
+      console.warn("Failed to write consultation submission to local Excel file:", xlsxError);
+    }
+
+    // 2. Write to local CSV spreadsheet file first (Immediate & Safe)
     try {
       const filePath = path.join(process.cwd(), "consultation_submissions.csv");
       const fileExists = fs.existsSync(filePath);

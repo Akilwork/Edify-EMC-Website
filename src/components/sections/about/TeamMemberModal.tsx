@@ -179,12 +179,18 @@ export default function TeamMemberModal({
                       "radial-gradient(circle at center, rgba(168, 85, 247, 0.45) 0%, rgba(15, 23, 42, 0.3) 50%, transparent 75%)",
                   }}
                 />
-                <div className="relative w-full max-w-[250px] xs:max-w-[280px] sm:max-w-[320px] aspect-[4/5] mx-auto rounded-2xl overflow-hidden border border-white/15 shadow-2xl bg-black/40">
+                <div
+                  className="relative w-full max-w-[250px] xs:max-w-[280px] sm:max-w-[320px] aspect-[4/5] mx-auto rounded-2xl overflow-hidden border border-white/15 shadow-2xl bg-black/40 select-none"
+                  onContextMenu={(e) => e.preventDefault()}
+                >
                   <Image
                     src={selectedMember.imageSrc}
                     alt={selectedMember.name}
                     fill
-                    className="object-cover object-top"
+                    draggable={false}
+                    onContextMenu={(e) => e.preventDefault()}
+                    onDragStart={(e) => e.preventDefault()}
+                    className="object-cover object-top pointer-events-none select-none"
                     sizes="(max-width: 640px) 250px, (max-width: 1024px) 280px, 320px"
                     priority
                   />
