@@ -1503,10 +1503,10 @@ export default function AboutHero() {
             {/* Scene 8B: Top text - "The Expertise Behind Every Solution" */}
             <div
               ref={scene8TextBRef}
-              className="absolute top-0 left-0 right-0 pt-14 xs:pt-16 sm:pt-20 md:pt-24 lg:pt-28 z-[10] opacity-0 will-change-transform"
+              className="absolute top-0 left-0 right-0 pt-[88px] xs:pt-[92px] sm:pt-[104px] md:pt-28 lg:pt-28 z-[10] opacity-0 will-change-transform"
             >
               <div className="text-center px-4 sm:px-6 md:px-8">
-                <h2 className="font-sans text-[clamp(19px,4vw,28px)] md:text-[clamp(26px,3.5vw,34px)] lg:text-[clamp(32px,3vw,42px)] font-medium leading-[1.15] tracking-tight text-[#1a1a1a]">
+                <h2 className="font-sans text-[clamp(18px,4vw,28px)] md:text-[clamp(26px,3.5vw,34px)] lg:text-[clamp(32px,3vw,42px)] font-medium leading-[1.15] tracking-tight text-[#1a1a1a]">
                   The Expertise Behind Every Solution
                 </h2>
               </div>
@@ -1515,7 +1515,7 @@ export default function AboutHero() {
             {/* Scene 8B: Person Cards - Pages */}
             <div
               ref={scene8CardsContainerRef}
-              className="absolute top-[95px] xs:top-[105px] sm:top-[130px] md:top-[155px] lg:top-[180px] bottom-0 left-0 right-0 flex justify-center items-start z-[20] opacity-0 will-change-transform pointer-events-auto pb-4 sm:pb-8 md:pb-12 overflow-y-auto lg:overflow-hidden"
+              className="absolute top-[128px] xs:top-[136px] sm:top-[155px] md:top-[170px] lg:top-[180px] bottom-0 left-0 right-0 flex justify-center items-start z-[20] opacity-0 will-change-transform pointer-events-auto pb-4 sm:pb-8 md:pb-12 overflow-y-auto lg:overflow-hidden"
             >
               <div className="relative max-w-[1400px] w-full h-full">
                 {chunkedMembers.map((pageMembers, pageIndex) => (

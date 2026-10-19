@@ -108,9 +108,11 @@ const NAV_LINKS = [
 function ServicesMegaMenu({
   onClose,
   openConsultation,
+  onNavigate,
 }: {
   onClose: () => void;
   openConsultation: () => void;
+  onNavigate: (href: string, e?: React.MouseEvent) => void;
 }) {
   const half = Math.ceil(MEGA_SERVICES.length / 2);
   const leftCol = MEGA_SERVICES.slice(0, half);
@@ -161,10 +163,15 @@ function ServicesMegaMenu({
 
             {/* ── Right content ── */}
             <div className="flex flex-col px-8 py-6">
-              {/* Column heading */}
-              <p className="text-[11px] font-semibold tracking-[1.5px] uppercase text-black/40 mb-3">
-                Our Services
-              </p>
+              {/* Column heading - clickable to show Services Hero section first */}
+              <Link
+                href="/services"
+                onClick={(e) => onNavigate("/services", e)}
+                className="group/heading inline-flex items-center gap-1.5 text-[11px] font-semibold tracking-[1.5px] uppercase text-black/50 hover:text-black mb-3 transition-colors duration-200 cursor-pointer w-fit"
+              >
+                <span>Our Services</span>
+                <ArrowRight size={12} className="transition-transform duration-200 group-hover/heading:translate-x-0.5 text-black/40 group-hover/heading:text-black" />
+              </Link>
 
               {/* Service rows */}
               <div className="grid grid-cols-2 gap-x-8 gap-y-0.5 flex-1">
@@ -174,7 +181,7 @@ function ServicesMegaMenu({
                     <Link
                       key={id}
                       href={`/services/${slug}`}
-                      onClick={onClose}
+                      onClick={(e) => onNavigate(`/services/${slug}`, e)}
                       className="flex items-start gap-3 p-3 rounded-[12px] group transition-all duration-200 cursor-pointer hover:bg-black/[0.04]"
                     >
                       {/* Icon box */}
@@ -204,7 +211,7 @@ function ServicesMegaMenu({
                     <Link
                       key={id}
                       href={`/services/${slug}`}
-                      onClick={onClose}
+                      onClick={(e) => onNavigate(`/services/${slug}`, e)}
                       className="flex items-start gap-3 p-3 rounded-[12px] group transition-all duration-200 cursor-pointer hover:bg-black/[0.04]"
                     >
                       {/* Icon box */}
@@ -240,10 +247,7 @@ function ServicesMegaMenu({
                   </p>
                 </div>
                 <button
-                  onClick={() => {
-                    onClose();
-                    window.location.href = '/services';
-                  }}
+                  onClick={(e) => onNavigate("/services", e)}
                   className="flex items-center gap-2 px-5 py-[11px] text-[13px] font-semibold rounded-[40px] bg-black text-white hover:bg-black/80 transition-all duration-200 whitespace-nowrap cursor-pointer border-none outline-none active:scale-95"
                 >
                   View all Services
@@ -275,6 +279,13 @@ export default function Navbar() {
   const megaTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const headerRef = useRef<HTMLElement>(null);
   const [headerHeight, setHeaderHeight] = useState(72);
+
+  // Keep scroll restoration manual so programmatic scroll-to-top is never overridden
+  useEffect(() => {
+    if (typeof window !== "undefined" && "scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+  }, []);
 
   useEffect(() => {
     const updateHeaderHeight = () => {
@@ -325,11 +336,64 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [megaOpen]);
 
-  // Close mega on route change
+  // Scroll to top on route change so that the hero section is always first shown
   useEffect(() => {
     setMegaOpen(false);
     setMenuOpen(false);
+    setHidden(false);
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+        window.dispatchEvent(new Event("scroll"));
+      });
+    }
   }, [pathname]);
+
+  // Handle section heading click: always show the hero section first
+  const handleNavClick = (href: string, e?: React.MouseEvent) => {
+    if (e && (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0)) {
+      return; // Respect user opening link in new tab/window
+    }
+    if (e) {
+      e.preventDefault();
+    }
+    setMegaOpen(false);
+    setMenuOpen(false);
+    setHidden(false);
+
+    const targetPath = href.split("#")[0] || "/";
+    const isCurrentPage = pathname === targetPath;
+
+    // Clear hash if any exists so page doesn't jump away from the hero section
+    if (typeof window !== "undefined" && window.location.hash) {
+      window.history.pushState(null, "", targetPath);
+    }
+
+    const scrollToHeroTop = () => {
+      if (typeof window !== "undefined") {
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+        window.dispatchEvent(new Event("scroll"));
+      }
+    };
+
+    if (isCurrentPage) {
+      scrollToHeroTop();
+      // Ensure smooth return to hero section
+      requestAnimationFrame(scrollToHeroTop);
+    } else {
+      router.push(targetPath);
+      scrollToHeroTop();
+      setTimeout(scrollToHeroTop, 10);
+      setTimeout(scrollToHeroTop, 100);
+    }
+  };
 
   // Prefetch all service routes on mount to make dynamic transitions instant
   useEffect(() => {
@@ -369,8 +433,12 @@ export default function Navbar() {
         } ${hidden ? "-translate-y-full" : "translate-y-0"}`}
       >
         <div className="container-responsive container-max flex items-center justify-between pt-[clamp(10px,1.2vw,16px)] pb-[clamp(10px,1.2vw,16px)]">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group flex-shrink-0">
+          {/* Logo - clicking shows hero section at top */}
+          <Link
+            href="/"
+            onClick={(e) => handleNavClick("/", e)}
+            className="flex items-center gap-2 group flex-shrink-0"
+          >
             <Image
               src="/Edify logo.png"
               alt="Edify Management Consultancy"
@@ -396,9 +464,8 @@ export default function Navbar() {
                   onMouseLeave={handleServicesLeave}
                 >
                   <button
-                    onClick={() => {
-                      setMegaOpen(false);
-                      router.push(href);
+                    onClick={(e) => {
+                      handleNavClick(href, e);
                     }}
                     className={`flex items-center gap-1 text-[14px] font-semibold tracking-[0.96px] transition-colors duration-200 whitespace-nowrap cursor-pointer ${
                       isLightMode
@@ -425,6 +492,7 @@ export default function Navbar() {
                 <Link
                   key={href}
                   href={href}
+                  onClick={(e) => handleNavClick(href, e)}
                   className={`text-[14px] font-semibold tracking-[0.96px] transition-colors duration-200 whitespace-nowrap cursor-pointer ${
                     isLightMode
                       ? pathname === href
@@ -470,10 +538,10 @@ export default function Navbar() {
                 hasMega ? (
                   <div key={href}>
                     <div className="flex items-center justify-between">
-                      {/* Label navigates to /services */}
+                      {/* Label navigates to /services and shows hero section first */}
                       <Link
                         href={href}
-                        onClick={() => setMenuOpen(false)}
+                        onClick={(e) => handleNavClick(href, e)}
                         className={`flex-1 text-[16px] font-semibold tracking-[0.96px] py-3 cursor-pointer transition-colors duration-200 ${pathname.startsWith("/services")
                             ? "text-black"
                             : "text-black/50"
@@ -500,7 +568,7 @@ export default function Navbar() {
                           <Link
                             key={id}
                             href={`/services/${slug}`}
-                            onClick={() => setMenuOpen(false)}
+                            onClick={(e) => handleNavClick(`/services/${slug}`, e)}
                             className="flex items-center gap-3 py-2 px-3 rounded-[10px] hover:bg-black/5 transition-colors duration-200 cursor-pointer"
                           >
                             <div className="flex-shrink-0 w-8 h-8 rounded-[8px] bg-black/5 flex items-center justify-center">
@@ -513,7 +581,7 @@ export default function Navbar() {
                         ))}
                         <Link
                           href="/services"
-                          onClick={() => setMenuOpen(false)}
+                          onClick={(e) => handleNavClick("/services", e)}
                           className="flex items-center gap-1 text-[12px] font-semibold text-black/40 px-3 pt-1 hover:text-black transition-colors duration-200"
                         >
                           View all services <ArrowRight size={12} />
@@ -525,7 +593,7 @@ export default function Navbar() {
                   <Link
                     key={href}
                     href={href}
-                    onClick={() => setMenuOpen(false)}
+                    onClick={(e) => handleNavClick(href, e)}
                     className={`block text-[16px] font-semibold tracking-[0.96px] transition-colors duration-200 hover:text-black py-3 cursor-pointer ${pathname === href ? "text-black" : "text-black/50"
                       }`}
                   >
@@ -552,8 +620,10 @@ export default function Navbar() {
         <ServicesMegaMenu
           onClose={() => setMegaOpen(false)}
           openConsultation={openConsultation}
+          onNavigate={handleNavClick}
         />
       </div>
     </>
   );
 }
+

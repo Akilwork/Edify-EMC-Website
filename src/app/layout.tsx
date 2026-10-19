@@ -6,6 +6,7 @@ import Footer from "@/components/layout/Footer";
 import { Toaster } from "@/components/ui/toaster";
 import { ConsultationProvider } from "@/components/providers/ConsultationProvider";
 import ChatWidget from "@/components/chatbot/ChatWidget";
+import ImageProtection from "@/components/common/ImageProtection";
 
 const interTight = Inter_Tight({
   subsets: ["latin"],
@@ -44,6 +45,7 @@ export default function RootLayout({
     <html lang="en" className={`${interTight.variable} ${playfair.variable} dark`} suppressHydrationWarning>
       <body suppressHydrationWarning>
         <ConsultationProvider>
+          <ImageProtection />
           <Navbar />
           <main>{children}</main>
           <Footer />

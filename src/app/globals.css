@@ -68,6 +68,24 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
 }
 
+/* Global Image & Media Protection: Disable selection, callouts, and drag */
+img,
+picture,
+video,
+canvas {
+  -webkit-touch-callout: none !important;
+  -webkit-user-select: none !important;
+  -khtml-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+  -webkit-user-drag: none !important;
+  -khtml-user-drag: none !important;
+  -moz-user-drag: none !important;
+  -o-user-drag: none !important;
+  user-drag: none !important;
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar {
   width: 5px;

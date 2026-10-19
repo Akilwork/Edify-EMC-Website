@@ -221,7 +221,7 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
             {/* ── Close button (top-right of modal) ───────────────────────────── */}
             <button
               onClick={onClose}
-              className="absolute top-5 right-5 sm:top-6 sm:right-6 z-50 flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-full text-white/70 hover:text-white hover:scale-105 transition-all duration-200 cursor-pointer"
+              className="absolute top-4 right-4 sm:top-5 sm:right-5 z-50 flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-full text-white/70 hover:text-white hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer shadow-md"
               style={{ backgroundColor: "#222225" }}
               aria-label="Close modal"
             >
@@ -229,22 +229,6 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
               <X size={17} className="hidden sm:block lg:hidden" />
               <X size={18} className="hidden lg:block" />
             </button>
-
-            {/* ══════════════════════════════════════════════════════════════════
-                MOBILE / TABLET  —  Hero banner (visible below lg)
-                Shows the video background with heading text overlaid on top.
-            ══════════════════════════════════════════════════════════════════ */}
-            <div className="lg:hidden relative z-10 flex-shrink-0 px-6 pt-11 pb-8 sm:px-8 sm:pt-12 sm:pb-9 md:px-10 md:pt-14 md:pb-10 [@media(max-height:680px)]:pt-6 [@media(max-height:680px)]:pb-3">
-              <div className="space-y-3 sm:space-y-4 [@media(max-height:680px)]:space-y-1">
-                <h2 className="font-sans font-semibold text-white leading-[1.15] tracking-tight text-[26px] sm:text-[32px] md:text-[38px] [@media(max-height:680px)]:text-[20px] [@media(max-height:680px)]:leading-snug">
-                  Building Stronger <br />
-                  Institutions Starts Here
-                </h2>
-                <p className="text-white/65 text-[13px] sm:text-sm md:text-[15px] leading-relaxed max-w-sm md:max-w-md [@media(max-height:680px)]:hidden">
-                  Connect with our consultants to explore tailored solutions designed for your institution's unique needs and growth objectives.
-                </p>
-              </div>
-            </div>
 
             {/* ══════════════════════════════════════════════════════════════════
                 DESKTOP  —  Left column (visible on lg+)
@@ -262,17 +246,14 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
             </div>
 
             {/* ══════════════════════════════════════════════════════════════════
-                FORM PANEL
-                · All breakpoints : backdrop-blur + semi-transparent dark panel
-                  so the full-screen video shows through on mobile & tablet too
-                · Desktop         : same treatment, half-width, fixed fields without scrolling
+                FORM PANEL (Desktop Right Column / Full Mobile Sheet Content)
             ══════════════════════════════════════════════════════════════════ */}
             <div
               className={[
                 "relative z-10 w-full lg:w-1/2",
-                "bg-[#0d0d0d]/70 backdrop-blur-md",
+                "bg-[#0d0d0d]/80 lg:bg-[#0d0d0d]/70 backdrop-blur-md",
                 "flex-1 min-h-0 lg:h-full",
-                "flex flex-col justify-start lg:justify-center",
+                "flex flex-col",
               ].join(" ")}
             >
               {isSubmitted ? (
@@ -297,146 +278,154 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                   </button>
                 </div>
               ) : (
-                <>
-                  <div className="flex-1 min-h-0 overflow-y-auto no-scrollbar pt-5 px-5 pb-24 sm:pt-7 sm:px-7 sm:pb-28 md:pt-9 md:px-9 md:pb-32 lg:pt-14 lg:px-8 lg:pb-6 xl:pt-16 xl:px-12 xl:pb-8">
-                <form id="consultation-form" onSubmit={handleSubmit} noValidate className="space-y-5 sm:space-y-6 lg:space-y-5 xl:space-y-6 pb-6 lg:pb-0">
-
-                  {/* ── Field 1: Name ────────────────── */}
-                  <div className="flex flex-col relative z-10">
-                    <label htmlFor="modal-name" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-2 block">
-                      Name
-                    </label>
-                    <input
-                      id="modal-name"
-                      type="text"
-                      placeholder="Enter Full Name"
-                      value={formData.name}
-                      onChange={(e) => {
-                        setFormData({ ...formData, name: e.target.value });
-                        if (formErrors.name) setFormErrors((prev) => ({ ...prev, name: false }));
-                      }}
-                      className={`w-full px-4 h-[48px] sm:h-[52px] border rounded-[8px] text-white text-[13px] sm:text-sm placeholder-white/25 focus:outline-none transition-all duration-200 backdrop-blur-sm ${
-                        formErrors.name ? "border-red-500 focus:border-red-500" : "border-white/8 focus:border-white/20"
-                      }`}
-                      style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
-                    />
+                <div className="flex-1 min-h-0 overflow-y-auto no-scrollbar overscroll-contain flex flex-col justify-start lg:justify-center p-5 sm:p-7 md:p-8 lg:p-8 xl:p-12 pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))] lg:pb-8 xl:pb-12">
+                  {/* Mobile header (Title & Subtitle) */}
+                  <div className="lg:hidden mb-5 sm:mb-6 pr-8">
+                    <h2 className="font-sans font-semibold text-white leading-[1.2] tracking-tight text-[22px] sm:text-[26px]">
+                      Building Stronger <br />
+                      Institutions Starts Here
+                    </h2>
+                    <p className="text-white/65 text-[13px] sm:text-sm leading-relaxed mt-2 max-w-sm sm:max-w-md">
+                      Connect with our consultants to explore tailored solutions designed for your institution's unique needs and growth objectives.
+                    </p>
                   </div>
 
-                  {/* ── Field 2: Email Address ────────────────── */}
-                  <div className="flex flex-col relative z-10">
-                    <label htmlFor="modal-email" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-2 block">
-                      Email Address
-                    </label>
-                    <input
-                      id="modal-email"
-                      type="email"
-                      placeholder="Enter Email Address"
-                      value={formData.email}
-                      onChange={(e) => {
-                        setFormData({ ...formData, email: e.target.value });
-                        if (formErrors.email) setFormErrors((prev) => ({ ...prev, email: false }));
-                      }}
-                      className={`w-full px-4 h-[48px] sm:h-[52px] border rounded-[8px] text-white text-[13px] sm:text-sm placeholder-white/25 focus:outline-none transition-all duration-200 backdrop-blur-sm ${
-                        formErrors.email ? "border-red-500 focus:border-red-500" : "border-white/8 focus:border-white/20"
-                      }`}
-                      style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
-                    />
-                  </div>
+                  <form id="consultation-form" onSubmit={handleSubmit} noValidate className="space-y-4 sm:space-y-5 lg:space-y-4 xl:space-y-5 w-full">
 
-                  {/* ── Row 2: Contact Number ─────────────────────────────────── */}
-                  <div className={`flex flex-col relative ${showCountryCodes ? "z-50" : "z-10"}`}>
-                    <label htmlFor="modal-phone" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-2 block">
-                      Contact Number
-                    </label>
-                    <div
-                      className={`flex items-center border rounded-[8px] h-[48px] sm:h-[52px] lg:h-[48px] xl:h-[52px] transition-all duration-200 backdrop-blur-sm ${
-                        formErrors.contactNumber ? "border-red-500 focus-within:border-red-500" : "border-white/8 focus-within:border-white/20"
-                      }`}
-                      style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
-                    >
-                      <div ref={countryDropdownRef} className="relative flex-shrink-0 h-full">
-                        <button
-                          type="button"
-                          onClick={() => setShowCountryCodes(!showCountryCodes)}
-                          className="flex items-center gap-1 px-3 sm:px-3.5 text-[13px] sm:text-sm text-white/80 hover:text-white cursor-pointer h-full"
-                        >
-                          <span>{countryCode}</span>
-                          <ChevronDown
-                            size={13}
-                            className={`text-white/50 transition-transform duration-200 ${showCountryCodes ? "rotate-180" : ""}`}
-                          />
-                        </button>
-                        {showCountryCodes && (
-                          <div
-                            className="absolute top-[52px] sm:top-[56px] lg:top-[52px] xl:top-[56px] left-0 z-[100] border border-white/10 rounded-lg shadow-2xl py-1 max-h-44 overflow-y-auto w-32 sm:w-36 bg-[#1c1c1f]"
-                          >
-                            {COUNTRY_CODES.map((item) => (
-                              <button
-                                key={item.code}
-                                type="button"
-                                onClick={() => { setCountryCode(item.code); setShowCountryCodes(false); }}
-                                className="w-full text-left px-3 sm:px-4 py-2 text-[13px] text-white/80 hover:bg-white/5 hover:text-white transition-colors"
-                              >
-                                {item.code} ({item.name})
-                              </button>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                      <div className="w-px h-5 bg-white/10 flex-shrink-0" />
+                    {/* ── Field 1: Name ────────────────── */}
+                    <div className="flex flex-col relative z-10">
+                      <label htmlFor="modal-name" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-1.5 block">
+                        Name
+                      </label>
                       <input
-                        id="modal-phone"
-                        type="tel"
-                        placeholder="Enter Contact Number"
-                        value={formData.contactNumber}
+                        id="modal-name"
+                        type="text"
+                        placeholder="Enter Full Name"
+                        value={formData.name}
                         onChange={(e) => {
-                          setFormData({ ...formData, contactNumber: e.target.value.replace(/[^0-9]/g, "") });
-                          if (formErrors.contactNumber) setFormErrors((prev) => ({ ...prev, contactNumber: false }));
+                          setFormData({ ...formData, name: e.target.value });
+                          if (formErrors.name) setFormErrors((prev) => ({ ...prev, name: false }));
                         }}
-                        onKeyDown={(e) => {
-                          const allowedKeys = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab", "Enter", "Home", "End"];
-                          if (!/^[0-9]$/.test(e.key) && !allowedKeys.includes(e.key) && !e.ctrlKey && !e.metaKey) {
-                            e.preventDefault();
-                          }
-                        }}
-                        className="w-full h-full bg-transparent px-3 text-[13px] sm:text-sm text-white placeholder-white/25 focus:outline-none"
+                        className={`w-full px-4 h-[46px] sm:h-[50px] border rounded-[8px] text-white text-base sm:text-sm placeholder-white/25 focus:outline-none transition-all duration-200 backdrop-blur-sm ${
+                          formErrors.name ? "border-red-500 focus:border-red-500" : "border-white/10 focus:border-white/25"
+                        }`}
+                        style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
                       />
                     </div>
-                  </div>
 
-                  {/* ── Row 3: How Can We Help? ─────────────────────────────────── */}
-                  <div className="flex flex-col">
-                    <label htmlFor="modal-help" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-2 block">
-                      How Can We Help?
-                    </label>
-                    <textarea
-                      id="modal-help"
-                      placeholder="Enter Text"
-                      value={formData.howCanWeHelp}
-                      onChange={(e) => setFormData({ ...formData, howCanWeHelp: e.target.value })}
-                      className="w-full px-4 py-3 border border-white/8 rounded-[8px] text-white text-[13px] sm:text-sm placeholder-white/25 focus:outline-none focus:border-white/20 transition-all duration-200 resize-none h-[96px] sm:h-[110px] lg:h-[105px] xl:h-[120px] backdrop-blur-sm"
-                      style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
-                    />
-                  </div>
-                </form>
-              </div>
+                    {/* ── Field 2: Email Address ────────────────── */}
+                    <div className="flex flex-col relative z-10">
+                      <label htmlFor="modal-email" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-1.5 block">
+                        Email Address
+                      </label>
+                      <input
+                        id="modal-email"
+                        type="email"
+                        placeholder="Enter Email Address"
+                        value={formData.email}
+                        onChange={(e) => {
+                          setFormData({ ...formData, email: e.target.value });
+                          if (formErrors.email) setFormErrors((prev) => ({ ...prev, email: false }));
+                        }}
+                        className={`w-full px-4 h-[46px] sm:h-[50px] border rounded-[8px] text-white text-base sm:text-sm placeholder-white/25 focus:outline-none transition-all duration-200 backdrop-blur-sm ${
+                          formErrors.email ? "border-red-500 focus:border-red-500" : "border-white/10 focus:border-white/25"
+                        }`}
+                        style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
+                      />
+                    </div>
 
-              {/* ── Row 6: Submit button (outside scroll view, absolute on mobile, relative on desktop) ── */}
-              <div className="absolute bottom-0 left-0 right-0 z-20 pt-4 pb-5 px-5 bg-[#0d0d0d]/70 backdrop-blur-md border-t border-white/10 sm:px-7 sm:pb-7 md:px-9 md:pb-9 lg:relative lg:bottom-auto lg:left-auto lg:right-auto lg:bg-transparent lg:backdrop-blur-none lg:border-t-0 lg:px-8 lg:pb-8 xl:px-12 xl:pb-12 lg:pt-4 xl:pt-5">
-                <button
-                  type="submit"
-                  form="consultation-form"
-                  disabled={isSubmitting}
-                  className="group w-full sm:w-auto inline-flex items-center justify-center sm:justify-start gap-2 px-7 sm:px-8 py-3.5 sm:py-4 bg-white text-black font-semibold rounded-full hover:bg-neutral-100 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 disabled:opacity-50 disabled:pointer-events-none cursor-pointer shadow-lg text-[14px] sm:text-[15px]"
-                >
-                  <span>{isSubmitting ? "Submitting..." : "Submit"}</span>
-                  <ArrowRight
-                    size={15}
-                    className="transition-transform duration-300 group-hover:translate-x-1"
-                  />
-                </button>
-              </div>
-                </>
+                    {/* ── Row 3: Contact Number ─────────────────────────────────── */}
+                    <div className={`flex flex-col relative ${showCountryCodes ? "z-50" : "z-10"}`}>
+                      <label htmlFor="modal-phone" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-1.5 block">
+                        Contact Number
+                      </label>
+                      <div
+                        className={`flex items-center border rounded-[8px] h-[46px] sm:h-[50px] transition-all duration-200 backdrop-blur-sm ${
+                          formErrors.contactNumber ? "border-red-500 focus-within:border-red-500" : "border-white/10 focus-within:border-white/25"
+                        }`}
+                        style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
+                      >
+                        <div ref={countryDropdownRef} className="relative flex-shrink-0 h-full">
+                          <button
+                            type="button"
+                            onClick={() => setShowCountryCodes(!showCountryCodes)}
+                            className="flex items-center gap-1 px-3 sm:px-3.5 text-base sm:text-sm text-white/80 hover:text-white cursor-pointer h-full"
+                          >
+                            <span>{countryCode}</span>
+                            <ChevronDown
+                              size={13}
+                              className={`text-white/50 transition-transform duration-200 ${showCountryCodes ? "rotate-180" : ""}`}
+                            />
+                          </button>
+                          {showCountryCodes && (
+                            <div
+                              className="absolute top-[50px] sm:top-[54px] left-0 z-[100] border border-white/10 rounded-lg shadow-2xl py-1 max-h-44 overflow-y-auto w-32 sm:w-36 bg-[#1c1c1f]"
+                            >
+                              {COUNTRY_CODES.map((item) => (
+                                <button
+                                  key={item.code}
+                                  type="button"
+                                  onClick={() => { setCountryCode(item.code); setShowCountryCodes(false); }}
+                                  className="w-full text-left px-3 sm:px-4 py-2 text-[13px] text-white/80 hover:bg-white/5 hover:text-white transition-colors"
+                                >
+                                  {item.code} ({item.name})
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                        <div className="w-px h-5 bg-white/10 flex-shrink-0" />
+                        <input
+                          id="modal-phone"
+                          type="tel"
+                          placeholder="Enter Contact Number"
+                          value={formData.contactNumber}
+                          onChange={(e) => {
+                            setFormData({ ...formData, contactNumber: e.target.value.replace(/[^0-9]/g, "") });
+                            if (formErrors.contactNumber) setFormErrors((prev) => ({ ...prev, contactNumber: false }));
+                          }}
+                          onKeyDown={(e) => {
+                            const allowedKeys = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab", "Enter", "Home", "End"];
+                            if (!/^[0-9]$/.test(e.key) && !allowedKeys.includes(e.key) && !e.ctrlKey && !e.metaKey) {
+                              e.preventDefault();
+                            }
+                          }}
+                          className="w-full h-full bg-transparent px-3 text-base sm:text-sm text-white placeholder-white/25 focus:outline-none"
+                        />
+                      </div>
+                    </div>
+
+                    {/* ── Row 4: How Can We Help? ─────────────────────────────────── */}
+                    <div className="flex flex-col">
+                      <label htmlFor="modal-help" className="text-[12px] sm:text-[13px] font-normal text-white/80 mb-1.5 block">
+                        How Can We Help?
+                      </label>
+                      <textarea
+                        id="modal-help"
+                        placeholder="Enter Text"
+                        value={formData.howCanWeHelp}
+                        onChange={(e) => setFormData({ ...formData, howCanWeHelp: e.target.value })}
+                        className="w-full px-4 py-2.5 sm:py-3 border border-white/10 rounded-[8px] text-white text-base sm:text-sm placeholder-white/25 focus:outline-none focus:border-white/25 transition-all duration-200 resize-none h-[84px] sm:h-[100px] lg:h-[95px] xl:h-[110px] backdrop-blur-sm"
+                        style={{ backgroundColor: "rgba(34, 34, 37, 0.7)" }}
+                      />
+                    </div>
+
+                    {/* ── Submit button ────────────────────────────────────────── */}
+                    <div className="pt-2 sm:pt-3">
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 sm:px-8 py-3 sm:py-3.5 bg-white text-black font-semibold rounded-full hover:bg-neutral-100 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 disabled:opacity-50 disabled:pointer-events-none cursor-pointer shadow-lg text-[14px] sm:text-[15px]"
+                      >
+                        <span>{isSubmitting ? "Submitting..." : "Submit"}</span>
+                        <ArrowRight
+                          size={15}
+                          className="transition-transform duration-300 group-hover:translate-x-1"
+                        />
+                      </button>
+                    </div>
+                  </form>
+                </div>
               )}
             </div>
           </motion.div>
