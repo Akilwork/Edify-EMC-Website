@@ -549,13 +549,8 @@ export async function POST(request: Request) {
 
     // 1. Fast persistence: append to CSV synchronously (takes ~1ms, ensuring no data loss)
     try {
-<<<<<<< HEAD
-      const filePath = path.join(process.env.DATA_DIR || process.cwd(), "contact_submissions.csv");
-      const fileExists = fs.existsSync(filePath);
-=======
-      const csvPath = path.join(process.cwd(), "contact_submissions.csv");
+      const csvPath = path.join(process.env.DATA_DIR || process.cwd(), "contact_submissions.csv");
       const fileExists = fs.existsSync(csvPath);
->>>>>>> Sub-Branch
 
       const headers = ["Timestamp", "Name", "Email ID", "Contact Number", "Message"];
       const rowData = [

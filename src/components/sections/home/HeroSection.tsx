@@ -43,7 +43,7 @@ export default function HeroSection({ isParentReady = true }: { isParentReady?: 
         transition={{ duration: 1.6, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] }}
       >
         <video
-          src="/about/hero/about-hero-video.mov"
+          src="/about/hero/about-hero-video.mp4"
           autoPlay
           muted
           loop
