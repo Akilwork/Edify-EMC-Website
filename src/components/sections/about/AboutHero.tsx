@@ -95,8 +95,6 @@ export default function AboutHero() {
   const scene5Ref = useRef<HTMLDivElement>(null);
   const scene5LeftRef = useRef<HTMLDivElement>(null);
   const scene5RightRef = useRef<HTMLDivElement>(null);
-  const scene6Ref = useRef<HTMLDivElement>(null);
-  const statsCounterRef = useRef<HTMLDivElement>(null);
   const whiteBgRef = useRef<HTMLDivElement>(null);
   const scene7Ref = useRef<HTMLDivElement>(null);
   const scene7BlackBgRef = useRef<HTMLDivElement>(null);
@@ -191,7 +189,6 @@ export default function AboutHero() {
         if (scene5Ref.current) gsap.set(scene5Ref.current, { autoAlpha: 0 });
         if (scene5LeftRef.current) gsap.set(scene5LeftRef.current, { autoAlpha: 0, x: -100, filter: "blur(12px)" });
         if (scene5RightRef.current) gsap.set(scene5RightRef.current, { autoAlpha: 0, x: 100, scale: 0.6, filter: "blur(16px)" });
-        if (scene6Ref.current) gsap.set(scene6Ref.current, { autoAlpha: 0, filter: "blur(18px)" });
         if (scene7Ref.current) gsap.set(scene7Ref.current, { autoAlpha: 0, filter: "blur(12px)" });
         if (scene7LeftRef.current) gsap.set(scene7LeftRef.current, { autoAlpha: 0, x: -50 });
         if (scene7RightRef.current) gsap.set(scene7RightRef.current, { autoAlpha: 0, x: 50, scale: 0.9 });
@@ -242,18 +239,19 @@ export default function AboutHero() {
           scrollTrigger: {
             trigger: section,
             start: "top top",
-            end: "+=5000vh",
+            end: "+=4400vh",
             pin: true,
             pinSpacing: true,
             scrub: 1,
             invalidateOnRefresh: true,
             onUpdate: (self) => {
-              // Trigger Scene 8 BlurText animation when Scene 8 starts fading in (at 26.0 = ~61% progress)
-              if (self.progress >= 0.61 && !scene8Visible) {
+              const total = tl.duration() || 37.6;
+              // Trigger Scene 8 BlurText animation when Scene 8 starts fading in (at 21.0)
+              if (self.progress >= 21.0 / total && !scene8Visible) {
                 setScene8Visible(true);
               }
-              // Trigger Scene 9 BlurText animation when Scene 9 starts fading in
-              if (self.progress >= 0.98 && !scene9Visible) {
+              // Trigger Scene 9 BlurText animation when Scene 9 starts fading in (at 37.0)
+              if (self.progress >= 37.0 / total && !scene9Visible) {
                 setScene9Visible(true);
               }
             },
@@ -347,7 +345,7 @@ export default function AboutHero() {
           );
         }
 
-        // ─── Scene 5 → Scene 6 Transition (starts at 10.0) ─────────────────────────────────────────────────
+        // ─── Scene 5 → Scene 7 Transition (starts at 10.0) ─────────────────────────────────────────────────
         if (scene5Ref.current) {
           tl.to(
             scene5Ref.current,
@@ -362,57 +360,6 @@ export default function AboutHero() {
           );
         }
 
-        // ─── Scene 6 (Stats) fades in (starts at 10.5) ─────────────────────────────────────
-        if (scene6Ref.current) {
-          tl.to(
-            scene6Ref.current,
-            {
-              autoAlpha: 1,
-              filter: "blur(0px)",
-              duration: 0.6,
-              ease: "power2.inOut",
-            },
-            10.5
-          );
-        }
-
-        // Animate stats numbers with stagger timing
-        if (statsCounterRef.current) {
-          const statElements = statsCounterRef.current.querySelectorAll(".stat-number");
-          statElements.forEach((el, index) => {
-            const targetValue = parseInt(el.getAttribute("data-value") || "0");
-            const counterObj = { value: 0 };
-            tl.to(
-              counterObj,
-              {
-                value: targetValue,
-                duration: 1.2,
-                ease: "power3.out",
-                onUpdate: function () {
-                  const current = Math.round(this.targets()[0].value);
-                  (el as HTMLElement).innerHTML = current.toLocaleString();
-                },
-              },
-              11.0 + (index * 0.2)
-            );
-          });
-        }
-
-        // ─── Scene 6 → Scene 7 Transition (starts at 15.0) ─────────────────────
-        if (scene6Ref.current) {
-          tl.to(
-            scene6Ref.current,
-            {
-              autoAlpha: 0,
-              scale: 1.15,
-              filter: "blur(15px)",
-              duration: 0.4,
-              ease: "power2.inOut",
-            },
-            15.0
-          );
-        }
-
         // Fade in black background for Scene 7
         if (scene7BlackBgRef.current) {
           tl.to(
@@ -422,7 +369,7 @@ export default function AboutHero() {
               duration: 0.6,
               ease: "power2.inOut",
             },
-            15.4
+            10.4
           );
         }
 
@@ -436,19 +383,19 @@ export default function AboutHero() {
               duration: 0.7,
               ease: "power2.inOut",
             },
-            15.4
+            10.4
           );
         }
 
         // ─── Scene 7 Sub-Scene Animations ──────────────────────────────────────────────────────────────
 
-        // Scene 7A - Initial fade in (at 15.6)
+        // Scene 7A - Initial fade in (at 10.6)
         if (scene7TextARef.current) {
           tl.fromTo(
             scene7TextARef.current,
             { opacity: 0, x: -30 },
             { opacity: 1, x: 0, duration: 0.7, ease: "power3.out" },
-            15.6
+            10.6
           );
         }
         if (scene7ImgARef.current) {
@@ -456,7 +403,7 @@ export default function AboutHero() {
             scene7ImgARef.current,
             { opacity: 0, x: 30, scale: 0.95 },
             { opacity: 1, x: 0, scale: 1, duration: 0.8, ease: "back.out(1.5)" },
-            15.65
+            10.65
           );
         }
         // Highlight dot A
@@ -465,27 +412,27 @@ export default function AboutHero() {
             scene7DotARef.current,
             { opacity: 0.4, width: "8px" },
             { opacity: 1, width: "48px", duration: 0.5, ease: "power2.out" },
-            15.7
+            10.7
           );
         }
 
-        // Scene 7A → 7B Transition (at 18.0)
+        // Scene 7A → 7B Transition (at 13.0)
         if (scene7TextARef.current) {
           tl.to(
             scene7TextARef.current,
             { opacity: 0, x: -20, filter: "blur(8px)", duration: 0.5, ease: "power2.inOut" },
-            18.0
+            13.0
           );
         }
         if (scene7ImgARef.current) {
           tl.to(
             scene7ImgARef.current,
             { opacity: 0, x: 20, filter: "blur(8px)", duration: 0.5, ease: "power2.inOut" },
-            18.0
+            13.0
           );
         }
         if (scene7DotARef.current) {
-          tl.to(scene7DotARef.current, { opacity: 0.4, width: "8px", duration: 0.4 }, 18.0);
+          tl.to(scene7DotARef.current, { opacity: 0.4, width: "8px", duration: 0.4 }, 13.0);
         }
 
         // Scene 7B fades in
@@ -494,7 +441,7 @@ export default function AboutHero() {
             scene7TextBRef.current,
             { opacity: 0, x: 20, filter: "blur(8px)" },
             { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.6, ease: "power2.out" },
-            18.0
+            13.0
           );
         }
         if (scene7ImgBRef.current) {
@@ -502,7 +449,7 @@ export default function AboutHero() {
             scene7ImgBRef.current,
             { opacity: 0, x: -20, scale: 0.95, filter: "blur(8px)" },
             { opacity: 1, x: 0, scale: 1, filter: "blur(0px)", duration: 0.7, ease: "back.out(1.5)" },
-            18.05
+            13.05
           );
         }
         if (scene7DotBRef.current) {
@@ -510,27 +457,27 @@ export default function AboutHero() {
             scene7DotBRef.current,
             { opacity: 0.4, width: "8px" },
             { opacity: 1, width: "48px", duration: 0.5, ease: "power2.out" },
-            18.1
+            13.1
           );
         }
 
-        // Scene 7B → 7C Transition (at 20.5)
+        // Scene 7B → 7C Transition (at 15.5)
         if (scene7TextBRef.current) {
           tl.to(
             scene7TextBRef.current,
             { opacity: 0, x: -20, filter: "blur(8px)", duration: 0.5, ease: "power2.inOut" },
-            20.5
+            15.5
           );
         }
         if (scene7ImgBRef.current) {
           tl.to(
             scene7ImgBRef.current,
             { opacity: 0, x: 20, filter: "blur(8px)", duration: 0.5, ease: "power2.inOut" },
-            20.5
+            15.5
           );
         }
         if (scene7DotBRef.current) {
-          tl.to(scene7DotBRef.current, { opacity: 0.4, width: "8px", duration: 0.4 }, 20.5);
+          tl.to(scene7DotBRef.current, { opacity: 0.4, width: "8px", duration: 0.4 }, 15.5);
         }
 
         // Scene 7C fades in
@@ -539,7 +486,7 @@ export default function AboutHero() {
             scene7TextCRef.current,
             { opacity: 0, x: 20, filter: "blur(8px)" },
             { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.6, ease: "power2.out" },
-            20.5
+            15.5
           );
         }
         if (scene7ImgCRef.current) {
@@ -547,7 +494,7 @@ export default function AboutHero() {
             scene7ImgCRef.current,
             { opacity: 0, x: -20, scale: 0.95, filter: "blur(8px)" },
             { opacity: 1, x: 0, scale: 1, filter: "blur(0px)", duration: 0.7, ease: "back.out(1.5)" },
-            20.55
+            15.55
           );
         }
         if (scene7DotCRef.current) {
@@ -555,27 +502,27 @@ export default function AboutHero() {
             scene7DotCRef.current,
             { opacity: 0.4, width: "8px" },
             { opacity: 1, width: "48px", duration: 0.5, ease: "power2.out" },
-            20.6
+            15.6
           );
         }
 
-        // Scene 7C → 7D Transition (at 23.0)
+        // Scene 7C → 7D Transition (at 18.0)
         if (scene7TextCRef.current) {
           tl.to(
             scene7TextCRef.current,
             { opacity: 0, x: -20, filter: "blur(8px)", duration: 0.5, ease: "power2.inOut" },
-            23.0
+            18.0
           );
         }
         if (scene7ImgCRef.current) {
           tl.to(
             scene7ImgCRef.current,
             { opacity: 0, x: 20, filter: "blur(8px)", duration: 0.5, ease: "power2.inOut" },
-            23.0
+            18.0
           );
         }
         if (scene7DotCRef.current) {
-          tl.to(scene7DotCRef.current, { opacity: 0.4, width: "8px", duration: 0.4 }, 23.0);
+          tl.to(scene7DotCRef.current, { opacity: 0.4, width: "8px", duration: 0.4 }, 18.0);
         }
 
         // Scene 7D fades in
@@ -584,7 +531,7 @@ export default function AboutHero() {
             scene7TextDRef.current,
             { opacity: 0, x: 20, filter: "blur(8px)" },
             { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.6, ease: "power2.out" },
-            23.0
+            18.0
           );
         }
         if (scene7ImgDRef.current) {
@@ -592,7 +539,7 @@ export default function AboutHero() {
             scene7ImgDRef.current,
             { opacity: 0, x: -20, scale: 0.95, filter: "blur(8px)" },
             { opacity: 1, x: 0, scale: 1, filter: "blur(0px)", duration: 0.7, ease: "back.out(1.5)" },
-            23.05
+            18.05
           );
         }
         if (scene7DotDRef.current) {
@@ -600,42 +547,42 @@ export default function AboutHero() {
             scene7DotDRef.current,
             { opacity: 0.4, width: "8px" },
             { opacity: 1, width: "48px", duration: 0.5, ease: "power2.out" },
-            23.1
+            18.1
           );
         }
 
-        // ─── Scene 7D → Scene 8 Transition (at 25.5) ─────────────────────
+        // ─── Scene 7D → Scene 8 Transition (at 20.5) ─────────────────────
         if (scene7Ref.current) {
           tl.to(
             scene7Ref.current,
             { autoAlpha: 0, filter: "blur(4px)", duration: 0.5, ease: "power2.inOut" },
-            25.5
+            20.5
           );
         }
         if (scene7BlackBgRef.current) {
           tl.to(
             scene7BlackBgRef.current,
             { autoAlpha: 0, duration: 0.5, ease: "power2.inOut" },
-            25.5
+            20.5
           );
         }
 
-        // Scene 8 fades in (at 26.0)
+        // Scene 8 fades in (at 21.0)
         if (scene8Ref.current) {
           tl.to(
             scene8Ref.current,
             { autoAlpha: 1, filter: "blur(0px)", duration: 0.7, ease: "power2.inOut" },
-            26.0
+            21.0
           );
         }
 
-        // ─── Scene 8A → 8B Transition (at 28.0) ─────────────────────
+        // ─── Scene 8A → 8B Transition (at 23.0) ─────────────────────
         // Fade out initial text
         if (scene8TextARef.current) {
           tl.to(
             scene8TextARef.current,
             { autoAlpha: 0, y: -20, filter: "blur(2px)", duration: 0.5, ease: "power2.inOut" },
-            28.0
+            23.0
           );
         }
 
@@ -644,7 +591,7 @@ export default function AboutHero() {
           tl.to(
             scene8WhiteBgRef.current,
             { autoAlpha: 1, duration: 0.6, ease: "power2.inOut" },
-            28.0
+            23.0
           );
         }
 
@@ -653,7 +600,7 @@ export default function AboutHero() {
           tl.to(
             scene8WhiteVignetteRef.current,
             { autoAlpha: 1, duration: 0.6, ease: "power2.inOut" },
-            28.0
+            23.0
           );
         }
 
@@ -662,14 +609,14 @@ export default function AboutHero() {
           tl.to(
             scene8GridCyanRef.current,
             { autoAlpha: 0, duration: 0.6, ease: "power2.inOut" },
-            28.0
+            23.0
           );
         }
         if (scene8GridDarkRef.current) {
           tl.to(
             scene8GridDarkRef.current,
             { autoAlpha: 1, duration: 0.6, ease: "power2.inOut" },
-            28.0
+            23.0
           );
         }
 
@@ -678,7 +625,7 @@ export default function AboutHero() {
           tl.to(
             scene8TextBRef.current,
             { autoAlpha: 1, y: 0, duration: 0.6, ease: "power2.out" },
-            28.3
+            23.3
           );
         }
 
@@ -687,7 +634,7 @@ export default function AboutHero() {
           tl.to(
             scene8CardsContainerRef.current,
             { autoAlpha: 1, y: 0, duration: 0.8, ease: "power2.out" },
-            28.5
+            23.5
           );
         }
 
@@ -706,8 +653,8 @@ export default function AboutHero() {
           // Dynamic Page Transitions
           const totalPages = Math.ceil(displayMembers.length / 4);
           if (totalPages > 1) {
-            const startTime = 31.0;
-            const endTime = 40.0;
+            const startTime = 26.0;
+            const endTime = 35.0;
             const interval = (endTime - startTime) / (totalPages - 1);
 
             for (let i = 0; i < totalPages - 1; i++) {
@@ -722,13 +669,13 @@ export default function AboutHero() {
           }
         }
 
-        // ─── Scene 8B → Scene 9 Transition (at 41.5) ─────────────────────
+        // ─── Scene 8B → Scene 9 Transition (at 36.5) ─────────────────────
         // Fade out Scene 8B white background
         if (scene8WhiteBgRef.current) {
           tl.to(
             scene8WhiteBgRef.current,
             { autoAlpha: 0, duration: 0.6, ease: "power2.inOut" },
-            41.5
+            36.5
           );
         }
 
@@ -737,7 +684,7 @@ export default function AboutHero() {
           tl.to(
             scene8GridDarkRef.current,
             { autoAlpha: 0, duration: 0.6, ease: "power2.inOut" },
-            41.5
+            36.5
           );
         }
 
@@ -746,7 +693,7 @@ export default function AboutHero() {
           tl.to(
             scene8WhiteVignetteRef.current,
             { autoAlpha: 0, duration: 0.6, ease: "power2.inOut" },
-            41.5
+            36.5
           );
         }
 
@@ -755,7 +702,7 @@ export default function AboutHero() {
           tl.to(
             scene8TextBRef.current,
             { autoAlpha: 0, y: -20, filter: "blur(2px)", duration: 0.5, ease: "power2.inOut" },
-            41.5
+            36.5
           );
         }
 
@@ -764,7 +711,7 @@ export default function AboutHero() {
           tl.to(
             scene8CardsContainerRef.current,
             { autoAlpha: 0, y: -20, duration: 0.5, ease: "power2.inOut" },
-            41.5
+            36.5
           );
         }
 
@@ -773,7 +720,7 @@ export default function AboutHero() {
           tl.to(
             scene9Ref.current,
             { autoAlpha: 1, filter: "blur(0px)", duration: 0.6, ease: "power2.inOut" },
-            42.0
+            37.0
           );
         }
 
@@ -854,12 +801,12 @@ export default function AboutHero() {
 
           let targetProgress = -1;
           if (hash === '#leadership') {
-            targetProgress = 28.8 / totalDuration;
+            targetProgress = 23.8 / totalDuration;
             setScene8Visible(true);
           } else if (hash === '#story') {
             targetProgress = 4.0 / totalDuration;
           } else if (hash === '#companies') {
-            targetProgress = 42.5 / totalDuration;
+            targetProgress = 37.5 / totalDuration;
             setScene9Visible(true);
           } else if (hash === '#overview') {
             targetProgress = 0;
@@ -974,8 +921,8 @@ export default function AboutHero() {
             speedMax={0.5}
             speedScale={1}
           />
-          {/* Vignette overlay - 70% intensity */}
-          <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at center, transparent 30%, #000000 40%)" }} />
+          {/* Vignette overlay - gentle edge vignette */}
+          <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at center, transparent 35%, #000000 90%)" }} />
         </div>
 
         {/* ── White Background Layer: Scene 6 ── */}
@@ -995,12 +942,12 @@ export default function AboutHero() {
         {/* ── Text Container (centered, never moves) ── */}
         <div
           ref={textContainerRef}
-          className="absolute inset-0 z-[5] flex items-center justify-center p-8 pointer-events-none"
+          className="absolute inset-0 z-[5] flex items-center justify-center pointer-events-none"
         >
           {/* Scene 2 - visible initially, fades out */}
           <div
             ref={scene2Ref}
-            className="absolute w-full container-responsive container-max text-center top-[60%] -translate-y-1/2 left-1/2 -translate-x-1/2"
+            className="absolute w-full container-responsive container-max text-center top-[60%] -translate-y-1/2 left-1/2 -translate-x-1/2 px-4"
           >
             <h1 className="font-sans font-normal leading-[1.1] text-white text-center m-0 tracking-tight text-[clamp(22px,5vw,28px)] md:text-[clamp(34px,4vw,40px)] lg:text-[clamp(36px,4vw,52px)] 2xl:text-[clamp(46px,3.5vw,56px)]">
               <span className="block">
@@ -1016,7 +963,7 @@ export default function AboutHero() {
           {/* Scene 4 - fades in with blur */}
           <div
             ref={scene4Ref}
-            className="absolute w-full container-responsive container-max text-center opacity-0"
+            className="absolute w-full container-responsive container-max text-center opacity-0 px-4"
           >
             <h1 className="font-sans font-medium leading-[1.1] text-white text-center m-0 tracking-tight text-[clamp(28px,6vw,36px)] md:text-[clamp(42px,5vw,48px)] lg:text-[clamp(48px,5vw,64px)] 2xl:text-[clamp(60px,4.5vw,68px)]">
               <span className="block">Building Institutions That Inspire</span>
@@ -1027,59 +974,69 @@ export default function AboutHero() {
           {/* Scene 5 - VisionValues content (slides in from right) */}
           <div
             ref={scene5Ref}
-            className="absolute inset-0 overflow-hidden flex items-center justify-center container-responsive container-max opacity-0"
+            className="absolute inset-0 w-full h-full overflow-hidden flex items-center justify-center opacity-0 pointer-events-none"
           >
             {/* Gradient 1 (Blue) - Top-left corner glow */}
             <div
-              className="absolute -top-[200px] -left-[200px] w-[1100px] h-[1100px] pointer-events-none"
+              className="absolute -top-[200px] -left-[150px] w-[1100px] h-[1100px] pointer-events-none"
               style={{
-                background: "radial-gradient(circle, rgba(33,150,243,0.22) 0%, rgba(33,150,243,0.10) 35%, transparent 75%)",
-                filter: "blur(220px)",
+                background: "radial-gradient(circle at 30% 30%, rgba(33,150,243,0.22) 0%, rgba(33,150,243,0.10) 40%, transparent 75%)",
+                filter: "blur(180px)",
               }}
             />
 
-            {/* Gradient 2 (Green) - Bottom-left corner glow */}
+            {/* Gradient 2 (Green) - Bottom-left glow extending right from the screen edge */}
             <div
-              className="absolute -bottom-[200px] -left-[200px] w-[1000px] h-[1000px] pointer-events-none"
+              className="absolute -bottom-[200px] -left-[100px] w-[1200px] h-[1100px] pointer-events-none"
               style={{
-                background: "radial-gradient(circle, rgba(0,255,120,0.16) 0%, rgba(0,255,120,0.08) 35%, transparent 75%)",
-                filter: "blur(200px)",
+                background: "radial-gradient(circle at 25% 75%, rgba(0,255,120,0.24) 0%, rgba(0,255,120,0.14) 38%, rgba(0,255,120,0.04) 58%, transparent 78%)",
+                filter: "blur(160px)",
               }}
             />
 
-            <div className="grid lg:grid-cols-[49.5%_50.5%] gap-8 lg:gap-0 items-center justify-center w-full">
-              {/* Left column - content */}
-              <div ref={scene5LeftRef} className="order-2 lg:order-1 opacity-0 will-change-transform">
-                <h2 className="font-sans text-[1.8rem] xs:text-[2rem] sm:text-[2.5rem] lg:text-[3rem] xl:text-[3.5rem] font-semibold text-white leading-[1.08] tracking-tight">
-                  <span className="block">Shaping The Future Of</span>
-                  <span className="block bg-gradient-to-r from-white via-white to-white/70 bg-clip-text text-transparent">
-                    Excellence
-                  </span>
-                  <span className="block mt-2 md:mt-4 text-white/90">
-                    Empowering Institutions
-                  </span>
-                  <span className="block text-white/80">Through Expertise</span>
-                </h2>
+            {/* Ambient Left Edge Green Glow */}
+            <div
+              className="absolute inset-y-0 left-0 w-[550px] pointer-events-none"
+              style={{
+                background: "radial-gradient(ellipse at 0% 60%, rgba(0,255,120,0.18) 0%, rgba(0,255,120,0.07) 45%, transparent 75%)",
+                filter: "blur(120px)",
+              }}
+            />
 
-                <p className="text-white/50 text-[14px] md:text-[16px] lg:text-[17px] leading-[1.75] max-w-[520px] font-light mt-4 md:mt-8">
-                  To help educational institutions overcome operational challenges,
-                  unlock growth opportunities, and create environments where students,
-                  educators, and communities can thrive.
-                </p>
+            <div className="w-full max-w-[1560px] mx-auto px-6 sm:px-10 lg:px-14 xl:px-16 relative z-10 pointer-events-auto">
+              <div className="grid lg:grid-cols-[51%_49%] gap-8 lg:gap-4 xl:gap-0 items-center justify-between w-full">
+                {/* Left column - content */}
+                <div ref={scene5LeftRef} className="order-2 lg:order-1 opacity-0 will-change-transform">
+                  <h2 className="font-sans text-[1.8rem] xs:text-[2rem] sm:text-[2.5rem] lg:text-[3rem] xl:text-[3.5rem] font-semibold text-white leading-[1.08] tracking-tight">
+                    <span className="block">Shaping The Future Of</span>
+                    <span className="block bg-gradient-to-r from-white via-white to-white/70 bg-clip-text text-transparent">
+                      Excellence
+                    </span>
+                    <span className="block mt-2 md:mt-4 text-white/90">
+                      Empowering Institutions
+                    </span>
+                    <span className="block text-white/80">Through Expertise</span>
+                  </h2>
 
-                <button className="mt-6 md:mt-10 group relative px-8 py-4 bg-black backdrop-blur-sm border border-white/10 rounded-full overflow-hidden transition-all duration-300 hover:bg-white/10 hover:border-white/20 pointer-events-auto">
-                  <span className="relative z-10 text-white/90 text-sm font-medium tracking-wide flex items-center gap-3">
-                    Learn More
-                    <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                  </span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-green-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </button>
-              </div>
+                  <p className="text-white/50 text-[14px] md:text-[16px] lg:text-[17px] leading-[1.75] max-w-[520px] font-light mt-4 md:mt-8">
+                    To help educational institutions overcome operational challenges,
+                    unlock growth opportunities, and create environments where students,
+                    educators, and communities can thrive.
+                  </p>
 
-              {/* Right column - orbital illustration */}
-              <div ref={scene5RightRef} className="order-1 lg:order-2 flex items-center justify-center opacity-0 will-change-transform">
+                  <button className="mt-6 md:mt-10 group relative px-8 py-4 bg-black backdrop-blur-sm border border-white/10 rounded-full overflow-hidden transition-all duration-300 hover:bg-white/10 hover:border-white/20 pointer-events-auto">
+                    <span className="relative z-10 text-white/90 text-sm font-medium tracking-wide flex items-center gap-3">
+                      Learn More
+                      <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
+                    </span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-green-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </button>
+                </div>
+
+                {/* Right column - orbital illustration */}
+                <div ref={scene5RightRef} className="order-1 lg:order-2 flex items-center justify-center opacity-0 will-change-transform">
                 <div className="relative w-full max-w-[240px] xs:max-w-[280px] sm:max-w-[320px] lg:max-w-[450px] aspect-square flex items-center justify-center">
                   {/* Outer ring */}
                   <div className="absolute inset-0 animate-spin-slow">
@@ -1130,6 +1087,7 @@ export default function AboutHero() {
               </div>
             </div>
           </div>
+        </div>
 
           {/* Scene 7 - One Vision section with 4 sub-scenes */}
           <div
@@ -1305,121 +1263,7 @@ export default function AboutHero() {
             </div>
           </div>
 
-          {/* Scene 6 - Stats/Achievements section - Redesigned */}
-          <div
-            ref={scene6Ref}
-            className="absolute inset-0 overflow-hidden flex items-center p-6 md:p-8 md:px-16 lg:px-20 opacity-0"
-          >
-            {/* Blurred background image */}
-            <div className="absolute inset-0 z-0">
-              <div
-                className="absolute inset-0 bg-cover bg-center animate-zoom-in"
-                style={{
-                  backgroundImage: "url('/about/hero/stats-bg.png')",
-                  filter: "blur(8px)",
-                  transform: "scale(1.05)",
-                  animation: "zoomIn 20s ease-out forwards"
-                }}
-              />
-              {/* Dark overlay for text readability */}
-              <div className="absolute inset-0 bg-black/50" />
-            </div>
 
-            <div className="max-w-[1600px] w-full mx-auto relative z-10 grid lg:grid-cols-[45%_55%] gap-8 lg:gap-16 items-center my-auto py-8">
-              {/* Left Column: Headline + Subhead */}
-              <div className="text-left">
-                {/* Headline */}
-                <h2 className="font-sans text-[1.8rem] xs:text-[2.2rem] sm:text-[3rem] md:text-[3.5rem] lg:text-[4rem] xl:text-[4.5rem] font-medium leading-[1.1] tracking-tight text-white mb-4 md:mb-6">
-                  Proven Results,<br />
-                  Better Outcomes
-                </h2>
-
-                {/* Subheadline */}
-                <p className="text-white/70 text-sm md:text-base lg:text-lg leading-relaxed max-w-lg">
-                  Transforming educational institutions through integrated expertise, strategic guidance, and sustainable growth solutions that create lasting impact.
-                </p>
-              </div>
-
-              {/* Right Column: 2x2 Stat Cards Grid */}
-              <div
-                ref={statsCounterRef}
-                className="grid grid-cols-2 gap-4 md:gap-6"
-              >
-                {/* Stat Card 1 */}
-                <div className="relative backdrop-blur-md bg-black/30 border border-white/10 rounded-lg p-4 xs:p-6 md:p-8 overflow-hidden group hover:bg-black/40 transition-all duration-300">
-                  {/* Corner decoration dots */}
-                  <div className="absolute top-3 left-3 w-1.5 h-1.5 bg-white/40 rounded-full" />
-                  <div className="absolute top-3 right-3 w-1.5 h-1.5 bg-white/40 rounded-full" />
-                  <div className="absolute bottom-3 left-3 w-1.5 h-1.5 bg-white/40 rounded-full" />
-                  <div className="absolute bottom-3 right-3 w-1.5 h-1.5 bg-white/40 rounded-full" />
-
-                  <div
-                    className="stat-number font-sans text-[2rem] xs:text-[2.5rem] md:text-[3.5rem] lg:text-[4rem] font-medium leading-none text-white mb-2"
-                    data-value="15"
-                  >
-                    0
-                  </div>
-                  <div className="text-white/60 text-xs md:text-sm font-medium tracking-wide">
-                    Years of Excellence
-                  </div>
-                </div>
-
-                {/* Stat Card 2 */}
-                <div className="relative backdrop-blur-md bg-black/30 border border-white/10 rounded-lg p-4 xs:p-6 md:p-8 overflow-hidden group hover:bg-black/40 transition-all duration-300">
-                  {/* Corner decoration dots */}
-                  <div className="absolute top-3 left-3 w-1.5 h-1.5 bg-white/40 rounded-full" />
-                  <div className="absolute top-3 right-3 w-1.5 h-1.5 bg-white/40 rounded-full" />
-                  <div className="absolute bottom-3 left-3 w-1.5 h-1.5 bg-white/40 rounded-full" />
-                  <div className="absolute bottom-3 right-3 w-1.5 h-1.5 bg-white/40 rounded-full" />
-
-                  <div
-                    className="stat-number font-sans text-[2rem] xs:text-[2.5rem] md:text-[3.5rem] lg:text-[4rem] font-medium leading-none text-white mb-2"
-                    data-value="500"
-                  >
-                    0
-                  </div>
-                  <div className="text-white/60 text-xs md:text-sm font-medium tracking-wide">
-                    Institutions Served
-                  </div>
-                </div>
-
-                {/* Stat Card 3 */}
-                <div className="relative backdrop-blur-md bg-black/30 border border-white/10 rounded-lg p-4 xs:p-6 md:p-8 overflow-hidden group hover:bg-black/40 transition-all duration-300">
-                  {/* Corner decoration dots */}
-                  <div className="absolute top-3 left-3 w-1.5 h-1.5 bg-white/40 rounded-full" />
-                  <div className="absolute top-3 right-3 w-1.5 h-1.5 bg-white/40 rounded-full" />
-                  <div className="absolute bottom-3 left-3 w-1.5 h-1.5 bg-white/40 rounded-full" />
-                  <div className="absolute bottom-3 right-3 w-1.5 h-1.5 bg-white/40 rounded-full" />
-
-                  <div className="font-sans text-[2rem] xs:text-[2.5rem] md:text-[3.5rem] lg:text-[4rem] font-medium leading-none text-white mb-2">
-                    2M+
-                  </div>
-                  <div className="text-white/60 text-xs md:text-sm font-medium tracking-wide">
-                    Students Impacted
-                  </div>
-                </div>
-
-                {/* Stat Card 4 */}
-                <div className="relative backdrop-blur-md bg-black/30 border border-white/10 rounded-lg p-4 xs:p-6 md:p-8 overflow-hidden group hover:bg-black/40 transition-all duration-300">
-                  {/* Corner decoration dots */}
-                  <div className="absolute top-3 left-3 w-1.5 h-1.5 bg-white/40 rounded-full" />
-                  <div className="absolute top-3 right-3 w-1.5 h-1.5 bg-white/40 rounded-full" />
-                  <div className="absolute bottom-3 left-3 w-1.5 h-1.5 bg-white/40 rounded-full" />
-                  <div className="absolute bottom-3 right-3 w-1.5 h-1.5 bg-white/40 rounded-full" />
-
-                  <div
-                    className="stat-number font-sans text-[2rem] xs:text-[2.5rem] md:text-[3.5rem] lg:text-[4rem] font-medium leading-none text-white mb-2"
-                    data-value="98"
-                  >
-                    0
-                  </div>
-                  <div className="text-white/60 text-xs md:text-sm font-medium tracking-wide">
-                    Success Rate
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
 
           {/* Scene 8 - Leadership Driven → Expertise Behind Every Solution */}
           <div

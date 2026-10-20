@@ -12,12 +12,18 @@ const Footer = () => {
   ];
 
   const serviceLinks = [
-    { name: 'Academic Services', href: '#academic' },
-    { name: 'HR & Recruitment', href: '#hr' },
-    { name: 'IT Solutions & Digital Transformation', href: '#it' },
-    { name: 'Marketing', href: '#printing' },
-    { name: 'Uniform Services', href: '#uniforms' },
-    { name: 'Canteen Service', href: '#canteen' },
+    { name: 'Academic Services', href: '/services/academic-services' },
+    { name: 'Financial Services', href: '/services/financial-services' },
+    { name: 'Human Resource Services', href: '/services/human-resource-services' },
+    { name: 'IT Solutions & Digital Transformation', href: '/services/it-solutions-digital-transformation' },
+    { name: 'Project Management & Development', href: '/services/project-management-development' },
+    { name: 'Civil Engineering & Infrastructure', href: '/services/civil-engineering-infrastructure' },
+    { name: 'Institutional Transport', href: '/services/transportation-service' },
+    { name: 'Canteen Service', href: '/services/canteen-management-services' },
+    { name: 'Uniform Services', href: '/services/uniform-services' },
+    { name: 'Sports Training & Talent Development', href: '/services/sports-training-talent-development' },
+    { name: 'Administration Service', href: '/services/administration-service' },
+    { name: 'Marketing', href: '/services/marketing' },
   ];
 
   return (
@@ -27,19 +33,19 @@ const Footer = () => {
 
         {/* Main Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-16 md:mb-24">
-          {/* Brand/Slogan Column - spans 6 columns */}
-          <div className="lg:col-span-6 space-y-6 pr-4">
+          {/* Brand/Slogan Column - spans 4 columns */}
+          <div className="lg:col-span-4 space-y-6 pr-4">
             <span className="block font-sans text-[10px] sm:text-[11px] font-normal tracking-[0.2em] text-[#8e8e8e] uppercase">
               EDIFY CONSULTANCY
             </span>
-            <h2 className="font-sans text-[28px] sm:text-[34px] md:text-[38px] lg:text-[40px] font-normal leading-[1.3] text-white">
+            <h2 className="font-sans text-[28px] sm:text-[34px] md:text-[36px] lg:text-[38px] font-normal leading-[1.3] text-white">
               Empowering education <br className="hidden md:block" />
               and institutional excellence
             </h2>
           </div>
 
-          {/* Explore Column - spans 2 columns, starts at col 7 */}
-          <div className="lg:col-span-2 lg:col-start-7">
+          {/* Explore Column - spans 2 columns */}
+          <div className="lg:col-span-2">
             <h3 className="font-sans text-[11px] sm:text-[12px] font-normal tracking-[0.2em] text-[#8e8e8e] uppercase mb-6">
               EXPLORE
             </h3>
@@ -57,17 +63,17 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Services Column - spans 2 columns */}
-          <div className="lg:col-span-2">
+          {/* Services Column - spans 4 columns */}
+          <div className="lg:col-span-4">
             <h3 className="font-sans text-[11px] sm:text-[12px] font-normal tracking-[0.2em] text-[#8e8e8e] uppercase mb-6">
               SERVICES
             </h3>
-            <ul className="space-y-4">
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3.5">
               {serviceLinks.map((link) => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="font-sans text-[13px] sm:text-[14px] text-neutral-400 hover:text-white transition-colors duration-300"
+                    className="font-sans text-[13px] sm:text-[14px] text-neutral-400 hover:text-white transition-colors duration-300 block"
                   >
                     {link.name}
                   </Link>
@@ -131,19 +137,6 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Massive bottom brand background text */}
-      <div className="w-full overflow-hidden pointer-events-none select-none flex justify-center mt-8">
-        <div
-          className="font-sans font-black tracking-[0.02em] leading-none text-center select-none"
-          style={{
-            fontSize: '24vw',
-            color: '#262626',
-            marginBottom: '-8vw',
-          }}
-        >
-          EDIFY
-        </div>
-      </div>
     </footer>
   );
 };

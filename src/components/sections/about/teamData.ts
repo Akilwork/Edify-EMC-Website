@@ -204,7 +204,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     name: "Mohamed Arshad Bin Samir",
     title: "Director",
     roleSubtitle: "DIRECTOR",
-    imageSrc: "/about/team/Mohamed_Arshad_Bin_Samir.jpg",
+    imageSrc: "/about/team/Mohamed_Arshad_Bin_Samir.jpg?v=2",
     bio: "Advancing operational excellence, driving educational partnerships, and ensuring strategic resource allocation to build resilient and forward-thinking academic institutions.",
     features: [
       {

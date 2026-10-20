@@ -20,6 +20,9 @@ import {
   Utensils,
   Shirt,
   Workflow,
+  Building2,
+  Trophy,
+  Briefcase,
 } from "lucide-react";
 import { useConsultation } from "@/components/providers/ConsultationProvider";
 import { SERVICE_SLUGS } from "@/data/service-details";
@@ -64,6 +67,20 @@ const MEGA_SERVICES = [
     slug: "marketing",
   },
   {
+    id: "project-management-development",
+    title: "Project Management & Development",
+    description: "End-to-end project management & consulting for facilities.",
+    icon: Workflow,
+    slug: "project-management-development",
+  },
+  {
+    id: "civil-engineering-infrastructure",
+    title: "Civil Engineering & Infrastructure",
+    description: "Infrastructure planning, civil engineering & construction.",
+    icon: Building2,
+    slug: "civil-engineering-infrastructure",
+  },
+  {
     id: "transportation-service",
     title: "Institutional Transport",
     description: "Safe & reliable student transport solutions.",
@@ -85,11 +102,18 @@ const MEGA_SERVICES = [
     slug: "uniform-services",
   },
   {
-    id: "project-management-development",
-    title: "Project Management & Development",
-    description: "End-to-end project management & consulting for facilities.",
-    icon: Workflow,
-    slug: "project-management-development",
+    id: "sports-training-talent-development",
+    title: "Sports Training & Talent Development",
+    description: "Professional coaching & athletic talent development.",
+    icon: Trophy,
+    slug: "sports-training-talent-development",
+  },
+  {
+    id: "administration-service",
+    title: "Administration Service",
+    description: "Comprehensive administration & operational support.",
+    icon: Briefcase,
+    slug: "administration-service",
   },
 ];
 
@@ -162,17 +186,7 @@ function ServicesMegaMenu({
             </div>
 
             {/* ── Right content ── */}
-            <div className="flex flex-col px-8 py-6">
-              {/* Column heading - clickable to show Services Hero section first */}
-              <Link
-                href="/services"
-                onClick={(e) => onNavigate("/services", e)}
-                className="group/heading inline-flex items-center gap-1.5 text-[11px] font-semibold tracking-[1.5px] uppercase text-black/50 hover:text-black mb-3 transition-colors duration-200 cursor-pointer w-fit"
-              >
-                <span>Our Services</span>
-                <ArrowRight size={12} className="transition-transform duration-200 group-hover/heading:translate-x-0.5 text-black/40 group-hover/heading:text-black" />
-              </Link>
-
+            <div className="flex flex-col px-8 py-6 justify-center">
               {/* Service rows */}
               <div className="grid grid-cols-2 gap-x-8 gap-y-0.5 flex-1">
                 {/* Left column */}
