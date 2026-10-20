@@ -20,8 +20,9 @@ export default function HomePage() {
       const hasSeenLoader = sessionStorage.getItem("hasSeenLoader");
 
       // Only play the loader animation if we are at the top of the page (Hero section)
-      // and we haven't already seen the loader in this session
-      if (scrollPos < 100 && !hasSeenLoader) {
+      // and we haven't already seen the loader in this session, and no hash target is requested
+      const hasHash = Boolean(window.location.hash);
+      if (scrollPos < 100 && !hasSeenLoader && !hasHash) {
         setShowLoader(true);
         sessionStorage.setItem("hasSeenLoader", "true");
       } else {
@@ -29,6 +30,29 @@ export default function HomePage() {
       }
     }
   }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !isLoaded) return;
+
+    const scrollToHash = () => {
+      const hash = window.location.hash;
+      if (hash) {
+        const id = hash.replace("#", "");
+        const target = document.getElementById(id);
+        if (target) {
+          target.scrollIntoView({ behavior: "smooth" });
+        }
+      }
+    };
+
+    const timer = setTimeout(scrollToHash, 350);
+    window.addEventListener("hashchange", scrollToHash);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("hashchange", scrollToHash);
+    };
+  }, [isLoaded]);
 
   const handleLoaderComplete = () => {
     setShowLoader(false);

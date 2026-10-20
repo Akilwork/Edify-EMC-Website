@@ -47,7 +47,7 @@ export default function ChairmanSection({ animate = true }: { animate?: boolean 
 
   return (
     <section
-      id="leadership"
+      id="story"
       ref={sectionRef}
       className="relative w-full overflow-hidden bg-white font-sans min-h-[100svh] py-12 sm:py-16 md:py-20 lg:py-0 lg:h-[100svh] flex items-center"
     >

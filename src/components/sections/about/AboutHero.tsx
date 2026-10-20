@@ -800,8 +800,8 @@ export default function AboutHero() {
           if (!totalDuration) return;
 
           let targetProgress = -1;
-          if (hash === '#leadership') {
-            targetProgress = 23.8 / totalDuration;
+          if (hash === '#leadership' || hash === '#scene8b' || hash === '#leadership-team') {
+            targetProgress = 24.8 / totalDuration;
             setScene8Visible(true);
           } else if (hash === '#story') {
             targetProgress = 4.0 / totalDuration;
@@ -822,12 +822,12 @@ export default function AboutHero() {
                 top: targetY,
                 behavior: 'smooth',
               });
-            }, 200);
+            }, 100);
           }
         };
 
         // Initial check if opened with a hash
-        handleHashScroll();
+        setTimeout(handleHashScroll, 350);
 
         // Listen for hash changes
         window.addEventListener('hashchange', handleHashScroll);
@@ -1023,16 +1023,6 @@ export default function AboutHero() {
                     unlock growth opportunities, and create environments where students,
                     educators, and communities can thrive.
                   </p>
-
-                  <button className="mt-6 md:mt-10 group relative px-8 py-4 bg-black backdrop-blur-sm border border-white/10 rounded-full overflow-hidden transition-all duration-300 hover:bg-white/10 hover:border-white/20 pointer-events-auto">
-                    <span className="relative z-10 text-white/90 text-sm font-medium tracking-wide flex items-center gap-3">
-                      Learn More
-                      <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                      </svg>
-                    </span>
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-green-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  </button>
                 </div>
 
                 {/* Right column - orbital illustration */}

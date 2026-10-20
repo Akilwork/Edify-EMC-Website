@@ -1,15 +1,42 @@
 'use client';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Mail, ArrowRight } from 'lucide-react';
 
 const Footer = () => {
+  const pathname = usePathname();
+
   const exploreLinks = [
     { name: 'Overview', href: '/#overview' },
-    { name: 'Our Story', href: '/about#story' },
+    { name: 'Our Story', href: '/#story' },
     { name: 'Leadership Team', href: '/about#leadership' },
-    { name: 'Group Companies', href: '/about#companies' },
+    { name: 'Group Companies', href: '/#companies' },
     { name: 'Careers', href: '/careers' },
   ];
+
+  const handleLinkClick = (href: string, e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (href.startsWith('/#')) {
+      const targetId = href.split('#')[1];
+      if (pathname === '/') {
+        const element = document.getElementById(targetId);
+        if (element) {
+          e.preventDefault();
+          element.scrollIntoView({ behavior: 'smooth' });
+          window.history.pushState(null, '', href);
+        }
+      }
+    } else if (href.startsWith('/about#')) {
+      const targetHash = '#' + href.split('#')[1];
+      if (pathname === '/about') {
+        e.preventDefault();
+        if (window.location.hash === targetHash) {
+          window.dispatchEvent(new Event('hashchange'));
+        } else {
+          window.location.hash = targetHash;
+        }
+      }
+    }
+  };
 
   const serviceLinks = [
     { name: 'Academic Services', href: '/services/academic-services' },
@@ -54,6 +81,7 @@ const Footer = () => {
                 <li key={link.name}>
                   <Link
                     href={link.href}
+                    onClick={(e) => handleLinkClick(link.href, e)}
                     className="font-sans text-[13px] sm:text-[14px] text-neutral-400 hover:text-white transition-colors duration-300"
                   >
                     {link.name}
