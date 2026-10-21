@@ -152,7 +152,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     name: "Abdul Rahman Bin Samir",
     title: "Director",
     roleSubtitle: "DIRECTOR",
-    imageSrc: "/about/team/Abdul Rahman Bin Samir.jpg",
+    imageSrc: "/about/team/Abdul Rahman Bin Samir.jpg?v=2",
     bio: "Focusing on sustainable institutional practices, community integration, and forward-looking strategies to empower future generations through quality education.",
     features: [
       {
