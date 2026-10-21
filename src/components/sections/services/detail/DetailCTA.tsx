@@ -440,10 +440,10 @@ export default function DetailCTA({
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="group inline-flex items-center gap-3 px-8 py-4 bg-white text-black font-semibold rounded-full hover:bg-neutral-100 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 disabled:opacity-50 disabled:pointer-events-none cursor-pointer shadow-lg text-[15px]"
+                  className="inline-flex items-center gap-3 px-8 py-4 bg-white text-black font-semibold rounded-full hover:bg-neutral-100 disabled:opacity-50 disabled:pointer-events-none cursor-pointer shadow-lg text-[15px]"
                 >
                   <span>{isSubmitting ? "Submitting..." : "Submit"}</span>
-                  <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+                  <ArrowRight size={16} />
                 </button>
               </div>
             </form>

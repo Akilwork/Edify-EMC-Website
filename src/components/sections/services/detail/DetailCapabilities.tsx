@@ -345,7 +345,7 @@ export default function DetailCapabilities({ detail }: { detail: ServiceDetail }
                 whileHover={{ y: -6, scale: 1.015 }}
                 className={`${colSpan} w-full flex`}
               >
-                <div className="group relative backdrop-blur-xl rounded-[22px] border shadow-[0_10px_30px_rgba(0,0,0,0.8)] transition-all duration-300 p-7 md:p-9 flex flex-col justify-between w-full h-full min-h-[190px] md:min-h-[220px] overflow-hidden text-left bg-[#0b0813] border-[#2d1b4e] hover:border-purple-500/50 hover:shadow-[0_20px_50px_rgba(168,85,247,0.15)]">
+                <div className="group relative backdrop-blur-xl rounded-[22px] border shadow-[0_10px_30px_rgba(0,0,0,0.8)] transition-all duration-300 p-7 md:p-9 flex flex-col justify-between w-full h-full min-h-[260px] md:min-h-[260px] overflow-hidden text-left bg-[#0b0813] border-[#2d1b4e] hover:border-purple-500/50 hover:shadow-[0_20px_50px_rgba(168,85,247,0.15)]">
 
                   <div>
                     {/* Title */}

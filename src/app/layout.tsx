@@ -34,6 +34,15 @@ export const metadata: Metadata = {
     url: "https://edifyemc.com",
     siteName: "Edify Management Consultancy",
   },
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
+  manifest: "/site.webmanifest",
 };
 
 export default function RootLayout({
@@ -50,7 +59,7 @@ export default function RootLayout({
           <main>{children}</main>
           <Footer />
           <Toaster />
-          <ChatWidget />
+          {/* <ChatWidget /> */}
         </ConsultationProvider>
       </body>
     </html>

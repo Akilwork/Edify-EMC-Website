@@ -22,7 +22,7 @@ export default function DetailOverview({ detail }: { detail: ServiceDetail }) {
             </RevealSection>
             
             <RevealSection delay={0.1}>
-              <p className="text-white/70 text-base md:text-lg leading-relaxed max-w-xl">
+              <p className="text-white/70 text-base md:text-lg leading-relaxed max-w-xl whitespace-pre-line">
                 {detail.overview.body}
               </p>
             </RevealSection>

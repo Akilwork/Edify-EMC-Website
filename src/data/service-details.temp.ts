@@ -471,18 +471,48 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
       ctas: [CONSULTATION_CTA],
     },
     overview: {
-      heading: "Designing Identity With Impact",
-      body: "We help institutions craft a unified, memorable brand and bring it to life across print and digital media. From prospectus and admissions kits to campus signage, uniforms, and marketing collateral, our branding and printing services strengthen identity, build community pride, and support admissions with materials that look exceptional and communicate clearly.",
+      heading: "A Growth Partner For Your School",
+      body: "We connect school strategy, parent communication, digital reach and admission operations to help institutions strengthen trust, improve enquiry conversion and work toward sustainable enrollment growth.\n\nCore focus: Admissions • Branding • Parent Engagement • Digital Marketing • CRM • Performance Analytics",
     },
     capabilities: {
       heading: "Branding & Printing Capabilities",
       items: [
-        { title: "Prospectus & Admissions Kit Design", description: "Premium brochures and enrollment materials that convert." },
-        { title: "Campus Branding & Signage", description: "External and internal signage that builds presence." },
-        { title: "Uniforms & Merchandising", description: "Customised uniforms, kits, and institutional merchandise." },
-        { title: "Digital & Print Marketing Assets", description: "Newsletters, reports, and coordinated collateral." },
-        { title: "Logo & Visual Identity", description: "Distinct identity systems built to last." },
-        { title: "Promotional Materials", description: "Event, campaign, and outreach assets that impress." },
+        {
+          title: "Admissions Strategy & Enrollment Growth",
+          description: "Annual admissions planning, grade-wise targets, lead generation, admission funnel management, and enquiry-to-enrollment conversion tracking.",
+        },
+        {
+          title: "School Brand Positioning & Differentiation",
+          description: "Defining the school's unique selling points (USPs), parent value proposition, brand identity, messaging, and competitive positioning.",
+        },
+        {
+          title: "Digital Advertising & Parent Lead Generation",
+          description: "Google Ads and Meta campaigns, location-based targeting, lead generation, retargeting, budget optimization, and campaign performance reporting.",
+        },
+        {
+          title: "Website, Landing Pages & SEO",
+          description: "Website development and content updates, admission landing pages, enquiry forms, local SEO, Google Business Profile optimization, and conversion tracking.",
+        },
+        {
+          title: "Social Media & Content Marketing",
+          description: "Content calendars, social media creatives, reels, videos, event coverage, school activity highlights, and parent-focused communication.",
+        },
+        {
+          title: "Parent Engagement & Community Outreach",
+          description: "Open houses, campus tours, parent engagement initiatives, referral programmes, community outreach, and local promotional activities.",
+        },
+        {
+          title: "CRM, Enquiry Management & Counselling",
+          description: "Enquiry database management, lead assignment, follow-up processes, counselling scripts, lead tracking, and admission conversion reporting.",
+        },
+        {
+          title: "Google Reviews & School Reputation",
+          description: "Google Business Profile management, review monitoring, professional response guidelines, reputation-building activities, and parent feedback management.",
+        },
+        {
+          title: "Analytics, Budgeting & Marketing Governance",
+          description: "Marketing budget planning, KPI tracking, campaign dashboards, monthly performance reports, approval workflows, and continuous performance improvement.",
+        },
       ],
     },
     whyItMatters: {
@@ -516,7 +546,7 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
     },
     related: {
       heading: "Explore Connected Solutions",
-      slugs: ["uniform-services", "it-solutions-digital-transformation", "ecommerce-digital-services"],
+      slugs: ["academic-services", "uniform-services", "it-solutions-digital-transformation"],
     },
     cta: {
       heading: "Let's Build A Brand That Lasts",

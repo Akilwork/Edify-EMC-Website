@@ -44,6 +44,8 @@ export default function HeroSection({ isParentReady = true }: { isParentReady?: 
       >
         <video
           src="/about/hero/about-hero-video.mp4"
+          poster="/about/hero/about-hero-poster.webp"
+          preload="auto"
           autoPlay
           muted
           loop
@@ -117,7 +119,7 @@ export default function HeroSection({ isParentReady = true }: { isParentReady?: 
               href="/services"
               className="group inline-flex items-center justify-center gap-2 px-5 xs:px-7 sm:px-8 py-3 sm:py-4 bg-[#3a3a3a] text-white font-sans text-[clamp(0.8125rem,0.75rem+0.28vw,0.875rem)] font-semibold rounded-full border border-white/60 hover:bg-white/10 hover:border-white/80 transition-all duration-300 cursor-pointer w-full sm:w-auto"
             >
-              Explore Our Solutions
+              Explore Our Services
             </Link>
           </motion.div>
         </div>
