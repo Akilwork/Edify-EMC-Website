@@ -150,8 +150,8 @@ export const TEAM_MEMBERS: TeamMember[] = [
   {
     id: "abdul-rahman-bin-samir",
     name: "Abdul Rahman Bin Samir",
-    title: "Director",
-    roleSubtitle: "DIRECTOR",
+    title: "Director of Marketing & Sales",
+    roleSubtitle: "DIRECTOR OF MARKETING & SALES",
     imageSrc: "/about/team/Abdul Rahman Bin Samir.jpg?v=2",
     bio: "Focusing on sustainable institutional practices, community integration, and forward-looking strategies to empower future generations through quality education.",
     features: [
