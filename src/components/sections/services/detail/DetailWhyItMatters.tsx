@@ -68,7 +68,7 @@ const IMAGES_BY_SERVICE: Record<string, string[]> = {
     "/Why It Matters/Marketing/Commercial Printing.jpg",
     "/Why It Matters/Marketing/Creative Branding Studio.jpg",
     "/Why It Matters/Marketing/Corporate Brand Identity.jpg",
-    "/Why It Matters/Marketing/Signage & Display Branding.jpg",
+    "/Why It Matters/Marketing/Signage-and-Display-Branding.jpg",
     "/Why It Matters/Marketing/Promotional Products.jpg",
     "/Why It Matters/Marketing/Markeing Print Materids.jpg",
   ],
@@ -121,7 +121,7 @@ const IMAGES_BY_SERVICE: Record<string, string[]> = {
     "/Why It Matters/Canteen/Ensure Food Safety.jpg",
     "/Why It Matters/Canteen/Enhance Campus life.jpg",
     "/Why It Matters/Canteen/Streamline Operations.jpg",
-    "/Why It Matters/Canteen/Offer Variety & Dietary Support.jpg",
+    "/Why It Matters/Canteen/Offer-Variety-and-Dietary-Support.jpg",
     "/Why It Matters/Canteen/Modernize Dining System.jpg",
   ],
 
@@ -131,7 +131,7 @@ const IMAGES_BY_SERVICE: Record<string, string[]> = {
     "/Why It Matters/Administration service/Improved Efficiency.jpg",
     "/Why It Matters/Administration service/Administration Service.jpg",
     "/Why It Matters/Administration service/Enhanced Professionalism.jpg",
-    "/Why It Matters/Administration service/Compuance & Safety.jpg",
+    "/Why It Matters/Administration service/Compliance-and-Safety.jpg",
     "/Why It Matters/Administration service/Scalability.jpg",
   ],
 };

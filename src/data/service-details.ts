@@ -428,9 +428,9 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
     heroImage: "/Service-page/Printing-&-Branding-Solutions.png",
     cardImage: "/Service-page/Printing-&-Branding-Solutions.png",
     hero: {
-      tagline: "Shaping A Powerful Brand Identity",
+      tagline: "Strategic Marketing Solutions for Lasting Impact",
       supportingCopy:
-        "High-quality printed materials and professional branding strategies that elevate your institution's prestige and presence.",
+        "Data-driven, creative and results-focused marketing solutions designed to attract the right families, build strong school brands and drive sustainable admission growth",
       ctas: [CONSULTATION_CTA],
     },
     overview: {

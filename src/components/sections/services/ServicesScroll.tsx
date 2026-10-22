@@ -37,7 +37,7 @@ export default function ServicesScroll() {
   }, []);
 
   const heroHighlights = [
-    "10 Specialized Domains",
+    "12 Specialized Domains",
     "Integrated Solutions",
     "Expert Professionals",
     "Long-Term Support"
@@ -48,29 +48,36 @@ export default function ServicesScroll() {
       image: "/Service-page/Human-Resource-Services.png",
       title: "Human Resource Management",
       description: "Recruitment, workforce planning, payroll, compliance, performance management, and employee development.",
-      isWide: false,
+      colSpan: "col-span-12 md:col-span-6 lg:col-span-4",
       slug: "human-resource-services"
     },
     {
       image: "/Service-page/Educationalal.png",
       title: "Academics",
       description: "Strategic guidance for institutional planning, governance, accreditation, student support, and academic excellence.",
-      isWide: false,
+      colSpan: "col-span-12 md:col-span-6 lg:col-span-4",
       slug: "academic-services"
     },
     {
       image: "/Service-page/Financial-Consultancy.png",
       title: "Financial Services",
       description: "Financial planning, budgeting, compliance, auditing support, and long-term sustainability strategies.",
-      isWide: false,
+      colSpan: "col-span-12 md:col-span-12 lg:col-span-4",
       slug: "financial-services"
     },
     {
       image: "/Service-page/Civil-Engineering-&-Infrastructure-Development.png",
       title: "Project Management & Development",
       description: "End-to-end project management and consulting for schools, residential projects, offices, and facilities.",
-      isWide: false,
+      colSpan: "col-span-12 md:col-span-6 lg:col-span-6",
       slug: "project-management-development"
+    },
+    {
+      image: "/Service-page/Transportation-&-Fleet-Support.png",
+      title: "Administration Service",
+      description: "Comprehensive administration and operational support, facility management, and workflow optimization.",
+      colSpan: "col-span-12 md:col-span-6 lg:col-span-6",
+      slug: "administration-service"
     }
   ];
 
@@ -233,16 +240,14 @@ export default function ServicesScroll() {
             </p>
           </div>
 
-          {/* Cards Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-5 xl:gap-6 mb-12 md:mb-16">
+          {/* Cards Grid — Bento Grid 5 Layout */}
+          <div className="grid grid-cols-12 gap-4 md:gap-6 lg:gap-5 xl:gap-6 mb-12 md:mb-16">
             {serviceCards.map((card, index) => (
               <Link
                 key={index}
                 href={`/services/${card.slug}`}
                 aria-label={card.title}
-                className={`group relative overflow-hidden rounded-2xl lg:rounded-[28px] ${cardHeight} w-full ${
-                  card.isWide ? 'sm:col-span-2 lg:col-span-2' : 'lg:col-span-1'
-                } border border-black/10 bg-white shadow-sm hover:shadow-xl transition-shadow duration-500 block`}
+                className={`group relative overflow-hidden rounded-2xl lg:rounded-[28px] ${cardHeight} w-full ${card.colSpan} border border-black/10 bg-white shadow-sm hover:shadow-xl transition-shadow duration-500 block`}
                 onMouseEnter={() => setHoveredCard(index)}
                 onMouseLeave={() => setHoveredCard(null)}
               >
@@ -252,7 +257,7 @@ export default function ServicesScroll() {
                     src={card.image}
                     alt={card.title}
                     fill
-                    sizes="(max-width: 768px) 100vw, 33vw"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   />
                 </div>
