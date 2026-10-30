@@ -404,32 +404,40 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
     categoryTag: 'Uniform Services',
     mainHeader: 'Identity, Quality, and Comfort in Every Stitch',
     introBodyText: 'We design, source, and deliver high-quality uniforms and institutional clothing that reflect your identity and uphold your standards. From everyday school uniforms to sports kits and staff attire, our solutions balance comfort, durability, and affordability — making it easy for families and giving your institution a polished, unified appearance that builds belonging and pride.',
-    tagline: 'Identity, Quality, And Comfort In Every Stitch',
+    tagline: 'Identity, Quality and Comfort in Every Stitch',
     bgImage: '/Service-page/Uniform-&-Clothing-Solutions.png',
     subServices: [
       {
-        title: 'Uniform Design',
-        description: 'Custom designs that express your institutional identity.',
+        title: 'Uniform Design & Customization',
+        description: 'Customized designs that reflect your institution’s colours, branding, standards and practical requirements',
       },
       {
         title: 'School Uniforms',
-        description: 'Durable, comfortable everyday wear for students.',
+        description: 'Everyday schoolwear planned around comfort, durability, suitable materials and consistent sizing',
       },
       {
         title: 'Sports & Activity Kits',
-        description: 'High-performance kits for athletics, teams, and events.',
+        description: 'Sportswear and activity clothing designed for movement and comfort during physical education, team activities and school events.',
       },
       {
-        title: 'Staff Attire',
-        description: 'Professional clothing designed for educators and administration staff.',
+        title: 'Staff & Institutional Attire',
+        description: 'Professional attire for teaching staff, administration teams and other institutional personnel.',
       },
       {
-        title: 'Sourcing & Manufacturing',
-        description: 'Reliable, ethical, and quality-controlled garment production.',
+        title: 'Garment Manufacturing',
+        description: 'Production coordinated against approved designs and specifications, with attention to garment construction, workmanship and finishing.',
       },
       {
-        title: 'Distribution & Inventory',
-        description: 'Efficient supply management for families and on-campus stores.',
+        title: 'Quality Assurance & Control',
+        description: 'Checks covering fabric suitability, stitching, finishing, sizing consistency and conformity with agreed product specifications',
+      },
+      {
+        title: 'Sourcing & Material Selection',
+        description: 'Selection of suitable fabrics and garment components, balancing comfort, durability, appearance and cost considerations',
+      },
+      {
+        title: 'Distribution & Inventory Management',
+        description: 'Stock planning, size-wise inventory monitoring and replenishment coordination to support availability during the academic year. Campus stores, home delivery and online ordering may be supported where available.',
       },
     ],
     keyBenefits: [

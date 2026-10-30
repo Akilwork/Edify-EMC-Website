@@ -10,7 +10,7 @@ const WHY_IT_MATTERS_SUBTITLES: Record<string, string> = {
   "marketing": "Building distinct institutional presence, student enrollment growth, and strong communal identity.",
   "civil-engineering-infrastructure": "Designing safe, compliant, and inspiring facilities built to host generations of learners.",
   "transportation-service": "Ensuring student safety, route efficiency, and absolute compliance to put parent minds at ease.",
-  "uniform-services": "Promoting absolute campus equality, student belonging, and a polished, professional brand image.",
+  "uniform-services": "Uniforms That Support Identity and Everyday Life",
   "sports-training-talent-development": "Developing active health habits, personal discipline, and inter-school competition success.",
   "canteen-management-services": "Fostering student health, food safety compliance, and enjoyable, hygienic dining experiences.",
   "project-management-development": "Ensuring projects are efficient, functional, compliant, and aligned with business objectives.",
@@ -95,7 +95,7 @@ const IMAGES_BY_SERVICE: Record<string, string[]> = {
     "/Why It Matters/Transport/Frame6.png",
   ],
 
-  // ── Uniform Services — dedicated folder images (Frame1 → Frame6) ──────────
+  // ── Uniform Services — dedicated folder images (Frame1 → Frame8) ──────────
   "uniform-services": [
     "/Why It Matters/Uniform/Frame1.png",
     "/Why It Matters/Uniform/Frame2.png",
@@ -103,6 +103,8 @@ const IMAGES_BY_SERVICE: Record<string, string[]> = {
     "/Why It Matters/Uniform/Frame4.png",
     "/Why It Matters/Uniform/Frame5.png",
     "/Why It Matters/Uniform/Frame6.png",
+    "/Why It Matters/Uniform/Frame7.png",
+    "/Why It Matters/Uniform/Frame8.png",
   ],
 
   // ── Sports Training — dedicated folder images (Frame1 → Frame6) ───────────
@@ -182,8 +184,8 @@ export default function DetailWhyItMatters({ detail }: { detail: ServiceDetail }
           </RevealSection>
         </div>
 
-        {/* 3x2 Image Cards Grid — unified design for all services */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+        {/* Image Cards Grid — 4 columns for 8 items, 3 columns for 6 items */}
+        <div className={`grid grid-cols-1 md:grid-cols-2 ${detail.whyItMatters.items.length === 8 ? "lg:grid-cols-4" : "lg:grid-cols-3"} gap-6 w-full`}>
           {detail.whyItMatters.items.map((item, index) => {
             const bgImage = serviceImages[index % serviceImages.length];
 

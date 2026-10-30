@@ -251,8 +251,7 @@ export async function POST(request: Request) {
           await transporter.sendMail({
             from: `"Edify EMC Careers" <${gmailUser}>`,
             to: notificationEmail,
-            subject: `New Job Application: ${jobTitle} - ${name}`,
-            attachments: emailAttachments,
+            subject: `New Job Application: ${jobTitle} - ${name}`,22 &23 fays 
             html: `
               <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
                 <h2 style="color: #a855f7; border-bottom: 2px solid #a855f7; padding-bottom: 10px;">New Careers Submission</h2>

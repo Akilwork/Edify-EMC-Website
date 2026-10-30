@@ -776,35 +776,88 @@ const SERVICE_DETAILS: Record<string, ServiceDetail> = {
     heroImage: "/Service-page/Uniform-&-Clothing-Solutions.png",
     cardImage: "/Service-page/Uniform-&-Clothing-Solutions.png",
     hero: {
-      tagline: "Identity, Quality, And Comfort In Every Stitch",
+      tagline: "Identity, Quality and Comfort in Every Stitch",
       supportingCopy:
-        "Custom-designed uniforms and institutional clothing that reflect your identity and stand up to daily school life.",
+        "Uniform solutions designed around your institution—from customized designs and garment manufacturing to quality assurance, inventory planning and distribution.",
       ctas: [CONSULTATION_CTA],
     },
     overview: {
       heading: "Dressing Your Institution With Pride",
-      body: "We design, source, and deliver high-quality uniforms and institutional clothing that reflect your identity and uphold your standards. From everyday school uniforms to sports kits and staff attire, our solutions balance comfort, durability, and affordability — making it easy for families and giving your institution a polished, unified appearance that builds belonging and pride.",
+      body:
+        "Uniforms are an important part of an institution’s identity. They help create a consistent appearance, support a sense of belonging and meet the practical needs of students, staff and families.\n\nEDIFY supports institutions with coordinated uniform solutions covering design and customization, material selection, garment manufacturing, quality checks, inventory planning and distribution. From everyday school uniforms and sports kits to activity wear and professional staff attire, the service can be tailored to approved designs, specifications, quantities and supply requirements.\n\nBy bringing key stages of uniform provision into a coordinated process, institutions can manage their requirements more efficiently and work towards consistent quality, dependable supply and convenient access.",
     },
     capabilities: {
-      heading: "Uniform & Clothing Capabilities",
+      heading: "Uniform Solutions for Every Institutional Need",
       items: [
-        { title: "Uniform Design", description: "Custom designs that express your institutional identity." },
-        { title: "School Uniforms", description: "Durable, comfortable everyday wear." },
-        { title: "Sports & Activity Kits", description: "Performance kits for teams and events." },
-        { title: "Staff Attire", description: "Professional clothing that looks the part." },
-        { title: "Sourcing & Manufacturing", description: "Reliable, ethical, quality-controlled production." },
-        { title: "Distribution & Inventory", description: "Efficient supply to families and on-campus stores." },
+        {
+          title: "Uniform Design & Customization",
+          description: "Customized designs that reflect your institution’s colours, branding, standards and practical requirements",
+        },
+        {
+          title: "School Uniforms",
+          description: "Everyday schoolwear planned around comfort, durability, suitable materials and consistent sizing",
+        },
+        {
+          title: "Sports & Activity Kits",
+          description: "Sportswear and activity clothing designed for movement and comfort during physical education, team activities and school events.",
+        },
+        {
+          title: "Staff & Institutional Attire",
+          description: "Professional attire for teaching staff, administration teams and other institutional personnel.",
+        },
+        {
+          title: "Garment Manufacturing",
+          description: "Production coordinated against approved designs and specifications, with attention to garment construction, workmanship and finishing.",
+        },
+        {
+          title: "Quality Assurance & Control",
+          description: "Checks covering fabric suitability, stitching, finishing, sizing consistency and conformity with agreed product specifications",
+        },
+        {
+          title: "Sourcing & Material Selection",
+          description: "Selection of suitable fabrics and garment components, balancing comfort, durability, appearance and cost considerations",
+        },
+        {
+          title: "Distribution & Inventory Management",
+          description: "Stock planning, size-wise inventory monitoring and replenishment coordination to support availability during the academic year. Campus stores, home delivery and online ordering may be supported where available.",
+        },
       ],
     },
     whyItMatters: {
-      heading: "Why Uniforms Matter",
+      heading: "Uniforms That Support Identity and Everyday Life",
       items: [
-        { title: "Build Belonging", description: "A unified look fosters pride and community." },
-        { title: "Reflect Your Identity", description: "Designs that carry your brand every day." },
-        { title: "Ensure Quality & Comfort", description: "Durable, comfortable clothing students enjoy." },
-        { title: "Grament Manufacturing", description: "Reliable supply and easy access." },
-        { title: "Promote Equality", description: "A consistent look reduces comparison and pressure." },
-        { title: "Elevate Professionalism", description: "A polished appearance across campus." },
+        {
+          title: "Build Belonging",
+          description: "A consistent uniform can strengthen community, student belonging and pride in the institution.",
+        },
+        {
+          title: "Reflect Your Identity",
+          description: "Customized designs, colours and branding create a recognizable look across the campus.",
+        },
+        {
+          title: "Support Quality & Comfort",
+          description: "Thoughtful material selection and practical designs help make uniforms comfortable and suitable for everyday activities.",
+        },
+        {
+          title: "Maintain Manufacturing Standards",
+          description: "Defined specifications and quality checks help support consistency in workmanship, finishing and sizing.",
+        },
+        {
+          title: "Promote Equality & Inclusion",
+          description: "A common dress standard can reduce clothing-based comparisons and support a shared sense of belonging.",
+        },
+        {
+          title: "Elevate Professionalism",
+          description: "Coordinated attire supports a neat and professional appearance for students, staff and institutional teams.",
+        },
+        {
+          title: "Support Reliable Supply",
+          description: "Inventory planning and replenishment coordination help institutions manage ongoing uniform requirements.",
+        },
+        {
+          title: "Balance Quality & Value",
+          description: "Coordinating design, production and supply helps institutions consider durability, quality and affordability together.",
+        },
       ],
     },
     approach: {

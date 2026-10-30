@@ -2,6 +2,10 @@ import { motion } from "framer-motion";
 import RevealSection from "./RevealSection";
 import type { ServiceDetail } from "@/data/service-details";
 
+const CAPABILITIES_HEADINGS: Record<string, string> = {
+  "uniform-services": "Uniform Solutions for Every Institutional Need",
+};
+
 const CAPABILITIES_SUBTITLES: Record<string, string> = {
   "human-resource-services": "Tailored HR strategies that attract top talent, enhance staff retention, and build high-performing educational teams.",
   "academic-services": "Strategic institutional consulting and holistic student mentoring that strengthen quality standards, governance, and wellbeing.",
@@ -9,7 +13,7 @@ const CAPABILITIES_SUBTITLES: Record<string, string> = {
   "marketing": "Distinct visual identities, premium prints, and promotional assets that elevate your brand prestige.",
   "civil-engineering-infrastructure": "Feasibility, master planning, and engineering oversight that build safe, future-ready learning spaces.",
   "transportation-service": "Fully managed transportation fleets designed for maximum safety, efficiency, and parent peace of mind.",
-  "uniform-services": "Custom school clothing and sports kits designed for comfort, durability, and institutional pride.",
+  "uniform-services": "From design and production to quality and supply, our service approach helps institutions manage uniform requirements through one coordinated process.",
   "financial-services": "Rigorous financial planning, auditing, and cost-optimization solutions built for long-term resilience.",
   "sports-training-talent-development": "Professional coaching and athletic development pathways to foster talent and character.",
   "canteen-management-services": "Turnkey canteen management, nutritious meal planning, and strict food hygiene standards for student wellbeing.",
@@ -307,6 +311,7 @@ const getColSpanClass = (index: number, totalCount: number) => {
 export default function DetailCapabilities({ detail }: { detail: ServiceDetail }) {
   const items = detail.capabilities.items;
   const totalCount = items.length;
+  const heading = CAPABILITIES_HEADINGS[detail.slug] || detail.capabilities?.heading || "OUR SERVICES";
   const subtitle = CAPABILITIES_SUBTITLES[detail.slug] || "Tailored services and solutions designed to support your institution's specific goals.";
 
   return (
@@ -315,8 +320,8 @@ export default function DetailCapabilities({ detail }: { detail: ServiceDetail }
         {/* Heading */}
         <div className="text-center max-w-3xl mx-auto mb-16 md:mb-20">
           <RevealSection>
-            <h2 className="font-sans text-3xl md:text-4xl lg:text-5xl text-white font-medium leading-tight tracking-tight mb-4 uppercase">
-              OUR SERVICES
+            <h2 className={`font-sans text-3xl md:text-4xl lg:text-5xl text-white font-medium leading-tight tracking-tight mb-4 ${heading === "OUR SERVICES" ? "uppercase" : ""}`}>
+              {heading}
             </h2>
           </RevealSection>
           <RevealSection delay={0.05}>
