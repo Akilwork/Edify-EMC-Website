@@ -21,6 +21,19 @@ const CAPABILITIES_SUBTITLES: Record<string, string> = {
   "administration-service": "Comprehensive administration and operational support services tailored to keep your institution running efficiently.",
 };
 
+const SERVICE_CARD_IMAGES: Record<string, string[]> = {
+  "uniform-services": [
+    "/Our Service/Uniform/1.png",
+    "/Our Service/Uniform/2.png",
+    "/Our Service/Uniform/3.png",
+    "/Our Service/Uniform/4.png",
+    "/Our Service/Uniform/5.png",
+    "/Our Service/Uniform/6.png",
+    "/Our Service/Uniform/7.png",
+    "/Our Service/Uniform/8.png",
+  ],
+};
+
 /* ── Bento Grid Card Inner Illustrations ── */
 const ConcentricTunnelGraphic = () => (
   <div className="relative w-full h-28 sm:h-32 md:h-36 rounded-xl overflow-hidden flex items-center justify-center mt-5 group/tunnel">
@@ -340,6 +353,10 @@ export default function DetailCapabilities({ detail }: { detail: ServiceDetail }
         >
           {items.map((item, index) => {
             const colSpan = getColSpanClass(index, totalCount);
+            const dedicatedImages = SERVICE_CARD_IMAGES[detail.slug];
+            const cardImageSrc = dedicatedImages
+              ? dedicatedImages[index % dedicatedImages.length]
+              : `/Our Service/${(index % 12) + 1}.png`;
 
             return (
               <motion.div 
@@ -388,12 +405,12 @@ export default function DetailCapabilities({ detail }: { detail: ServiceDetail }
                     )}
                   </div>
 
-                  {/* Inner Card Graphic Illustration */}
-                  <div className="absolute bottom-0 right-0 w-3/4 h-3/4 sm:w-2/3 sm:h-2/3 md:w-3/5 md:h-3/5 flex items-end justify-end group-hover:scale-105 transition-transform duration-500 origin-bottom-right">
+                  {/* Inner Card Graphic Illustration with smooth background blending */}
+                  <div className="absolute bottom-0 right-0 w-3/4 h-3/4 sm:w-2/3 sm:h-2/3 md:w-3/5 md:h-3/5 flex items-end justify-end group-hover:scale-105 transition-transform duration-500 origin-bottom-right pointer-events-none overflow-hidden [mask-image:radial-gradient(ellipse_at_bottom_right,black_45%,transparent_85%)] [-webkit-mask-image:radial-gradient(ellipse_at_bottom_right,black_45%,transparent_85%)]">
                     <img 
-                      src={`/Our Service/${(index % 12) + 1}.png`} 
+                      src={cardImageSrc} 
                       alt={item.title} 
-                      className={`w-full h-full object-contain object-bottom right-0 bottom-0 mix-blend-lighten pointer-events-none select-none ${
+                      className={`w-full h-full object-contain object-right-bottom mix-blend-screen select-none ${
                         detail.slug === "academic-services" ? "hue-rotate-[-60deg] brightness-110" : ""
                       }`} 
                       draggable="false"
@@ -402,6 +419,9 @@ export default function DetailCapabilities({ detail }: { detail: ServiceDetail }
                          e.currentTarget.style.display = 'none';
                       }}
                     />
+                    {/* Feathering overlays for 100% seamless blend into the #0b0813 card background */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#0b0813] via-transparent to-transparent pointer-events-none" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-[#0b0813] via-transparent to-transparent pointer-events-none" />
                   </div>
                 </div>
               </motion.div>
