@@ -19,7 +19,7 @@ function scrollProgressToFractionalFrame(progress: number): number {
   return p * (TOTAL_FRAMES - 1);
 }
 
-// ─── Draw helper – single crisp frame, cover-scaled, no ghosting/double-vision ───
+// ─── Draw helper – smooth blended frame interpolation ────────────────────────
 function drawBlended(
   canvas: HTMLCanvasElement,
   images: HTMLImageElement[],
@@ -32,19 +32,37 @@ function drawBlended(
   const cw = canvas.width / dpr;
   const ch = canvas.height / dpr;
 
-  const idx = Math.min(Math.round(fractional), TOTAL_FRAMES - 1);
-  const img = images[idx];
-  if (!img?.complete || !img.naturalWidth) return;
+  const clamped = Math.max(0, Math.min(fractional, TOTAL_FRAMES - 1));
+  const floorIdx = Math.floor(clamped);
+  const ceilIdx = Math.min(floorIdx + 1, TOTAL_FRAMES - 1);
+  const blend = clamped - floorIdx;
 
-  const scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
-  const sw = img.naturalWidth * scale;
-  const sh = img.naturalHeight * scale;
+  const img1 = images[floorIdx];
+  const img2 = images[ceilIdx];
+
+  const primaryImg = (img1?.complete && img1.naturalWidth) ? img1 : img2;
+  if (!primaryImg?.complete || !primaryImg.naturalWidth) return;
+
+  const scale = Math.max(cw / primaryImg.naturalWidth, ch / primaryImg.naturalHeight);
+  const sw = primaryImg.naturalWidth * scale;
+  const sh = primaryImg.naturalHeight * scale;
   const ox = (cw - sw) / 2;
   const oy = (ch - sh) / 2;
 
   ctx.clearRect(0, 0, cw, ch);
-  ctx.globalAlpha = 1;
-  ctx.drawImage(img, ox, oy, sw, sh);
+
+  // Draw base frame
+  if (img1?.complete && img1.naturalWidth) {
+    ctx.globalAlpha = 1;
+    ctx.drawImage(img1, ox, oy, sw, sh);
+  }
+
+  // Crossfade next frame seamlessly for butter-smooth progression
+  if (blend > 0.02 && floorIdx !== ceilIdx && img2?.complete && img2.naturalWidth) {
+    ctx.globalAlpha = blend;
+    ctx.drawImage(img2, ox, oy, sw, sh);
+    ctx.globalAlpha = 1;
+  }
 }
 
 const CARDS_DATA = [
@@ -226,7 +244,7 @@ export const ScrollStory = () => {
       end: `+=${totalDist}`,
       pin: true,
       pinSpacing: true,
-      scrub: 0.45,
+      scrub: 0.5,
       refreshPriority: 3,
       onUpdate: (self) => {
         const scrolledPx = self.progress * totalDist;
@@ -235,7 +253,7 @@ export const ScrollStory = () => {
         const animProgress = Math.min(1, scrolledPx / (baseDist * 0.85));
         const next = scrollProgressToFractionalFrame(animProgress);
 
-        if (Math.round(next) !== Math.round(fractionalFrame.current)) {
+        if (Math.abs(next - fractionalFrame.current) > 0.005) {
           fractionalFrame.current = next;
           if (rafId.current) cancelAnimationFrame(rafId.current);
           rafId.current = requestAnimationFrame(() =>
